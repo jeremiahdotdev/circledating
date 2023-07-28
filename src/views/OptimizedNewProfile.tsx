@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
@@ -37,6 +37,22 @@ export const NewProfile = memo(function NewProfile({
     []
   );
 
+  // Callbacks
+  // Todo type the function parameter
+  const onInvalidData = useCallback((errors: any) => {
+    // Errors are presented in the errors object from the hook. the key is the name of the input and can be used to dynamically display the error message, see below for example
+    console.error(errors);
+  }, []);
+
+  const onValidData = useCallback((data: ProfileSchemaType) => {
+    console.log(data);
+    // Handle storing of the data here
+  }, []);
+
+  const onSubmit = useCallback(() => {
+    handleSubmit(onValidData, onInvalidData);
+  }, []);
+
   return (
     <div className={styles.newProfile}>
       <h1 className="text-2xl">{communityName} Singles Database</h1>
@@ -62,6 +78,8 @@ export const NewProfile = memo(function NewProfile({
       <section className={[styles.section].join(" ")}>
         <Label>Where are you currently residing?</Label>
         <Combobox options={countryValues} {...register("location.country")} />
+        {/* The following p is only shown if the error is non null and not undefined. The error message can be customized. see the height-schema for that. */}
+        {errors.location?.country && <p>{errors.location.country.message}</p>}
         {/* <Combobox options={statesValues} {...register("location.states")} /> */}
         {/* <Label>Are you willing to relocate?</Label> */}
         {/* <Dropdown options={YES_AND_NO} /> */}
@@ -117,7 +135,7 @@ export const NewProfile = memo(function NewProfile({
         <Label>Are you a virgin?</Label>
         <Dropdown options={YES_AND_NO_OPTIONAL} />
       </section> */}
-      <div className={styles.submit}>
+      <div className={styles.submit} onClick={onSubmit}>
         <Button>Submit</Button>
       </div>
     </div>
