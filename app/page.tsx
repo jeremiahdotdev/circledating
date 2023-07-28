@@ -1,9 +1,9 @@
-import NewProfile from "@/views/NewProfile";
+import { NewProfile } from "@/views/OptimizedNewProfile";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <NewProfile name={"r/ChristianDating"} />
+      <NewProfile communityName={"r/ChristianDating"} />
     </main>
   );
 }

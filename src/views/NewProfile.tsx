@@ -10,6 +10,8 @@ import { Dropdown } from "@/components/ui/dropdown";
 import { Textarea } from "@/components/ui/textarea";
 import { countries } from "@/globals/location";
 
+// Types which are single use, are declared locally.
+// Types which are used in multiple places, are declared in their own file.
 type Community = {
   name: string;
 };
@@ -42,6 +44,8 @@ type Profile = {
   isTrad: number;
   isVirgin: number;
 };
+
+// When doing it this way, please type the object you create like the following
 const defaultProfile = {
   username: "",
   sex: 0,
@@ -60,12 +64,16 @@ const defaultProfile = {
   hasMoney: -1,
   isTrad: -1,
   isVirgin: -1,
-};
+} as Profile;
 
+// Props should have their own type which is named accordingly
 function NewProfile(props: Community) {
+  // This is really bad practise. Every time the profile object is changed, the whole component will re-render, because the subcomponents depend on it. using react-hook-form will mitigate this.
   const [profile, setProfile] = useState(defaultProfile);
+  // See above
   const [states, setStates] = useState([defaultComboBoxOption]);
 
+  // These properties are "calculated" on every render of the component. This is also a bad practise. Prefer Enums or so.
   const YES_AND_NO = [
     { value: 1, label: "Yes" },
     { value: 0, label: "No" },
@@ -84,19 +92,23 @@ function NewProfile(props: Community) {
     { value: 0, label: "Female" },
   ];
   const AGES = [];
+  // This should just be a number input field with form validation
   for (let i = 18; i <= 99; i++) {
     AGES.push({ value: i, label: i });
   }
+  // This should just be a field which converts feet and inches to cm and vice versa.
   const HEIGHT = [];
   for (let feet = 4; feet <= 7; feet++) {
     for (let inches = 0; inches <= 11; inches++) {
       HEIGHT.push({ value: feet * 12 + inches, label: `${feet}'${inches}"` });
     }
   }
+  // using the countries.ts file solves this.
   const COUNTRIES: any = [];
   countries.forEach((element: Country, index: number) => {
     COUNTRIES.push({ value: element.country, label: element.country });
   });
+  // Using a string enum fixes this. Should also be declared outside of the component.
   const EXCERCISE_FREQUENCY = [
     { value: "Absentee", label: "Absentee (Never)" },
     { value: "Infrequent", label: "Infrequent (0-1 days per week)" },
@@ -141,6 +153,8 @@ function NewProfile(props: Community) {
     { value: "Diploma", label: "High School Diploma" },
     { value: "None", label: "None" },
   ];
+
+  // This should use useCallback if the component is to be memoized (which is the case), also the value can be typed safely so it should be done
   const onCountrySelect = (value: any) => {
     let states: any = countries.find((country: Country) => {
       return country.country === value;
@@ -155,6 +169,7 @@ function NewProfile(props: Community) {
   return (
     <div className={styles.newProfile}>
       <h1 className={[styles.heading1].join(" ")}>
+        {/* props can be deconstructed, see the optimized version */}
         {props.name} Singles Database
       </h1>
       <span className={[styles.sectionHeader].join(" ")}>
