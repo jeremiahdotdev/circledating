@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { FormSectionHeading } from "@/components/ui/formsectionheading";
+import { FormSectionHeading } from "@/components/ui/FormSectionHeading";
 import { GenderSelectionValues } from "@/schemas/Gender";
 import { InputFormField } from "@/components/ui/InputFormField";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
