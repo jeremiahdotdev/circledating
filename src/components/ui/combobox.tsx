@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import {
@@ -16,6 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import React, { useCallback, useState } from "react";
 
 export type ComboboxOption<ComboBoxType> = {
   value: ComboBoxType;
@@ -27,8 +27,20 @@ export function Combobox<ComboBoxType>(props: {
   options: ComboboxOption<ComboBoxType>[];
   onSelect?: (value: ComboBoxType | undefined) => void;
 }) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState<ComboBoxType | undefined>(undefined);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<ComboBoxType | undefined>(undefined);
+
+  const onSelect = useCallback(
+    (currentLabel: string) => {
+      const currentValue = props.options.find((option) => {
+        return option.label.toLowerCase() === currentLabel;
+      })?.value;
+      setValue(currentValue);
+      if (props.onSelect) props.onSelect(currentValue ?? undefined);
+      setOpen(false);
+    },
+    [props]
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -40,7 +52,7 @@ export function Combobox<ComboBoxType>(props: {
           className="w-[200px] justify-between"
         >
           {value
-            ? props.options.find((option: any) => {
+            ? props.options.find((option) => {
                 return option.value === value;
               })?.label
             : `Select ${props.name}...`}
@@ -53,17 +65,7 @@ export function Combobox<ComboBoxType>(props: {
           <CommandEmpty>No results.</CommandEmpty>
           <CommandGroup>
             {props.options.map((option: ComboboxOption<ComboBoxType>) => (
-              <CommandItem
-                key={option.label}
-                onSelect={(currentLabel) => {
-                  const currentValue = props.options.find((option: any) => {
-                    return option.label.toLowerCase() === currentLabel;
-                  })?.value;
-                  setValue(currentValue);
-                  if (props.onSelect) props.onSelect(currentValue ?? undefined);
-                  setOpen(false);
-                }}
-              >
+              <CommandItem key={option.label} onSelect={onSelect}>
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",

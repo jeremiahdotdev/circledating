@@ -1,4 +1,5 @@
-import { NewProfile } from "@/views/OptimizedNewProfile";
+import { NewProfile } from "@/views/NewProfile";
+import React from "react";
 
 export default function Home() {
   return (

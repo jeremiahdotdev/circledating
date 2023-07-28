@@ -1,3 +1,5 @@
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react/prop-types */
 "use client";
 
 import * as React from "react";
