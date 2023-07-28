@@ -12,7 +12,8 @@ import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 export const ProfileSchema = z.object({
   username: z.string().min(3).max(20),
   sex: GenderSchema,
-  age: z.number().min(18).max(99),
+  // Some browsers return a string on an input with the type="number" attribute, so we need to allow that and convert it to a number in the backend.
+  age: z.number().min(18).max(99).or(z.string().min(2).max(2)),
   youngestAgeToBeMatchedWith: z.number().min(18).max(99),
   oldestAgeToBeMatchedWith: z.number().min(18).max(99),
   height: HeightSchema,
@@ -42,7 +43,7 @@ export const ProfileSchema = z.object({
   onlyLookingForTraditionalHousehold: z.boolean(),
   canSupportFamilyOnCurrentIncome: z.boolean(),
   partnerShouldSupportOnCurrentIncome: z.boolean(),
-  usersNotToBeMatchedWith: z.array(z.string()),
+  usersNotToBeMatchedWith: z.string().optional(),
 });
 
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
