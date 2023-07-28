@@ -1,173 +1,219 @@
 'use client'
-import moment from 'moment'
 import React, { useState } from "react";
 import styles from "./NewProfile.module.scss";
-import CountriesJSON from './location.json';
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Calendar } from "@/components/ui/calendar"
+import { Input } from "@/components/ui/input"
+import { DatePicker } from "@/components/ui/datepicker";
+import { Combobox } from "@/components/ui/combobox";
+import { LabeledInput } from "@/components/ui/labeled-input";
+import { Dropdown } from "@/components/ui/dropdown";
+import { Textarea } from "@/components/ui/textarea";
 
-function NewProfile(props) {
-    let defaultProfile = {
-        username: null,
-        sex: 0,
-        height: { feet: null, inches: null},
-        weight: 0,
-        location: {country: null, state: null},
-        willRelocate: 1,
-        wantsKids: 1,
-        hasKids: 1,
-        exercise: null, 
-        drinking: null, 
-        substances: null, 
-        politic: null, 
-        education: null, 
-        bio: "",
-        hasMoney: -1, 
-        isTrad: -1, 
-        isVirgin: -1
-    }
+const COUNTRIES_JSON: [Country] = require("@/json/location.json")
+
+type Community = {
+    name: string;
+}
+type Country = {
+    country: string;
+    states: [string];
+}
+type ComboBoxOption = {
+    value: any, label: string
+}
+const defaultComboBoxOption: ComboBoxOption = {value: "", label: ""}
+
+type Profile = {
+    username: string,
+    sex: number,
+    height: { feet: number, inches: number},
+    weight: number,
+    location: {country: string, state: string},
+    willRelocate: number,
+    wantsKids: number,
+    hasKids: number,
+    exercise: string, 
+    drinking: string, 
+    substances: string, 
+    politic: string, 
+    education: string, 
+    bio: string,
+    hasMoney: number, 
+    isTrad: number, 
+    isVirgin: number
+}
+const defaultProfile = {
+    username: "",
+    sex: 0,
+    height: { feet: 0, inches: 0},
+    weight: 0,
+    location: {country: "", state: ""},
+    willRelocate: 1,
+    wantsKids: 1,
+    hasKids: 1,
+    exercise: "", 
+    drinking: "", 
+    substances: "", 
+    politic: "", 
+    education: "", 
+    bio: "",
+    hasMoney: -1, 
+    isTrad: -1, 
+    isVirgin: -1
+}
+
+function NewProfile(props: Community) {
     const [profile, setProfile] = useState(defaultProfile)
+    const [states, setStates] = useState([defaultComboBoxOption]);
 
-    const [states, setStates] = useState([]);
-    const YES_AND_NO = [{value: 1, text:"Yes"}, {value: 0, text:"No"}]
-    const YES_AND_NO_OPTIONAL = [{value: -1, text:"Rather not say"}, ...YES_AND_NO]
-    const MALE_AND_FEMALE = [{value: 1, text:"Male"}, {value: 0, text:"Female"}]
+    const YES_AND_NO = [{value: 1, label:"Yes"}, {value: 0, label:"No"}]
+    const STATUSES = [{value: 0, label:"Single; Never Married"}, {value: 1, label:"Divorced"}, {value: 0, label:"Widowed"}]
+    const YES_AND_NO_OPTIONAL = [{value: -1, label:"Rather not say"}, ...YES_AND_NO]
+    const MALE_AND_FEMALE = [{value: 1, label:"Male"}, {value: 0, label:"Female"}]
     const AGES = []
     for (let i = 18; i<=99; i++) {
-        AGES.push({value: i, text: i})
+        AGES.push({value: i, label:i})
     }
-    const REDDIT = [{label:"u/", value:"username"}]
-    const HEIGHT = [
-        {label:"feet;", value:"", right:true, type: "number", styles:styles.numeric, min: 0, max:7}, 
-        {label:"inches;", value:"", right:true, type: "number", styles:styles.numeric, min: 0, max:11}, 
-        {label:"lbs.", value:"", right:true, type: "number", styles:styles.numeric, min: 0, max:500}
-    ]
-    const COUNTRIES = []
-    CountriesJSON.countries.forEach((element, index) => {
-        COUNTRIES.push({value: index, text: element.country})
+    const HEIGHT = []
+    for (let feet = 4; feet <= 7; feet++) {
+        for (let inches = 0; inches <= 11; inches++) {
+            HEIGHT.push({value: feet*12+inches, label: `${feet}'${inches}"`})
+        }
+    }
+    const COUNTRIES: any = []
+    COUNTRIES_JSON.forEach((element: Country, index: number) => {
+        COUNTRIES.push({value: element.country, label: element.country})
     });
     const EXCERCISE_FREQUENCY = [
-        {value: "Absentee", text: "Absentee (Never)"},
-        {value: "Infrequent", text: "Infrequent (0-1 days per week)"},
-        {value: "Mild", text: "Mildly (2-3 days per week)"},
-        {value: "Frequent", text: "Rarely (3-4 days per week)"},
-        {value: "Heavy", text: "Heavy (5+ days per week)"}
+        {value: "Absentee", label:"Absentee (Never)"},
+        {value: "Infrequent", label:"Infrequent (0-1 days per week)"},
+        {value: "Mild", label:"Mildly (2-3 days per week)"},
+        {value: "Frequent", label:"Rarely (3-4 days per week)"},
+        {value: "Heavy", label:"Heavy (5+ days per week)"}
 
     ]
     const DRINKING_FREQUENCY = [
-        {value: "Never", text: "Never"},
-        {value: "Infrequently", text: "Infrequently (A few times per year)"},
-        {value: "Occasionally", text: "Occasionally (A few times per month)"},
-        {value: "Socially", text: "Socially (Events and special occasions, a few times per month)"},
-        {value: "Frequent", text: "Frequent (Weekly to daily drinking)"}
+        {value: "Never", label:"Never"},
+        {value: "Infrequently", label:"Infrequently (A few times per year)"},
+        {value: "Occasionally", label:"Occasionally (A few times per month)"},
+        {value: "Socially", label:"Socially (Events and special occasions, a few times per month)"},
+        {value: "Frequent", label:"Frequent (Weekly to daily drinking)"}
     ]
     const SMOKING_TYPES = [
-        {value: "Never", text: "Never"},
-        {value: "Cigars", text: "Cigars"},
-        {value: "Vape", text: "Vape"},
-        {value: "Cigarettes", text: "Cigarettes"},
-        {value: "Edibles", text: "Edibles"},
-        {value: "Other", text: "Other/Various"}
+        {value: "Never", label:"Never"},
+        {value: "Cigars", label:"Cigars"},
+        {value: "Vape", label:"Vape"},
+        {value: "Cigarettes", label:"Cigarettes"},
+        {value: "Edibles", label:"Edibles"},
+        {value: "Other", label:"Other/Various"}
     ]
     const POLITICAL_STANCES = [
-        {value: "Conservative", text: "Conservative"},
-        {value: "Conservative-leaning", text: "Conservative-leaning Moderate"},
-        {value: "Moderate", text: "Moderate"},
-        {value: "Liberal-leaning", text: "Liberal-leaning Moderate"},
-        {value: "Liberal", text: "Liberal"},
-        {value: "Independent", text: "Independent"},
-        {value: "Apolitical", text: "Apolitical"},
-        {value: "Other", text: "Other"}
+        {value: "Conservative", label:"Conservative"},
+        {value: "Conservative-leaning", label:"Conservative-leaning Moderate"},
+        {value: "Moderate", label:"Moderate"},
+        {value: "Liberal-leaning", label:"Liberal-leaning Moderate"},
+        {value: "Liberal", label:"Liberal"},
+        {value: "Independent", label:"Independent"},
+        {value: "Apolitical", label:"Apolitical"},
+        {value: "Other", label:"Other"}
     ]
     const EDUCATION_LEVELS = [
-        {value: "Doctorate", text: "Doctorate"},
-        {value: "Masters", text: "Masters"},
-        {value: "Bacholers", text: "Bacholers"},
-        {value: "Masters", text: "Masters"},
-        {value: "Associates", text: "Associates"},
-        {value: "Diploma", text: "High School Diploma"},
-        {value: "None", text: "None"}
+        {value: "Doctorate", label:"Doctorate"},
+        {value: "Masters", label:"Masters"},
+        {value: "Bacholers", label:"Bacholers"},
+        {value: "Masters", label:"Masters"},
+        {value: "Associates", label:"Associates"},
+        {value: "Diploma", label:"High School Diploma"},
+        {value: "None", label:"None"}
     ]
-    const onCountrySelect = (value) => {
-        let country = CountriesJSON.countries[value];
-        setProfile(profile => {profile.location.country = country; return profile})
-        let result = [{value: "N/A", text: "Rather not say."}]
-        country.states.forEach((element, index) => {
-            result.push({value: `${index}`, text: element})
+    const onCountrySelect = (value: any) => {
+        let states: any = COUNTRIES_JSON.find((country: Country) => { return country.country === value})?.states
+        let result: [ComboBoxOption] = [{value: "N/A", label: "Rather not say."}]
+        states.forEach((element: string, index: number) => {
+            result.push({value: `${index}`, label: element})
         });
         setStates(result)
     }    
-    const onUsernameSelect = (username) => {
-        setProfile(profile => {profile.username = username; return profile})
-    }
-    const onHeightFeetSelect = (feet) => {
-        setProfile(profile => {profile.height.feet = feet; return profile})
-    }
-    const onHeightInchSelect = (inches) => {
-        setProfile(profile => {profile.height.inches = inches; return profile})
-    }
-
-    // const onSexSelect = (sex) => {
-    //     setProfile(profile => {profile.sex = sex; return profile})
-    // }
-    // const onSexSelect = (sex) => {
-    //     setProfile(profile => {profile.sex = sex; return profile})
-    // }
-
-    // weight: 0,
-    // location: {country: null, state: null},
-    // willRelocate: 1,
-    // wantsKids: 1,
-    // hasKids: 1,
-    // exercise: null, 
-    // drinking: null, 
-    // substances: null, 
-    // politic: null, 
-    // education: null, 
-    // bio: "",
-    // hasMoney: -1, 
-    // isTrad: -1, 
-    // isVirgin: -1
 
     return (
-        <div className={styles.reviewhub}>
-            <div className={styles.wrapper}>
-            <h1 className={[styles.heading].join(" ")}>{props.community.name} Singles Database</h1>
-                <h2 className={[styles.heading].join(" ")}>General</h2>
-                <section className={[styles.section].join(" ")}>
-                    <Label>This is a label</Label>
-                    <Calendar></Calendar>
-                </section>
-                <h2 className={[styles.heading].join(" ")}>Location</h2>
-                <section className={[styles.section].join(" ")}>
-
-                </section>
-                <h2 className={[styles.heading].join(" ")}>Family</h2>
-                <section className={[styles.section].join(" ")}>
-
-                </section>
-                <h2 className={[styles.heading].join(" ")}>Substances & Lifestyle</h2>
-                <section className={[styles.section].join(" ")}>
-
-                </section>
-                <h2 className={[styles.heading].join(" ")}>About You</h2>
-                <section className={[styles.section].join(" ")}>
-
-                </section>
-                <h2 className={[styles.heading].join(" ")}>Sensitive Information (Optional)</h2>
-                <section className={[styles.section].join(" ")}>
-                                   </section>
-                <div className={styles.submit}>
-                    <button className={[styles.field, styles.btnAdd].join(" ")} onClick={() => { createProfile(profile); }}>SUBMIT</button>
-                    <Button>Submit</Button>
-                </div>
+        <div className={styles.newProfile}>
+            <h1 className={[styles.heading1].join(" ")}>{props.name} Singles Database</h1>
+            <span className={[styles.sectionHeader].join(" ")}>
+                <h2>General</h2>
+            </span>
+            <section className={[styles.section].join(" ")}>
+                <Label>What is your reddit username?</Label>
+                <LabeledInput placeholder={"username"}>u/</LabeledInput>
+                <Label>What is your birth date? This is only used to calculate age.</Label>
+                <DatePicker prompt={"Select your birth date."}/>
+                <Label>What is your height and weight?</Label>
+                <Combobox name={"your height"} options={HEIGHT} />
+                <LabeledInput type={"number"} placeholder={"lbs."}>weight</LabeledInput>
+            </section>
+            <span className={[styles.sectionHeader].join(" ")}>
+                <h2>Location</h2>
+            </span>            
+            <section className={[styles.section].join(" ")}>
+                <Label>Where are you currently residing?</Label>
+                <Combobox name={"Country"} options={COUNTRIES} onSelect={onCountrySelect}/>
+                <Combobox name={"State"} options={states} />
+                <Label>Are you willing to relocate?</Label>
+                <Dropdown options={YES_AND_NO}/>
+            </section>
+            <span className={[styles.sectionHeader].join(" ")}>
+                <h2>Family</h2>
+            </span>
+            <section className={[styles.section].join(" ")}>
+                <Label>Do you want kids?</Label>
+                <Dropdown options={YES_AND_NO}/>
+                <Label>Do you currently have kids?</Label>
+                <Dropdown options={YES_AND_NO}/>
+                <Label>Which of the following applies to you?</Label>
+                <Dropdown options={STATUSES}/>
+            </section>
+            <span className={[styles.sectionHeader].join(" ")}>
+                <h2>Lifestyle</h2>
+            </span>
+            <section className={[styles.section].join(" ")}>
+                <Label>What is your fitness level?</Label>
+                <Dropdown options={EXCERCISE_FREQUENCY}/>
+                <Label>How often do you drink?</Label>
+                <Dropdown options={DRINKING_FREQUENCY}/>
+                <Label>Which of the following applies to you?</Label>
+                <Dropdown options={SMOKING_TYPES}/>
+            </section>
+            <span className={[styles.sectionHeader].join(" ")}>
+                <h2>About You</h2>
+            </span>
+            <section className={[styles.section].join(" ")}>
+                <Label>What is the highest level of education you have achieved?</Label>
+                <Dropdown options={EDUCATION_LEVELS}/>
+                <Label>What is your political affiliation?</Label>
+                <Dropdown options={POLITICAL_STANCES}/>
+                <Label>Bio</Label>
+                <Textarea placeholder={"Describe yourself: faith, career, interests, hobbies, goals, et cetera."}/>
+            </section>
+            <span className={[styles.sectionHeader].join(" ")}>
+                <h2>Sensitive Information (Optional)</h2>
+            </span>
+            <section className={[styles.section].join(" ")}>
+                <Label>Are you *only* looking for a traditional household? Stay-at-home Mom, Father is the primary breadwinner?</Label>
+                <Dropdown options={YES_AND_NO_OPTIONAL} />
+                <Label>Can you support a family on your current income alone?</Label>
+                <Dropdown options={YES_AND_NO_OPTIONAL}/>
+                <Label>Are you a virgin?</Label>
+                <Dropdown options={YES_AND_NO_OPTIONAL} />
+            </section>
+            <div className={styles.submit}>
+                <Button>Submit</Button>
             </div>
         </div>
     );
 } 
 
-async function createProfile(profile) {
+async function createProfile(profile: Profile) {
     console.log(profile)
 }
 
