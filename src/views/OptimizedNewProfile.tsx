@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useCallback, useMemo } from "react";
+import { MouseEventHandler, memo, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
@@ -9,6 +9,18 @@ import { Label } from "@radix-ui/react-label";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
 import { countries } from "@/globals/location";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { GenderSelectionValues } from "@/schemas/Gender";
+import { FormSectionHeading } from "@/components/ui/formsectionheading";
 
 export type NewProfileProps = {
   communityName: string;
@@ -17,13 +29,7 @@ export type NewProfileProps = {
 export const NewProfile = memo(function NewProfile({
   communityName,
 }: NewProfileProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-    watch,
-  } = useForm<ProfileSchemaType>({
+  const form = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
     defaultValues: {},
   });
@@ -31,7 +37,7 @@ export const NewProfile = memo(function NewProfile({
   const countryValues = useMemo(
     () =>
       countries.map((country) => ({
-        value: country,
+        value: country.country,
         label: country.country,
       })),
     []
@@ -49,95 +55,93 @@ export const NewProfile = memo(function NewProfile({
     // Handle storing of the data here
   }, []);
 
-  const onSubmit = useCallback(() => {
-    handleSubmit(onValidData, onInvalidData);
-  }, []);
-
   return (
     <div className={styles.newProfile}>
-      <h1 className="text-2xl">{communityName} Singles Database</h1>
-      <span className={"w-3/4"}>
-        <h2>General</h2>
-      </span>
-      {/* <section className={[styles.section].join(" ")}>
-        <Label>What is your reddit username?</Label>
-        <LabeledInput placeholder={"username"}>u/</LabeledInput>
-        <Label>
-          What is your birth date? This is only used to calculate age.
-        </Label>
-        <DatePicker prompt={"Select your birth date."} />
-        <Label>What is your height and weight?</Label>
-        <Combobox name={"your height"} options={HEIGHT} />
-        <LabeledInput type={"number"} placeholder={"lbs."}>
-          weight
-        </LabeledInput>
-      </section> */}
-      <span className={"w-3/4"}>
-        <h2>Location</h2>
-      </span>
-      <section className={[styles.section].join(" ")}>
-        <Label>Where are you currently residing?</Label>
-        <Combobox options={countryValues} {...register("location.country")} />
-        {/* The following p is only shown if the error is non null and not undefined. The error message can be customized. see the height-schema for that. */}
-        {errors.location?.country && <p>{errors.location.country.message}</p>}
-        {/* <Combobox options={statesValues} {...register("location.states")} /> */}
-        {/* <Label>Are you willing to relocate?</Label> */}
-        {/* <Dropdown options={YES_AND_NO} /> */}
-      </section>
-      {/* <span className={"w-3/4"}>
-        <h2>Family</h2>
-      </span>
-      <section className={[styles.section].join(" ")}>
-        <Label>Do you want kids?</Label>
-        <Dropdown options={YES_AND_NO} />
-        <Label>Do you currently have kids?</Label>
-        <Dropdown options={YES_AND_NO} />
-        <Label>Which of the following applies to you?</Label>
-        <Dropdown options={STATUSES} />
-      </section>
-      <span className={"w-3/4"}>
-        <h2>Lifestyle</h2>
-      </span>
-      <section className={[styles.section].join(" ")}>
-        <Label>What is your fitness level?</Label>
-        <Dropdown options={EXCERCISE_FREQUENCY} />
-        <Label>How often do you drink?</Label>
-        <Dropdown options={DRINKING_FREQUENCY} />
-        <Label>Which of the following applies to you?</Label>
-        <Dropdown options={SMOKING_TYPES} />
-      </section>
-      <span className={"w-3/4"}>
-        <h2>About You</h2>
-      </span>
-      <section className={[styles.section].join(" ")}>
-        <Label>What is the highest level of education you have achieved?</Label>
-        <Dropdown options={EDUCATION_LEVELS} />
-        <Label>What is your political affiliation?</Label>
-        <Dropdown options={POLITICAL_STANCES} />
-        <Label>Bio</Label>
-        <Textarea
-          placeholder={
-            "Describe yourself: faith, career, interests, hobbies, goals, et cetera."
-          }
-        />
-      </section>
-      <span className={"w-3/4"}>
-        <h2>Sensitive Information (Optional)</h2>
-      </span>
-      <section className={[styles.section].join(" ")}>
-        <Label>
-          Are you *only* looking for a traditional household? Stay-at-home Mom,
-          Father is the primary breadwinner?
-        </Label>
-        <Dropdown options={YES_AND_NO_OPTIONAL} />
-        <Label>Can you support a family on your current income alone?</Label>
-        <Dropdown options={YES_AND_NO_OPTIONAL} />
-        <Label>Are you a virgin?</Label>
-        <Dropdown options={YES_AND_NO_OPTIONAL} />
-      </section> */}
-      <div className={styles.submit} onClick={onSubmit}>
-        <Button>Submit</Button>
-      </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onValidData, onInvalidData)}>
+          <FormSectionHeading>General</FormSectionHeading>
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                {/* Todo: Automatically filter out u/ */}
+                <FormLabel>Reddit Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="username" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is the username you use to log into Reddit.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="usersNotToBeMatchedWith"
+            render={({ field }) => (
+              <FormItem>
+                {/* Todo: automatically remove u/ */}
+                <FormLabel>Users to not be matched with</FormLabel>
+                <FormControl>
+                  <Input placeholder="Users..." {...field} />
+                </FormControl>
+                <FormDescription>
+                  List any reddit users you do not want to be matched with. (For
+                  example, have you matched with anyone before? Might want to
+                  right them down, unless you want to be rematched.) Please
+                  format in a comma separated list.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="sex"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>State your sex.</FormLabel>
+                <FormControl>
+                  <Combobox {...field} options={GenderSelectionValues} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="age"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Age</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="Age" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormSectionHeading>Location</FormSectionHeading>
+          <FormField
+            control={form.control}
+            name="location.country"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <Combobox {...field} name="Country" options={countryValues} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button className="mt-2" type="submit">
+            Submit
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 });

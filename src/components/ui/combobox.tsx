@@ -17,18 +17,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-type Option = {
-  value: any;
+export type ComboboxOption<ComboBoxType> = {
+  value: ComboBoxType;
   label: string;
 };
 
-export function Combobox(props: {
+export function Combobox<ComboBoxType>(props: {
   name: string;
-  options: any;
-  onSelect?: (value: any) => void;
+  options: ComboboxOption<ComboBoxType>[];
+  onSelect?: (value: ComboBoxType | undefined) => void;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState<ComboBoxType | undefined>(undefined);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -52,15 +52,15 @@ export function Combobox(props: {
           <CommandInput placeholder={"Search..."} />
           <CommandEmpty>No results.</CommandEmpty>
           <CommandGroup>
-            {props.options.map((option: Option) => (
+            {props.options.map((option: ComboboxOption<ComboBoxType>) => (
               <CommandItem
-                key={option.value}
+                key={option.label}
                 onSelect={(currentLabel) => {
                   let currentValue = props.options.find((option: any) => {
                     return option.label.toLowerCase() === currentLabel;
                   })?.value;
                   setValue(currentValue);
-                  if (props.onSelect) props.onSelect(currentValue);
+                  if (props.onSelect) props.onSelect(currentValue ?? undefined);
                   setOpen(false);
                 }}
               >

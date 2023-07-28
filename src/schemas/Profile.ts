@@ -5,13 +5,13 @@ import { ConsumablesSchema } from "./Consumables";
 import { CountrySchema } from "./Country";
 import { DrinkingFeelingSchema } from "./DrinkingFeeling";
 import { EthnicitySchema } from "./Ethnicity";
-import { Gender } from "./Gender";
+import { GenderSchema } from "./Gender";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 
 export const ProfileSchema = z.object({
   username: z.string().min(3).max(20),
-  sex: z.nativeEnum(Gender),
+  sex: GenderSchema,
   age: z.number().min(18).max(99),
   youngestAgeToBeMatchedWith: z.number().min(18).max(99),
   oldestAgeToBeMatchedWith: z.number().min(18).max(99),
@@ -42,6 +42,7 @@ export const ProfileSchema = z.object({
   onlyLookingForTraditionalHousehold: z.boolean(),
   canSupportFamilyOnCurrentIncome: z.boolean(),
   partnerShouldSupportOnCurrentIncome: z.boolean(),
+  usersNotToBeMatchedWith: z.array(z.string()),
 });
 
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
