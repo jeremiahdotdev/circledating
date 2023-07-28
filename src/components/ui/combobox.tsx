@@ -1,31 +1,34 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
-
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
 type Option = {
-    value: any;
-    label: string;
-}
+  value: any;
+  label: string;
+};
 
-export function Combobox(props: {name: string, options: any, onSelect?: (value: any) => void}) {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+export function Combobox(props: {
+  name: string;
+  options: any;
+  onSelect?: (value: any) => void;
+}) {
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -36,7 +39,10 @@ export function Combobox(props: {name: string, options: any, onSelect?: (value: 
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-          {value ? props.options.find((option: any) => { return option.value === value})?.label
+          {value
+            ? props.options.find((option: any) => {
+                return option.value === value;
+              })?.label
             : `Select ${props.name}...`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -50,10 +56,12 @@ export function Combobox(props: {name: string, options: any, onSelect?: (value: 
               <CommandItem
                 key={option.value}
                 onSelect={(currentLabel) => {
-                    let currentValue = props.options.find((option: any) => { return option.label.toLowerCase() === currentLabel})?.value
-                    setValue(currentValue)
-                    if (props.onSelect) props.onSelect(currentValue)
-                    setOpen(false)
+                  let currentValue = props.options.find((option: any) => {
+                    return option.label.toLowerCase() === currentLabel;
+                  })?.value;
+                  setValue(currentValue);
+                  if (props.onSelect) props.onSelect(currentValue);
+                  setOpen(false);
                 }}
               >
                 <Check
@@ -69,5 +77,5 @@ export function Combobox(props: {name: string, options: any, onSelect?: (value: 
         </Command>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
