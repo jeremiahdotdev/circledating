@@ -1,25 +1,18 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { FormSectionHeading } from "@/components/ui/formsectionheading";
+import { GenderSelectionValues } from "@/schemas/Gender";
+import { InputFormField } from "@/components/ui/InputFormField";
+import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
+import { SelectFormField } from "@/components/ui/SelectFormField";
+import { countries } from "@/globals/location";
 import { memo, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
+import React from "react";
 import styles from "./OptimizedNewProfile.module.scss";
-import { Button } from "@/components/ui/button";
-import { Combobox } from "@/components/ui/combobox";
-import { countries } from "@/globals/location";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { GenderSelectionValues } from "@/schemas/Gender";
-import { FormSectionHeading } from "@/components/ui/formsectionheading";
 
 export type NewProfileProps = {
   communityName: string;
@@ -66,11 +59,14 @@ export const NewProfile = memo(function NewProfile({
 
   // Callbacks
   // Todo type the function parameter
-  const onInvalidData = useCallback((errors: any) => {
-    // Errors are presented in the errors object from the hook. the key is the name of the input and can be used to dynamically display the error message, see below for example
-    console.error(errors);
-    console.log(form.getValues());
-  }, []);
+  const onInvalidData = useCallback(
+    (errors: unknown) => {
+      // Errors are presented in the errors object from the hook. the key is the name of the input and can be used to dynamically display the error message, see below for example
+      console.error(errors);
+      console.log(form.getValues());
+    },
+    [form]
+  );
 
   const onValidData = useCallback((data: ProfileSchemaType) => {
     console.log(data);
@@ -79,110 +75,47 @@ export const NewProfile = memo(function NewProfile({
 
   return (
     <div className={styles.newProfile}>
+      <h1>{communityName} Singles Database</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onValidData, onInvalidData)}>
+        <form onSubmit={void form.handleSubmit(onValidData, onInvalidData)}>
           <FormSectionHeading>General</FormSectionHeading>
-          <FormField
+          <InputFormField
             control={form.control}
             name="username"
-            render={({ field }) => (
-              <FormItem className="mb-2">
-                {/* Todo: Automatically filter out u/ */}
-                <FormLabel>Reddit Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="username" {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is the username you use to log into Reddit.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Reddit Username"
+            description="This is the username you use to log into Reddit."
           />
-          <FormField
+          <InputFormField
             control={form.control}
             name="usersNotToBeMatchedWith"
-            render={({ field }) => (
-              <FormItem className="mb-2">
-                {/* Todo: automatically remove u/ */}
-                <FormLabel>Users to not be matched with</FormLabel>
-                <FormControl>
-                  <Input placeholder="Users..." {...field} />
-                </FormControl>
-                <FormDescription>
-                  List any reddit users you do not want to be matched with. (For
-                  example, have you matched with anyone before? Might want to
-                  right them down, unless you want to be rematched.) Please
-                  format in a comma separated list.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Users to not be matched with"
+            description="List any reddit users you do not want to be matched with. (For example, have you matched with anyone before? Might want to right them down, unless you want to be rematched.) Please format in a comma separated list."
           />
-          <FormField
-            control={form.control}
+          <SelectFormField<ProfileSchemaType, string>
             name="sex"
-            render={({ field }) => (
-              <FormItem className="flex flex-col mb-2">
-                <FormLabel>State your sex.</FormLabel>
-                <FormControl>
-                  <Combobox
-                    name="Sex"
-                    onSelect={field.onChange}
-                    options={GenderSelectionValues}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            control={form.control}
+            label="Sex"
+            options={GenderSelectionValues}
           />
-          <FormField
+          <InputFormField
             control={form.control}
             name="age"
-            render={({ field }) => (
-              <FormItem className="mb-2">
-                <FormLabel>Age</FormLabel>
-                <FormControl>
-                  <Input type="number" placeholder="Age" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            label="Age"
+            description="Please enter your age."
+            type="number"
           />
           <FormSectionHeading>Location</FormSectionHeading>
-          <FormField
-            control={form.control}
+          <SelectFormField<ProfileSchemaType, string>
             name="location.country"
-            render={({ field }) => (
-              <FormItem className="flex flex-col mb-2">
-                <FormLabel>Country</FormLabel>
-                <FormControl>
-                  <Combobox
-                    onSelect={field.onChange}
-                    name="Country"
-                    options={countryValues}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
             control={form.control}
+            label="Country"
+            options={countryValues}
+          />
+          <SelectFormField<ProfileSchemaType, string>
             name="location.states"
-            render={({ field }) => (
-              <FormItem className="flex flex-col mb-2">
-                <FormLabel>State</FormLabel>
-                <FormControl>
-                  <Combobox
-                    onSelect={field.onChange}
-                    name="State"
-                    options={stateValues}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            control={form.control}
+            label="State"
+            options={stateValues}
           />
           <Button className="mt-2" type="submit">
             Submit

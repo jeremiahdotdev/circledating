@@ -1,14 +1,14 @@
 "use client";
-import React, { useState } from "react";
-import styles from "./NewProfile.module.scss";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { DatePicker } from "@/components/ui/datepicker";
 import { Combobox } from "@/components/ui/combobox";
-import { LabeledInput } from "@/components/ui/labeled-input";
+import { DatePicker } from "@/components/ui/datepicker";
 import { Dropdown } from "@/components/ui/dropdown";
+import { Label } from "@/components/ui/label";
+import { LabeledInput } from "@/components/ui/labeled-input";
 import { Textarea } from "@/components/ui/textarea";
 import { countries } from "@/globals/location";
+import React, { useState } from "react";
+import styles from "./NewProfile.module.scss";
 
 // Types which are single use, are declared locally.
 // Types which are used in multiple places, are declared in their own file.
@@ -156,10 +156,10 @@ function NewProfile(props: Community) {
 
   // This should use useCallback if the component is to be memoized (which is the case), also the value can be typed safely so it should be done
   const onCountrySelect = (value: any) => {
-    let states: any = countries.find((country: Country) => {
+    const states: any = countries.find((country: Country) => {
       return country.country === value;
     })?.states;
-    let result: [ComboBoxOption] = [{ value: "N/A", label: "Rather not say." }];
+    const result: [ComboBoxOption] = [{ value: "N/A", label: "Rather not say." }];
     states.forEach((element: string, index: number) => {
       result.push({ value: `${index}`, label: element });
     });

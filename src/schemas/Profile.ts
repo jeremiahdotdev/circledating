@@ -1,13 +1,13 @@
-import { z } from "zod";
-import { HeightSchema } from "./Height";
 import { BodyFormSchema } from "./BodyShape";
 import { ConsumablesSchema } from "./Consumables";
 import { CountrySchema } from "./Country";
 import { DrinkingFeelingSchema } from "./DrinkingFeeling";
 import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
+import { HeightSchema } from "./Height";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
+import { z } from "zod";
 
 export const ProfileSchema = z.object({
   username: z.string().min(3).max(20),
