@@ -136,7 +136,9 @@ export const NewProfile = memo(function NewProfile({
               label="State"
               options={stateValues}
             />
-            <FormSectionHeading>Family</FormSectionHeading>
+          </section>
+          <FormSectionHeading>Family</FormSectionHeading>
+          <section>
             <DropdownFormField<ProfileSchemaType>
               name="wantsKids"
               control={form.control}
