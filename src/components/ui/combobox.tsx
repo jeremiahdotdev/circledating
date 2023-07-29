@@ -49,7 +49,7 @@ export function Combobox<ComboBoxType>(props: {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="justify-between"
         >
           {value
             ? props.options.find((option) => {

@@ -1,4 +1,3 @@
-import { Combobox, ComboboxOption } from "./combobox";
 import {
   FormControl,
   FormDescription,
@@ -6,24 +5,20 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
+import { Textarea } from "./textarea";
 import { useController } from "react-hook-form";
 import React from "react";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
-interface SelectFormFieldProps<
-  Values extends FieldValues,
-  ValueType extends Values[keyof Values],
-> extends UseControllerProps<Values> {
+interface TextAreaFormFieldProps<Values extends FieldValues>
+  extends UseControllerProps<Values> {
   label: string;
-  options: ComboboxOption<ValueType>[];
   description?: string;
+  placeholder?: string;
 }
 
-export const SelectFormField = <
-  Values extends FieldValues,
-  ValueType extends Values[keyof Values],
->(
-  props: SelectFormFieldProps<Values, ValueType>
+export const TextAreaFormField = <Values extends FieldValues>(
+  props: TextAreaFormFieldProps<Values>
 ) => {
   const { field } = useController(props);
 
@@ -31,16 +26,12 @@ export const SelectFormField = <
     <FormItem className="mb-2 flex flex-col">
       <FormLabel>{props.label}</FormLabel>
       <FormControl>
-        <Combobox
-          onSelect={field.onChange}
-          name={props.label}
-          options={props.options}
-        />
+        <Textarea placeholder={props.placeholder ?? props.label} {...field} />
       </FormControl>
+      <FormMessage />
       {props.description && (
         <FormDescription>{props.description}</FormDescription>
       )}
-      <FormMessage />
     </FormItem>
   );
 };

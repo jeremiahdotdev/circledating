@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "eslint": "eslint --ext .js,.jsx,.ts,.tsx .",
-		"eslint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ."
+    "eslint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",

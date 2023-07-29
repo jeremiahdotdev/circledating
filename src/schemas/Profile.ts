@@ -1,12 +1,15 @@
+import { ActivitiySchema } from "./Activity";
 import { BodyFormSchema } from "./BodyShape";
 import { ConsumablesSchema } from "./Consumables";
 import { CountrySchema } from "./Country";
-import { DrinkingFeelingSchema } from "./DrinkingFeeling";
+import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
 import { HeightSchema } from "./Height";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
+import { MaritalStatusesSchema } from "./MaritalStatuses";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
+import { YesAndNoSchema } from "./YesAndNo";
 import { z } from "zod";
 
 export const ProfileSchema = z.object({
@@ -23,14 +26,14 @@ export const ProfileSchema = z.object({
   location: CountrySchema,
   locationsWillingToMatchWith: z.array(CountrySchema),
   willingToRelocate: z.boolean(),
-  wantsKids: z.boolean(),
-  hasKids: z.boolean(),
+  wantsKids: YesAndNoSchema,
+  hasKids: YesAndNoSchema,
   wantsToBeMatchedWithSomebodyWithKids: z.boolean(),
   bodyForm: BodyFormSchema,
   bodyFormToBeMatchedWith: z.array(BodyFormSchema),
   ethnicity: EthnicitySchema,
   exchangePicturesUpfront: z.boolean(),
-  feelAboutDrinking: DrinkingFeelingSchema,
+  drinking: DrinkingSchema,
   consumables: ConsumablesSchema,
   acceptableConsumablesInAMatch: z.array(ConsumablesSchema),
   hasCurrentStruggles: z.boolean(),
@@ -38,12 +41,15 @@ export const ProfileSchema = z.object({
   politicalBeliefs: PoliticalBeliefsSchema,
   politicalBeliefsOfMatch: z.array(PoliticalBeliefsSchema),
   levelOfEducation: LevelOfEducationSchema,
-  isVirgin: z.boolean(),
+  isVirgin: YesAndNoSchema,
   onlyWantsToBeMatchedWithVirgins: z.boolean(),
-  onlyLookingForTraditionalHousehold: z.boolean(),
-  canSupportFamilyOnCurrentIncome: z.boolean(),
+  onlyLookingForTraditionalHousehold: YesAndNoSchema,
+  canSupportFamilyOnCurrentIncome: YesAndNoSchema,
   partnerShouldSupportOnCurrentIncome: z.boolean(),
   usersNotToBeMatchedWith: z.string().optional(),
+  maritalStatus: MaritalStatusesSchema,
+  activity: ActivitiySchema,
+  bio: z.string(),
 });
 
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
