@@ -4,7 +4,6 @@ import { ActivitiySelectionValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
-import { countries } from "@/globals/location";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { DropdownFormField } from "@/components/ui/DropdownFormField";
 import { Form } from "@/components/ui/form";
@@ -14,17 +13,18 @@ import { InputFormField } from "@/components/ui/InputFormField";
 import { LabeledInputFormField } from "@/components/ui/LabeledInputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
-import { memo, useCallback, useMemo } from "react";
 import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
-import React from "react";
-import styles from "./NewProfile.module.scss";
-import { useForm } from "react-hook-form";
 import {
   YesAndNoAndUnknownSelectionValues,
   YesAndNoSelectionValues,
 } from "@/schemas/YesAndNo";
+import { countries } from "@/globals/location";
+import { memo, useCallback, useMemo } from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+import styles from "./NewProfile.module.scss";
 
 export type NewProfileProps = {
   communityName: string;

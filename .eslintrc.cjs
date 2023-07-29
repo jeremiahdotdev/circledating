@@ -45,7 +45,15 @@ const config = {
     "space-before-function-paren": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "react/jsx-no-bind": "warn",
-    "max-lines-per-function": ["error", 180],
+    "max-lines-per-function": ["error", 200],
+    "sort-imports-es6-autofix/sort-imports-es6": [
+      2,
+      {
+        ignoreCase: false,
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+      },
+    ],
     "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
   },
 };
