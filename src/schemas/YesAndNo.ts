@@ -21,14 +21,7 @@ export const YesAndNoSelectionValues: ComboboxOption<string>[] = [
 ];
 
 export const YesAndNoAndUnknownSelectionValues: ComboboxOption<string>[] = [
-  {
-    label: "Yes",
-    value: YesAndNo.YES,
-  },
-  {
-    label: "No",
-    value: YesAndNo.NO,
-  },
+  ...YesAndNoSelectionValues,
   {
     label: "I'd rather not say.",
     value: YesAndNo.UNKNOWN,
