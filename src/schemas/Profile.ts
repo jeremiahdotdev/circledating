@@ -49,6 +49,7 @@ export const ProfileSchema = z.object({
   usersNotToBeMatchedWith: z.string().optional(),
   maritalStatus: MaritalStatusesSchema,
   activity: ActivitiySchema,
+  bio: z.string(),
 });
 
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
