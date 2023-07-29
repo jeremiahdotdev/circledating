@@ -1,5 +1,5 @@
-import { z } from "zod";
 import { ComboboxOption } from "@/components/ui/combobox";
+import { z } from "zod";
 
 export enum LevelOfEducation {
   DOCTORATE = "doctorate",

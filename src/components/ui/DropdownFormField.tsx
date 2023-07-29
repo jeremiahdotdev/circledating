@@ -20,8 +20,6 @@ interface DropdownFormFieldProps<Values extends FieldValues>
 export const DropdownFormField = <Values extends FieldValues>(
   props: DropdownFormFieldProps<Values>
 ) => {
-  const { field } = useController(props);
-
   return (
     <FormItem className="mb-2 flex flex-col">
       <FormLabel>{props.label}</FormLabel>

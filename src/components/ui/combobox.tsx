@@ -59,7 +59,7 @@ export function Combobox<ComboBoxType>(props: {
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="justify-left w-[200px] p-0 ">
+      <PopoverContent className="w-[200px] p-0 ">
         <Command className="max-h-[400px]">
           <CommandInput placeholder={"Search..."} />
           <CommandEmpty>No results.</CommandEmpty>
