@@ -15,6 +15,7 @@ export type DropdownSelectOption = {
 };
 
 export function Dropdown(props: {
+  label: string;
   placeholder?: string;
   options: DropdownSelectOption[];
 }) {
@@ -30,7 +31,7 @@ export function Dropdown(props: {
 
   return (
     <Select>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger>
         <SelectValue placeholder={props.placeholder ?? "Select..."} />
       </SelectTrigger>
       <SelectContent>

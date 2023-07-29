@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ComboboxOption } from "@/components/ui/combobox";
 
 export enum Consumables {
   SMOKING = "smoking",
@@ -9,3 +10,26 @@ export enum Consumables {
 }
 
 export const ConsumablesSchema = z.nativeEnum(Consumables);
+
+export const ConsumablesSelectionValues: ComboboxOption<string>[] = [
+  {
+    label: "Smoking/Cigarettes",
+    value: Consumables.SMOKING,
+  },
+  {
+    label: "Vaping",
+    value: Consumables.VAPING,
+  },
+  {
+    label: "Occasional Cigars",
+    value: Consumables.OCCASIONAL_CIGARS,
+  },
+  {
+    label: "Edibles/Gummies",
+    value: Consumables.EDIBLES_GUMMIES,
+  },
+  {
+    label: "None",
+    value: Consumables.NONE,
+  },
+];

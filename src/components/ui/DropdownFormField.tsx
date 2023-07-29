@@ -1,4 +1,4 @@
-import { Combobox, ComboboxOption } from "./combobox";
+import { Dropdown, DropdownSelectOption } from "./dropdown";
 import {
   FormControl,
   FormDescription,
@@ -10,20 +10,20 @@ import { useController } from "react-hook-form";
 import React from "react";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
-interface SelectFormFieldProps<
+interface DropdownFormFieldProps<
   Values extends FieldValues,
   ValueType extends Values[keyof Values],
 > extends UseControllerProps<Values> {
   label: string;
-  options: ComboboxOption<ValueType>[];
+  options: DropdownSelectOption[];
   description?: string;
 }
 
-export const SelectFormField = <
+export const DropdownFormField = <
   Values extends FieldValues,
   ValueType extends Values[keyof Values],
 >(
-  props: SelectFormFieldProps<Values, ValueType>
+  props: DropdownFormFieldProps<Values, ValueType>
 ) => {
   const { field } = useController(props);
 
@@ -31,11 +31,7 @@ export const SelectFormField = <
     <FormItem className="mb-2 flex flex-col">
       <FormLabel>{props.label}</FormLabel>
       <FormControl>
-        <Combobox
-          onSelect={field.onChange}
-          name={props.label}
-          options={props.options}
-        />
+        <Dropdown label={props.label} options={props.options} />
       </FormControl>
       {props.description && (
         <FormDescription>{props.description}</FormDescription>

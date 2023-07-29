@@ -1,18 +1,31 @@
 .newProfile {
-    display: flex;
-    flex-direction: column;
-    gap: 2em;
-    width: 75vw;
-    text-align: left;
-    align-items: center;
-}
-.section {
-    width: 50vw;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  width: 75vw;
+  text-align: left;
+  align-items: center;
+
+  h1 {
+    font-size: 3em;
+    font-weight: bold;
+  }
+  form {
     display: flex;
     flex-direction: column;
     gap: 1em;
     & > * {
-        flex: 1;
-        width: 100%;
+      width: 100%;
     }
+  }
+}
+.section {
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  & > * {
+    flex: 1;
+    width: 100%;
+  }
 }
