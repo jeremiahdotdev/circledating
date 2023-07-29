@@ -7,8 +7,8 @@ import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
 import { HeightSchema } from "./Height";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
-import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
+import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { YesAndNoSchema } from "./YesAndNo";
 import { z } from "zod";
 
