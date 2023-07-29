@@ -1,3 +1,4 @@
+import { ActivitiySchema } from "./Activity";
 import { BodyFormSchema } from "./BodyShape";
 import { ConsumablesSchema } from "./Consumables";
 import { CountrySchema } from "./Country";
@@ -8,9 +9,8 @@ import { HeightSchema } from "./Height";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
-import { z } from "zod";
-import { ActivitiySchema } from "./Activity";
 import { YesAndNoSchema } from "./YesAndNo";
+import { z } from "zod";
 
 export const ProfileSchema = z.object({
   username: z.string().min(3).max(20),

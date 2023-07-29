@@ -10,20 +10,15 @@ import { useController } from "react-hook-form";
 import React from "react";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
-interface DropdownFormFieldProps<
-  Values extends FieldValues,
-  ValueType extends Values[keyof Values],
-> extends UseControllerProps<Values> {
+interface DropdownFormFieldProps<Values extends FieldValues>
+  extends UseControllerProps<Values> {
   label: string;
   options: DropdownSelectOption[];
   description?: string;
 }
 
-export const DropdownFormField = <
-  Values extends FieldValues,
-  ValueType extends Values[keyof Values],
->(
-  props: DropdownFormFieldProps<Values, ValueType>
+export const DropdownFormField = <Values extends FieldValues>(
+  props: DropdownFormFieldProps<Values>
 ) => {
   const { field } = useController(props);
 
