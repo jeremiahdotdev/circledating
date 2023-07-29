@@ -106,7 +106,7 @@ export const NewProfile = memo(function NewProfile({
             placeholder="Users1, User2, User3... "
             description="List any reddit users you do not want to be matched with. (For example, have you matched with anyone before? Might want to right them down, unless you want to be rematched.) Please format in a comma separated list."
           />
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="sex"
             control={form.control}
             label="What is your sex?"
@@ -133,51 +133,51 @@ export const NewProfile = memo(function NewProfile({
             options={stateValues}
           />
           <FormSectionHeading>Family</FormSectionHeading>
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="wantsKids"
             control={form.control}
             label="Do you want kids?"
             options={YesAndNoSelectionValues}
           />
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="hasKids"
             control={form.control}
             label="Do you have kids?"
             options={YesAndNoSelectionValues}
           />
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="maritalStatus"
             control={form.control}
             label="Have you ever been married?"
             options={MaritalStatusesSelectionValues}
           />
           <FormSectionHeading>Lifestyle</FormSectionHeading>
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="consumables"
             control={form.control}
             label="Do you consume any of the following?"
             options={ConsumablesSelectionValues}
           />
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="consumables"
             control={form.control}
             label="How often do you drink?"
             options={DrinkingSelectionValues}
           />
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="activity"
             control={form.control}
             label="How often do you excercise?"
             options={ActivitiySelectionValues}
           />
           <FormSectionHeading>About You</FormSectionHeading>
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="politicalBeliefs"
             control={form.control}
             label="What is your political stance?"
             options={PoliticalBeliefsSelectionValues}
           />
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="levelOfEducation"
             control={form.control}
             label="What is the highest level of education to have obtained?"
@@ -186,19 +186,19 @@ export const NewProfile = memo(function NewProfile({
           <FormSectionHeading>
             Sensitive Information (Optional)
           </FormSectionHeading>
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="isVirgin"
             control={form.control}
             label="Are you a virgin?"
             options={YesAndNoAndUnknownSelectionValues}
           />
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="onlyLookingForTraditionalHousehold"
             control={form.control}
             label="Are you looking for a traditional household? (Stay-at-home-mom, one source of income, et cetera.)"
             options={YesAndNoAndUnknownSelectionValues}
           />
-          <DropdownFormField<ProfileSchemaType, string>
+          <DropdownFormField<ProfileSchemaType>
             name="canSupportFamilyOnCurrentIncome"
             control={form.control}
             label="Can you support a family on your current income alone?"
