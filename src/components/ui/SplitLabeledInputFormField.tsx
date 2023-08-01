@@ -10,18 +10,19 @@ import { useController } from "react-hook-form";
 import React from "react";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
-interface LabeledInputFormField<Values extends FieldValues>
+interface SplitLabeledInputFormField<Values extends FieldValues>
   extends UseControllerProps<Values> {
   label: string;
-  inlineLabel: string;
+  inlineLabel1: string;
+  inlineLabel2: string;
   description?: string;
   placeholder?: string;
   labelPosition?: "left" | "right";
   type?: "number" | "text";
 }
 
-export const LabeledInputFormField = <Values extends FieldValues>(
-  props: LabeledInputFormField<Values>
+export const SplitLabeledInputFormField = <Values extends FieldValues>(
+  props: SplitLabeledInputFormField<Values>
 ) => {
   const { field } = useController(props);
 
@@ -29,13 +30,22 @@ export const LabeledInputFormField = <Values extends FieldValues>(
     <FormItem className="mb-2 flex flex-col">
       <FormLabel>{props.label}</FormLabel>
       <FormControl></FormControl>
-      <LabeledInput
-        placeholder={props.placeholder ?? props.label}
-        {...field}
-        type={props.type ?? "text"}
-        labelPosition={props.labelPosition ?? "left"}
-        inlineLabel={props.inlineLabel}
-      />
+      <span className="mb-2 flex">
+        <LabeledInput
+          placeholder={props.placeholder ?? props.label}
+          {...field}
+          type={props.type ?? "text"}
+          labelPosition={props.labelPosition ?? "left"}
+          inlineLabel={props.inlineLabel1}
+        />
+        <LabeledInput
+          placeholder={props.placeholder ?? props.label}
+          {...field}
+          type={props.type ?? "text"}
+          labelPosition={props.labelPosition ?? "left"}
+          inlineLabel={props.inlineLabel2}
+        />
+      </span>
       <FormMessage />
       {props.description && (
         <FormDescription>{props.description}</FormDescription>

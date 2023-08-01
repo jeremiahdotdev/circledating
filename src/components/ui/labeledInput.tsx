@@ -2,12 +2,17 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  labelPosition: "left" | "right";
+  inlineLabel: string;
+}
 
 const LabeledInput = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
-    const lessProps = { ...props };
-    delete lessProps.children;
+    const inlineLabel = (
+      <span className={cn("px-2 pt-2", className)}>{props.inlineLabel}</span>
+    );
+
     return (
       <label
         className={cn(
@@ -15,7 +20,7 @@ const LabeledInput = React.forwardRef<HTMLInputElement, InputProps>(
           className
         )}
       >
-        <span className={cn("px-2 pt-2", className)}>{props.children}</span>
+        {props.labelPosition === "left" ? inlineLabel : null}
         <input
           type={type}
           className={cn(
@@ -23,8 +28,9 @@ const LabeledInput = React.forwardRef<HTMLInputElement, InputProps>(
             className
           )}
           ref={ref}
-          {...lessProps}
+          {...props}
         />
+        {props.labelPosition === "right" ? inlineLabel : null}
       </label>
     );
   }

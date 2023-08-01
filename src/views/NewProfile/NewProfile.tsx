@@ -2,24 +2,26 @@
 
 import { ActivitiySelectionValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
+import { CircleSchemaType } from "@/schemas/Circle";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
+import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { DropdownFormField } from "@/components/ui/DropdownFormField";
 import { Form } from "@/components/ui/form";
 import { FormSectionHeading } from "@/components/ui/formsectionheading";
 import { GenderSelectionValues } from "@/schemas/Gender";
-import { InputFormField } from "@/components/ui/InputFormField";
+import { IncomeSelectionValues } from "@/schemas/Income";
 import { LabeledInputFormField } from "@/components/ui/LabeledInputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
 import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
+import { PuritySelectionValues } from "@/schemas/Purity";
+import { ReligionSelectionValues } from "@/schemas/Religion";
+import { SplitLabeledInputFormField } from "@/components/ui/SplitLabeledInputFormField";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
-import {
-  YesAndNoAndUnknownSelectionValues,
-  YesAndNoSelectionValues,
-} from "@/schemas/YesAndNo";
+import { YesAndNoSelectionValues } from "@/schemas/YesAndNo";
 import { countries } from "@/globals/location";
 import { memo, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -28,11 +30,12 @@ import React from "react";
 import styles from "./NewProfile.module.scss";
 
 export type NewProfileProps = {
-  communityName: string;
+  circle: CircleSchemaType;
 };
 
+// eslint-disable-next-line max-lines-per-function
 export const NewProfile = memo(function NewProfile({
-  communityName,
+  circle,
 }: NewProfileProps) {
   const form = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
@@ -88,7 +91,7 @@ export const NewProfile = memo(function NewProfile({
 
   return (
     <div className={styles.newProfile}>
-      <h1>{communityName} Singles Database</h1>
+      <h1>{circle.name} Singles Database</h1>
       <Form {...form}>
         <form onSubmit={void form.handleSubmit(onValidData, onInvalidData)}>
           <FormSectionHeading>General</FormSectionHeading>
@@ -101,25 +104,34 @@ export const NewProfile = memo(function NewProfile({
               inlineLabel="u/"
               description="This is the username you use to log into Reddit."
             />
-            <InputFormField
-              control={form.control}
-              name="usersNotToBeMatchedWith"
-              label="Are there any users you do not want to be matched with?"
-              placeholder="Users1, User2, User3... "
-              description="List any reddit users you do not want to be matched with. (For example, have you matched with anyone before? Might want to right them down, unless you want to be rematched.) Please format in a comma separated list."
-            />
             <DropdownFormField<ProfileSchemaType>
               name="sex"
               control={form.control}
               label="What is your sex?"
               options={GenderSelectionValues}
             />
-            <InputFormField
+            <DatepickerFormField
               control={form.control}
-              name="age"
-              label="Age"
-              description="Please enter your age."
-              type="number"
+              name="birthDate"
+              label="birth date"
+              description="This is used to calculate your age."
+            />
+            <LabeledInputFormField
+              control={form.control}
+              name="weight"
+              label="What is your current weight?"
+              placeholder="...be honest!"
+              inlineLabel="lbs."
+              labelPosition="right"
+            />
+            <SplitLabeledInputFormField
+              control={form.control}
+              name="height"
+              label="What is your current height?"
+              placeholder="height"
+              inlineLabel1="feet"
+              inlineLabel2="inches"
+              labelPosition="right"
             />
           </section>
           <FormSectionHeading>Location</FormSectionHeading>
@@ -127,28 +139,22 @@ export const NewProfile = memo(function NewProfile({
             <ComboBoxFormField<ProfileSchemaType, string>
               name="location.country"
               control={form.control}
-              label="Country"
+              label="What is your country of residence?"
               options={countryValues}
             />
             <ComboBoxFormField<ProfileSchemaType, string>
               name="location.states"
               control={form.control}
-              label="State"
+              label="What is your state/province of residence?"
               options={stateValues}
             />
           </section>
           <FormSectionHeading>Family</FormSectionHeading>
           <section>
             <DropdownFormField<ProfileSchemaType>
-              name="wantsKids"
+              name="children"
               control={form.control}
-              label="Do you want kids?"
-              options={YesAndNoSelectionValues}
-            />
-            <DropdownFormField<ProfileSchemaType>
-              name="hasKids"
-              control={form.control}
-              label="Do you have kids?"
+              label="Do you have/want kids?"
               options={YesAndNoSelectionValues}
             />
             <DropdownFormField<ProfileSchemaType>
@@ -156,6 +162,12 @@ export const NewProfile = memo(function NewProfile({
               control={form.control}
               label="Have you ever been married?"
               options={MaritalStatusesSelectionValues}
+            />
+            <DropdownFormField<ProfileSchemaType>
+              name="income"
+              control={form.control}
+              label="What type of houshold are you looking for?"
+              options={IncomeSelectionValues}
             />
           </section>
           <FormSectionHeading>Lifestyle</FormSectionHeading>
@@ -167,7 +179,7 @@ export const NewProfile = memo(function NewProfile({
               options={ConsumablesSelectionValues}
             />
             <DropdownFormField<ProfileSchemaType>
-              name="consumables"
+              name="drinking"
               control={form.control}
               label="How often do you drink?"
               options={DrinkingSelectionValues}
@@ -178,9 +190,21 @@ export const NewProfile = memo(function NewProfile({
               label="How often do you excercise?"
               options={ActivitiySelectionValues}
             />
+            <DropdownFormField<ProfileSchemaType>
+              name="purity"
+              control={form.control}
+              label="What is your stance on purity?"
+              options={PuritySelectionValues}
+            />
           </section>
           <FormSectionHeading>About You</FormSectionHeading>
           <section>
+            <DropdownFormField<ProfileSchemaType>
+              control={form.control}
+              name="religion"
+              label="What is your religion?"
+              options={ReligionSelectionValues}
+            />
             <DropdownFormField<ProfileSchemaType>
               name="politicalBeliefs"
               control={form.control}
@@ -198,29 +222,6 @@ export const NewProfile = memo(function NewProfile({
               name="bio"
               label="Bio"
               placeholder="Describe yourself! Passions, faith, career, hobbies, et cetera."
-            />
-          </section>
-          <FormSectionHeading>
-            Sensitive Information (Optional)
-          </FormSectionHeading>
-          <section className={styles.section}>
-            <DropdownFormField<ProfileSchemaType>
-              name="isVirgin"
-              control={form.control}
-              label="Are you a virgin?"
-              options={YesAndNoAndUnknownSelectionValues}
-            />
-            <DropdownFormField<ProfileSchemaType>
-              name="onlyLookingForTraditionalHousehold"
-              control={form.control}
-              label="Are you looking for a traditional household? (Stay-at-home-mom, one source of income, et cetera.)"
-              options={YesAndNoAndUnknownSelectionValues}
-            />
-            <DropdownFormField<ProfileSchemaType>
-              name="canSupportFamilyOnCurrentIncome"
-              control={form.control}
-              label="Can you support a family on your current income alone?"
-              options={YesAndNoAndUnknownSelectionValues}
             />
           </section>
           <Button className="mt-2 w-20 px-12" type="submit">
