@@ -9,7 +9,7 @@ export type ProfileListProps = {
 export const ProfileList = memo(function ProfileList({
   profiles,
 }: ProfileListProps) {
-  if (length === 0) return <div>No profiles found</div>;
+  if (profiles.length === 0) return <div>No profiles found</div>;
 
   return profiles.map((profile: ProfileSchemaType) => (
     // TODO: Replace username with id
