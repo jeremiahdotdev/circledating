@@ -12,21 +12,20 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
-export function DatePicker(props: { prompt: string }) {
+export function DatePicker(props: { label: string }) {
   const [date, setDate] = React.useState<Date>();
-
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-[280px] justify-start text-left font-normal",
+            "justify-start text-left font-normal",
             !date && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>{props.prompt}</span>}
+          {date ? format(date, "PPP") : <span>{props.label}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

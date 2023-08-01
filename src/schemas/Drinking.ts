@@ -22,7 +22,7 @@ export const DrinkingSelectionValues: ComboboxOption<string>[] = [
     value: Drinking.MILD,
   },
   {
-    label: "Socially; I drink at events, but rarily otherwise.",
+    label: "Socially; I drink at events, but rarely otherwise.",
     value: Drinking.SOCIAL,
   },
   {
@@ -30,7 +30,7 @@ export const DrinkingSelectionValues: ComboboxOption<string>[] = [
     value: Drinking.FREQUENT,
   },
   {
-    label: "Heavyily; I drink on an almost daily basis.",
+    label: "Heavily; I drink on an almost daily basis.",
     value: Drinking.HEAVY,
   },
   {
