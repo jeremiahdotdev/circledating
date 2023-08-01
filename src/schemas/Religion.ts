@@ -28,7 +28,7 @@ export const ReligionSelectionValues: ComboboxOption<string>[] = [
     value: Religion.AGNOSTICISM,
   },
   {
-    label: "Athiest",
+    label: "Atheist",
     value: Religion.ATHEISM,
   },
   {
