@@ -20,9 +20,12 @@ interface LabeledInputFormField<Values extends FieldValues>
   type?: "number" | "text";
 }
 
-export const LabeledInputFormField = <Values extends FieldValues>(
-  props: LabeledInputFormField<Values>
-) => {
+export const LabeledInputFormField = <Values extends FieldValues>({
+  type,
+  labelPosition,
+  inlineLabel,
+  ...props
+}: LabeledInputFormField<Values>) => {
   const { field } = useController(props);
 
   return (
@@ -32,9 +35,9 @@ export const LabeledInputFormField = <Values extends FieldValues>(
       <LabeledInput
         placeholder={props.placeholder ?? props.label}
         {...field}
-        type={props.type ?? "text"}
-        labelPosition={props.labelPosition ?? "left"}
-        inlineLabel={props.inlineLabel}
+        type={type ?? "text"}
+        labelPosition={labelPosition ?? "left"}
+        inlineLabel={inlineLabel}
       />
       <FormMessage />
       {props.description && (

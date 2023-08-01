@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+export enum HeightUnit {
+  CMS = "cms",
+  FEET = "feet",
+  INCHES = "inches",
+}
+
+export const HeightUnitSchemaType = z.nativeEnum(HeightUnit);
+
 export const HeightSchema = z.object({
   value: z
     .object({

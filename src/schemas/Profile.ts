@@ -5,14 +5,14 @@ import { CountrySchema } from "./Country";
 import { Drinking, DrinkingSchema } from "./Drinking";
 import { Ethnicity, EthnicitySchema } from "./Ethnicity";
 import { Gender, GenderSchema } from "./Gender";
-import { HeightSchema } from "./Height";
+import { HeightSchema, HeightUnit } from "./Height";
 import { Income, IncomeSchema } from "./Income";
 import { LevelOfEducation, LevelOfEducationSchema } from "./LevelOfEducation";
 import { MaritalStatuses, MaritalStatusesSchema } from "./MaritalStatuses";
 import { PoliticalBeliefs, PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { Purity, PuritySchema } from "./Purity";
 import { Religion, ReligionSchema } from "./Religion";
-import { WeightSchema } from "./Weight";
+import { WeightSchema, WeightUnit } from "./Weight";
 import { YesAndNo, YesAndNoSchema } from "./YesAndNo";
 import { z } from "zod";
 
@@ -40,12 +40,13 @@ export const ProfileSchema = z.object({
   bio: z.string().optional(),
 });
 
+// TODO: Remove in release.
 export const TEST_DATA: ProfileSchemaType = {
   username: "test_user",
   sex: Gender.MALE,
   birthDate: new Date(1998, 2, 24),
-  height: { unit: "cms", value: { feet: 6, inches: 2 } },
-  weight: { unit: "lbs", value: 200 },
+  height: { unit: HeightUnit.FEET, value: { feet: 6, inches: 2 } },
+  weight: { unit: WeightUnit.LBS, value: 200 },
   location: {
     country: "America",
     states: "America",

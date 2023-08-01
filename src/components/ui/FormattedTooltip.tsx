@@ -6,15 +6,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export function FormattedTooltip(props: {
+export type FormattedTooltipProps = {
   children?: React.ReactNode;
   content: string;
-}) {
+};
+
+export function FormattedTooltip({ children, content }: FormattedTooltipProps) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>{props.children}</TooltipTrigger>
-        <TooltipContent>{props.content}</TooltipContent>
+        <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipContent>{content}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

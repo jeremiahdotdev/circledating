@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-
 import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import React from "react";
 
 export type ProfileAttributeProps = {

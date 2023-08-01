@@ -8,9 +8,10 @@ export interface InputProps
 }
 
 const LabeledInput = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
-    const inlineLabel = (
-      <span className={cn("px-2 pt-2", className)}>{props.inlineLabel}</span>
+  ({ className, type, labelPosition, inlineLabel, ...props }, ref) => {
+    const inlineLabelElement = React.useCallback(
+      () => <span className={cn("px-2 pt-2", className)}>{inlineLabel}</span>,
+      [className, inlineLabel]
     );
 
     return (
@@ -20,7 +21,7 @@ const LabeledInput = React.forwardRef<HTMLInputElement, InputProps>(
           className
         )}
       >
-        {props.labelPosition === "left" ? inlineLabel : null}
+        {labelPosition === "left" && inlineLabelElement()}
         <input
           type={type}
           className={cn(
@@ -30,7 +31,7 @@ const LabeledInput = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
-        {props.labelPosition === "right" ? inlineLabel : null}
+        {labelPosition === "right" && inlineLabelElement()}
       </label>
     );
   }

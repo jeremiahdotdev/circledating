@@ -15,18 +15,17 @@ interface DatepickerFormFieldProps<Values extends FieldValues>
   description?: string;
 }
 
-export const DatepickerFormField = <Values extends FieldValues>(
-  props: DatepickerFormFieldProps<Values>
-) => {
+export const DatepickerFormField = <Values extends FieldValues>({
+  label,
+  description,
+}: DatepickerFormFieldProps<Values>) => {
   return (
     <FormItem className="mb-2 flex flex-col">
-      <FormLabel>{props.label}</FormLabel>
+      <FormLabel>{label}</FormLabel>
       <FormControl>
-        <DatePicker label={props.label} />
+        <DatePicker label={label} />
       </FormControl>
-      {props.description && (
-        <FormDescription>{props.description}</FormDescription>
-      )}
+      {description && <FormDescription>{description}</FormDescription>}
       <FormMessage />
     </FormItem>
   );

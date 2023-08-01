@@ -1,16 +1,18 @@
 import { ProfileCard } from "./ProfileCard";
 import { ProfileSchemaType } from "@/schemas/Profile";
-import React from "react";
+import React, { memo } from "react";
 
 export type ProfileListProps = {
   profiles: ProfileSchemaType[];
 };
 
-export function ProfileList({ profiles }: ProfileListProps) {
-  const profileComponents: React.JSX.Element[] = [];
-  profiles.forEach((profile: ProfileSchemaType) => {
-    return profileComponents.push(<ProfileCard profile={profile} />);
-  });
+export const ProfileList = memo(function ProfileList({
+  profiles,
+}: ProfileListProps) {
+  if (length === 0) return <div>No profiles found</div>;
 
-  return profileComponents;
-}
+  return profiles.map((profile: ProfileSchemaType) => (
+    // TODO: Replace username with id
+    <ProfileCard key={profile.username} profile={profile} />
+  ));
+});

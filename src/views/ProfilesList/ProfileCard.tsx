@@ -23,11 +23,10 @@ export type ProfileCardProps = {
 };
 
 export function ProfileCard({ profile }: ProfileCardProps) {
+  // DNR Replace these with actual values
   const age = Math.floor(
     (Date.now() - profile.birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365)
   );
-
-  // DNR Replace these with actual values
   const height = 6;
   const weight = 600;
   return (
