@@ -1,15 +1,150 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
-model Test {
-	id Int @id @default(autoincrement())
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Children {
+  HAS_AND_WANTS
+  HAS_AND_DOES_NOT_WANT
+  HAS_NOT_AND_DOES_NOT_WANT
+  HAS_NOT_AND_DOES_WANT
+}
+
+enum Ethnicity {
+  WHITE
+  BLACK_OR_AFRICAN_AMERICAN
+  AMERICAN_INDIAN_OR_ALASKA_NATIVE
+  ASIAN
+  NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
+  OTHER
+}
+
+enum Drinking {
+  INFREQUENT
+  MILD
+  SOCIAL
+  FREQUENT
+  HEAVY
+  NEVER
+}
+
+enum Consumables {
+  SMOKING
+  VAPING
+  OCCASIONAL_CIGARS
+  EDIBLES_GUMMIES
+  NONE
+}
+
+enum PoliticalBeliefs {
+  CONSERVATIVE
+  CONSERVATIVE_LEANING_MODERATE
+  MODERATE
+  LIBERAL_LEANING_MODERATE
+  LIBERAL
+  INDEPENDENT
+  APOLITICAL
+}
+
+enum LevelOfEducation {
+  DOCTORATE
+  MASTERS
+  BACHELORS
+  ASSOCIATES
+  HIGH_SCHOOL
+  NO_DEGREE
+}
+
+enum Purity {
+  VIRGIN_WAITING
+  NOT_VIRGIN_WAITING
+  VIRGIN_NOT_WAITING
+  NOT_VIRGIN_NOT_WAITING
+  UNKNOWN
+}
+
+enum Income {
+  SINGLE
+  DUAL
+  EITHER
+}
+
+enum MaritalStatus {
+  NEVER
+  WIDOWED
+  DIVORCED
+}
+
+enum Activity {
+  INFREQUENT
+  MILD
+  FREQUENT
+  HEAVY
+  NEVER
+}
+
+enum Religion {
+  AGNOSTICISM
+  ATHEISM
+  BUDDHISM
+  CHRISTIANITY
+  HINDUISM
+  JUDIASM
+  MORMONISM
+  OTHER
+}
+
+enum WeightUnit {
+	LBS
+	KG
+}
+
+enum YesNoOrUnknown {
+  YES
+  NO
+  UNKNOWN
+}
+
+model Location {
+  id          String        @id @default(uuid())
+  country     String
+  state       String
+  UserProfile UserProfile[]
+}
+
+model UserProfile {
+  username                           String           @unique
+  sex                                Gender
+  birthDate                          DateTime
+  height                             Int
+  weight                             Float
+  locationId                         String
+  location                           Location         @relation(fields: [locationId], references: [id])
+  willingToRelocate                  YesNoOrUnknown
+  children                           Children
+  ethnicity                          Ethnicity
+  drinking                           Drinking
+  consumables                        Consumables
+  politicalBeliefs                   PoliticalBeliefs
+  levelOfEducation                   LevelOfEducation
+  purity                             Purity
+  onlyLookingForTraditionalHousehold YesNoOrUnknown
+  income                             Income
+  maritalStatus                      MaritalStatus
+  activity                           Activity
+  religion                           Religion
+  bio                                String?
+  weightUnit						 WeightUnit
+
+  @@index([locationId])
 }

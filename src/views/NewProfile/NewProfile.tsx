@@ -11,6 +11,7 @@ import { DropdownFormField } from "@/components/ui/DropdownFormField";
 import { Form } from "@/components/ui/form";
 import { FormSectionHeading } from "@/components/ui/formsectionheading";
 import { GenderSelectionValues } from "@/schemas/Gender";
+import { HeightStringSelectOptions } from "@/schemas/Height";
 import { IncomeSelectionValues } from "@/schemas/Income";
 import { LabeledInputFormField } from "@/components/ui/LabeledInputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
@@ -19,8 +20,8 @@ import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
 import { PuritySelectionValues } from "@/schemas/Purity";
 import { ReligionSelectionValues } from "@/schemas/Religion";
-import { SplitLabeledInputFormField } from "@/components/ui/SplitLabeledInputFormField";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
+import { WeightUnitOptions } from "@/schemas/Units";
 import { YesAndNoSelectionValues } from "@/schemas/YesAndNo";
 import { countries } from "@/globals/location";
 import { memo, useCallback, useMemo } from "react";
@@ -39,7 +40,6 @@ export const NewProfile = memo(function NewProfile({
 }: NewProfileProps) {
   const form = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
-    defaultValues: {},
   });
 
   // The forms type says this is always a string, but that is the defined case for the form. If no country is selected, it's undefined.
@@ -116,22 +116,26 @@ export const NewProfile = memo(function NewProfile({
               label="birth date"
               description="This is used to calculate your age."
             />
+            <DropdownFormField<ProfileSchemaType>
+              name="weightUnit"
+              control={form.control}
+              label="Whigh unit do you use?"
+              options={WeightUnitOptions}
+            />
             <LabeledInputFormField
               control={form.control}
               name="weight"
               label="What is your current weight?"
               placeholder="...be honest!"
+              //   Todo make the unit change based on the dropdown above
               inlineLabel="lbs."
               labelPosition="right"
             />
-            <SplitLabeledInputFormField
-              control={form.control}
+            <DropdownFormField<ProfileSchemaType>
               name="height"
-              label="What is your current height?"
-              placeholder="height"
-              inlineLabel1="feet"
-              inlineLabel2="inches"
-              labelPosition="right"
+              control={form.control}
+              label="What is your height?"
+              options={HeightStringSelectOptions}
             />
           </section>
           <FormSectionHeading>Location</FormSectionHeading>
@@ -143,7 +147,7 @@ export const NewProfile = memo(function NewProfile({
               options={countryValues}
             />
             <ComboBoxFormField<ProfileSchemaType, string>
-              name="location.states"
+              name="location.state"
               control={form.control}
               label="What is your state/province of residence?"
               options={stateValues}

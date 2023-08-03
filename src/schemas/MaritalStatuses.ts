@@ -1,25 +1,20 @@
 import { ComboboxOption } from "@/components/ui/combobox";
+import { MaritalStatus } from "@prisma/client";
 import { z } from "zod";
 
-export enum MaritalStatuses {
-  NEVER = "never",
-  WIDOWED = "widowed",
-  DIVORCED = "divorced",
-}
+export const MaritalStatusesSchema = z.nativeEnum(MaritalStatus);
 
-export const MaritalStatusesSchema = z.nativeEnum(MaritalStatuses);
-
-export const MaritalStatusesSelectionValues: ComboboxOption<string>[] = [
+export const MaritalStatusesSelectionValues: ComboboxOption<MaritalStatus>[] = [
   {
     label: "Never",
-    value: MaritalStatuses.NEVER,
+    value: MaritalStatus.NEVER,
   },
   {
     label: "Yes; Widowed",
-    value: MaritalStatuses.WIDOWED,
+    value: MaritalStatus.WIDOWED,
   },
   {
     label: "Yes; Divorced",
-    value: MaritalStatuses.DIVORCED,
+    value: MaritalStatus.DIVORCED,
   },
 ];

@@ -1,18 +1,10 @@
 import { ComboboxOption } from "@/components/ui/combobox";
+import { Drinking } from "@prisma/client";
 import { z } from "zod";
-
-export enum Drinking {
-  INFREQUENT = "infrequent",
-  MILD = "mild",
-  SOCIAL = "social",
-  FREQUENT = "frequent",
-  HEAVY = "heavy",
-  NEVER = "never",
-}
 
 export const DrinkingSchema = z.nativeEnum(Drinking);
 
-export const DrinkingSelectionValues: ComboboxOption<string>[] = [
+export const DrinkingSelectionValues: ComboboxOption<Drinking>[] = [
   {
     label: "Infrequently; I drink maybe a few times per year.",
     value: Drinking.INFREQUENT,

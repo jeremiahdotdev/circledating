@@ -1,32 +1,25 @@
 import { ComboboxOption } from "@/components/ui/combobox";
+import { Purity } from "@prisma/client";
 import { z } from "zod";
-
-export enum Purity {
-  VIRGIN_WAITING = "virgin_waiting",
-  NOTVIRGIN_WAITING = "notvirgin_waiting",
-  VIRGIN_NOTWAITING = "virgin_notwaiting",
-  NOTVIRGIN_NOTWAITING = "notvirgin_notwaiting",
-  UNKNOWN = "unknown",
-}
 
 export const PuritySchema = z.nativeEnum(Purity);
 
-export const PuritySelectionValues: ComboboxOption<string>[] = [
+export const PuritySelectionValues: ComboboxOption<Purity>[] = [
   {
     label: "Virgin; Waiting until marriage.",
     value: Purity.VIRGIN_WAITING,
   },
   {
     label: "Non-virgin; Waiting until marriage.",
-    value: Purity.NOTVIRGIN_WAITING,
+    value: Purity.NOT_VIRGIN_WAITING,
   },
   {
     label: "Virgin; Not waiting until marriage.",
-    value: Purity.VIRGIN_NOTWAITING,
+    value: Purity.VIRGIN_NOT_WAITING,
   },
   {
     label: "Non-virgin; Not waiting until marriage.",
-    value: Purity.NOTVIRGIN_NOTWAITING,
+    value: Purity.NOT_VIRGIN_NOT_WAITING,
   },
   {
     label: "I'd rather not say.",
