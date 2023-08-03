@@ -1,0 +1,75 @@
+import React from "react";
+
+export function NavIcon() {
+  return (
+    <svg
+      id="eEP3D9bWUTy1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 250 250"
+      shapeRendering="geometricPrecision"
+      textRendering="geometricPrecision"
+      width="35"
+      height="35"
+    >
+      <defs>
+        <filter
+          id="eEP3D9bWUTy2-filter"
+          x="-150%"
+          width="400%"
+          y="-150%"
+          height="400%"
+        >
+          <feGaussianBlur
+            id="eEP3D9bWUTy2-filter-drop-shadow-0-blur"
+            in="SourceAlpha"
+            stdDeviation="3,3"
+          />
+          <feOffset
+            id="eEP3D9bWUTy2-filter-drop-shadow-0-offset"
+            dx="0"
+            dy="0"
+            result="tmp"
+          />
+          <feFlood
+            id="eEP3D9bWUTy2-filter-drop-shadow-0-flood"
+            floodColor="#000"
+          />
+          <feComposite
+            id="eEP3D9bWUTy2-filter-drop-shadow-0-composite"
+            operator="in"
+            in2="tmp"
+          />
+          <feMerge id="eEP3D9bWUTy2-filter-drop-shadow-0-merge" result="result">
+            <feMergeNode id="eEP3D9bWUTy2-filter-drop-shadow-0-merge-node-1" />
+            <feMergeNode
+              id="eEP3D9bWUTy2-filter-drop-shadow-0-merge-node-2"
+              in="SourceGraphic"
+            />
+          </feMerge>
+        </filter>
+        <linearGradient
+          id="eEP3D9bWUTy2-fill"
+          x1="0"
+          y1="0.5"
+          x2="1"
+          y2="0.5"
+          spreadMethod="pad"
+          gradientUnits="objectBoundingBox"
+          gradientTransform="translate(0 0)"
+        >
+          <stop id="eEP3D9bWUTy2-fill-0" offset="41%" stopColor="#41e6ff" />
+          <stop id="eEP3D9bWUTy2-fill-1" offset="61%" stopColor="#fb85ff" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M5,125C5,58.72583,58.72583,5,125,5s120,53.72583,120,120-53.72583,120-120,120-120-53.72583-120-120Zm120,80c44.18278,0,80-35.81722,80-80s-35.81722-80-80-80-80,35.81722-80,80s35.81722,80,80,80Z"
+        transform="matrix(-1 0 0 1 250 0)"
+        filter="url(#eEP3D9bWUTy2-filter)"
+        fill="url(#eEP3D9bWUTy2-fill)"
+        stroke="#000"
+        strokeLinecap="square"
+      />
+    </svg>
+  );
+}
