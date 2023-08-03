@@ -3,53 +3,53 @@ import React from "react";
 export function NavIcon() {
   return (
     <svg
-      id="eSrwF5KhkAD1"
+      id="eEP3D9bWUTy1"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 250 250"
       shapeRendering="geometricPrecision"
       textRendering="geometricPrecision"
-      width="35px"
-      height="35px"
+      width="35"
+      height="35"
     >
       <defs>
         <filter
-          id="eSrwF5KhkAD2-filter"
+          id="eEP3D9bWUTy2-filter"
           x="-150%"
           width="400%"
           y="-150%"
           height="400%"
         >
           <feGaussianBlur
-            id="eSrwF5KhkAD2-filter-drop-shadow-0-blur"
+            id="eEP3D9bWUTy2-filter-drop-shadow-0-blur"
             in="SourceAlpha"
-            stdDeviation="2,2"
+            stdDeviation="3,3"
           />
           <feOffset
-            id="eSrwF5KhkAD2-filter-drop-shadow-0-offset"
+            id="eEP3D9bWUTy2-filter-drop-shadow-0-offset"
             dx="0"
             dy="0"
             result="tmp"
           />
           <feFlood
-            id="eSrwF5KhkAD2-filter-drop-shadow-0-flood"
+            id="eEP3D9bWUTy2-filter-drop-shadow-0-flood"
             floodColor="#000"
           />
           <feComposite
-            id="eSrwF5KhkAD2-filter-drop-shadow-0-composite"
+            id="eEP3D9bWUTy2-filter-drop-shadow-0-composite"
             operator="in"
             in2="tmp"
           />
-          <feMerge id="eSrwF5KhkAD2-filter-drop-shadow-0-merge" result="result">
-            <feMergeNode id="eSrwF5KhkAD2-filter-drop-shadow-0-merge-node-1" />
+          <feMerge id="eEP3D9bWUTy2-filter-drop-shadow-0-merge" result="result">
+            <feMergeNode id="eEP3D9bWUTy2-filter-drop-shadow-0-merge-node-1" />
             <feMergeNode
-              id="eSrwF5KhkAD2-filter-drop-shadow-0-merge-node-2"
+              id="eEP3D9bWUTy2-filter-drop-shadow-0-merge-node-2"
               in="SourceGraphic"
             />
           </feMerge>
         </filter>
         <linearGradient
-          id="eSrwF5KhkAD3-fill"
+          id="eEP3D9bWUTy2-fill"
           x1="0"
           y1="0.5"
           x2="1"
@@ -58,29 +58,18 @@ export function NavIcon() {
           gradientUnits="objectBoundingBox"
           gradientTransform="translate(0 0)"
         >
-          <stop
-            id="eSrwF5KhkAD3-fill-0"
-            offset="40.4571%"
-            stopColor="#41e6ff"
-          />
-          <stop
-            id="eSrwF5KhkAD3-fill-1"
-            offset="59.4953%"
-            stopColor="#fb85ff"
-          />
+          <stop id="eEP3D9bWUTy2-fill-0" offset="41%" stopColor="#41e6ff" />
+          <stop id="eEP3D9bWUTy2-fill-1" offset="61%" stopColor="#fb85ff" />
         </linearGradient>
       </defs>
-      <g
-        transform="translate(-94.048675-28.493891)"
-        filter="url(#eSrwF5KhkAD2-filter)"
-      >
-        <path
-          d="M340.33653,169.24585c0,66.39291-53.72582,120.215-120,120.215v-33.9849c47.47603,0,85.96296-38.60653,85.96296-86.2301s-38.48693-86.2301-85.96296-86.2301v-33.9849c66.27417,0,120,53.82208,120,120.215Zm-240.00001,0c0-66.39291,53.72582-120.215,120-120.215v33.9849c-47.47603,0-85.96296,38.60653-85.96296,86.2301s38.48693,86.2301,85.96296,86.2301v33.9849c-66.27417,0-120-53.82208-120-120.215Z"
-          transform="matrix(-1 0 0 1 439.3852-15.751959)"
-          fill="url(#eSrwF5KhkAD3-fill)"
-          strokeLinecap="round"
-        />
-      </g>
+      <path
+        d="M5,125C5,58.72583,58.72583,5,125,5s120,53.72583,120,120-53.72583,120-120,120-120-53.72583-120-120Zm120,80c44.18278,0,80-35.81722,80-80s-35.81722-80-80-80-80,35.81722-80,80s35.81722,80,80,80Z"
+        transform="matrix(-1 0 0 1 250 0)"
+        filter="url(#eEP3D9bWUTy2-filter)"
+        fill="url(#eEP3D9bWUTy2-fill)"
+        stroke="#000"
+        strokeLinecap="square"
+      />
     </svg>
   );
 }
