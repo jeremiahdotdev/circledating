@@ -91,7 +91,7 @@ export const NewProfile = memo(function NewProfile({
 
   return (
     <div className={styles.newProfile}>
-      <h1>{circle.name} Singles Database</h1>
+      <h1>{circle.name}</h1>
       <Form {...form}>
         <form onSubmit={void form.handleSubmit(onValidData, onInvalidData)}>
           <FormSectionHeading>General</FormSectionHeading>
