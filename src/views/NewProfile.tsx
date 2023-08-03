@@ -88,7 +88,11 @@ export const NewProfile = memo(function NewProfile({
 
   return (
     <div className={styles.newProfile}>
+<<<<<<< Updated upstream:src/views/NewProfile.tsx
       <h1>{communityName} Singles Database</h1>
+=======
+      <h1>{circle.name}</h1>
+>>>>>>> Stashed changes:src/views/NewProfile/NewProfile.tsx
       <Form {...form}>
         <form onSubmit={void form.handleSubmit(onValidData, onInvalidData)}>
           <FormSectionHeading>General</FormSectionHeading>
