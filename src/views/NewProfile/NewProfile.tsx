@@ -23,6 +23,7 @@ import { ReligionSelectionValues } from "@/schemas/Religion";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
 import { WeightUnitOptions } from "@/schemas/Units";
 import { YesAndNoSelectionValues } from "@/schemas/YesAndNo";
+import { api } from "@/utils/api";
 import { countries } from "@/globals/location";
 import { memo, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -41,6 +42,8 @@ export const NewProfile = memo(function NewProfile({
   const form = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
   });
+
+  const { mutateAsync } = api.profiles.create.useMutation();
 
   // The forms type says this is always a string, but that is the defined case for the form. If no country is selected, it's undefined.
   const selectedCountry = form.watch("location.country") as string | undefined;
@@ -84,16 +87,21 @@ export const NewProfile = memo(function NewProfile({
     [form]
   );
 
-  const onValidData = useCallback((data: ProfileSchemaType) => {
-    console.log(data);
-    // Handle storing of the data here
-  }, []);
+  const onValidData = useCallback(
+    (data: ProfileSchemaType) => {
+      console.log(data);
+      // TODO: Handle the promise correctly here!
+      void mutateAsync(data);
+    },
+    [mutateAsync]
+  );
 
   return (
     <div className={styles.newProfile}>
       <h1>{circle.name} Singles Database</h1>
       <Form {...form}>
-        <form onSubmit={void form.handleSubmit(onValidData, onInvalidData)}>
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+        <form onSubmit={form.handleSubmit(onValidData, onInvalidData)}>
           <FormSectionHeading>General</FormSectionHeading>
           <section>
             <LabeledInputFormField
@@ -128,7 +136,7 @@ export const NewProfile = memo(function NewProfile({
               label="What is your current weight?"
               placeholder="...be honest!"
               //   Todo make the unit change based on the dropdown above
-              inlineLabel="lbs."
+              inlineLabel={"lbs"}
               labelPosition="right"
             />
             <DropdownFormField<ProfileSchemaType>
