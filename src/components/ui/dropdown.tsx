@@ -14,25 +14,34 @@ export type DropdownSelectOption = {
   label: string;
 };
 
-export function Dropdown(props: {
+export type DropdownProps = {
   label: string;
   placeholder?: string;
   options: DropdownSelectOption[];
-}) {
+  onChange: (value: string) => void;
+  value: string | undefined;
+};
+
+export function Dropdown({
+  options,
+  onChange,
+  value,
+  placeholder,
+}: DropdownProps) {
   const renderedOptions = useMemo(
     () =>
-      props.options.map((option) => (
+      options.map((option) => (
         <SelectItem key={option.label} value={option.value}>
           {option.label}
         </SelectItem>
       )),
-    [props.options]
+    [options]
   );
 
   return (
-    <Select>
+    <Select onValueChange={onChange} value={value}>
       <SelectTrigger>
-        <SelectValue placeholder={props.placeholder ?? "Select..."} />
+        <SelectValue placeholder={placeholder ?? "Select..."} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>{renderedOptions}</SelectGroup>

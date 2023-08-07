@@ -1,13 +1,15 @@
 "use client";
 
-import { ActivitiySelectionValues } from "@/schemas/Activity";
+import { ActivitySelectionValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
+import { ChildrenSelectionValues } from "@/schemas/Children";
 import { CircleSchemaType } from "@/schemas/Circle";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { DropdownFormField } from "@/components/ui/DropdownFormField";
+import { EthnicitySelectionValues } from "@/schemas/Ethnicity";
 import { Form } from "@/components/ui/form";
 import { FormSectionHeading } from "@/components/ui/formsectionheading";
 import { GenderSelectionValues } from "@/schemas/Gender";
@@ -21,6 +23,7 @@ import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
 import { PuritySelectionValues } from "@/schemas/Purity";
 import { ReligionSelectionValues } from "@/schemas/Religion";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
+import { WeightUnit } from "@prisma/client";
 import { WeightUnitOptions } from "@/schemas/Units";
 import { YesAndNoSelectionValues } from "@/schemas/YesAndNo";
 import { api } from "@/utils/api";
@@ -41,12 +44,17 @@ export const NewProfile = memo(function NewProfile({
 }: NewProfileProps) {
   const form = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
+    defaultValues: {
+      weightUnit: WeightUnit.LBS,
+    },
   });
 
   const { mutateAsync } = api.profiles.create.useMutation();
 
   // The forms type says this is always a string, but that is the defined case for the form. If no country is selected, it's undefined.
   const selectedCountry = form.watch("location.country") as string | undefined;
+
+  const selectedWeightUnit = form.watch("weightUnit");
 
   // Memoized Values
   const countryValues = useMemo(
@@ -135,15 +143,22 @@ export const NewProfile = memo(function NewProfile({
               name="weight"
               label="What is your current weight?"
               placeholder="...be honest!"
-              //   Todo make the unit change based on the dropdown above
-              inlineLabel={"lbs"}
+              inlineLabel={selectedWeightUnit}
               labelPosition="right"
+              type="number"
             />
             <DropdownFormField<ProfileSchemaType>
               name="height"
               control={form.control}
               label="What is your height?"
               options={HeightStringSelectOptions}
+              type="number"
+            />
+            <DropdownFormField<ProfileSchemaType>
+              name="ethnicity"
+              control={form.control}
+              label="What is your ethnicity?"
+              options={EthnicitySelectionValues}
             />
           </section>
           <FormSectionHeading>Location</FormSectionHeading>
@@ -160,6 +175,12 @@ export const NewProfile = memo(function NewProfile({
               label="What is your state/province of residence?"
               options={stateValues}
             />
+            <ComboBoxFormField<ProfileSchemaType, string>
+              name="willingToRelocate"
+              control={form.control}
+              label="Are you willing to relocate?"
+              options={YesAndNoSelectionValues}
+            />
           </section>
           <FormSectionHeading>Family</FormSectionHeading>
           <section>
@@ -167,13 +188,19 @@ export const NewProfile = memo(function NewProfile({
               name="children"
               control={form.control}
               label="Do you have/want kids?"
-              options={YesAndNoSelectionValues}
+              options={ChildrenSelectionValues}
             />
             <DropdownFormField<ProfileSchemaType>
               name="maritalStatus"
               control={form.control}
               label="Have you ever been married?"
               options={MaritalStatusesSelectionValues}
+            />
+            <DropdownFormField<ProfileSchemaType>
+              name="onlyLookingForTraditionalHousehold"
+              control={form.control}
+              label="Are you only looking for a traditional household?"
+              options={YesAndNoSelectionValues}
             />
             <DropdownFormField<ProfileSchemaType>
               name="income"
@@ -200,7 +227,7 @@ export const NewProfile = memo(function NewProfile({
               name="activity"
               control={form.control}
               label="How often do you excercise?"
-              options={ActivitiySelectionValues}
+              options={ActivitySelectionValues}
             />
             <DropdownFormField<ProfileSchemaType>
               name="purity"

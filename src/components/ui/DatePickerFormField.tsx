@@ -1,5 +1,10 @@
 import { DatePicker } from "./datepicker";
 import {
+  type FieldValues,
+  type UseControllerProps,
+  useController,
+} from "react-hook-form";
+import {
   FormControl,
   FormDescription,
   FormItem,
@@ -7,7 +12,6 @@ import {
   FormMessage,
 } from "./form";
 import React from "react";
-import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 interface DatepickerFormFieldProps<Values extends FieldValues>
   extends UseControllerProps<Values> {
@@ -18,12 +22,15 @@ interface DatepickerFormFieldProps<Values extends FieldValues>
 export const DatepickerFormField = <Values extends FieldValues>({
   label,
   description,
+  ...props
 }: DatepickerFormFieldProps<Values>) => {
+  const { field } = useController(props);
+
   return (
     <FormItem className="mb-2 flex flex-col">
       <FormLabel>{label}</FormLabel>
       <FormControl>
-        <DatePicker label={label} />
+        <DatePicker label={label} {...field} />
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}
       <FormMessage />

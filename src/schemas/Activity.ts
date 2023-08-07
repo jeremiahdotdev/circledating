@@ -2,9 +2,9 @@ import { Activity } from "@prisma/client";
 import { ComboboxOption } from "@/components/ui/combobox";
 import { z } from "zod";
 
-export const ActivitiySchema = z.nativeEnum(Activity);
+export const ActivitySchema = z.nativeEnum(Activity);
 
-export const ActivitiySelectionValues: ComboboxOption<Activity>[] = [
+export const ActivitySelectionValues: ComboboxOption<Activity>[] = [
   {
     label: "Infrequently; I excercise 0-1 times per week",
     value: Activity.INFREQUENT,

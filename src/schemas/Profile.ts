@@ -1,4 +1,3 @@
-import { ActivitiySchema } from "./Activity";
 import {
   Activity,
   Children,
@@ -14,6 +13,7 @@ import {
   Religion,
   YesNoOrUnknown,
 } from "@prisma/client";
+import { ActivitySchema } from "./Activity";
 import { ChildrenSchema } from "./Children";
 import { ConsumablesSchema } from "./Consumables";
 import { DrinkingSchema } from "./Drinking";
@@ -49,7 +49,7 @@ export const ProfileSchema = z.object({
   onlyLookingForTraditionalHousehold: YesAndNoSchema,
   income: IncomeSchema,
   maritalStatus: MaritalStatusesSchema,
-  activity: ActivitiySchema,
+  activity: ActivitySchema,
   religion: ReligionSchema,
   bio: z.string().optional(),
   weightUnit: z.enum(["KG", "LBS"]),

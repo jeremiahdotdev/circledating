@@ -7,7 +7,7 @@ import {
 } from "./form";
 import { LabeledInput } from "./labeledInput";
 import { useController } from "react-hook-form";
-import React from "react";
+import React, { useCallback } from "react";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 interface LabeledInputFormField<Values extends FieldValues>
@@ -21,12 +21,23 @@ interface LabeledInputFormField<Values extends FieldValues>
 }
 
 export const LabeledInputFormField = <Values extends FieldValues>({
-  type,
+  type = "text",
   labelPosition,
   inlineLabel,
   ...props
 }: LabeledInputFormField<Values>) => {
-  const { field } = useController(props);
+  const { field } = useController({ ...props });
+
+  const customOnChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (type === "text") {
+        field.onChange(e.target.value);
+      } else if (type === "number") {
+        field.onChange(Number(e.target.value));
+      }
+    },
+    [field, type]
+  );
 
   return (
     <FormItem className="mb-2 flex flex-col">
@@ -35,7 +46,8 @@ export const LabeledInputFormField = <Values extends FieldValues>({
       <LabeledInput
         placeholder={props.placeholder ?? props.label}
         {...field}
-        type={type ?? "text"}
+        onChange={customOnChange}
+        type={type}
         labelPosition={labelPosition ?? "left"}
         inlineLabel={inlineLabel}
       />
