@@ -1,5 +1,8 @@
 import { Button } from "@/components/ui/button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Gender } from "@prisma/client";
 import { ProfileAttribute } from "./ProfileAttribute";
+import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import {
@@ -10,11 +13,13 @@ import {
   faHandHoldingDroplet,
   faLandmark,
   faLocationDot,
+  faMars,
   faPlane,
   faPray,
   faRing,
   faRuler,
   faSmoking,
+  faVenus,
   faWeight,
   faWineGlass,
 } from "@fortawesome/free-solid-svg-icons";
@@ -40,9 +45,14 @@ export function ProfileCard({ profile }: ProfileCardProps) {
             alt={profile.username + "_profile"}
           />
           <div className="flex-1 flex-col gap-1">
-            <h1 className="text-lg">
-              {profile.username} ({age})
-            </h1>
+            <div className="flex flex-row items-center">
+              <h1 className="text-lg">{profile.username}</h1>
+              <FontAwesomeIcon
+                className="h-3 w-3 px-1 text-slate-950"
+                icon={profile.sex === Gender.MALE ? faMars : faVenus}
+              />
+              <h1 className="text-lg">({age})</h1>
+            </div>
             <ProfileAttribute
               icon={faLocationDot}
               label={`${profile.location.state}, ${profile.location.country}`}
@@ -62,20 +72,11 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         </div>
       </div>
       <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <ProfileCardSubheading title="Personal Information" />
         <ProfileAttribute
           icon={faRing}
           attribute={profile.maritalStatus}
           label="Marital Status"
-        />
-        <ProfileAttribute
-          icon={faLandmark}
-          attribute={profile.politicalBeliefs}
-          label="Political Beliefs"
-        />
-        <ProfileAttribute
-          icon={faPlane}
-          attribute={profile.willingToRelocate}
-          label="Willing to relocate"
         />
         <ProfileAttribute
           icon={faRuler}
@@ -90,6 +91,12 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           label="Weight"
         />
         <ProfileAttribute
+          icon={faBaby}
+          attribute={profile.children}
+          label={"Children"}
+        />
+        <ProfileCardSubheading title="Lifestyle" />
+        <ProfileAttribute
           icon={faDumbbell}
           attribute={profile.activity}
           label={"Activity Level"}
@@ -97,12 +104,23 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         <ProfileAttribute
           icon={faWineGlass}
           attribute={profile.drinking}
-          label="Drinking"
+          label="Drinking Habit"
         />
         <ProfileAttribute
           icon={faSmoking}
           label={"Smoking/Recreational drugs"}
           attribute={profile.consumables}
+        />
+        <ProfileCardSubheading title="Beliefs and Values" />
+        <ProfileAttribute
+          icon={faLandmark}
+          attribute={profile.politicalBeliefs}
+          label="Political Beliefs"
+        />
+        <ProfileAttribute
+          icon={faPlane}
+          attribute={profile.willingToRelocate}
+          label="Willing to relocate"
         />
         <ProfileAttribute
           icon={faGraduationCap}
@@ -114,11 +132,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           attribute={profile.purity}
           label={"Purity"}
         />
-        <ProfileAttribute
-          icon={faBaby}
-          attribute={profile.children}
-          label={"Children"}
-        />
+        <ProfileCardSubheading title="Financial Information" />
         <ProfileAttribute
           icon={faDollarSign}
           attribute={profile.income}

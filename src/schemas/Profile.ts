@@ -57,8 +57,8 @@ export const ProfileSchema = z.object({
 
 // TODO: Remove in release.
 export const TEST_DATA: ProfileSchemaType = {
-  username: "test_user",
-  sex: Gender.MALE,
+  username: "Tina",
+  sex: Gender.FEMALE,
   birthDate: new Date(1998, 2, 24),
   weight: 80.23,
   height: 198,
