@@ -25,7 +25,7 @@ export const ComboBoxFormField = <
 >(
   props: ComboBoxFormFieldProps<Values, ValueType>
 ) => {
-  const { field } = useController(props);
+  const { field, fieldState } = useController(props);
 
   return (
     <FormItem className="mb-2 flex flex-col">
@@ -40,7 +40,9 @@ export const ComboBoxFormField = <
       {props.description && (
         <FormDescription>{props.description}</FormDescription>
       )}
-      <FormMessage />
+      {fieldState.error?.message && (
+        <FormMessage>{fieldState.error?.message}</FormMessage>
+      )}
     </FormItem>
   );
 };

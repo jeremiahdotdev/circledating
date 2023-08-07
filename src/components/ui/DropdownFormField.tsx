@@ -28,7 +28,7 @@ export const DropdownFormField = <Values extends FieldValues>({
   type = "text",
   ...props
 }: DropdownFormFieldProps<Values>) => {
-  const { field } = useController(props);
+  const { field, fieldState } = useController(props);
 
   const correctedValue = useMemo(() => {
     if (type === "text") {
@@ -62,7 +62,9 @@ export const DropdownFormField = <Values extends FieldValues>({
         />
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}
-      <FormMessage />
+      {fieldState.error?.message && (
+        <FormMessage>{fieldState.error?.message}</FormMessage>
+      )}
     </FormItem>
   );
 };

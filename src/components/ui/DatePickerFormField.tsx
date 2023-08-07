@@ -24,7 +24,7 @@ export const DatepickerFormField = <Values extends FieldValues>({
   description,
   ...props
 }: DatepickerFormFieldProps<Values>) => {
-  const { field } = useController(props);
+  const { field, fieldState } = useController(props);
 
   return (
     <FormItem className="mb-2 flex flex-col">
@@ -33,7 +33,9 @@ export const DatepickerFormField = <Values extends FieldValues>({
         <DatePicker label={label} {...field} />
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}
-      <FormMessage />
+      {fieldState.error?.message && (
+        <FormMessage>{fieldState.error?.message}</FormMessage>
+      )}
     </FormItem>
   );
 };

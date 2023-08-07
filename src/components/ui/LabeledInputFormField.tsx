@@ -26,7 +26,7 @@ export const LabeledInputFormField = <Values extends FieldValues>({
   inlineLabel,
   ...props
 }: LabeledInputFormField<Values>) => {
-  const { field } = useController({ ...props });
+  const { field, fieldState } = useController({ ...props });
 
   const customOnChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +51,9 @@ export const LabeledInputFormField = <Values extends FieldValues>({
         labelPosition={labelPosition ?? "left"}
         inlineLabel={inlineLabel}
       />
-      <FormMessage />
+      {fieldState.error?.message && (
+        <FormMessage>{fieldState.error?.message}</FormMessage>
+      )}
       {props.description && (
         <FormDescription>{props.description}</FormDescription>
       )}

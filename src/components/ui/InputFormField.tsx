@@ -21,7 +21,7 @@ interface InputFormFieldProps<Values extends FieldValues>
 export const InputFormField = <Values extends FieldValues>(
   props: InputFormFieldProps<Values>
 ) => {
-  const { field } = useController(props);
+  const { field, fieldState } = useController(props);
 
   return (
     <FormItem className="mb-2 flex flex-col">
@@ -33,7 +33,9 @@ export const InputFormField = <Values extends FieldValues>(
           type={props.type ?? "text"}
         />
       </FormControl>
-      <FormMessage />
+      {fieldState.error?.message && (
+        <FormMessage>{fieldState.error?.message}</FormMessage>
+      )}
       {props.description && (
         <FormDescription>{props.description}</FormDescription>
       )}

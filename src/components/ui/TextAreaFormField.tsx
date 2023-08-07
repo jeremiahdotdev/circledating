@@ -20,7 +20,7 @@ interface TextAreaFormFieldProps<Values extends FieldValues>
 export const TextAreaFormField = <Values extends FieldValues>(
   props: TextAreaFormFieldProps<Values>
 ) => {
-  const { field } = useController(props);
+  const { field, fieldState } = useController(props);
 
   return (
     <FormItem className="mb-2 flex flex-col">
@@ -28,7 +28,9 @@ export const TextAreaFormField = <Values extends FieldValues>(
       <FormControl>
         <Textarea placeholder={props.placeholder ?? props.label} {...field} />
       </FormControl>
-      <FormMessage />
+      {fieldState.error?.message && (
+        <FormMessage>{fieldState.error?.message}</FormMessage>
+      )}
       {props.description && (
         <FormDescription>{props.description}</FormDescription>
       )}
