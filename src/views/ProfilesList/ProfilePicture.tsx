@@ -9,9 +9,9 @@ export type ProfilePictureProps = {
 
 export function ProfilePicture({ fallback, alt, src }: ProfilePictureProps) {
   return (
-    <Avatar className="h-32 w-32">
+    <Avatar className="h-24 w-24">
       <AvatarImage src={src} alt={alt} />
-      <AvatarFallback>{fallback}</AvatarFallback>
+      <AvatarFallback className="text-xl font-bold">{fallback}</AvatarFallback>
     </Avatar>
   );
 }

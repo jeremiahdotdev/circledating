@@ -61,10 +61,10 @@ export const TEST_DATA: ProfileSchemaType = {
   sex: Gender.MALE,
   birthDate: new Date(1998, 2, 24),
   weight: 80.23,
-  height: 182,
+  height: 198,
   location: {
     country: "America",
-    state: "America",
+    state: "Virginia",
   },
   willingToRelocate: YesNoOrUnknown.YES,
   children: Children.HAS_NOT_AND_DOES_WANT,
