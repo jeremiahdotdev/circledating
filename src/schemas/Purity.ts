@@ -23,6 +23,6 @@ export const PuritySelectionValues: ComboboxOption<Purity>[] = [
   },
   {
     label: "I'd rather not say.",
-    value: Purity.UNKNOWN,
+    value: Purity.PURITY_UNKNOWN,
   },
 ];

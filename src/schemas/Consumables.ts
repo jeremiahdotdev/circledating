@@ -23,6 +23,6 @@ export const ConsumablesSelectionValues: ComboboxOption<Consumables>[] = [
   },
   {
     label: "None",
-    value: Consumables.NONE,
+    value: Consumables.NO_CONSUMABLES,
   },
 ];

@@ -7,7 +7,7 @@ export const MaritalStatusesSchema = z.nativeEnum(MaritalStatus);
 export const MaritalStatusesSelectionValues: ComboboxOption<MaritalStatus>[] = [
   {
     label: "Never",
-    value: MaritalStatus.NEVER,
+    value: MaritalStatus.NEVER_MARRIED,
   },
   {
     label: "Yes; Widowed",

@@ -43,7 +43,7 @@ enum Consumables {
   VAPING
   OCCASIONAL_CIGARS
   EDIBLES_GUMMIES
-  NONE
+  NO_CONSUMABLES
 }
 
 enum PoliticalBeliefs {
@@ -70,7 +70,7 @@ enum Purity {
   NOT_VIRGIN_WAITING
   VIRGIN_NOT_WAITING
   NOT_VIRGIN_NOT_WAITING
-  UNKNOWN
+  PURITY_UNKNOWN
 }
 
 enum Income {
@@ -80,7 +80,7 @@ enum Income {
 }
 
 enum MaritalStatus {
-  NEVER
+  NEVER_MARRIED
   WIDOWED
   DIVORCED
 }
