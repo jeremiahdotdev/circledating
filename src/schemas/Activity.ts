@@ -1,35 +1,28 @@
+import { Activity } from "@prisma/client";
 import { ComboboxOption } from "@/components/ui/combobox";
 import { z } from "zod";
 
-export enum Activitiy {
-  INFREQUENT = "infrequent",
-  MILD = "mild",
-  FREQUENT = "frequent",
-  HEAVY = "heavy",
-  NEVER = "never",
-}
+export const ActivitySchema = z.nativeEnum(Activity);
 
-export const ActivitiySchema = z.nativeEnum(Activitiy);
-
-export const ActivitiySelectionValues: ComboboxOption<string>[] = [
+export const ActivitySelectionValues: ComboboxOption<Activity>[] = [
   {
     label: "Infrequently; I excercise 0-1 times per week",
-    value: Activitiy.INFREQUENT,
+    value: Activity.INFREQUENT,
   },
   {
     label: "Mildly; I excercise 2-3 times per week",
-    value: Activitiy.MILD,
+    value: Activity.MILD,
   },
   {
     label: "Frequently; I excercise 3-4 times per week",
-    value: Activitiy.FREQUENT,
+    value: Activity.FREQUENT,
   },
   {
     label: "Heavyily; I excercise 5+ times per week",
-    value: Activitiy.HEAVY,
+    value: Activity.HEAVY,
   },
   {
     label: "Never; I rarely excercise.",
-    value: Activitiy.NEVER,
+    value: Activity.NEVER,
   },
 ];

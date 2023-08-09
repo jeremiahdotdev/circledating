@@ -1,15 +1,10 @@
 import { ComboboxOption } from "@/components/ui/combobox";
+import { Income } from "@prisma/client";
 import { z } from "zod";
-
-export enum Income {
-  SINGLE = "single",
-  DUAL = "dual",
-  EITHER = "either",
-}
 
 export const IncomeSchema = z.nativeEnum(Income);
 
-export const IncomeSelectionValues: ComboboxOption<string>[] = [
+export const IncomeSelectionValues: ComboboxOption<Income>[] = [
   {
     label: "I am looking for a single income household.",
     value: Income.SINGLE,

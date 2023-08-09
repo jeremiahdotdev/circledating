@@ -1,29 +1,25 @@
 import { ComboboxOption } from "@/components/ui/combobox";
+import { YesNoOrUnknown } from "@prisma/client";
 import { z } from "zod";
 
-export enum YesAndNo {
-  YES = "yes",
-  NO = "no",
-  UNKNOWN = "",
-}
+export const YesAndNoSchema = z.nativeEnum(YesNoOrUnknown);
 
-export const YesAndNoSchema = z.nativeEnum(YesAndNo);
-
-export const YesAndNoSelectionValues: ComboboxOption<string>[] = [
+export const YesAndNoSelectionValues: ComboboxOption<YesNoOrUnknown>[] = [
   {
     label: "Yes",
-    value: YesAndNo.YES,
+    value: YesNoOrUnknown.YES,
   },
   {
     label: "No",
-    value: YesAndNo.NO,
+    value: YesNoOrUnknown.NO,
   },
 ];
 
-export const YesAndNoAndUnknownSelectionValues: ComboboxOption<string>[] = [
-  ...YesAndNoSelectionValues,
-  {
-    label: "I'd rather not say.",
-    value: YesAndNo.UNKNOWN,
-  },
-];
+export const YesAndNoAndUnknownSelectionValues: ComboboxOption<YesNoOrUnknown>[] =
+  [
+    ...YesAndNoSelectionValues,
+    {
+      label: "I'd rather not say.",
+      value: YesNoOrUnknown.UNKNOWN,
+    },
+  ];

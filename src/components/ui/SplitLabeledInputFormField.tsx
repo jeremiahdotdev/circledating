@@ -24,7 +24,7 @@ interface SplitLabeledInputFormField<Values extends FieldValues>
 export const SplitLabeledInputFormField = <Values extends FieldValues>(
   props: SplitLabeledInputFormField<Values>
 ) => {
-  const { field } = useController(props);
+  const { field, fieldState } = useController(props);
 
   return (
     <FormItem className="mb-2 flex flex-col">
@@ -46,7 +46,9 @@ export const SplitLabeledInputFormField = <Values extends FieldValues>(
           inlineLabel={props.inlineLabel2}
         />
       </span>
-      <FormMessage />
+      {fieldState.error?.message && (
+        <FormMessage>{fieldState.error?.message}</FormMessage>
+      )}
       {props.description && (
         <FormDescription>{props.description}</FormDescription>
       )}

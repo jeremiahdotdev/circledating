@@ -1,16 +1,19 @@
 "use client";
 
-import { ActivitiySelectionValues } from "@/schemas/Activity";
+import { ActivitySelectionValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
+import { ChildrenSelectionValues } from "@/schemas/Children";
 import { CircleSchemaType } from "@/schemas/Circle";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { DropdownFormField } from "@/components/ui/DropdownFormField";
+import { EthnicitySelectionValues } from "@/schemas/Ethnicity";
 import { Form } from "@/components/ui/form";
 import { FormSectionHeading } from "@/components/ui/formsectionheading";
 import { GenderSelectionValues } from "@/schemas/Gender";
+import { HeightStringSelectOptions } from "@/schemas/Height";
 import { IncomeSelectionValues } from "@/schemas/Income";
 import { LabeledInputFormField } from "@/components/ui/LabeledInputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
@@ -19,9 +22,11 @@ import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
 import { PuritySelectionValues } from "@/schemas/Purity";
 import { ReligionSelectionValues } from "@/schemas/Religion";
-import { SplitLabeledInputFormField } from "@/components/ui/SplitLabeledInputFormField";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
+import { WeightUnit } from "@prisma/client";
+import { WeightUnitOptions } from "@/schemas/Units";
 import { YesAndNoSelectionValues } from "@/schemas/YesAndNo";
+import { api } from "@/utils/api";
 import { countries } from "@/globals/location";
 import { memo, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -39,11 +44,17 @@ export const NewProfile = memo(function NewProfile({
 }: NewProfileProps) {
   const form = useForm<ProfileSchemaType>({
     resolver: zodResolver(ProfileSchema),
-    defaultValues: {},
+    defaultValues: {
+      weightUnit: WeightUnit.LBS,
+    },
   });
+
+  const { mutateAsync } = api.profiles.create.useMutation();
 
   // The forms type says this is always a string, but that is the defined case for the form. If no country is selected, it's undefined.
   const selectedCountry = form.watch("location.country") as string | undefined;
+
+  const selectedWeightUnit = form.watch("weightUnit");
 
   // Memoized Values
   const countryValues = useMemo(
@@ -84,16 +95,21 @@ export const NewProfile = memo(function NewProfile({
     [form]
   );
 
-  const onValidData = useCallback((data: ProfileSchemaType) => {
-    console.log(data);
-    // Handle storing of the data here
-  }, []);
+  const onValidData = useCallback(
+    (data: ProfileSchemaType) => {
+      console.log(data);
+      // TODO: Handle the promise correctly here!
+      void mutateAsync(data);
+    },
+    [mutateAsync]
+  );
 
   return (
     <div className={styles.newProfile}>
       <h1>{circle.name}</h1>
       <Form {...form}>
-        <form onSubmit={void form.handleSubmit(onValidData, onInvalidData)}>
+        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+        <form onSubmit={form.handleSubmit(onValidData, onInvalidData)}>
           <FormSectionHeading>General</FormSectionHeading>
           <section>
             <LabeledInputFormField
@@ -116,22 +132,33 @@ export const NewProfile = memo(function NewProfile({
               label="birth date"
               description="This is used to calculate your age."
             />
+            <DropdownFormField<ProfileSchemaType>
+              name="weightUnit"
+              control={form.control}
+              label="Whigh unit do you use?"
+              options={WeightUnitOptions}
+            />
             <LabeledInputFormField
               control={form.control}
               name="weight"
               label="What is your current weight?"
               placeholder="...be honest!"
-              inlineLabel="lbs."
+              inlineLabel={selectedWeightUnit}
               labelPosition="right"
+              type="number"
             />
-            <SplitLabeledInputFormField
-              control={form.control}
+            <DropdownFormField<ProfileSchemaType>
               name="height"
-              label="What is your current height?"
-              placeholder="height"
-              inlineLabel1="feet"
-              inlineLabel2="inches"
-              labelPosition="right"
+              control={form.control}
+              label="What is your height?"
+              options={HeightStringSelectOptions}
+              type="number"
+            />
+            <DropdownFormField<ProfileSchemaType>
+              name="ethnicity"
+              control={form.control}
+              label="What is your ethnicity?"
+              options={EthnicitySelectionValues}
             />
           </section>
           <FormSectionHeading>Location</FormSectionHeading>
@@ -143,10 +170,16 @@ export const NewProfile = memo(function NewProfile({
               options={countryValues}
             />
             <ComboBoxFormField<ProfileSchemaType, string>
-              name="location.states"
+              name="location.state"
               control={form.control}
               label="What is your state/province of residence?"
               options={stateValues}
+            />
+            <ComboBoxFormField<ProfileSchemaType, string>
+              name="willingToRelocate"
+              control={form.control}
+              label="Are you willing to relocate?"
+              options={YesAndNoSelectionValues}
             />
           </section>
           <FormSectionHeading>Family</FormSectionHeading>
@@ -155,13 +188,19 @@ export const NewProfile = memo(function NewProfile({
               name="children"
               control={form.control}
               label="Do you have/want kids?"
-              options={YesAndNoSelectionValues}
+              options={ChildrenSelectionValues}
             />
             <DropdownFormField<ProfileSchemaType>
               name="maritalStatus"
               control={form.control}
               label="Have you ever been married?"
               options={MaritalStatusesSelectionValues}
+            />
+            <DropdownFormField<ProfileSchemaType>
+              name="onlyLookingForTraditionalHousehold"
+              control={form.control}
+              label="Are you only looking for a traditional household?"
+              options={YesAndNoSelectionValues}
             />
             <DropdownFormField<ProfileSchemaType>
               name="income"
@@ -188,7 +227,7 @@ export const NewProfile = memo(function NewProfile({
               name="activity"
               control={form.control}
               label="How often do you excercise?"
-              options={ActivitiySelectionValues}
+              options={ActivitySelectionValues}
             />
             <DropdownFormField<ProfileSchemaType>
               name="purity"

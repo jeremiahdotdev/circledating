@@ -1,20 +1,10 @@
 import { ComboboxOption } from "@/components/ui/combobox";
+import { Religion } from "@prisma/client";
 import { z } from "zod";
-
-export enum Religion {
-  AGNOSTICISM = "agnosticism",
-  ATHEISM = "atheism",
-  BUDDHISM = "buddhism",
-  CHRISTIANITY = "christianity",
-  HINDUISM = "hinduism",
-  JUDIASM = "judiasm",
-  MORMONISM = "mormonism",
-  OTHER = "other",
-}
 
 export const ReligionSchema = z.nativeEnum(Religion);
 
-export const ReligionSelectionValues: ComboboxOption<string>[] = [
+export const ReligionSelectionValues: ComboboxOption<Religion>[] = [
   {
     label: "Christian",
     value: Religion.CHRISTIANITY,

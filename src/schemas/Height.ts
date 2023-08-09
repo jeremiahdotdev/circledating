@@ -1,31 +1,46 @@
-import { z } from "zod";
+export const heightValueMap: Record<number, string> = {
+  122: "4' 0\" (122 cm)",
+  125: "4' 1\" (125 cm)",
+  127: "4' 2\" (127 cm)",
+  130: "4' 3\" (130 cm)",
+  132: "4' 4\" (132 cm)",
+  135: "4' 5\" (135 cm)",
+  137: "4' 6\" (137 cm)",
+  140: "4' 7\" (140 cm)",
+  142: "4' 8\" (142 cm)",
+  145: "4' 9\" (145 cm)",
+  147: "4' 10\" (147 cm)",
+  150: "4' 11\" (150 cm)",
+  152: "5' 0\" (152 cm)",
+  155: "5' 1\" (155 cm)",
+  157: "5' 2\" (157 cm)",
+  160: "5' 3\" (160 cm)",
+  163: "5' 4\" (163 cm)",
+  165: "5' 5\" (165 cm)",
+  168: "5' 6\" (168 cm)",
+  170: "5' 7\" (170 cm)",
+  173: "5' 8\" (173 cm)",
+  175: "5' 9\" (175 cm)",
+  178: "5' 10\" (178 cm)",
+  180: "5' 11\" (180 cm)",
+  183: "6' 0\" (183 cm)",
+  185: "6' 1\" (185 cm)",
+  188: "6' 2\" (188 cm)",
+  191: "6' 3\" (191 cm)",
+  193: "6' 4\" (193 cm)",
+  196: "6' 5\" (196 cm)",
+  198: "6' 6\" (198 cm)",
+  201: "6' 7\" (201 cm)",
+  203: "6' 8\" (203 cm)",
+  206: "6' 9\" (206 cm)",
+  208: "6' 10\" (208 cm)",
+  211: "6' 11\" (211 cm)",
+  213: "7' 0\" (213 cm)",
+};
 
-export enum HeightUnit {
-  CMS = "cms",
-  FEET = "feet",
-  INCHES = "inches",
-}
-
-export const HeightUnitSchemaType = z.nativeEnum(HeightUnit);
-
-export const HeightSchema = z.object({
-  value: z
-    .object({
-      feet: z
-        .number()
-        .min(0, "The height must be greater than 0 feet.")
-        .max(7, "The height cannot be greater than 7 feet."),
-      inches: z.number().min(0).max(11),
-    })
-    .or(
-      z.object({
-        centimeters: z
-          .number()
-          .min(0, "The height has to be greater than 0 centimeters")
-          .max(300, "The height has to be less than 300 centimeters"),
-      })
-    ),
-  unit: z.string(),
-});
-
-export type HeightSchemaType = z.infer<typeof HeightSchema>;
+export const HeightStringSelectOptions = Object.entries(heightValueMap).map(
+  ([value, label]) => ({
+    value,
+    label,
+  })
+);

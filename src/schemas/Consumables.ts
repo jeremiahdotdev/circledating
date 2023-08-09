@@ -1,17 +1,10 @@
 import { ComboboxOption } from "@/components/ui/combobox";
+import { Consumables } from "@prisma/client";
 import { z } from "zod";
-
-export enum Consumables {
-  SMOKING = "smoking",
-  VAPING = "vaping",
-  OCCASIONAL_CIGARS = "occasional_cigars",
-  EDIBLES_GUMMIES = "edibles_gummies",
-  NONE = "none",
-}
 
 export const ConsumablesSchema = z.nativeEnum(Consumables);
 
-export const ConsumablesSelectionValues: ComboboxOption<string>[] = [
+export const ConsumablesSelectionValues: ComboboxOption<Consumables>[] = [
   {
     label: "Smoking/Cigarettes",
     value: Consumables.SMOKING,
@@ -30,6 +23,6 @@ export const ConsumablesSelectionValues: ComboboxOption<string>[] = [
   },
   {
     label: "None",
-    value: Consumables.NONE,
+    value: Consumables.NO_CONSUMABLES,
   },
 ];

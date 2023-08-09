@@ -1,14 +1,10 @@
 import { ComboboxOption } from "@/components/ui/combobox";
+import { Gender } from "@prisma/client";
 import { z } from "zod";
-
-export enum Gender {
-  MALE = "male",
-  FEMALE = "female",
-}
 
 export const GenderSchema = z.nativeEnum(Gender);
 
-export const GenderSelectionValues: ComboboxOption<string>[] = [
+export const GenderSelectionValues: ComboboxOption<Gender>[] = [
   {
     label: "Male",
     value: Gender.MALE,
