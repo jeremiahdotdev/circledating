@@ -143,7 +143,7 @@ model UserProfile {
   maritalStatus                      MaritalStatus
   activity                           Activity
   religion                           Religion
-  bio                                String           @db.LongText
+  bio                                String?           @db.LongText
   weightUnit                         WeightUnit
   User                               User[]
 
