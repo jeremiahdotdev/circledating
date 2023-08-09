@@ -124,7 +124,7 @@ model Location {
 }
 
 model UserProfile {
-  username                           String           @unique
+  redditUserName                     String           @unique
   sex                                Gender
   birthDate                          DateTime
   height                             Int
@@ -144,7 +144,7 @@ model UserProfile {
   maritalStatus                      MaritalStatus
   activity                           Activity
   religion                           Religion
-  bio                                String?           @db.LongText
+  bio                                String?          @db.LongText
   weightUnit                         WeightUnit
   User                               User[]
 
@@ -152,13 +152,14 @@ model UserProfile {
 }
 
 model User {
-  id                  String      @id @default(uuid())
-  email               String      @unique
-  password            String
-  profile             UserProfile @relation(fields: [userProfileUsername], references: [username])
-  createdAt           DateTime    @default(now())
-  updatedAt           DateTime    @updatedAt
-  userProfileUsername String
+  id             String      @id @default(uuid())
+  username 	 String      @unique
+  email          String      @unique
+  password       String
+  profile        UserProfile? @relation(fields: [redditUserName], references: [redditUserName])
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  redditUserName String?
 
-  @@index([userProfileUsername])
+  @@index([redditUserName])
 }

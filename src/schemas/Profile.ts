@@ -30,7 +30,7 @@ import { YesAndNoSchema } from "./YesAndNo";
 import { z } from "zod";
 
 export const ProfileSchema = z.object({
-  username: z.string().min(3).max(20),
+  redditUserName: z.string().min(3).max(20),
   // Propably this should be the other users id not their username -> this would need to be done on the backend side of things
   usersNotToBeMatchedWith: z.string().optional(),
   sex: GenderSchema,
@@ -57,7 +57,7 @@ export const ProfileSchema = z.object({
 
 // TODO: Remove in release.
 export const TEST_DATA: ProfileSchemaType = {
-  username: "Tina",
+  redditUserName: "Tina",
   sex: Gender.FEMALE,
   birthDate: new Date(1998, 2, 24),
   weight: 80.23,
