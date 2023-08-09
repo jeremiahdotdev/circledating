@@ -11,8 +11,12 @@ export const ProfileList = memo(function ProfileList({
 }: ProfileListProps) {
   if (profiles.length === 0) return <div>No profiles found</div>;
 
-  return profiles.map((profile: ProfileSchemaType) => (
-    // TODO: Replace username with id
-    <ProfileCard key={profile.username} profile={profile} />
-  ));
+  return (
+    <div className="flex w-full max-w-full flex-row flex-wrap items-center justify-center gap-6">
+      {profiles.map((profile: ProfileSchemaType) => (
+        // TODO: Replace username with id
+        <ProfileCard key={profile.username} profile={profile} />
+      ))}
+    </div>
+  );
 });

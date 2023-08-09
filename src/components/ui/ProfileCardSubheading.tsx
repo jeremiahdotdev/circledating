@@ -7,6 +7,6 @@ export type ProfileCardSubheadingProps = {
 
 export const ProfileCardSubheading = memo(
   ({ title }: ProfileCardSubheadingProps) => {
-    return <span className="text-sm text-slate-950">{title}</span>;
+    return <span className="text-sm text-slate-950 sm:hidden">{title}</span>;
   }
 );

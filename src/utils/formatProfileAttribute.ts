@@ -135,13 +135,13 @@ export const formatProfileAttribute = (attribute: ProfileAttributeType) => {
       return "Unknown";
     // Children
     case Children.HAS_AND_DOES_NOT_WANT:
-      return "Has, Doesn't want More";
+      return "Has; Doesn't want More";
     case Children.HAS_AND_WANTS:
-      return "Has, Wants More";
+      return "Has; Wants More";
     case Children.HAS_NOT_AND_DOES_NOT_WANT:
-      return "Doesn't have, Doesn't Want";
+      return "None; Doesn't Want";
     case Children.HAS_NOT_AND_DOES_WANT:
-      return "Doesn't have, Wants";
+      return "None; Wants";
     // Income
     case Income.DUAL:
       return "Dual Income";

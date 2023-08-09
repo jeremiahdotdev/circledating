@@ -16,18 +16,19 @@ export type ProfileAttributeProps = {
   showLabel?: boolean;
   isHeight?: boolean;
   weightUnit?: WeightUnit;
+  overrideShowLabel?: boolean;
 };
 
 export function ProfileAttribute({
   icon,
-  label,
   attribute,
-  showLabel = true,
+  label,
+  overrideShowLabel,
   isHeight,
   weightUnit,
 }: ProfileAttributeProps) {
   const labelText = useMemo(() => {
-    if (!attribute) return "";
+    if (!attribute) return label;
 
     if (typeof attribute === "number" && isHeight) {
       return heightValueMap[attribute];
@@ -45,17 +46,18 @@ export function ProfileAttribute({
   }, [attribute, isHeight, weightUnit]);
 
   return (
-    <span className="flex-1">
+    <span className=" flex">
       <FormattedTooltip content={label}>
-        <span className="flex flex-row items-center gap-1">
-          <FontAwesomeIcon className="h-4 w-4 text-slate-950" icon={icon} />
-          {showLabel && (
-            <p className="pl-1 font-extralight text-slate-950">
-              {label}
-              {attribute ? " • " : ""}
-            </p>
+        <span className="flex flex-row gap-1">
+          <FontAwesomeIcon className="h-5 w-5 pl-2" icon={icon} />
+          {!overrideShowLabel && (
+            <b className="flex sm:hidden">
+              {label} {attribute ? " • " : ""}
+            </b>
           )}
-          {labelText}
+          <p className="pl-1 text-sm font-extralight text-slate-950">
+            {labelText}
+          </p>
         </span>
       </FormattedTooltip>
     </span>

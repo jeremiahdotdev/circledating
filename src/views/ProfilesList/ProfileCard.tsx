@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Gender } from "@prisma/client";
 import { ProfileAttribute } from "./ProfileAttribute";
+import { ProfileCardButton } from "./ProfileCardButton";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
+import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import {
@@ -13,13 +12,10 @@ import {
   faHandHoldingDroplet,
   faLandmark,
   faLocationDot,
-  faMars,
-  faPlane,
   faPray,
   faRing,
   faRuler,
   faSmoking,
-  faVenus,
   faWeight,
   faWineGlass,
 } from "@fortawesome/free-solid-svg-icons";
@@ -36,108 +32,107 @@ export function ProfileCard({ profile }: ProfileCardProps) {
   }, [profile.birthDate]);
 
   return (
-    <div className="m-4 rounded-md border p-6 shadow-sm">
-      <div className="mb-4 flex flex-col justify-between sm:flex-row">
-        <div className="mb-2 flex flex-row gap-4">
+    <div className=" flex h-full max-w-2xl flex-col rounded-md border bg-background p-3 ">
+      <div className="mx-6 flex h-full max-w-full flex-wrap items-center justify-center text-sm ring-offset-background sm:justify-between sm:pt-6 ">
+        <h1 className="flex w-full justify-center text-lg sm:w-auto">
+          {profile.username} ({age})
+        </h1>
+        <span className="flex flex-row">
+          <ProfileAttribute
+            icon={faLocationDot}
+            label={`${profile.location.state}, ${profile.location.country}`}
+            overrideShowLabel={true}
+          />
+          <ProfileLocation willingToRelocate={profile.willingToRelocate} />
+        </span>
+      </div>
+      <div className="flex h-full max-w-full flex-wrap items-center justify-around border-b p-6 text-sm ring-offset-background">
+        <div className="flex w-full min-w-fit items-center justify-center sm:w-1/4 ">
+          {/* DNR: profile.username needs to be changed to an ID or display name, to prevent doxxing */}{" "}
           <ProfilePicture
             src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
             fallback={profile.username.substring(0, 1)}
             alt={profile.username + "_profile"}
           />
-          <div className="flex-1 flex-col gap-1">
-            <div className="flex flex-row items-center">
-              <h1 className="text-lg">{profile.username}</h1>
-              <FontAwesomeIcon
-                className="h-3 w-3 px-1 text-slate-950"
-                icon={profile.sex === Gender.MALE ? faMars : faVenus}
-              />
-              <h1 className="text-lg">({age})</h1>
-            </div>
-            <ProfileAttribute
-              icon={faLocationDot}
-              label={`${profile.location.state}, ${profile.location.country}`}
-            />
-            <ProfileAttribute
-              icon={faPray}
-              attribute={profile.religion}
-              showLabel={false}
-              label={"Religion"}
-            />
-          </div>
         </div>
-        <div className="flex flex-row gap-2">
-          <Button>Message</Button>
-          <Button variant="outline">Like</Button>
-          <Button variant="destructive">Report</Button>
+        <div className="flex w-full  min-w-fit flex-col gap-2 p-1 sm:w-1/4 sm:border-l ">
+          <ProfileCardSubheading title={"General"} />
+          <ProfileAttribute
+            icon={faPray}
+            attribute={`${profile.religion}`}
+            label={"Religion"}
+          />
+          <ProfileAttribute
+            icon={faRing}
+            attribute={`${profile.maritalStatus}`}
+            label={"Marital Status"}
+          />
+          <ProfileAttribute
+            icon={faLandmark}
+            attribute={profile.politicalBeliefs}
+            label={"Political Beliefs"}
+          />
+          <ProfileAttribute
+            icon={faGraduationCap}
+            attribute={profile.levelOfEducation}
+            label={"Level of Education"}
+          />
+        </div>
+        <div className="flex w-full min-w-fit flex-col gap-2 p-1 sm:w-1/4 sm:border-l">
+          <ProfileCardSubheading title={"Lifestyle"} />
+          <ProfileAttribute
+            icon={faRuler}
+            attribute={profile.height}
+            isHeight
+            label="Height"
+          />
+          <ProfileAttribute
+            icon={faWeight}
+            attribute={profile.weight}
+            weightUnit={profile.weightUnit}
+            label="Weight"
+          />
+          <ProfileAttribute
+            icon={faWineGlass}
+            attribute={profile.drinking}
+            label={"Drinking Level"}
+          />
+          <ProfileAttribute
+            icon={faSmoking}
+            attribute={profile.consumables}
+            label={"Smoking/Recreational drugs"}
+          />
+        </div>
+        <div className="flex w-full min-w-fit flex-col gap-2 p-1  sm:w-1/4 sm:border-l">
+          <ProfileAttribute
+            icon={faDumbbell}
+            attribute={`${profile.activity}`}
+            label={"Activity Level"}
+          />
+          <ProfileCardSubheading title={"Family"} />
+          <ProfileAttribute
+            icon={faHandHoldingDroplet}
+            attribute={profile.purity}
+            label={"Purity"}
+          />
+          <ProfileAttribute
+            icon={faBaby}
+            attribute={profile.children}
+            label={"Children"}
+          />
+          <ProfileAttribute
+            icon={faDollarSign}
+            attribute={profile.income}
+            label={"Income"}
+          />
         </div>
       </div>
-      <div className="grid gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        <ProfileCardSubheading title="Personal Information" />
-        <ProfileAttribute
-          icon={faRing}
-          attribute={profile.maritalStatus}
-          label="Marital Status"
-        />
-        <ProfileAttribute
-          icon={faRuler}
-          attribute={profile.height}
-          isHeight
-          label="Height"
-        />
-        <ProfileAttribute
-          icon={faWeight}
-          attribute={profile.weight}
-          weightUnit={profile.weightUnit}
-          label="Weight"
-        />
-        <ProfileAttribute
-          icon={faBaby}
-          attribute={profile.children}
-          label={"Children"}
-        />
-        <ProfileCardSubheading title="Lifestyle" />
-        <ProfileAttribute
-          icon={faDumbbell}
-          attribute={profile.activity}
-          label={"Activity Level"}
-        />
-        <ProfileAttribute
-          icon={faWineGlass}
-          attribute={profile.drinking}
-          label="Drinking Habit"
-        />
-        <ProfileAttribute
-          icon={faSmoking}
-          label={"Smoking/Recreational drugs"}
-          attribute={profile.consumables}
-        />
-        <ProfileCardSubheading title="Beliefs and Values" />
-        <ProfileAttribute
-          icon={faLandmark}
-          attribute={profile.politicalBeliefs}
-          label="Political Beliefs"
-        />
-        <ProfileAttribute
-          icon={faPlane}
-          attribute={profile.willingToRelocate}
-          label="Willing to relocate"
-        />
-        <ProfileAttribute
-          icon={faGraduationCap}
-          attribute={profile.levelOfEducation}
-          label={"Level of Education"}
-        />
-        <ProfileAttribute
-          icon={faHandHoldingDroplet}
-          attribute={profile.purity}
-          label={"Purity"}
-        />
-        <ProfileCardSubheading title="Financial Information" />
-        <ProfileAttribute
-          icon={faDollarSign}
-          attribute={profile.income}
-          label={"Income"}
-        />
+      <div className="mx-6 flex max-w-full items-center py-6 text-sm ring-offset-background sm:p-6">
+        {profile.bio}
+      </div>
+      <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
+        <ProfileCardButton variant={"green"} label={"Start a conversation"} />
+        <ProfileCardButton variant={"red"} label={"Hide this user"} />
       </div>
     </div>
   );
