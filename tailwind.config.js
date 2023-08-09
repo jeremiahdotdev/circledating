@@ -71,7 +71,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
-        "circle-pattern": "url('/icon.svg')",
+        "circle-pattern": "url('/CircleDating.svg')",
       },
     },
   },

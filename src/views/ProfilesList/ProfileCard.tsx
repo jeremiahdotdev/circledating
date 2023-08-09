@@ -43,12 +43,14 @@ export function ProfileCard({ profile }: ProfileCardProps) {
             label={`${profile.location.state}, ${profile.location.country}`}
             overrideShowLabel={true}
           />
-          <ProfileLocation willingToRelocate={profile.willingToRelocate} />
+          <ProfileLocation
+            willingToRelocate={profile.willingToRelocate === "YES"}
+          />
         </span>
       </div>
       <div className="flex h-full max-w-full flex-wrap items-center justify-around border-b p-6 text-sm ring-offset-background">
-        <div className="flex w-full min-w-fit items-center justify-center sm:w-1/4 ">
-          {/* DNR: profile.username needs to be changed to an ID or display name, to prevent doxxing */}{" "}
+        <div className="flex w-3/4 items-center justify-center sm:w-1/4 ">
+          {/*  DNR: profile.username needs to be changed to an ID or display name, to prevent doxxing */}
           <ProfilePicture
             src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
             fallback={profile.username.substring(0, 1)}

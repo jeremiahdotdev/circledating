@@ -32,7 +32,8 @@
     ".next/types/**/*.ts",
     "./tailwind.config.js",
     "./postcss.config.js",
-    "./next.config.js"
+    "./next.config.js",
+    "public/animation.jsx"
   ],
   "exclude": ["node_modules"]
 }

@@ -9,7 +9,7 @@ export type ProfilePictureProps = {
 
 export function ProfilePicture({ fallback, alt, src }: ProfilePictureProps) {
   return (
-    <div className="flex aspect-square w-3/4 justify-around rounded-full bg-circle-pattern p-4 sm:p-1">
+    <div className="mr-1 flex aspect-square w-3/4 min-w-fit justify-around rounded-full bg-circle-pattern bg-contain bg-no-repeat p-3 sm:p-2">
       <Avatar className="aspect-square sm:h-32 sm:w-32 sm:p-0">
         <AvatarImage src={src} alt={alt} />
         <AvatarFallback>{fallback}</AvatarFallback>

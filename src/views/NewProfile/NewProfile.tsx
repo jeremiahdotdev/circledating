@@ -106,7 +106,7 @@ export const NewProfile = memo(function NewProfile({
 
   return (
     <div className={styles.newProfile}>
-      <h1>{circle.name} Singles Database</h1>
+      <h1>{circle.name}</h1>
       <Form {...form}>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={form.handleSubmit(onValidData, onInvalidData)}>
