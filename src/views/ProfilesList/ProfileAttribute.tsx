@@ -43,7 +43,7 @@ export function ProfileAttribute({
     }
 
     return formatProfileAttribute(attribute);
-  }, [attribute, isHeight, weightUnit]);
+  }, [attribute, isHeight, label, weightUnit]);
 
   return (
     <span className=" flex">
