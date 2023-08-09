@@ -37,7 +37,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         <h1 className="flex w-full justify-center text-lg sm:w-auto">
           {profile.username} ({age})
         </h1>
-        <span className="flex flex-row">
+        <span className="flex flex-row items-center">
           <ProfileAttribute
             icon={faLocationDot}
             label={`${profile.location.state}, ${profile.location.country}`}

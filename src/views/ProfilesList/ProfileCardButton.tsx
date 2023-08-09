@@ -15,7 +15,7 @@ export function ProfileCardButton({ label, variant }: ProfileCardButtonProps) {
     <FormattedTooltip content={label}>
       <Button
         className={cn(
-          "w-16 h-16 text-white rounded-full",
+          "w-16 h-16 text-white rounded-full shadow",
           variant === "green" ? `bg-green-600` : `bg-red-600`
         )}
       >
