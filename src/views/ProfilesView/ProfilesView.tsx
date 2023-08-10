@@ -5,7 +5,7 @@ import React from "react";
 
 export type ProfilesViewProps = Record<never, never>;
 
-export const ProfilesView: React.FC<ProfileViewProps> = memo(() => {
+export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       {/* TODO: Replace with actual profiles */}
