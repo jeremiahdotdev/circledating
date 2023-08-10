@@ -7,8 +7,9 @@ export type ProfilesViewProps = Record<never, never>;
 
 export const ProfilesView: React.FC<ProfileViewProps> = memo(() => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <ProfileList profiles={[TEST_DATA, TEST_DATA, TEST_DATA, TEST_DATA]} />
+    <main className="flex min-h-screen flex-col items-center justify-between">
+      {/* TODO: Replace with actual profiles */}
+      <ProfileList profiles={[TEST_DATA[1], TEST_DATA[2]]} />
     </main>
   );
 });

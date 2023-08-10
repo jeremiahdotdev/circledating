@@ -46,6 +46,16 @@ enum Consumables {
   NO_CONSUMABLES
 }
 
+enum Continent {
+  NORTH_AMERICA
+  SOUTH_AMERICA
+  AFRICA
+  ASIA
+  EUROPE
+  ANTARTICA
+  AUSTRALIA
+}
+
 enum PoliticalBeliefs {
   CONSERVATIVE
   CONSERVATIVE_LEANING_MODERATE
@@ -129,6 +139,7 @@ model UserProfile {
   height                             Int
   weight                             Float
   locationId                         String
+  continent							 Continent
   location                           Location         @relation(fields: [locationId], references: [id])
   willingToRelocate                  YesNoOrUnknown
   children                           Children

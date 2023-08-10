@@ -2,6 +2,7 @@ import {
   Activity,
   Children,
   Consumables,
+  Continent,
   Drinking,
   Ethnicity,
   Gender,
@@ -15,7 +16,9 @@ import {
 } from "@prisma/client";
 import { ActivitySchema } from "./Activity";
 import { ChildrenSchema } from "./Children";
+import { CircleSchema, DefaultCircles } from "./Circle";
 import { ConsumablesSchema } from "./Consumables";
+import { ContinentSchema } from "./Continent";
 import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
@@ -37,6 +40,7 @@ export const ProfileSchema = z.object({
   birthDate: z.date(),
   height: z.number(), // Height in cm
   weight: z.number(), // Weight in kg
+  continent: ContinentSchema,
   location: SelectedLocationSchema,
   willingToRelocate: YesAndNoSchema,
   children: ChildrenSchema,
@@ -53,34 +57,104 @@ export const ProfileSchema = z.object({
   religion: ReligionSchema,
   bio: z.string().optional(),
   weightUnit: z.enum(["KG", "LBS"]),
+  circles: z.array(CircleSchema),
 });
 
 // TODO: Remove in release.
-export const TEST_DATA: ProfileSchemaType = {
-  username: "Tina",
-  sex: Gender.FEMALE,
-  birthDate: new Date(1998, 2, 24),
-  weight: 80.23,
-  height: 198,
-  location: {
-    country: "America",
-    state: "Virginia",
+export const TEST_DATA: ProfileSchemaType[] = [
+  {
+    username: "J",
+    sex: Gender.MALE,
+    birthDate: new Date(1999, 4, 24),
+    weight: 80.23,
+    height: 198,
+    continent: Continent.NORTH_AMERICA,
+    location: {
+      country: "America",
+      state: "Virginia",
+    },
+    willingToRelocate: YesNoOrUnknown.YES,
+    children: Children.HAS_NOT_AND_DOES_WANT,
+    ethnicity: Ethnicity.WHITE,
+    drinking: Drinking.NEVER,
+    consumables: Consumables.NO_CONSUMABLES,
+    politicalBeliefs: PoliticalBeliefs.CONSERVATIVE,
+    levelOfEducation: LevelOfEducation.BACHELORS,
+    purity: Purity.VIRGIN_WAITING,
+    onlyLookingForTraditionalHousehold: YesNoOrUnknown.YES,
+    income: Income.SINGLE,
+    maritalStatus: MaritalStatus.NEVER_MARRIED,
+    activity: Activity.INFREQUENT,
+    religion: Religion.CHRISTIANITY,
+    bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum!",
+    weightUnit: "KG",
+    circles: [
+      DefaultCircles.Religion.Christianity,
+      DefaultCircles.Political.Conservative,
+    ],
   },
-  willingToRelocate: YesNoOrUnknown.YES,
-  children: Children.HAS_NOT_AND_DOES_WANT,
-  ethnicity: Ethnicity.WHITE,
-  drinking: Drinking.NEVER,
-  consumables: Consumables.NO_CONSUMABLES,
-  politicalBeliefs: PoliticalBeliefs.CONSERVATIVE,
-  levelOfEducation: LevelOfEducation.BACHELORS,
-  purity: Purity.VIRGIN_WAITING,
-  onlyLookingForTraditionalHousehold: YesNoOrUnknown.YES,
-  income: Income.SINGLE,
-  maritalStatus: MaritalStatus.NEVER_MARRIED,
-  activity: Activity.INFREQUENT,
-  religion: Religion.CHRISTIANITY,
-  bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum!",
-  weightUnit: "KG",
-};
+  {
+    username: "Tina 2.0",
+    sex: Gender.FEMALE,
+    birthDate: new Date(1998, 2, 24),
+    weight: 80.23,
+    height: 198,
+    continent: Continent.NORTH_AMERICA,
+    location: {
+      country: "America",
+      state: "Virginia",
+    },
+    willingToRelocate: YesNoOrUnknown.YES,
+    children: Children.HAS_NOT_AND_DOES_WANT,
+    ethnicity: Ethnicity.WHITE,
+    drinking: Drinking.NEVER,
+    consumables: Consumables.NO_CONSUMABLES,
+    politicalBeliefs: PoliticalBeliefs.CONSERVATIVE,
+    levelOfEducation: LevelOfEducation.BACHELORS,
+    purity: Purity.VIRGIN_WAITING,
+    onlyLookingForTraditionalHousehold: YesNoOrUnknown.YES,
+    income: Income.SINGLE,
+    maritalStatus: MaritalStatus.NEVER_MARRIED,
+    activity: Activity.INFREQUENT,
+    religion: Religion.CHRISTIANITY,
+    bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum!",
+    weightUnit: "KG",
+    circles: [
+      DefaultCircles.Religion.Christianity,
+      DefaultCircles.Political.Conservative,
+    ],
+  },
+  {
+    username: "Tina",
+    sex: Gender.FEMALE,
+    birthDate: new Date(1998, 2, 24),
+    weight: 80.23,
+    height: 198,
+    continent: Continent.NORTH_AMERICA,
+    location: {
+      country: "America",
+      state: "Virginia",
+    },
+    willingToRelocate: YesNoOrUnknown.YES,
+    children: Children.HAS_NOT_AND_DOES_WANT,
+    ethnicity: Ethnicity.WHITE,
+    drinking: Drinking.NEVER,
+    consumables: Consumables.NO_CONSUMABLES,
+    politicalBeliefs: PoliticalBeliefs.LIBERAL,
+    levelOfEducation: LevelOfEducation.BACHELORS,
+    purity: Purity.VIRGIN_WAITING,
+    onlyLookingForTraditionalHousehold: YesNoOrUnknown.YES,
+    income: Income.SINGLE,
+    maritalStatus: MaritalStatus.NEVER_MARRIED,
+    activity: Activity.INFREQUENT,
+    religion: Religion.CHRISTIANITY,
+    bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum!",
+    weightUnit: "KG",
+    circles: [
+      DefaultCircles.Religion.Christianity,
+      DefaultCircles.Political.Conservative,
+    ],
+  },
+];
 
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;

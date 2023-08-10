@@ -3,7 +3,11 @@
 import { ActivitySelectionValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
 import { ChildrenSelectionValues } from "@/schemas/Children";
-import { CircleSchemaType } from "@/schemas/Circle";
+import {
+  CircleSchemaType,
+  DefaultCirclesList,
+  MatchUserWithCircles,
+} from "@/schemas/Circle";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
@@ -55,7 +59,6 @@ export const NewProfile = memo(function NewProfile({
   const selectedCountry = form.watch("location.country") as string | undefined;
 
   const selectedWeightUnit = form.watch("weightUnit");
-
   // Memoized Values
   const countryValues = useMemo(
     () =>
@@ -97,6 +100,10 @@ export const NewProfile = memo(function NewProfile({
 
   const onValidData = useCallback(
     (data: ProfileSchemaType) => {
+      data.circles = DefaultCirclesList.filter((circle) =>
+        MatchUserWithCircles(data, circle)
+      );
+
       console.log(data);
       // TODO: Handle the promise correctly here!
       void mutateAsync(data);
@@ -106,7 +113,7 @@ export const NewProfile = memo(function NewProfile({
 
   return (
     <div className={styles.newProfile}>
-      <h1>{circle.name}</h1>
+      <h1>New Account: {circle?.label}</h1>
       <Form {...form}>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
         <form onSubmit={form.handleSubmit(onValidData, onInvalidData)}>
@@ -135,7 +142,7 @@ export const NewProfile = memo(function NewProfile({
             <DropdownFormField<ProfileSchemaType>
               name="weightUnit"
               control={form.control}
-              label="Whigh unit do you use?"
+              label="Which unit do you use?"
               options={WeightUnitOptions}
             />
             <LabeledInputFormField
@@ -243,12 +250,14 @@ export const NewProfile = memo(function NewProfile({
               name="religion"
               label="What is your religion?"
               options={ReligionSelectionValues}
+              override={circle.religionRestriction?.[0]}
             />
             <DropdownFormField<ProfileSchemaType>
               name="politicalBeliefs"
               control={form.control}
               label="What is your political stance?"
               options={PoliticalBeliefsSelectionValues}
+              override={circle.politicalBeliefsRestriction?.[0]}
             />
             <DropdownFormField<ProfileSchemaType>
               name="levelOfEducation"
