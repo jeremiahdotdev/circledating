@@ -1,10 +1,8 @@
-import { Button } from "../ui/button";
 import { CheckboxList } from "../ui/CheckboxList";
 import { NavButton } from "./navButton";
 import { NavIcon } from "./navIcon";
 import { NavMenuMobile } from "./navMenuMobile";
 import { NavSheetTrigger } from "./navSheetTrigger";
-import { SheetModal } from "../ui/SheetModal";
 import { TEST_DATA } from "@/schemas/Profile";
 import Link from "next/link";
 import React from "react";
