@@ -139,7 +139,7 @@ model UserProfile {
   height                             Int
   weight                             Float
   locationId                         String
-  continent							 Continent
+  continent							             Continent
   location                           Location         @relation(fields: [locationId], references: [id])
   willingToRelocate                  YesNoOrUnknown
   children                           Children
@@ -157,8 +157,145 @@ model UserProfile {
   bio                                String?           @db.LongText
   weightUnit                         WeightUnit
   User                               User[]
-
   @@index([locationId])
+}
+
+model UserCircle {
+  circleName                                    String           @unique
+  Circle                                        Circle @relation(fields: [circleName], references: [name])
+  username                                      String           @unique
+  User                                          User @relation(fields: [username], references: [userCircleUsername])
+}
+
+model Circle {
+  name                                          String           @unique
+  label                                         String           @unique
+  sexRestriction                                CircleSexRestriction[]
+  ageMaxRestriction                             Int?
+  ageMinRestriction                             Int?
+  maxWeightRestriction                          Int?
+  continentRestriction                          CircleContinentRestriction[]
+  willingToRelocateRestriction                  CircleRelocationRestriction[]
+  childrenRestriction                           CircleChildrenRestriction[]
+  ethnicityRestriction                          CircleEthnicityRestriction[]
+  drinkingRestriction                           CircleDrinkingRestriction[]
+  consumablesRestriction                        CircleConsumablesRestriction[]
+  politicalBeliefsRestriction                   CirclePoliticalBeliefsRestriction[]
+  levelOfEducationRestriction                   CircleLevelOfEducationRestriction[]
+  purityRestriction                             CirclePurityRestriction[]
+  onlyLookingForTraditionalHouseholdRestriction CircleTraditionalRestriction[]
+  incomeRestriction                             CircleIncomeRestriction[]
+  maritalStatusRestriction                      CircleMaritalStatusRestriction[]
+  activityRestriction                           CircleActivityRestriction[]
+  religionRestriction                           CircleReligionRestriction[]
+  users                                         UserCircle[]
+  @@index([name])
+}
+
+model CircleContinentRestriction {
+  id                          String        @id @default(uuid())
+  circleName         String      
+  circle                      Circle        @relation(fields: [circleName], references: [name])   
+  restriction                 Continent
+  @@index([circleName])
+}
+model CircleSexRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        Gender
+  @@index([circleName])
+}
+model CircleRelocationRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        YesNoOrUnknown
+  @@index([circleName])
+}
+model CircleChildrenRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        Children
+  @@index([circleName])
+}
+model CircleEthnicityRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        Ethnicity
+  @@index([circleName])
+}
+model CircleDrinkingRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        Drinking
+  @@index([circleName])
+}
+model CircleConsumablesRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        Consumables
+  @@index([circleName])
+}
+model CirclePoliticalBeliefsRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        PoliticalBeliefs
+  @@index([circleName])
+}
+model CircleLevelOfEducationRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        LevelOfEducation
+  @@index([circleName])
+}
+model CirclePurityRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        PoliticalBeliefs
+  @@index([circleName])
+}
+model CircleTraditionalRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        YesNoOrUnknown
+  @@index([circleName])
+}
+model CircleIncomeRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        Income
+  @@index([circleName])
+}
+model CircleMaritalStatusRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        MaritalStatus
+  @@index([circleName])
+}
+model CircleActivityRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        Activity
+  @@index([circleName])
+}
+model CircleReligionRestriction {
+  id                 String        @id @default(uuid())
+  circleName         String      
+  circle             Circle        @relation(fields: [circleName], references: [name])   
+  restriction        Religion
+  @@index([circleName])
 }
 
 model User {
@@ -166,9 +303,11 @@ model User {
   email               String      @unique
   password            String
   profile             UserProfile @relation(fields: [userProfileUsername], references: [username])
+  circles             UserCircle[]
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
-  userProfileUsername String
+  userProfileUsername String      @unique
+  userCircleUsername  String       @unique
 
   @@index([userProfileUsername])
 }
