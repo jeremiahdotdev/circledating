@@ -93,7 +93,6 @@ export const NewProfile = memo(function NewProfile({
     (errors: unknown) => {
       // Errors are presented in the errors object from the hook. the key is the name of the input and can be used to dynamically display the error message, see below for example
       console.error(errors);
-      console.log(form.getValues());
     },
     [form]
   );
