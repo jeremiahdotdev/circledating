@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 
 export const CircleSchema = z.object({
   label: z.string().min(3).max(20),
-  value: z.string().min(3).max(20),
+  name: z.string().min(3).max(20),
   sexRestriction: z.array(GenderSchema).optional(),
   ageMaxRestriction: z.number().optional(),
   ageMinRestriction: z.number().optional(),
@@ -57,120 +57,120 @@ export const DefaultCircles = {
   Religion: {
     Christianity: {
       label: "Christianity",
-      value: Religion.CHRISTIANITY,
+      name: Religion.CHRISTIANITY,
       religionRestriction: [Religion.CHRISTIANITY],
     } as CircleSchemaType,
     Athiesm: {
       label: "Athiesm",
-      value: Religion.ATHEISM,
+      name: Religion.ATHEISM,
       religionRestriction: [Religion.ATHEISM],
     } as CircleSchemaType,
     Agnosticism: {
       label: "Agnosticism",
-      value: Religion.AGNOSTICISM,
+      name: Religion.AGNOSTICISM,
       religionRestriction: [Religion.AGNOSTICISM],
     } as CircleSchemaType,
     Buddhism: {
       label: "Buddhism",
-      value: Religion.BUDDHISM,
+      name: Religion.BUDDHISM,
       religionRestriction: [Religion.BUDDHISM],
     } as CircleSchemaType,
     Mormonism: {
       label: "Mormonism",
-      value: Religion.MORMONISM,
+      name: Religion.MORMONISM,
       religionRestriction: [Religion.MORMONISM],
     } as CircleSchemaType,
     Hinduism: {
       label: "Hinduism",
-      value: Religion.HINDUISM,
+      name: Religion.HINDUISM,
       religionRestriction: [Religion.HINDUISM],
     } as CircleSchemaType,
     Judaism: {
       label: "Judaism",
-      value: Religion.JUDAISM,
+      name: Religion.JUDAISM,
       religionRestriction: [Religion.JUDAISM],
     } as CircleSchemaType,
     Spiritual: {
       label: "Other/Spiritual",
-      value: Religion.OTHER,
+      name: Religion.OTHER,
       religionRestriction: [Religion.OTHER],
     } as CircleSchemaType,
   },
   Political: {
     Conservative: {
       label: "Conservative",
-      value: PoliticalBeliefs.CONSERVATIVE,
+      name: PoliticalBeliefs.CONSERVATIVE,
       politicalBeliefsRestriction: [PoliticalBeliefs.CONSERVATIVE],
     } as CircleSchemaType,
     Moderate: {
       label: "Moderate",
-      value: PoliticalBeliefs.MODERATE,
+      name: PoliticalBeliefs.MODERATE,
       politicalBeliefsRestriction: [PoliticalBeliefs.MODERATE],
     } as CircleSchemaType,
     Liberal: {
       label: "Liberal",
-      value: PoliticalBeliefs.LIBERAL,
+      name: PoliticalBeliefs.LIBERAL,
       politicalBeliefsRestriction: [PoliticalBeliefs.LIBERAL],
     } as CircleSchemaType,
     Independent: {
       label: "Independent",
-      value: PoliticalBeliefs.INDEPENDENT,
+      name: PoliticalBeliefs.INDEPENDENT,
       politicalBeliefsRestriction: [PoliticalBeliefs.INDEPENDENT],
     } as CircleSchemaType,
   },
   Gender: {
     Male: {
       label: "Male",
-      value: Gender.MALE,
+      name: Gender.MALE,
       sexRestriction: [Gender.MALE],
     } as CircleSchemaType,
     Female: {
       label: "Female",
-      value: Gender.FEMALE,
+      name: Gender.FEMALE,
       sexRestriction: [Gender.FEMALE],
     },
   },
   Continent: {
     NorthAmerica: {
       label: "North America",
-      value: Continent.NORTH_AMERICA,
+      name: Continent.NORTH_AMERICA,
       continentRestriction: [Continent.NORTH_AMERICA],
     } as CircleSchemaType,
     SouthAmerica: {
       label: "South America",
-      value: Continent.SOUTH_AMERICA,
+      name: Continent.SOUTH_AMERICA,
       continentRestriction: [Continent.SOUTH_AMERICA],
     } as CircleSchemaType,
     Europe: {
       label: "Europe",
-      value: Continent.EUROPE,
+      name: Continent.EUROPE,
       continentRestriction: [Continent.EUROPE],
     } as CircleSchemaType,
     Australia: {
       label: "Australia",
-      value: Continent.AUSTRALIA,
+      name: Continent.AUSTRALIA,
       continentRestriction: [Continent.AUSTRALIA],
     } as CircleSchemaType,
     Asia: {
       label: "Asia",
-      value: Continent.ASIA,
+      name: Continent.ASIA,
       continentRestriction: [Continent.ASIA],
     } as CircleSchemaType,
     Antarctica: {
       label: "Antarctica",
-      value: Continent.ANTARTICA,
+      name: Continent.ANTARTICA,
       continentRestriction: [Continent.ANTARTICA],
     } as CircleSchemaType,
     Africa: {
       label: "Africa",
-      value: Continent.AFRICA,
+      name: Continent.AFRICA,
       continentRestriction: [Continent.AFRICA],
     } as CircleSchemaType,
   },
   Drinking: {
     Never: {
       label: "Never Drinks",
-      value: Drinking.NEVER,
+      name: Drinking.NEVER,
       drinkingRestriction: [Drinking.NEVER],
     } as CircleSchemaType,
   },
