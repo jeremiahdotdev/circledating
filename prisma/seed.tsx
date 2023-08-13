@@ -1,4 +1,5 @@
 import {
+  $Enums,
   Circle,
   CircleActivityRestriction,
   CircleChildrenRestriction,
@@ -15,6 +16,7 @@ import {
   CircleRelocationRestriction,
   CircleSexRestriction,
   CircleTraditionalRestriction,
+  Continent,
 } from "@prisma/client";
 import { CircleSchemaType, DefaultCirclesList } from "@/schemas/Circle";
 import { prisma } from "@/server/db";
@@ -40,93 +42,119 @@ function createMany() {
   const circles: Circle[] = [];
 
   DefaultCirclesList.forEach((circle: CircleSchemaType) => {
-    if (circle.continentRestriction)
+    circle.continentRestriction?.forEach((restriction) => {
       circleContinentRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.continentRestriction,
+        restriction: restriction,
       });
-    if (circle.sexRestriction)
+    });
+    circle.sexRestriction?.forEach((restriction) => {
       circleSexRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.sexRestriction,
+        restriction: restriction,
       });
-    if (circle.willingToRelocateRestriction)
+    });
+    circle.willingToRelocateRestriction?.forEach((restriction) => {
       circleRelocationRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.willingToRelocateRestriction,
+        restriction: restriction,
       });
-    if (circle.childrenRestriction)
+    });
+    circle.childrenRestriction?.forEach((restriction) => {
       circleChildrenRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.childrenRestriction,
+        restriction: restriction,
       });
-    if (circle.ethnicityRestriction)
+    });
+    circle.ethnicityRestriction?.forEach((restriction) => {
       circleEthnicityRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.ethnicityRestriction,
+        restriction: restriction,
       });
-    if (circle.drinkingRestriction)
+    });
+    circle.drinkingRestriction?.forEach((restriction) => {
       circleDrinkingRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.drinkingRestriction,
+        restriction: restriction,
       });
-    if (circle.consumablesRestriction)
+    });
+    circle.consumablesRestriction?.forEach((restriction) => {
       circleConsumablesRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.consumablesRestriction,
+        restriction: restriction,
       });
-    if (circle.politicalBeliefsRestriction)
+    });
+    circle.politicalBeliefsRestriction?.forEach((restriction) => {
       circlePoliticalBeliefsRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.politicalBeliefsRestriction,
+        restriction: restriction,
       });
-    if (circle.levelOfEducationRestriction)
+    });
+    circle.levelOfEducationRestriction?.forEach((restriction) => {
       circleLevelOfEducationRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.levelOfEducationRestriction,
+        restriction: restriction,
       });
-    if (circle.purityRestriction)
+    });
+    circle.purityRestriction?.forEach((restriction) => {
       circlePurityRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.purityRestriction,
+        restriction: restriction,
       });
-    if (circle.onlyLookingForTraditionalHouseholdRestriction)
-      circleTraditionalRestriction.push({
-        circleName: circle.name,
-        restriction: circle.onlyLookingForTraditionalHouseholdRestriction,
-      });
-    if (circle.incomeRestriction)
+    });
+    circle.onlyLookingForTraditionalHouseholdRestriction?.forEach(
+      (restriction) => {
+        circleTraditionalRestriction.push({
+          id: "",
+          circleName: circle.name,
+          restriction: restriction,
+        });
+      }
+    );
+    circle.incomeRestriction?.forEach((restriction) => {
       circleIncomeRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.incomeRestriction,
+        restriction: restriction,
       });
-    if (circle.maritalStatusRestriction)
+    });
+    circle.maritalStatusRestriction?.forEach((restriction) => {
       circleMaritalStatusRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.maritalStatusRestriction,
+        restriction: restriction,
       });
-    if (circle.activityRestriction)
+    });
+    circle.activityRestriction?.forEach((restriction) => {
       circleActivityRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.activityRestriction,
+        restriction: restriction,
       });
-    if (circle.religionRestriction)
+    });
+    circle.religionRestriction?.forEach((restriction) => {
       circleReligionRestriction.push({
+        id: "",
         circleName: circle.name,
-        restriction: circle.religionRestriction,
+        restriction: restriction,
       });
-
+    });
     circles.push({
       name: circle.name,
       label: circle.label,
       ageMinRestriction: circle.ageMinRestriction ?? null,
       ageMaxRestriction: circle.ageMaxRestriction ?? null,
       maxWeightRestriction: circle.maxWeightRestriction ?? null,
-      sexRestriction: {
-        connect: {
-          circleName: circle.name,
-        },
-      },
     });
   });
 

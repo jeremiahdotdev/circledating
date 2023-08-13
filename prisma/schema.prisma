@@ -279,7 +279,7 @@ model CirclePurityRestriction {
   id          String           @id @default(uuid())
   circleName  String
   circle      Circle           @relation(fields: [circleName], references: [name])
-  restriction PoliticalBeliefs
+  restriction Purity
 
   @@index([circleName])
 }
