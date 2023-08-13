@@ -19,17 +19,19 @@ interface DropdownFormFieldProps<Values extends FieldValues>
   options: DropdownSelectOption[];
   description?: string;
   type?: "text" | "number";
+  override?: string;
 }
 
 export const DropdownFormField = <Values extends FieldValues>({
   label,
   options,
   description,
+  override,
   type = "text",
   ...props
 }: DropdownFormFieldProps<Values>) => {
   const { field, fieldState } = useController(props);
-
+  console.log(override);
   const correctedValue = useMemo(() => {
     if (type === "text") {
       return field.value as string;
@@ -58,7 +60,8 @@ export const DropdownFormField = <Values extends FieldValues>({
           options={options}
           {...field}
           onChange={onChange}
-          value={correctedValue}
+          value={override ?? correctedValue}
+          override={override}
         />
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}

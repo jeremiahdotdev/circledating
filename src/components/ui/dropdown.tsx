@@ -20,6 +20,7 @@ export type DropdownProps = {
   options: DropdownSelectOption[];
   onChange: (value: string) => void;
   value: string | undefined;
+  override?: string;
 };
 
 export function Dropdown({
@@ -27,6 +28,7 @@ export function Dropdown({
   onChange,
   value,
   placeholder,
+  override,
 }: DropdownProps) {
   const renderedOptions = useMemo(
     () =>
@@ -39,7 +41,7 @@ export function Dropdown({
   );
 
   return (
-    <Select onValueChange={onChange} value={value}>
+    <Select onValueChange={onChange} value={value} disabled={!!override}>
       <SelectTrigger>
         <SelectValue placeholder={placeholder ?? "Select..."} />
       </SelectTrigger>

@@ -1,6 +1,9 @@
+import { CheckboxList } from "../ui/CheckboxList";
 import { NavButton } from "./navButton";
 import { NavIcon } from "./navIcon";
 import { NavMenuMobile } from "./navMenuMobile";
+import { NavSheetTrigger } from "./navSheetTrigger";
+import { TEST_DATA } from "@/schemas/Profile";
 import Link from "next/link";
 import React from "react";
 
@@ -19,7 +22,14 @@ export function Nav() {
           <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900">
             <NavButton href={"/"} label={"Home"} />
             <NavButton href={"/new-profile"} label={"New Profile"} />
-            <NavButton href={"/profile"} label={"Profile"} />
+            <NavButton href={"/profiles"} label={"Profiles"} />
+            <NavSheetTrigger
+              label={"Your Circles"}
+              title={"Your Circles"}
+              description="Enable a circle to limit your viewing content to the selected communities. Enable multiple circles to narrow your search further."
+              // TODO: Replace with current user from cache!
+              content={<CheckboxList options={TEST_DATA[0].circles} />}
+            />
           </ul>
         </div>
       </div>
