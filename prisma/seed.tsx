@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 import {
   Circle,
   CircleActivityRestriction,
@@ -19,7 +20,7 @@ import {
 import { CircleSchemaType, DefaultCirclesList } from "../src/schemas/Circle";
 import { prisma } from "../src/server/db";
 
-async function seedAll() {
+function seedAll() {
   const circleContinentRestriction: CircleContinentRestriction[] = [];
   const circleSexRestriction: CircleSexRestriction[] = [];
   const circleRelocationRestriction: CircleRelocationRestriction[] = [];
@@ -42,70 +43,70 @@ async function seedAll() {
   DefaultCirclesList.forEach((circle: CircleSchemaType) => {
     circle.continentRestriction?.forEach((restriction) => {
       circleContinentRestriction.push({
-        id: "",
+        id: circleContinentRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.sexRestriction?.forEach((restriction) => {
       circleSexRestriction.push({
-        id: "",
+        id: circleSexRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.willingToRelocateRestriction?.forEach((restriction) => {
       circleRelocationRestriction.push({
-        id: "",
+        id: circleContinentRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.childrenRestriction?.forEach((restriction) => {
       circleChildrenRestriction.push({
-        id: "",
+        id: circleChildrenRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.ethnicityRestriction?.forEach((restriction) => {
       circleEthnicityRestriction.push({
-        id: "",
+        id: circleEthnicityRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.drinkingRestriction?.forEach((restriction) => {
       circleDrinkingRestriction.push({
-        id: "",
+        id: circleDrinkingRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.consumablesRestriction?.forEach((restriction) => {
       circleConsumablesRestriction.push({
-        id: "",
+        id: circleConsumablesRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.politicalBeliefsRestriction?.forEach((restriction) => {
       circlePoliticalBeliefsRestriction.push({
-        id: "",
+        id: circlePoliticalBeliefsRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.levelOfEducationRestriction?.forEach((restriction) => {
       circleLevelOfEducationRestriction.push({
-        id: "",
+        id: circleContinentRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.purityRestriction?.forEach((restriction) => {
       circlePurityRestriction.push({
-        id: "",
+        id: circlePurityRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
@@ -113,7 +114,7 @@ async function seedAll() {
     circle.onlyLookingForTraditionalHouseholdRestriction?.forEach(
       (restriction) => {
         circleTraditionalRestriction.push({
-          id: "",
+          id: circleTraditionalRestriction.length.toString(),
           circleName: circle.name,
           restriction: restriction,
         });
@@ -121,28 +122,28 @@ async function seedAll() {
     );
     circle.incomeRestriction?.forEach((restriction) => {
       circleIncomeRestriction.push({
-        id: "",
+        id: circleIncomeRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.maritalStatusRestriction?.forEach((restriction) => {
       circleMaritalStatusRestriction.push({
-        id: "",
+        id: circleMaritalStatusRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.activityRestriction?.forEach((restriction) => {
       circleActivityRestriction.push({
-        id: "",
+        id: circleActivityRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
     });
     circle.religionRestriction?.forEach((restriction) => {
       circleReligionRestriction.push({
-        id: "",
+        id: circleReligionRestriction.length.toString(),
         circleName: circle.name,
         restriction: restriction,
       });
@@ -156,64 +157,184 @@ async function seedAll() {
     });
   });
 
-  void prisma.circleContinentRestriction.createMany({
-    data: circleContinentRestriction,
-  });
-  void prisma.circleSexRestriction.createMany({ data: circleSexRestriction });
-  void prisma.circleRelocationRestriction.createMany({
-    data: circleRelocationRestriction,
-  });
-  void prisma.circleChildrenRestriction.createMany({
-    data: circleChildrenRestriction,
-  });
-  void prisma.circleEthnicityRestriction.createMany({
-    data: circleEthnicityRestriction,
-  });
-  void prisma.circleDrinkingRestriction.createMany({
-    data: circleDrinkingRestriction,
-  });
-  void prisma.circleConsumablesRestriction.createMany({
-    data: circleConsumablesRestriction,
-  });
-  void prisma.circlePoliticalBeliefsRestriction.createMany({
-    data: circlePoliticalBeliefsRestriction,
-  });
-  void prisma.circleLevelOfEducationRestriction.createMany({
-    data: circleLevelOfEducationRestriction,
-  });
-  void prisma.circlePurityRestriction.createMany({
-    data: circlePurityRestriction,
-  });
-  void prisma.circleTraditionalRestriction.createMany({
-    data: circleTraditionalRestriction,
-  });
-  void prisma.circleIncomeRestriction.createMany({
-    data: circleIncomeRestriction,
-  });
-  void prisma.circleMaritalStatusRestriction.createMany({
-    data: circleMaritalStatusRestriction,
-  });
-  void prisma.circleActivityRestriction.createMany({
-    data: circleActivityRestriction,
-  });
-  void prisma.circleReligionRestriction.createMany({
-    data: circleReligionRestriction,
-  });
+  prisma.circleContinentRestriction
+    .createMany({
+      data: circleContinentRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
 
-  return prisma.circle.createMany({
-    data: circles,
-  });
+  prisma.circleSexRestriction
+    .createMany({ data: circleSexRestriction })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+
+  prisma.circleRelocationRestriction
+    .createMany({
+      data: circleRelocationRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+
+  prisma.circleChildrenRestriction
+    .createMany({
+      data: circleChildrenRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circleEthnicityRestriction
+    .createMany({
+      data: circleEthnicityRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circleDrinkingRestriction
+    .createMany({
+      data: circleDrinkingRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circleConsumablesRestriction
+    .createMany({
+      data: circleConsumablesRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circlePoliticalBeliefsRestriction
+    .createMany({
+      data: circlePoliticalBeliefsRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circleLevelOfEducationRestriction
+    .createMany({
+      data: circleLevelOfEducationRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circlePurityRestriction
+    .createMany({
+      data: circlePurityRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circleTraditionalRestriction
+    .createMany({
+      data: circleTraditionalRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circleIncomeRestriction
+    .createMany({
+      data: circleIncomeRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circleMaritalStatusRestriction
+    .createMany({
+      data: circleMaritalStatusRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circleActivityRestriction
+    .createMany({
+      data: circleActivityRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+  prisma.circleReligionRestriction
+    .createMany({
+      data: circleReligionRestriction,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
+
+  prisma.circle
+    .createMany({
+      data: circles,
+    })
+    .then(async () => {
+      await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+      console.error(e);
+      await prisma.$disconnect();
+    });
 }
 
-seedAll()
-  .then(async () => {
-    console.log("Seeded all");
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-
-    await prisma.$disconnect();
-
-    process.exit(1);
-  });
+seedAll();
