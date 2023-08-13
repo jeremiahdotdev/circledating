@@ -1,0 +1,10 @@
+{
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "json": "@/json",
+    "schemas": "@/schemas",
+    "server": "@/server",
+    "env": "@/env"
+  }
+}

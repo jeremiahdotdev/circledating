@@ -1,5 +1,4 @@
 import {
-  $Enums,
   Circle,
   CircleActivityRestriction,
   CircleChildrenRestriction,
@@ -16,12 +15,11 @@ import {
   CircleRelocationRestriction,
   CircleSexRestriction,
   CircleTraditionalRestriction,
-  Continent,
 } from "@prisma/client";
-import { CircleSchemaType, DefaultCirclesList } from "@/schemas/Circle";
-import { prisma } from "@/server/db";
+import { CircleSchemaType, DefaultCirclesList } from "../src/schemas/Circle";
+import { prisma } from "../src/server/db";
 
-function createMany() {
+async function seedAll() {
   const circleContinentRestriction: CircleContinentRestriction[] = [];
   const circleSexRestriction: CircleSexRestriction[] = [];
   const circleRelocationRestriction: CircleRelocationRestriction[] = [];
@@ -202,9 +200,20 @@ function createMany() {
     data: circleReligionRestriction,
   });
 
-  void prisma.circle.createMany({
+  return prisma.circle.createMany({
     data: circles,
   });
 }
 
-createMany();
+seedAll()
+  .then(async () => {
+    console.log("Seeded all");
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+
+    await prisma.$disconnect();
+
+    process.exit(1);
+  });
