@@ -8,12 +8,18 @@ import React from "react";
 export type ProfileCardButtonProps = {
   label: string;
   variant: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export function ProfileCardButton({ label, variant }: ProfileCardButtonProps) {
+export function ProfileCardButton({
+  label,
+  variant,
+  onClick,
+}: ProfileCardButtonProps) {
   return (
     <FormattedTooltip content={label}>
       <Button
+        onClick={onClick}
         className={cn(
           "w-16 h-16 text-white rounded-full shadow",
           variant === "green" ? `bg-green-600` : `bg-red-600`

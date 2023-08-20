@@ -127,6 +127,7 @@ enum YesNoOrUnknown {
 
 model Location {
   id          String        @id @default(uuid())
+  continent   String
   country     String
   state       String
   UserProfile UserProfile[]
@@ -156,7 +157,8 @@ model UserProfile {
   religion                           Religion
   bio                                String?          @db.LongText
   weightUnit                         WeightUnit
-  User                               User[]
+  User                               User[] @relation("userProfile")
+  circles             				 UserCircle[]
 
   @@index([locationId])
 }
@@ -165,7 +167,7 @@ model UserCircle {
   circleName String @unique
   Circle     Circle @relation(fields: [circleName], references: [name])
   username   String @unique
-  User       User   @relation(fields: [username], references: [userCircleUsername])
+  User       UserProfile   @relation(fields: [username], references: [username])
 }
 
 model Circle {
@@ -330,15 +332,28 @@ model CircleReligionRestriction {
 }
 
 model User {
-  id                  String       @id @default(uuid())
-  email               String       @unique
+  id                  String       		@id @default(uuid())
+  email               String       		@unique
   password            String
-  profile             UserProfile  @relation(fields: [userProfileUsername], references: [username])
-  circles             UserCircle[]
-  createdAt           DateTime     @default(now())
-  updatedAt           DateTime     @updatedAt
-  userProfileUsername String       @unique
-  userCircleUsername  String       @unique
+  profile             UserProfile  		@relation("userProfile", fields: [username], references: [username],  map: "user_profile_fk")
+  createdAt           DateTime     		@default(now())
+  updatedAt           DateTime?    		@updatedAt
+  username			  String       		@unique
+  authoredMessages    UserMessage[]    	@relation("authoredMessages") 
+  recievedMessages    UserMessage[]    	@relation("recievedMessages") 
+  @@index([username])
+}
 
-  @@index([userProfileUsername])
+model UserMessage {
+  id                  String       @id @default(uuid())
+  authorUsername      String    
+  authoredMessages    User         @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
+  recipientUsername   String  
+  recievedMessages    User         @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
+  content             String      
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime?    @updatedAt
+
+  @@index([authorUsername])
+  @@index([recipientUsername])
 }

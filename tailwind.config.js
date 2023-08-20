@@ -73,6 +73,12 @@ module.exports = {
       backgroundImage: {
         "circle-pattern": "url('/CircleDating.svg')",
       },
+      minHeight: {
+        navless: "calc(100vh - 74px)",
+      },
+      maxHeight: {
+        navless: "calc(100vh - 74px)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

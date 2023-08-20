@@ -3,8 +3,9 @@ import { ProfileCardButton } from "./ProfileCardButton";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
 import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
-import { ProfileSchemaType, TEST_DATA } from "@/schemas/Profile";
+import { ProfileSchemaType } from "@/schemas/Profile";
 import { cn } from "@/lib/utils";
+import { currentUser } from "@/utils/user.store";
 import {
   faBaby,
   faDollarSign,
@@ -20,6 +21,7 @@ import {
   faWeight,
   faWineGlass,
 } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 import React, { useMemo } from "react";
 import dayjs from "dayjs";
 
@@ -28,11 +30,8 @@ export type ProfileCardProps = {
 };
 
 function IsPerfectMatch(profile: ProfileSchemaType) {
-  // TODO: Get current user profile from cache
-  const currentUserProfile = TEST_DATA[0];
-
-  if (profile.religion !== currentUserProfile.religion) return false;
-  if (profile.drinking !== currentUserProfile.drinking) return false;
+  if (profile.religion !== currentUser.religion) return false;
+  if (profile.drinking !== currentUser.drinking) return false;
   if (profile.activity !== currentUserProfile.activity) return false;
   if (profile.children !== currentUserProfile.children) return false;
   if (profile.income !== currentUserProfile.income) return false;
@@ -51,6 +50,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
   const isPerfectMatch = useMemo(() => {
     return IsPerfectMatch(profile);
   }, [profile]);
+
   return (
     <div className="pt-4">
       <em className="bg-gradient-to-r from-cyan-400 to-fuchsia-300 bg-clip-text font-extrabold text-transparent">
@@ -162,7 +162,12 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           {profile.bio}
         </div>
         <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
-          <ProfileCardButton variant={"green"} label={"Start a conversation"} />
+          <Link href={`/messages/${profile.username}`}>
+            <ProfileCardButton
+              variant={"green"}
+              label={"Start a conversation"}
+            />
+          </Link>
           <ProfileCardButton variant={"red"} label={"Hide this user"} />
         </div>
       </div>

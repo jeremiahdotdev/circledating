@@ -102,8 +102,6 @@ export const NewProfile = memo(function NewProfile({
       data.circles = DefaultCirclesList.filter((circle) =>
         MatchUserWithCircles(data, circle)
       );
-
-      console.log(data);
       // TODO: Handle the promise correctly here!
       void mutateAsync(data);
     },
