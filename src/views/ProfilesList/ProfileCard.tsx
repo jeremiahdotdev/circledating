@@ -5,7 +5,6 @@ import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { cn } from "@/lib/utils";
-import { currentUser } from "@/utils/user.store";
 import {
   faBaby,
   faDollarSign,
@@ -24,20 +23,21 @@ import {
 import Link from "next/link";
 import React, { useMemo } from "react";
 import dayjs from "dayjs";
+import state from "@/utils/user.store";
 
 export type ProfileCardProps = {
   profile: ProfileSchemaType;
 };
 
 function IsPerfectMatch(profile: ProfileSchemaType) {
-  if (profile.religion !== currentUser.religion) return false;
-  if (profile.drinking !== currentUser.drinking) return false;
-  if (profile.activity !== currentUserProfile.activity) return false;
-  if (profile.children !== currentUserProfile.children) return false;
-  if (profile.income !== currentUserProfile.income) return false;
-  if (profile.maritalStatus !== currentUserProfile.maritalStatus) return false;
-  if (profile.purity !== currentUserProfile.purity) return false;
-  if (profile.politicalBeliefs !== currentUserProfile.politicalBeliefs)
+  if (profile.religion !== state.currentUser.religion) return false;
+  if (profile.drinking !== state.currentUser.drinking) return false;
+  if (profile.activity !== state.currentUser.activity) return false;
+  if (profile.children !== state.currentUser.children) return false;
+  if (profile.income !== state.currentUser.income) return false;
+  if (profile.maritalStatus !== state.currentUser.maritalStatus) return false;
+  if (profile.purity !== state.currentUser.purity) return false;
+  if (profile.politicalBeliefs !== state.currentUser.politicalBeliefs)
     return false;
 
   return true;

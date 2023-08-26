@@ -140,7 +140,6 @@ model UserProfile {
   height                             Int
   weight                             Float
   locationId                         String
-  continent                          Continent
   location                           Location         @relation(fields: [locationId], references: [id])
   willingToRelocate                  YesNoOrUnknown
   children                           Children

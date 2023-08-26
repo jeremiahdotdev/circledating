@@ -5,8 +5,8 @@ export const MessageSchema = z.object({
   authorUsername: z.string(),
   recipientUsername: z.string(),
   content: z.string(),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date().nullable(),
 });
 
 export type MessageSchemaType = z.infer<typeof MessageSchema>;

@@ -1,10 +1,11 @@
 "use client";
 
-import { TEST_DATA } from "@/schemas/Profile";
+import { CirclesList, Users } from "prisma/seeds/data";
 
 const state = {
   // TODO: Read user frm cache
-  currentUser: TEST_DATA[0],
+  currentUser: Users[0],
+  currentCircles: [...CirclesList],
 };
 
 export default state;

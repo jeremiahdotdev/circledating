@@ -1,72 +1,31 @@
 "use client";
 
 import { Message } from "./Message";
+import { MessageSchemaType } from "@/schemas/Message";
 import { NewMessageBar } from "./NewMessageBar";
+import { getOppositeSex } from "@/schemas/Gender";
 import React from "react";
 import state from "@/utils/user.store";
 
-export function Messaging() {
-  // TODO: Replace with user from cache.
-  const recipient = profiles[1];
-  const conversation = [
-    {
-      author: recipient.username,
-      recipient: state.currentUser.username,
-      timestamp: new Date(),
-      content: "Hello",
-    },
-    {
-      author: state.currentUser.username,
-      recipient: recipient.username,
-      timestamp: new Date(),
-      content: "Hello",
-    },
-    {
-      author: recipient.username,
-      recipient: state.currentUser.username,
-      timestamp: new Date(),
-      content: "Hello",
-    },
-    {
-      author: recipient.username,
-      recipient: state.currentUser.username,
-      timestamp: new Date(),
-      content: "Hello",
-    },
-    {
-      author: state.currentUser.username,
-      recipient: recipient.username,
-      timestamp: new Date(),
-      content: "Hello",
-    },
-    {
-      author: recipient.username,
-      recipient: state.currentUser.username,
-      timestamp: new Date(),
-      content: "Hello",
-    },
-    {
-      author: state.currentUser.username,
-      recipient: recipient.username,
-      timestamp: new Date(),
-      content: "Hello",
-    },
-  ];
+export type MessagingProps = {
+  conversation: MessageSchemaType[];
+};
+export function Messaging({ conversation }: MessagingProps) {
   return (
     <div className="flex max-h-navless min-h-navless w-full flex-col justify-between bg-background p-3 ">
       <div className="flex w-full items-center justify-center self-center overflow-y-scroll">
         <div className="flex flex-col-reverse sm:w-3/4">
-          {conversation.map(({ timestamp, content, author }, index) => (
+          {conversation.map(({ createdAt, content, authorUsername }, index) => (
             <Message
-              key={`${author}-${index}`}
-              timestamp={timestamp}
+              key={`${authorUsername}-${index}`}
+              timestamp={createdAt}
               content={content}
               gender={
-                author == state.currentUser.username
+                authorUsername == state.currentUser.username
                   ? state.currentUser.sex
-                  : recipient.sex
+                  : getOppositeSex(state.currentUser.sex)
               }
-              isCurrentUser={author == state.currentUser.username}
+              isCurrentUser={authorUsername == state.currentUser.username}
             />
           ))}
         </div>

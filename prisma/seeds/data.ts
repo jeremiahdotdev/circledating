@@ -16,6 +16,7 @@ import {
   YesNoOrUnknown,
 } from "@prisma/client";
 import { CircleSchemaType } from "../../src/schemas/Circle";
+import { countries } from "@/globals/location";
 
 export const Circles = {
   Religion: {
@@ -167,13 +168,16 @@ export const CirclesList = [
 
 export const Users = [
   {
-    username: "J",
+    username: "Jeremiah",
     sex: Gender.MALE,
     birthDate: new Date(1999, 4, 24),
     weight: 80.23,
     height: 198,
-    continent: Continent.NORTH_AMERICA,
-    locationId: "20",
+    location: {
+      country: countries[20].country,
+      continent: countries[20].continent,
+      state: countries[20].states[0],
+    },
     willingToRelocate: YesNoOrUnknown.YES,
     children: Children.HAS_NOT_AND_DOES_WANT,
     ethnicity: Ethnicity.WHITE,
@@ -199,8 +203,11 @@ export const Users = [
     birthDate: new Date(1998, 2, 24),
     weight: 80.23,
     height: 198,
-    continent: Continent.NORTH_AMERICA,
-    location: "20",
+    location: {
+      country: countries[20].country,
+      continent: countries[20].continent,
+      state: countries[20].states[0],
+    },
     willingToRelocate: YesNoOrUnknown.YES,
     children: Children.HAS_NOT_AND_DOES_WANT,
     ethnicity: Ethnicity.WHITE,
@@ -226,8 +233,11 @@ export const Users = [
     birthDate: new Date(1998, 2, 24),
     weight: 80.23,
     height: 198,
-    continent: Continent.NORTH_AMERICA,
-    location: "22",
+    location: {
+      country: countries[20].country,
+      continent: countries[20].continent,
+      state: countries[20].states[0],
+    },
     willingToRelocate: YesNoOrUnknown.YES,
     children: Children.HAS_NOT_AND_DOES_WANT,
     ethnicity: Ethnicity.WHITE,
@@ -250,6 +260,10 @@ export const Users = [
 ];
 
 export const Messages = [
-  { authorUsername: "J", recipientUsername: "Tina", content: "Heyooooo!" },
-  { authorUsername: "Tina", recipientUsername: "J", content: "Hi!" },
+  {
+    authorUsername: "Jeremiah",
+    recipientUsername: "Tina",
+    content: "Heyooooo!",
+  },
+  { authorUsername: "Tina", recipientUsername: "Jeremiah", content: "Hi!" },
 ];

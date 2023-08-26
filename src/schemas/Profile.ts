@@ -24,7 +24,6 @@ export const ProfileSchema = z.object({
   birthDate: z.date(),
   height: z.number(), // Height in cm
   weight: z.number(), // Weight in kg
-  continent: ContinentSchema,
   location: SelectedLocationSchema,
   willingToRelocate: YesAndNoSchema,
   children: ChildrenSchema,
