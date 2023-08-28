@@ -163,10 +163,14 @@ model UserProfile {
 }
 
 model UserCircle {
-  circleName String @unique
-  Circle     Circle @relation(fields: [circleName], references: [name])
-  username   String @unique
+  id         String        @id @default(uuid())
+  circleName String
+  Circle     Circle        @relation(fields: [circleName], references: [name])
+  username   String 
   User       UserProfile   @relation(fields: [username], references: [username])
+
+  @@index([username])
+  @@index([circleName])
 }
 
 model Circle {
@@ -191,6 +195,7 @@ model Circle {
   activityRestriction                           CircleActivityRestriction[]
   religionRestriction                           CircleReligionRestriction[]
   users                                         UserCircle[]
+  selected                                      SelectedCircle[]
 
   @@index([name])
 }
@@ -338,10 +343,36 @@ model User {
   createdAt           DateTime     		@default(now())
   updatedAt           DateTime?    		@updatedAt
   username			  String       		@unique
+  preferences         UserPreferences[]
   authoredMessages    UserMessage[]    	@relation("authoredMessages") 
   recievedMessages    UserMessage[]    	@relation("recievedMessages") 
   @@index([username])
 }
+
+model UserPreferences {
+  username            String       @unique
+  user                User         @relation(fields: [username], references: [username])
+  minAge              Int
+  maxAge              Int
+  sex                 Gender?
+  circles             SelectedCircle[]
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime?    @updatedAt
+
+  @@index([username])
+}
+
+model SelectedCircle {
+  id         String            @id @default(uuid())
+  circleName String
+  Circle     Circle            @relation(fields: [circleName], references: [name])
+  username   String 
+  User       UserPreferences   @relation(fields: [username], references: [username])
+
+  @@index([username])
+  @@index([circleName])
+}
+
 
 model UserMessage {
   id                  String       @id @default(uuid())

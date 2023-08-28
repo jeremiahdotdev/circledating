@@ -1,6 +1,5 @@
-import { CircleSchema } from "@/schemas/Circle";
 import { ProfileSchema } from "@/schemas/Profile";
-import { UserProfile } from "@prisma/client";
+import { UserPreferencesSchema } from "@/schemas/UserPreferences";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from "zod";
 
@@ -21,7 +20,7 @@ export const profileRouter = createTRPCRouter({
     .input(
       z.object({
         currentUserProfile: ProfileSchema,
-        circles: z.array(CircleSchema),
+        currentUserPreferences: UserPreferencesSchema,
       })
     )
     .query(({ input, ctx }) => {
@@ -30,13 +29,26 @@ export const profileRouter = createTRPCRouter({
           NOT: {
             username: input.currentUserProfile.username,
           },
+          birthDate: {
+            gte: new Date(
+              Date.now() -
+                input.currentUserPreferences.maxAge * 1000 * 60 * 60 * 24 * 365
+            ),
+            lte: new Date(
+              Date.now() -
+                input.currentUserPreferences.minAge * 1000 * 60 * 60 * 24 * 365
+            ),
+          },
+          sex: input.currentUserPreferences.sex,
         },
         include: {
           location: {},
           circles: {
             where: {
               circleName: {
-                in: input.circles.map((circle) => circle.name),
+                in: input.currentUserPreferences.selectedCircles.map(
+                  (circle) => circle.name
+                ),
               },
             },
             include: {

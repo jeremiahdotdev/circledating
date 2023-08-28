@@ -26,7 +26,7 @@ export function seedUsers() {
     birthDate: userProfile.birthDate,
     weight: userProfile.weight,
     height: userProfile.height,
-    location: userProfile.location,
+    locationId: userProfile.location.id,
     willingToRelocate: userProfile.willingToRelocate,
     children: userProfile.children,
     ethnicity: userProfile.ethnicity,
@@ -54,8 +54,12 @@ export function seedUsers() {
 
   const userCircles: UserCircle[] = [];
   Users.forEach(({ username, circles }) =>
-    circles.forEach(({ name }) => {
-      userCircles.push({ circleName: name, username: username });
+    circles.forEach(({ name }, index) => {
+      userCircles.push({
+        id: `${index}`,
+        circleName: name,
+        username: username,
+      });
     })
   );
 

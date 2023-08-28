@@ -16,7 +16,7 @@ import {
   YesNoOrUnknown,
 } from "@prisma/client";
 import { CircleSchemaType } from "../../src/schemas/Circle";
-import { countries } from "@/globals/location";
+import { countries } from "../../src/globals/location";
 
 export const Circles = {
   Religion: {
@@ -174,6 +174,7 @@ export const Users = [
     weight: 80.23,
     height: 198,
     location: {
+      id: "20",
       country: countries[20].country,
       continent: countries[20].continent,
       state: countries[20].states[0],
@@ -204,6 +205,7 @@ export const Users = [
     weight: 80.23,
     height: 198,
     location: {
+      id: "20",
       country: countries[20].country,
       continent: countries[20].continent,
       state: countries[20].states[0],
@@ -234,6 +236,7 @@ export const Users = [
     weight: 80.23,
     height: 198,
     location: {
+      id: "20",
       country: countries[20].country,
       continent: countries[20].continent,
       state: countries[20].states[0],
@@ -256,6 +259,21 @@ export const Users = [
     circles: [Circles.Religion.Christianity, Circles.Political.Conservative],
     password: "password1234",
     email: "tina@gmail.com",
+  },
+];
+
+export const UsersPreferences = [
+  {
+    id: "1",
+    username: "Jeremiah",
+    sex: Gender.FEMALE,
+    birthDate: new Date(1999, 4, 24),
+    maxAge: 30,
+    minAge: 18,
+    selectedCircles: [
+      Circles.Religion.Christianity,
+      Circles.Political.Conservative,
+    ],
   },
 ];
 

@@ -10,7 +10,7 @@ export type ProfilesViewProps = Record<never, never>;
 export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
   const request = api.profiles.read.useQuery({
     currentUserProfile: state.currentUser,
-    circles: state.currentCircles,
+    currentUserPreferences: state.currentUserPreferences,
   });
 
   if (!request.data) return <Loading />;
@@ -21,7 +21,6 @@ export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
     birthDate: userProfile.birthDate,
     weight: userProfile.weight,
     height: userProfile.height,
-    continent: userProfile.continent,
     location: userProfile.location,
     willingToRelocate: userProfile.willingToRelocate,
     children: userProfile.children,

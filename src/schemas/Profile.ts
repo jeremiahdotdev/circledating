@@ -2,7 +2,6 @@ import { ActivitySchema } from "./Activity";
 import { ChildrenSchema } from "./Children";
 import { CircleSchema } from "./Circle";
 import { ConsumablesSchema } from "./Consumables";
-import { ContinentSchema } from "./Continent";
 import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
