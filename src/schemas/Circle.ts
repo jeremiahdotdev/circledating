@@ -62,7 +62,7 @@ export const MatchUserWithCircles = (
     return false;
   if (
     circle.continentRestriction &&
-    !circle.continentRestriction?.includes(user.continent)
+    !circle.continentRestriction?.includes(user.location.continent)
   )
     return false;
   if (

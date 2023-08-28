@@ -27,7 +27,7 @@ export const MessagesView: React.FC<MessagingOptions> = memo(() => {
   const conversation: MessageSchemaType[] = request.data;
   return (
     <main className="flex min-h-navless flex-col items-center justify-between">
-      <Messaging conversation={conversation} />
+      <Messaging conversation={conversation} recipient={user} />
     </main>
   );
 });

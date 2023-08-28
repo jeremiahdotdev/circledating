@@ -380,7 +380,7 @@ model UserMessage {
   authoredMessages    User         @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
   recipientUsername   String  
   recievedMessages    User         @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
-  content             String      
+  content             String       @db.VarChar(2000) 
   createdAt           DateTime     @default(now())
   updatedAt           DateTime?    @updatedAt
 

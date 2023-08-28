@@ -1,5 +1,5 @@
+import { IconButton, IconButtonVarient } from "../../schemas/IconButton";
 import { ProfileAttribute } from "./ProfileAttribute";
-import { ProfileCardButton } from "./ProfileCardButton";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
 import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
@@ -163,12 +163,15 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         </div>
         <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
           <Link href={`/messages/${profile.username}`}>
-            <ProfileCardButton
-              variant={"green"}
+            <IconButton
+              variant={IconButtonVarient.MAIL}
               label={"Start a conversation"}
             />
           </Link>
-          <ProfileCardButton variant={"red"} label={"Hide this user"} />
+          <IconButton
+            variant={IconButtonVarient.TRASH}
+            label={"Hide this user"}
+          />
         </div>
       </div>
     </div>

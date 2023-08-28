@@ -3,6 +3,7 @@
 import { Gender } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import React from "react";
+import ReactMarkdown from "react-markdown";
 
 export type MessageProps = {
   timestamp: Date;
@@ -33,11 +34,13 @@ export function Message({
       </h1>
       <div
         className={cn(
-          "py-6 px-12 flex rounded-full border flex-col h-full w-3/4 flex-wrap text-sm ring-offset-background sm:justify-between",
+          "py-6 px-12 flex rounded-3xl border flex-col h-full w-3/4 flex-wrap text-sm ring-offset-background sm:justify-between",
           gender == Gender.MALE ? "bg-cyan-200" : "bg-fuchsia-200"
         )}
       >
-        <p className="text-lg">{content}</p>
+        <ReactMarkdown className="prose lg:prose-xl text-lg">
+          {content}
+        </ReactMarkdown>
       </div>
     </div>
   );
