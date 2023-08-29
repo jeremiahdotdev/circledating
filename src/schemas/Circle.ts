@@ -1,14 +1,6 @@
 import { ActivitySchema } from "./Activity";
 import { ChildrenSchema } from "./Children";
 import { ConsumablesSchema } from "./Consumables";
-import {
-  Continent,
-  Drinking,
-  Gender,
-  PoliticalBeliefs,
-  Religion,
-} from "@prisma/client";
-import { ContinentSchema } from "./Continent";
 import { CustomRestriction } from "./CustomRestriction";
 import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
@@ -25,12 +17,12 @@ import dayjs from "dayjs";
 
 export const CircleSchema = z.object({
   label: z.string().min(3).max(20),
-  value: z.string().min(3).max(20),
+  name: z.string().min(3).max(20),
   sexRestriction: z.array(GenderSchema).optional(),
   ageMaxRestriction: z.number().optional(),
   ageMinRestriction: z.number().optional(),
   maxWeightRestriction: z.number().optional(),
-  continentRestriction: z.array(ContinentSchema).optional(),
+  continentRestriction: z.array(z.string()).optional(),
   willingToRelocateRestriction: z.array(YesAndNoSchema).optional(),
   childrenRestriction: z.array(ChildrenSchema).optional(),
   ethnicityRestriction: z.array(EthnicitySchema).optional(),
@@ -53,154 +45,6 @@ import { useMemo } from "react";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
-export const DefaultCircles = {
-  Religion: {
-    Christianity: {
-      label: "Christianity",
-      value: Religion.CHRISTIANITY,
-      religionRestriction: [Religion.CHRISTIANITY],
-    } as CircleSchemaType,
-    Athiesm: {
-      label: "Athiesm",
-      value: Religion.ATHEISM,
-      religionRestriction: [Religion.ATHEISM],
-    } as CircleSchemaType,
-    Agnosticism: {
-      label: "Agnosticism",
-      value: Religion.AGNOSTICISM,
-      religionRestriction: [Religion.AGNOSTICISM],
-    } as CircleSchemaType,
-    Buddhism: {
-      label: "Buddhism",
-      value: Religion.BUDDHISM,
-      religionRestriction: [Religion.BUDDHISM],
-    } as CircleSchemaType,
-    Mormonism: {
-      label: "Mormonism",
-      value: Religion.MORMONISM,
-      religionRestriction: [Religion.MORMONISM],
-    } as CircleSchemaType,
-    Hinduism: {
-      label: "Hinduism",
-      value: Religion.HINDUISM,
-      religionRestriction: [Religion.HINDUISM],
-    } as CircleSchemaType,
-    Judaism: {
-      label: "Judaism",
-      value: Religion.JUDAISM,
-      religionRestriction: [Religion.JUDAISM],
-    } as CircleSchemaType,
-    Spiritual: {
-      label: "Other/Spiritual",
-      value: Religion.OTHER,
-      religionRestriction: [Religion.OTHER],
-    } as CircleSchemaType,
-  },
-  Political: {
-    Conservative: {
-      label: "Conservative",
-      value: PoliticalBeliefs.CONSERVATIVE,
-      politicalBeliefsRestriction: [PoliticalBeliefs.CONSERVATIVE],
-    } as CircleSchemaType,
-    Moderate: {
-      label: "Moderate",
-      value: PoliticalBeliefs.MODERATE,
-      politicalBeliefsRestriction: [PoliticalBeliefs.MODERATE],
-    } as CircleSchemaType,
-    Liberal: {
-      label: "Liberal",
-      value: PoliticalBeliefs.LIBERAL,
-      politicalBeliefsRestriction: [PoliticalBeliefs.LIBERAL],
-    } as CircleSchemaType,
-    Independent: {
-      label: "Independent",
-      value: PoliticalBeliefs.INDEPENDENT,
-      politicalBeliefsRestriction: [PoliticalBeliefs.INDEPENDENT],
-    } as CircleSchemaType,
-  },
-  Gender: {
-    Male: {
-      label: "Male",
-      value: Gender.MALE,
-      sexRestriction: [Gender.MALE],
-    } as CircleSchemaType,
-    Female: {
-      label: "Female",
-      value: Gender.FEMALE,
-      sexRestriction: [Gender.FEMALE],
-    },
-  },
-  Continent: {
-    NorthAmerica: {
-      label: "North America",
-      value: Continent.NORTH_AMERICA,
-      continentRestriction: [Continent.NORTH_AMERICA],
-    } as CircleSchemaType,
-    SouthAmerica: {
-      label: "South America",
-      value: Continent.SOUTH_AMERICA,
-      continentRestriction: [Continent.SOUTH_AMERICA],
-    } as CircleSchemaType,
-    Europe: {
-      label: "Europe",
-      value: Continent.EUROPE,
-      continentRestriction: [Continent.EUROPE],
-    } as CircleSchemaType,
-    Australia: {
-      label: "Australia",
-      value: Continent.AUSTRALIA,
-      continentRestriction: [Continent.AUSTRALIA],
-    } as CircleSchemaType,
-    Asia: {
-      label: "Asia",
-      value: Continent.ASIA,
-      continentRestriction: [Continent.ASIA],
-    } as CircleSchemaType,
-    Antarctica: {
-      label: "Antarctica",
-      value: Continent.ANTARTICA,
-      continentRestriction: [Continent.ANTARTICA],
-    } as CircleSchemaType,
-    Africa: {
-      label: "Africa",
-      value: Continent.AFRICA,
-      continentRestriction: [Continent.AFRICA],
-    } as CircleSchemaType,
-  },
-  Drinking: {
-    Never: {
-      label: "Never Drinks",
-      value: Drinking.NEVER,
-      drinkingRestriction: [Drinking.NEVER],
-    } as CircleSchemaType,
-  },
-};
-
-export const DefaultCirclesList = [
-  DefaultCircles.Religion.Athiesm,
-  DefaultCircles.Religion.Agnosticism,
-  DefaultCircles.Religion.Buddhism,
-  DefaultCircles.Religion.Christianity,
-  DefaultCircles.Religion.Hinduism,
-  DefaultCircles.Religion.Judaism,
-  DefaultCircles.Religion.Mormonism,
-  DefaultCircles.Religion.Spiritual,
-  DefaultCircles.Political.Conservative,
-  DefaultCircles.Political.Moderate,
-  DefaultCircles.Political.Liberal,
-  DefaultCircles.Political.Independent,
-  DefaultCircles.Continent.NorthAmerica,
-  DefaultCircles.Continent.SouthAmerica,
-  DefaultCircles.Continent.Antarctica,
-  DefaultCircles.Continent.Australia,
-  DefaultCircles.Continent.Asia,
-  DefaultCircles.Continent.Europe,
-  DefaultCircles.Continent.Africa,
-  DefaultCircles.Drinking.Never,
-  DefaultCircles.Gender.Male,
-  DefaultCircles.Gender.Female,
-];
-
 export const MatchUserWithCircles = (
   user: ProfileSchemaType,
   circle: CircleSchemaType
@@ -217,7 +61,7 @@ export const MatchUserWithCircles = (
     return false;
   if (
     circle.continentRestriction &&
-    !circle.continentRestriction?.includes(user.continent)
+    !circle.continentRestriction?.includes(user.location.continent)
   )
     return false;
   if (

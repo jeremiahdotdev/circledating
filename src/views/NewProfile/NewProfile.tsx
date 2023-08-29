@@ -3,11 +3,8 @@
 import { ActivitySelectionValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
 import { ChildrenSelectionValues } from "@/schemas/Children";
-import {
-  CircleSchemaType,
-  DefaultCirclesList,
-  MatchUserWithCircles,
-} from "@/schemas/Circle";
+import { CircleSchemaType, MatchUserWithCircles } from "@/schemas/Circle";
+import { CirclesList } from "prisma/seeds/data";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
@@ -99,11 +96,9 @@ export const NewProfile = memo(function NewProfile({
 
   const onValidData = useCallback(
     (data: ProfileSchemaType) => {
-      data.circles = DefaultCirclesList.filter((circle) =>
+      data.circles = CirclesList.filter((circle) =>
         MatchUserWithCircles(data, circle)
       );
-
-      console.log(data);
       // TODO: Handle the promise correctly here!
       void mutateAsync(data);
     },
@@ -114,8 +109,11 @@ export const NewProfile = memo(function NewProfile({
     <div className={styles.newProfile}>
       <h1>New Account: {circle?.label}</h1>
       <Form {...form}>
-        {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form onSubmit={form.handleSubmit(onValidData, onInvalidData)}>
+        <form
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onSubmit={form.handleSubmit(onValidData, onInvalidData)}
+          className="w-full sm:w-3/4"
+        >
           <FormSectionHeading>General</FormSectionHeading>
           <section>
             <LabeledInputFormField

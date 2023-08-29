@@ -14,3 +14,8 @@ export const GenderSelectionValues: ComboboxOption<Gender>[] = [
     value: Gender.FEMALE,
   },
 ];
+
+export const getOppositeSex = (sex: Gender) => {
+  if (sex == Gender.MALE) return Gender.FEMALE;
+  return Gender.MALE;
+};

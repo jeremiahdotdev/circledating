@@ -31,7 +31,6 @@ export const DropdownFormField = <Values extends FieldValues>({
   ...props
 }: DropdownFormFieldProps<Values>) => {
   const { field, fieldState } = useController(props);
-  console.log(override);
   const correctedValue = useMemo(() => {
     if (type === "text") {
       return field.value as string;

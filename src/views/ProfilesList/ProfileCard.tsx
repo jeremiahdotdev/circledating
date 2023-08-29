@@ -1,9 +1,9 @@
+import { IconButton, IconButtonVariant } from "../../schemas/IconButton";
 import { ProfileAttribute } from "./ProfileAttribute";
-import { ProfileCardButton } from "./ProfileCardButton";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
 import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
-import { ProfileSchemaType, TEST_DATA } from "@/schemas/Profile";
+import { ProfileSchemaType } from "@/schemas/Profile";
 import { cn } from "@/lib/utils";
 import {
   faBaby,
@@ -20,46 +20,61 @@ import {
   faWeight,
   faWineGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import React, { useMemo } from "react";
+import Link from "next/link";
+import React, { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
+import state from "@/utils/user.store";
 
 export type ProfileCardProps = {
   profile: ProfileSchemaType;
 };
 
-function IsPerfectMatch(profile: ProfileSchemaType) {
-  // TODO: Get current user profile from cache
-  const currentUserProfile = TEST_DATA[0];
-
-  if (profile.religion !== currentUserProfile.religion) return false;
-  if (profile.drinking !== currentUserProfile.drinking) return false;
-  if (profile.activity !== currentUserProfile.activity) return false;
-  if (profile.children !== currentUserProfile.children) return false;
-  if (profile.income !== currentUserProfile.income) return false;
-  if (profile.maritalStatus !== currentUserProfile.maritalStatus) return false;
-  if (profile.purity !== currentUserProfile.purity) return false;
-  if (profile.politicalBeliefs !== currentUserProfile.politicalBeliefs)
+function IsProfilePerfectMatch(profile: ProfileSchemaType) {
+  if (profile.religion !== state.currentUser.religion) return false;
+  if (profile.drinking !== state.currentUser.drinking) return false;
+  if (profile.activity !== state.currentUser.activity) return false;
+  if (profile.children !== state.currentUser.children) return false;
+  if (profile.income !== state.currentUser.income) return false;
+  if (profile.maritalStatus !== state.currentUser.maritalStatus) return false;
+  if (profile.purity !== state.currentUser.purity) return false;
+  if (profile.politicalBeliefs !== state.currentUser.politicalBeliefs)
     return false;
 
   return true;
 }
 
 export function ProfileCard({ profile }: ProfileCardProps) {
+  const [showCard, setShowCard] = useState(true);
+
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
-  const isPerfectMatch = useMemo(() => {
-    return IsPerfectMatch(profile);
+  const isProfilePerfectMatch = useMemo(() => {
+    return IsProfilePerfectMatch(profile);
   }, [profile]);
+  const isLiked = useMemo(() => {
+    return state.currentUser.affections?.find(
+      (i) => i.initiatedUsername === profile.username && i.isLiked
+    );
+  }, [profile]);
+
+  const hide = useCallback(() => {
+    setShowCard(false);
+  }, [setShowCard]);
+
+  if (!showCard) return <></>;
+
   return (
     <div className="pt-4">
       <em className="bg-gradient-to-r from-cyan-400 to-fuchsia-300 bg-clip-text font-extrabold text-transparent">
-        {isPerfectMatch && "Perfect Match"}&nbsp;
+        {isProfilePerfectMatch && "Perfect Match"}&nbsp;
       </em>
       <div
         className={cn(
           "flex h-full max-w-3xl flex-col rounded-md border bg-background p-3 ",
-          isPerfectMatch ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100" : ""
+          isProfilePerfectMatch
+            ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100"
+            : ""
         )}
       >
         <div className="mx-6 flex h-full max-w-full flex-wrap items-center justify-center text-sm ring-offset-background sm:justify-between sm:pt-6 ">
@@ -162,8 +177,25 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           {profile.bio}
         </div>
         <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
-          <ProfileCardButton variant={"green"} label={"Start a conversation"} />
-          <ProfileCardButton variant={"red"} label={"Hide this user"} />
+          {isLiked ? (
+            <Link href={`/messages/${profile.username}`}>
+              <IconButton
+                variant={IconButtonVariant.MAIL}
+                label={"They like you! Start a conversation."}
+              />
+            </Link>
+          ) : (
+            <IconButton
+              variant={IconButtonVariant.LIKE}
+              label={"Like!"}
+              onClick={hide}
+            />
+          )}
+          <IconButton
+            variant={IconButtonVariant.TRASH}
+            label={"Hide this user"}
+            onClick={hide}
+          />
         </div>
       </div>
     </div>

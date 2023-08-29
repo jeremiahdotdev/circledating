@@ -1,0 +1,302 @@
+import {
+  Activity,
+  Children,
+  Consumables,
+  Drinking,
+  Ethnicity,
+  Gender,
+  Income,
+  LevelOfEducation,
+  MaritalStatus,
+  PoliticalBeliefs,
+  Purity,
+  Religion,
+  WeightUnit,
+  YesNoOrUnknown,
+} from "@prisma/client";
+import { CircleSchemaType } from "../../src/schemas/Circle";
+import { countries } from "../../src/globals/location";
+
+export const Circles = {
+  Religion: {
+    Christianity: {
+      label: "Christianity",
+      name: Religion.CHRISTIANITY,
+      religionRestriction: [Religion.CHRISTIANITY],
+    } as CircleSchemaType,
+    Athiesm: {
+      label: "Athiesm",
+      name: Religion.ATHEISM,
+      religionRestriction: [Religion.ATHEISM],
+    } as CircleSchemaType,
+    Agnosticism: {
+      label: "Agnosticism",
+      name: Religion.AGNOSTICISM,
+      religionRestriction: [Religion.AGNOSTICISM],
+    } as CircleSchemaType,
+    Buddhism: {
+      label: "Buddhism",
+      name: Religion.BUDDHISM,
+      religionRestriction: [Religion.BUDDHISM],
+    } as CircleSchemaType,
+    Mormonism: {
+      label: "Mormonism",
+      name: Religion.MORMONISM,
+      religionRestriction: [Religion.MORMONISM],
+    } as CircleSchemaType,
+    Hinduism: {
+      label: "Hinduism",
+      name: Religion.HINDUISM,
+      religionRestriction: [Religion.HINDUISM],
+    } as CircleSchemaType,
+    Judaism: {
+      label: "Judaism",
+      name: Religion.JUDAISM,
+      religionRestriction: [Religion.JUDAISM],
+    } as CircleSchemaType,
+    Spiritual: {
+      label: "Other/Spiritual",
+      name: Religion.OTHER,
+      religionRestriction: [Religion.OTHER],
+    } as CircleSchemaType,
+  },
+  Political: {
+    Conservative: {
+      label: "Conservative",
+      name: PoliticalBeliefs.CONSERVATIVE,
+      politicalBeliefsRestriction: [PoliticalBeliefs.CONSERVATIVE],
+    } as CircleSchemaType,
+    Moderate: {
+      label: "Moderate",
+      name: PoliticalBeliefs.MODERATE,
+      politicalBeliefsRestriction: [PoliticalBeliefs.MODERATE],
+    } as CircleSchemaType,
+    Liberal: {
+      label: "Liberal",
+      name: PoliticalBeliefs.LIBERAL,
+      politicalBeliefsRestriction: [PoliticalBeliefs.LIBERAL],
+    } as CircleSchemaType,
+    Independent: {
+      label: "Independent",
+      name: PoliticalBeliefs.INDEPENDENT,
+      politicalBeliefsRestriction: [PoliticalBeliefs.INDEPENDENT],
+    } as CircleSchemaType,
+  },
+  Gender: {
+    Male: {
+      label: "Male",
+      name: Gender.MALE,
+      sexRestriction: [Gender.MALE],
+    } as CircleSchemaType,
+    Female: {
+      label: "Female",
+      name: Gender.FEMALE,
+      sexRestriction: [Gender.FEMALE],
+    },
+  },
+  Continent: {
+    NorthAmerica: {
+      label: "North America",
+      name: "North America",
+      continentRestriction: ["North America"],
+    } as CircleSchemaType,
+    SouthAmerica: {
+      label: "South America",
+      name: "South America",
+      continentRestriction: ["South America"],
+    } as CircleSchemaType,
+    Europe: {
+      label: "Europe",
+      name: "Europe",
+      continentRestriction: ["Europe"],
+    } as CircleSchemaType,
+    Australia: {
+      label: "Australia",
+      name: "Australia",
+      continentRestriction: ["Australia"],
+    } as CircleSchemaType,
+    Asia: {
+      label: "Asia",
+      name: "Asia",
+      continentRestriction: ["Asia"],
+    } as CircleSchemaType,
+    Antarctica: {
+      label: "Antarctica",
+      name: "Antarctica",
+      continentRestriction: ["Antarctica"],
+    } as CircleSchemaType,
+    Africa: {
+      label: "Africa",
+      name: "Africa",
+      continentRestriction: ["Africa"],
+    } as CircleSchemaType,
+  },
+  Drinking: {
+    Never: {
+      label: "Never Drinks",
+      name: Drinking.NEVER,
+      drinkingRestriction: [Drinking.NEVER],
+    } as CircleSchemaType,
+  },
+};
+
+export const CirclesList = [
+  Circles.Religion.Athiesm,
+  Circles.Religion.Agnosticism,
+  Circles.Religion.Buddhism,
+  Circles.Religion.Christianity,
+  Circles.Religion.Hinduism,
+  Circles.Religion.Judaism,
+  Circles.Religion.Mormonism,
+  Circles.Religion.Spiritual,
+  Circles.Political.Conservative,
+  Circles.Political.Moderate,
+  Circles.Political.Liberal,
+  Circles.Political.Independent,
+  Circles.Continent.NorthAmerica,
+  Circles.Continent.SouthAmerica,
+  Circles.Continent.Antarctica,
+  Circles.Continent.Australia,
+  Circles.Continent.Asia,
+  Circles.Continent.Europe,
+  Circles.Continent.Africa,
+  Circles.Drinking.Never,
+  Circles.Gender.Male,
+  Circles.Gender.Female,
+];
+
+export const Users = [
+  {
+    username: "Jeremiah",
+    sex: Gender.MALE,
+    birthDate: new Date(1999, 4, 24),
+    weight: 80.23,
+    height: 198,
+    location: {
+      id: "20",
+      country: countries[20].country,
+      continent: countries[20].continent,
+      state: countries[20].states[0],
+    },
+    willingToRelocate: YesNoOrUnknown.YES,
+    children: Children.HAS_NOT_AND_DOES_WANT,
+    ethnicity: Ethnicity.WHITE,
+    drinking: Drinking.NEVER,
+    consumables: Consumables.NO_CONSUMABLES,
+    politicalBeliefs: PoliticalBeliefs.CONSERVATIVE,
+    levelOfEducation: LevelOfEducation.BACHELORS,
+    purity: Purity.VIRGIN_WAITING,
+    onlyLookingForTraditionalHousehold: YesNoOrUnknown.YES,
+    income: Income.SINGLE,
+    maritalStatus: MaritalStatus.NEVER_MARRIED,
+    activity: Activity.INFREQUENT,
+    religion: Religion.CHRISTIANITY,
+    bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum!",
+    weightUnit: WeightUnit.KG,
+    circles: [Circles.Religion.Christianity, Circles.Political.Conservative],
+    password: "password1234",
+    email: "email@gmail.com",
+    interactions: [
+      {
+        initiatedUsername: "Jeremiah",
+        affectedUsername: "Tina",
+        isLiked: false,
+        isBlocked: false,
+      },
+    ],
+    affections: [
+      {
+        initiatedUsername: "Tina",
+        affectedUsername: "Jeremiah",
+        isLiked: true,
+        isBlocked: false,
+      },
+    ],
+  },
+  {
+    username: "Tina 2.0",
+    sex: Gender.FEMALE,
+    birthDate: new Date(1998, 2, 24),
+    weight: 80.23,
+    height: 198,
+    location: {
+      id: "20",
+      country: countries[20].country,
+      continent: countries[20].continent,
+      state: countries[20].states[0],
+    },
+    willingToRelocate: YesNoOrUnknown.YES,
+    children: Children.HAS_NOT_AND_DOES_WANT,
+    ethnicity: Ethnicity.WHITE,
+    drinking: Drinking.NEVER,
+    consumables: Consumables.NO_CONSUMABLES,
+    politicalBeliefs: PoliticalBeliefs.CONSERVATIVE,
+    levelOfEducation: LevelOfEducation.BACHELORS,
+    purity: Purity.VIRGIN_WAITING,
+    onlyLookingForTraditionalHousehold: YesNoOrUnknown.YES,
+    income: Income.SINGLE,
+    maritalStatus: MaritalStatus.NEVER_MARRIED,
+    activity: Activity.INFREQUENT,
+    religion: Religion.CHRISTIANITY,
+    bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum!",
+    weightUnit: WeightUnit.KG,
+    circles: [Circles.Religion.Christianity, Circles.Political.Conservative],
+    password: "password1234",
+    email: "tina2@gmail.com",
+  },
+  {
+    username: "Tina",
+    sex: Gender.FEMALE,
+    birthDate: new Date(1998, 2, 24),
+    weight: 80.23,
+    height: 198,
+    location: {
+      id: "20",
+      country: countries[20].country,
+      continent: countries[20].continent,
+      state: countries[20].states[0],
+    },
+    willingToRelocate: YesNoOrUnknown.YES,
+    children: Children.HAS_NOT_AND_DOES_WANT,
+    ethnicity: Ethnicity.WHITE,
+    drinking: Drinking.NEVER,
+    consumables: Consumables.NO_CONSUMABLES,
+    politicalBeliefs: PoliticalBeliefs.LIBERAL,
+    levelOfEducation: LevelOfEducation.BACHELORS,
+    purity: Purity.VIRGIN_WAITING,
+    onlyLookingForTraditionalHousehold: YesNoOrUnknown.YES,
+    income: Income.SINGLE,
+    maritalStatus: MaritalStatus.NEVER_MARRIED,
+    activity: Activity.INFREQUENT,
+    religion: Religion.CHRISTIANITY,
+    bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum!",
+    weightUnit: WeightUnit.KG,
+    circles: [Circles.Religion.Christianity, Circles.Political.Conservative],
+    password: "password1234",
+    email: "tina@gmail.com",
+  },
+];
+
+export const UsersPreferences = [
+  {
+    id: "1",
+    username: "Jeremiah",
+    sex: Gender.FEMALE,
+    birthDate: new Date(1999, 4, 24),
+    maxAge: 30,
+    minAge: 18,
+    selectedCircles: [
+      Circles.Religion.Christianity,
+      Circles.Political.Conservative,
+    ],
+  },
+];
+
+export const Messages = [
+  {
+    authorUsername: "Jeremiah",
+    recipientUsername: "Tina",
+    content: "Heyooooo!",
+  },
+  { authorUsername: "Tina", recipientUsername: "Jeremiah", content: "Hi!" },
+];

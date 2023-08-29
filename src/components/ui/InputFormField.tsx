@@ -12,7 +12,7 @@ import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 interface InputFormFieldProps<Values extends FieldValues>
   extends UseControllerProps<Values> {
-  label: string;
+  label?: string;
   description?: string;
   placeholder?: string;
   type?: "number" | "text";

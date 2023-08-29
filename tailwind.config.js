@@ -72,6 +72,14 @@ module.exports = {
       },
       backgroundImage: {
         "circle-pattern": "url('/CircleDating.svg')",
+        "church-field":
+          "url('https://as1.ftcdn.net/v2/jpg/00/19/94/92/1000_F_19949237_n27l4aWK6acJGLCK0HAQ4XRpqy7QN7a0.jpg')",
+      },
+      minHeight: {
+        navless: "calc(100vh - 74px)",
+      },
+      maxHeight: {
+        navless: "calc(100vh - 74px)",
       },
     },
   },

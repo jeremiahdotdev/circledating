@@ -1,5 +1,7 @@
 import { ProfileSchema } from "@/schemas/Profile";
+import { UserPreferencesSchema } from "@/schemas/UserPreferences";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { z } from "zod";
 
 export const profileRouter = createTRPCRouter({
   create: publicProcedure.input(ProfileSchema).mutation(({ input, ctx }) => {
@@ -11,7 +13,80 @@ export const profileRouter = createTRPCRouter({
             ...input.location,
           },
         },
+        // TODO: Make sure circles save correctly once we add a "circles" multiselector to the New-Profile section.
+        circles: {},
       },
     });
   }),
+  read: publicProcedure
+    .input(
+      z.object({
+        currentUserProfile: ProfileSchema,
+        currentUserPreferences: UserPreferencesSchema,
+      })
+    )
+    .query(({ input, ctx }) => {
+      return ctx.prisma.userProfile.findMany({
+        where: {
+          NOT: {
+            username: input.currentUserProfile.username,
+          },
+          birthDate: {
+            gte: new Date(
+              Date.now() -
+                input.currentUserPreferences.maxAge * 1000 * 60 * 60 * 24 * 365
+            ),
+            lte: new Date(
+              Date.now() -
+                input.currentUserPreferences.minAge * 1000 * 60 * 60 * 24 * 365
+            ),
+          },
+          sex: input.currentUserPreferences.sex,
+          circles: {
+            some: {
+              circleName: {
+                in: input.currentUserPreferences.selectedCircles.map(
+                  (circle) => circle.name
+                ),
+              },
+            },
+          },
+        },
+        include: {
+          location: true,
+          circles: true,
+          //   circles: {
+          //     where: {
+          //       circleName: {
+          //         in: input.currentUserPreferences.selectedCircles.map(
+          //           (circle) => circle.name
+          //         ),
+          //       },
+          //     },
+          //     // These fields need only be considered when a user is creating or joining a circle.
+          //     include: {
+          //       Circle: {
+          //         include: {
+          //           religionRestriction: {},
+          //           sexRestriction: {},
+          //           incomeRestriction: {},
+          //           purityRestriction: {},
+          //           activityRestriction: {},
+          //           childrenRestriction: {},
+          //           drinkingRestriction: {},
+          //           continentRestriction: {},
+          //           ethnicityRestriction: {},
+          //           consumablesRestriction: {},
+          //           maritalStatusRestriction: {},
+          //           levelOfEducationRestriction: {},
+          //           politicalBeliefsRestriction: {},
+          //           willingToRelocateRestriction: {},
+          //           onlyLookingForTraditionalHouseholdRestriction: {},
+          //         },
+          //       },
+          //     },
+          //   },
+        },
+      });
+    }),
 });
