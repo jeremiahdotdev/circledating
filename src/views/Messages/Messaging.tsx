@@ -16,7 +16,7 @@ export function Messaging({ conversation, recipient }: MessagingProps) {
   );
   const onSend = useCallback(
     (message: MessageSchemaType) => {
-      setConversationState([...conversationState, message]);
+      setConversationState([message, ...conversationState]);
     },
     [conversationState]
   );

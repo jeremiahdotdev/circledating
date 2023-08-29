@@ -31,6 +31,7 @@ export const TextAreaFormField = <Values extends FieldValues>(
           className={cn("flex flex-col", props.className)}
           placeholder={props.placeholder ?? props.label}
           {...field}
+          value={field.value ?? ""}
         />
       </FormControl>
       {fieldState.error?.message && (
