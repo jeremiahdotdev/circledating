@@ -73,7 +73,7 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         className={cn(
           "flex h-full max-w-3xl flex-col rounded-md border bg-background p-3 ",
           isProfilePerfectMatch
-Does            ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100"
+            ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100"
             : ""
         )}
       >

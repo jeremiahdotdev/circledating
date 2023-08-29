@@ -40,7 +40,7 @@ export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
     bio: userProfile.bio ?? "",
     weightUnit: userProfile.weightUnit,
     circles: null,
-    interaction: userProfile.interaction,
+    interaction: null,
   }));
   return (
     <main className="flex min-h-navless flex-col items-center justify-between">
