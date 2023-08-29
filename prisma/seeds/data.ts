@@ -2,7 +2,6 @@ import {
   Activity,
   Children,
   Consumables,
-  Continent,
   Drinking,
   Ethnicity,
   Gender,
@@ -98,38 +97,38 @@ export const Circles = {
   Continent: {
     NorthAmerica: {
       label: "North America",
-      name: Continent.NORTH_AMERICA,
-      continentRestriction: [Continent.NORTH_AMERICA],
+      name: "North America",
+      continentRestriction: ["North America"],
     } as CircleSchemaType,
     SouthAmerica: {
       label: "South America",
-      name: Continent.SOUTH_AMERICA,
-      continentRestriction: [Continent.SOUTH_AMERICA],
+      name: "South America",
+      continentRestriction: ["South America"],
     } as CircleSchemaType,
     Europe: {
       label: "Europe",
-      name: Continent.EUROPE,
-      continentRestriction: [Continent.EUROPE],
+      name: "Europe",
+      continentRestriction: ["Europe"],
     } as CircleSchemaType,
     Australia: {
       label: "Australia",
-      name: Continent.AUSTRALIA,
-      continentRestriction: [Continent.AUSTRALIA],
+      name: "Australia",
+      continentRestriction: ["Australia"],
     } as CircleSchemaType,
     Asia: {
       label: "Asia",
-      name: Continent.ASIA,
-      continentRestriction: [Continent.ASIA],
+      name: "Asia",
+      continentRestriction: ["Asia"],
     } as CircleSchemaType,
     Antarctica: {
       label: "Antarctica",
-      name: Continent.ANTARTICA,
-      continentRestriction: [Continent.ANTARTICA],
+      name: "Antarctica",
+      continentRestriction: ["Antarctica"],
     } as CircleSchemaType,
     Africa: {
       label: "Africa",
-      name: Continent.AFRICA,
-      continentRestriction: [Continent.AFRICA],
+      name: "Africa",
+      continentRestriction: ["Africa"],
     } as CircleSchemaType,
   },
   Drinking: {
@@ -197,6 +196,22 @@ export const Users = [
     circles: [Circles.Religion.Christianity, Circles.Political.Conservative],
     password: "password1234",
     email: "email@gmail.com",
+    interactions: [
+      {
+        initiatedUsername: "Jeremiah",
+        affectedUsername: "Tina",
+        isLiked: false,
+        isBlocked: false,
+      },
+    ],
+    affections: [
+      {
+        initiatedUsername: "Tina",
+        affectedUsername: "Jeremiah",
+        isLiked: true,
+        isBlocked: false,
+      },
+    ],
   },
   {
     username: "Tina 2.0",

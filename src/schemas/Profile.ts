@@ -39,7 +39,7 @@ export const ProfileSchema = z.object({
   religion: ReligionSchema,
   bio: z.string().optional(),
   weightUnit: z.enum(["KG", "LBS"]),
-  circles: z.array(CircleSchema),
+  circles: z.array(CircleSchema).nullable(),
 });
 
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;

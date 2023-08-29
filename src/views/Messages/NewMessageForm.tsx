@@ -7,7 +7,7 @@ import { api } from "@/utils/api";
 import { cn } from "@/lib/utils";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import state from "@/utils/user.store";
 
 export type NewMessageBarProps = {
@@ -47,10 +47,11 @@ export function NewMessageForm({
       mutateAsync(data)
         .then(() => {
           onSend(data);
+          form.reset();
         })
         .catch((e) => console.log(e));
     },
-    [mutateAsync, onSend]
+    [mutateAsync, onSend, form]
   );
 
   return (

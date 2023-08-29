@@ -1,3 +1,4 @@
+import { InteractionSchema } from "./Interaction";
 import { ProfileSchema } from "./Profile";
 import { UserPreferencesSchema } from "./UserPreferences";
 import { z } from "zod";
@@ -6,7 +7,9 @@ export const UserSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email(),
   profile: ProfileSchema,
-  Preferences: UserPreferencesSchema,
+  preferences: UserPreferencesSchema,
+  interactions: z.array(InteractionSchema).nullable(),
+  affections: z.array(InteractionSchema).nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
   username: z.string(),

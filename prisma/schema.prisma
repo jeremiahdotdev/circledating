@@ -46,16 +46,6 @@ enum Consumables {
   NO_CONSUMABLES
 }
 
-enum Continent {
-  NORTH_AMERICA
-  SOUTH_AMERICA
-  AFRICA
-  ASIA
-  EUROPE
-  ANTARTICA
-  AUSTRALIA
-}
-
 enum PoliticalBeliefs {
   CONSERVATIVE
   CONSERVATIVE_LEANING_MODERATE
@@ -204,7 +194,7 @@ model CircleContinentRestriction {
   id          String    @id @default(uuid())
   circleName  String
   circle      Circle    @relation(fields: [circleName], references: [name])
-  restriction Continent
+  restriction String
 
   @@index([circleName])
 }
@@ -336,16 +326,19 @@ model CircleReligionRestriction {
 }
 
 model User {
-  id                  String       		@id @default(uuid())
-  email               String       		@unique
+  id                  String       			@id @default(uuid())
+  email               String       			@unique
   password            String
-  profile             UserProfile  		@relation("userProfile", fields: [username], references: [username],  map: "user_profile_fk")
-  createdAt           DateTime     		@default(now())
-  updatedAt           DateTime?    		@updatedAt
-  username			  String       		@unique
+  profile             UserProfile  			@relation("userProfile", fields: [username], references: [username],  map: "user_profile_fk")
+  createdAt           DateTime     			@default(now())
+  updatedAt           DateTime?    			@updatedAt
+  username			  String       			@unique
   preferences         UserPreferences[]
-  authoredMessages    UserMessage[]    	@relation("authoredMessages") 
-  recievedMessages    UserMessage[]    	@relation("recievedMessages") 
+  authoredMessages    UserMessage[]    		@relation("authoredMessages") 
+  recievedMessages    UserMessage[]    		@relation("recievedMessages") 
+  userInteractions  	  			 UserInteraction[]    	@relation("userInteractions") 
+  userAffections    	  			 UserInteraction[]    	@relation("userAffections") 
+
   @@index([username])
 }
 
@@ -386,4 +379,17 @@ model UserMessage {
 
   @@index([authorUsername])
   @@index([recipientUsername])
+}
+
+model UserInteraction {
+  id                  String       @id @default(uuid())
+  initiatedUsername   String    
+  initiatedUser       User         @relation("userInteractions", fields: [initiatedUsername], references: [username],  map: "user_initiated_fk")
+  affectedUsername    String  
+  affectedUser        User         @relation("userAffections", fields: [affectedUsername], references: [username],  map: "user_affected_fk")
+  isLiked 			  Boolean
+  isBlocked			  Boolean
+
+  @@index([initiatedUsername])
+  @@index([affectedUsername])
 }

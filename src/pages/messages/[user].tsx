@@ -1,6 +1,6 @@
-import { MessagesView } from "@/views/Messages/MessagesView";
+import { MessagingView } from "@/views/Messages/MessagingView";
 import React from "react";
 
 export default function Page() {
-  return <MessagesView />;
+  return <MessagingView />;
 }

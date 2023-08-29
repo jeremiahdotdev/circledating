@@ -21,7 +21,7 @@ import {
   faWineGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import state from "@/utils/user.store";
 
@@ -44,12 +44,25 @@ function IsPerfectMatch(profile: ProfileSchemaType) {
 }
 
 export function ProfileCard({ profile }: ProfileCardProps) {
+  const [showCard, setShowCard] = useState(true);
+
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
   const isPerfectMatch = useMemo(() => {
     return IsPerfectMatch(profile);
   }, [profile]);
+  const isLiked = useMemo(() => {
+    return state.currentUser.affections?.find(
+      (i) => i.initiatedUsername === profile.username && i.isLiked
+    );
+  }, [profile]);
+
+  const hide = useCallback(() => {
+    setShowCard(false);
+  }, [setShowCard]);
+
+  if (!showCard) return <></>;
 
   return (
     <div className="pt-4">
@@ -162,15 +175,24 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           {profile.bio}
         </div>
         <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
-          <Link href={`/messages/${profile.username}`}>
+          {isLiked ? (
+            <Link href={`/messages/${profile.username}`}>
+              <IconButton
+                variant={IconButtonVarient.MAIL}
+                label={"They like you! Start a conversation."}
+              />
+            </Link>
+          ) : (
             <IconButton
-              variant={IconButtonVarient.MAIL}
-              label={"Start a conversation"}
+              variant={IconButtonVarient.LIKE}
+              label={"Like!"}
+              onClick={hide}
             />
-          </Link>
+          )}
           <IconButton
             variant={IconButtonVarient.TRASH}
             label={"Hide this user"}
+            onClick={hide}
           />
         </div>
       </div>

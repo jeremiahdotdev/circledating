@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
 import { cn } from "@/lib/utils";
 import {
+  faCheck,
   faEnvelope,
   faHamburger,
   faPaperPlane,
@@ -13,6 +14,7 @@ import React from "react";
 export enum IconButtonVarient {
   MAIL = "mail",
   MESSAGE = "message",
+  LIKE = "like",
   TRASH = "trash",
 }
 
@@ -34,6 +36,8 @@ export function IconButton({ label, variant, type, onClick }: IconButtonProps) {
             ? `bg-green-600`
             : variant === IconButtonVarient.MESSAGE
             ? `bg-purple-600`
+            : variant === IconButtonVarient.LIKE
+            ? `bg-green-600`
             : variant === IconButtonVarient.TRASH
             ? `bg-red-600`
             : ""
@@ -49,6 +53,8 @@ export function IconButton({ label, variant, type, onClick }: IconButtonProps) {
               ? faPaperPlane
               : variant === IconButtonVarient.TRASH
               ? faTrashCan
+              : variant === IconButtonVarient.LIKE
+              ? faCheck
               : faHamburger
           }
         />

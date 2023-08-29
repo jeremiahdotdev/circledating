@@ -38,53 +38,8 @@ export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
     religion: userProfile.religion,
     bio: userProfile.bio ?? "",
     weightUnit: userProfile.weightUnit,
-    circles: userProfile.circles.map(({ Circle }) => ({
-      label: Circle.label,
-      name: Circle.name,
-      sexRestriction: Circle.sexRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      incomeRestriction: Circle.incomeRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      purityRestriction: Circle.purityRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      activityRestriction: Circle.activityRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      childrenRestriction: Circle.childrenRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      drinkingRestriction: Circle.drinkingRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      continentRestriction: Circle.continentRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      ethnicityRestriction: Circle.ethnicityRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      consumablesRestriction: Circle.consumablesRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      maritalStatusRestriction: Circle.maritalStatusRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      levelOfEducationRestriction: Circle.levelOfEducationRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      politicalBeliefsRestriction: Circle.politicalBeliefsRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      willingToRelocateRestriction: Circle.willingToRelocateRestriction.map(
-        ({ restriction }) => restriction
-      ),
-      onlyLookingForTraditionalHouseholdRestriction:
-        Circle.onlyLookingForTraditionalHouseholdRestriction.map(
-          ({ restriction }) => restriction
-        ),
-    })),
+    circles: null,
+    interaction: userProfile.interaction,
   }));
   return (
     <main className="flex min-h-navless flex-col items-center justify-between">

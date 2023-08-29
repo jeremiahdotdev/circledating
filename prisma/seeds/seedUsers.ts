@@ -53,10 +53,12 @@ export function seedUsers() {
     .catch(handleError);
 
   const userCircles: UserCircle[] = [];
+  let count = 0;
   Users.forEach(({ username, circles }) =>
-    circles.forEach(({ name }, index) => {
+    circles.forEach(({ name }) => {
+      count++;
       userCircles.push({
-        id: `${index}`,
+        id: `${count}`,
         circleName: name,
         username: username,
       });

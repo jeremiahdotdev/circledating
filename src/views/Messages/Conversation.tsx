@@ -11,7 +11,7 @@ export type ConversationProps = {
 };
 export function Conversation({ conversation }: ConversationProps) {
   return (
-    <div className="flex flex-col sm:w-3/4">
+    <div className="flex h-full flex-col-reverse sm:w-3/4">
       {conversation.map(({ createdAt, content, authorUsername }, index) => (
         <Message
           key={`${authorUsername}-${index}`}

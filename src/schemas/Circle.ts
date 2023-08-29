@@ -1,7 +1,6 @@
 import { ActivitySchema } from "./Activity";
 import { ChildrenSchema } from "./Children";
 import { ConsumablesSchema } from "./Consumables";
-import { ContinentSchema } from "./Continent";
 import { CustomRestriction } from "./CustomRestriction";
 import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
@@ -23,7 +22,7 @@ export const CircleSchema = z.object({
   ageMaxRestriction: z.number().optional(),
   ageMinRestriction: z.number().optional(),
   maxWeightRestriction: z.number().optional(),
-  continentRestriction: z.array(ContinentSchema).optional(),
+  continentRestriction: z.array(z.string()).optional(),
   willingToRelocateRestriction: z.array(YesAndNoSchema).optional(),
   childrenRestriction: z.array(ChildrenSchema).optional(),
   ethnicityRestriction: z.array(EthnicitySchema).optional(),

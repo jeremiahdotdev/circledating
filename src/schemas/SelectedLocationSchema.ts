@@ -1,8 +1,7 @@
-import { ContinentSchema } from "./Continent";
 import { z } from "zod";
 
 export const SelectedLocationSchema = z.object({
-  continent: ContinentSchema,
+  continent: z.string(),
   country: z.string(),
   state: z.string(),
 });

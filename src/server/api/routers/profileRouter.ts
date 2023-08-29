@@ -40,39 +40,50 @@ export const profileRouter = createTRPCRouter({
             ),
           },
           sex: input.currentUserPreferences.sex,
-        },
-        include: {
-          location: {},
           circles: {
-            where: {
+            some: {
               circleName: {
                 in: input.currentUserPreferences.selectedCircles.map(
                   (circle) => circle.name
                 ),
               },
             },
-            include: {
-              Circle: {
-                include: {
-                  religionRestriction: {},
-                  sexRestriction: {},
-                  incomeRestriction: {},
-                  purityRestriction: {},
-                  activityRestriction: {},
-                  childrenRestriction: {},
-                  drinkingRestriction: {},
-                  continentRestriction: {},
-                  ethnicityRestriction: {},
-                  consumablesRestriction: {},
-                  maritalStatusRestriction: {},
-                  levelOfEducationRestriction: {},
-                  politicalBeliefsRestriction: {},
-                  willingToRelocateRestriction: {},
-                  onlyLookingForTraditionalHouseholdRestriction: {},
-                },
-              },
-            },
           },
+        },
+        include: {
+          location: true,
+          circles: true,
+          //   circles: {
+          //     where: {
+          //       circleName: {
+          //         in: input.currentUserPreferences.selectedCircles.map(
+          //           (circle) => circle.name
+          //         ),
+          //       },
+          //     },
+          //     // These fields need only be considered when a user is creating or joining a circle.
+          //     include: {
+          //       Circle: {
+          //         include: {
+          //           religionRestriction: {},
+          //           sexRestriction: {},
+          //           incomeRestriction: {},
+          //           purityRestriction: {},
+          //           activityRestriction: {},
+          //           childrenRestriction: {},
+          //           drinkingRestriction: {},
+          //           continentRestriction: {},
+          //           ethnicityRestriction: {},
+          //           consumablesRestriction: {},
+          //           maritalStatusRestriction: {},
+          //           levelOfEducationRestriction: {},
+          //           politicalBeliefsRestriction: {},
+          //           willingToRelocateRestriction: {},
+          //           onlyLookingForTraditionalHouseholdRestriction: {},
+          //         },
+          //       },
+          //     },
+          //   },
         },
       });
     }),

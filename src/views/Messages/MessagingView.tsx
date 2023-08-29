@@ -11,7 +11,7 @@ import state from "@/utils/user.store";
 
 export type MessagesViewProps = Record<never, never>;
 
-export const MessagesView: React.FC<MessagingOptions> = memo(() => {
+export const MessagingView: React.FC<MessagingOptions> = memo(() => {
   const router = useRouter();
   const user = Array.isArray(router.query.user)
     ? router.query.user[0]

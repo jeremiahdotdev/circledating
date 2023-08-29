@@ -11,7 +11,9 @@ export type MessagingProps = {
   recipient: string;
 };
 export function Messaging({ conversation, recipient }: MessagingProps) {
-  const [conversationState, setConversationState] = useState(conversation);
+  const [conversationState, setConversationState] = useState(
+    conversation.reverse()
+  );
   const onSend = useCallback(
     (message: MessageSchemaType) => {
       setConversationState([...conversationState, message]);
@@ -19,8 +21,8 @@ export function Messaging({ conversation, recipient }: MessagingProps) {
     [conversationState]
   );
   return (
-    <div className="flex max-h-navless min-h-navless w-full flex-col justify-between bg-background p-3 ">
-      <div className="flex w-full items-center justify-center self-center overflow-y-scroll">
+    <div className="flex max-h-navless min-h-navless w-full flex-col justify-between bg-background">
+      <div className="flex w-full flex-col-reverse items-center overflow-y-scroll pb-4">
         <Conversation conversation={conversationState} />
       </div>
       <div className="flex w-full items-center justify-center sm:border-t">
