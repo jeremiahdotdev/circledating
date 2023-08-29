@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const MessageSchema = z.object({
-  id: z.string(),
+  id: z.string().optional(),
   authorUsername: z.string(),
   recipientUsername: z.string(),
   content: z.string().min(1).max(2000),

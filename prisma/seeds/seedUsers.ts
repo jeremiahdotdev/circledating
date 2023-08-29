@@ -3,7 +3,7 @@ import { Users } from "./data";
 import { handleDisconnect, handleError } from "./util";
 import { prisma } from "../../src/server/db";
 
-export function seedUsers() {
+export async function seedUsers() {
   const users: User[] = Users.map((user, index) => ({
     id: index.toString(),
     username: user.username,
@@ -45,13 +45,6 @@ export function seedUsers() {
     weightUnit: userProfile.weightUnit,
   }));
 
-  prisma.userProfile
-    .createMany({
-      data: userProfiles,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-
   const userCircles: UserCircle[] = [];
   let count = 0;
   Users.forEach(({ username, circles }) =>
@@ -65,10 +58,14 @@ export function seedUsers() {
     })
   );
 
-  prisma.userCircle
-    .createMany({
+  try {
+    await prisma.userCircle.createMany({
       data: userCircles,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
+    });
+    await prisma.userProfile.createMany({
+      data: userProfiles,
+    });
+  } catch (error: unknown) {
+    await handleError(error);
+  }
 }

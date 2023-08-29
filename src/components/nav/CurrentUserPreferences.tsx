@@ -5,22 +5,24 @@ import { Preference } from "./preference";
 import { PreferencesSection } from "./preferencesSection";
 import { RadioButtonGroup } from "../ui/RadioButtonGroup";
 import { Slider } from "@/components/ui/slider";
-import React from "react";
+import React, { useMemo } from "react";
 import state from "@/utils/user.store";
 
 export function CurrentUserPreferences() {
+  const renderedCircles = useMemo(
+    () =>
+      state.currentUser.circles.map((circle) => ({
+        value: circle.name,
+        label: circle.label,
+        checked: state.currentUserPreferences.selectedCircles.includes(circle),
+      })),
+    []
+  );
   return (
     <div className="flex h-full max-h-navless w-full flex-col">
       <form className="flex h-full flex-col ">
         <PreferencesSection name="Active Circles">
-          <CheckboxList
-            options={state.currentUser.circles.map((circle) => ({
-              value: circle.name,
-              label: circle.label,
-              checked:
-                state.currentUserPreferences.selectedCircles.includes(circle),
-            }))}
-          />
+          <CheckboxList options={renderedCircles} />
         </PreferencesSection>
         <PreferencesSection name="Filters">
           <Preference name="Sex">

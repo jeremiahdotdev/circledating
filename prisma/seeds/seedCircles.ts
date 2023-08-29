@@ -19,10 +19,10 @@ import {
 } from "@prisma/client";
 import { CircleSchemaType } from "../../src/schemas/Circle";
 import { CirclesList } from "./data";
-import { handleDisconnect, handleError } from "./util";
+import { handleError } from "./util";
 import { prisma } from "../../src/server/db";
 
-export function seedCircles() {
+export async function seedCircles() {
   const circleContinentRestriction: CircleContinentRestriction[] = [];
   const circleSexRestriction: CircleSexRestriction[] = [];
   const circleRelocationRestriction: CircleRelocationRestriction[] = [];
@@ -158,99 +158,70 @@ export function seedCircles() {
       maxWeightRestriction: circle.maxWeightRestriction ?? null,
     });
   });
-  prisma.circleContinentRestriction
-    .createMany({
-      data: circleContinentRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleSexRestriction
-    .createMany({ data: circleSexRestriction })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleRelocationRestriction
-    .createMany({
-      data: circleRelocationRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleChildrenRestriction
-    .createMany({
-      data: circleChildrenRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleEthnicityRestriction
-    .createMany({
-      data: circleEthnicityRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleDrinkingRestriction
-    .createMany({
-      data: circleDrinkingRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleConsumablesRestriction
-    .createMany({
-      data: circleConsumablesRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circlePoliticalBeliefsRestriction
-    .createMany({
-      data: circlePoliticalBeliefsRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleLevelOfEducationRestriction
-    .createMany({
-      data: circleLevelOfEducationRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circlePurityRestriction
-    .createMany({
-      data: circlePurityRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleTraditionalRestriction
-    .createMany({
-      data: circleTraditionalRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleIncomeRestriction
-    .createMany({
-      data: circleIncomeRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleMaritalStatusRestriction
-    .createMany({
-      data: circleMaritalStatusRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleActivityRestriction
-    .createMany({
-      data: circleActivityRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
-  prisma.circleReligionRestriction
-    .createMany({
-      data: circleReligionRestriction,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
 
-  prisma.circle
-    .createMany({
+  try {
+    await prisma.circleContinentRestriction.createMany({
+      data: circleContinentRestriction,
+    });
+    await prisma.circleSexRestriction.createMany({
+      data: circleSexRestriction,
+    });
+    await prisma.circleRelocationRestriction.createMany({
+      data: circleRelocationRestriction,
+    });
+
+    await prisma.circleChildrenRestriction.createMany({
+      data: circleChildrenRestriction,
+    });
+
+    await prisma.circleEthnicityRestriction.createMany({
+      data: circleEthnicityRestriction,
+    });
+
+    await prisma.circleDrinkingRestriction.createMany({
+      data: circleDrinkingRestriction,
+    });
+
+    await prisma.circleConsumablesRestriction.createMany({
+      data: circleConsumablesRestriction,
+    });
+
+    await prisma.circlePoliticalBeliefsRestriction.createMany({
+      data: circlePoliticalBeliefsRestriction,
+    });
+
+    await prisma.circleLevelOfEducationRestriction.createMany({
+      data: circleLevelOfEducationRestriction,
+    });
+
+    await prisma.circlePurityRestriction.createMany({
+      data: circlePurityRestriction,
+    });
+
+    await prisma.circleTraditionalRestriction.createMany({
+      data: circleTraditionalRestriction,
+    });
+
+    await prisma.circleIncomeRestriction.createMany({
+      data: circleIncomeRestriction,
+    });
+
+    await prisma.circleMaritalStatusRestriction.createMany({
+      data: circleMaritalStatusRestriction,
+    });
+
+    await prisma.circleActivityRestriction.createMany({
+      data: circleActivityRestriction,
+    });
+
+    await prisma.circleReligionRestriction.createMany({
+      data: circleReligionRestriction,
+    });
+
+    await prisma.circle.createMany({
       data: circles,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
+    });
+  } catch (error: unknown) {
+    await handleError(error);
+  }
 }

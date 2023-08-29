@@ -1,9 +1,9 @@
 import { Location } from "@prisma/client";
 import { countries } from "../../src//globals/location";
-import { handleDisconnect, handleError } from "./util";
+import { handleError } from "./util";
 import { prisma } from "../../src/server/db";
 
-export function seedLocations() {
+export async function seedLocations() {
   const locations: Location[] = [];
   let index = 0;
   countries.forEach(({ continent, country, states }) => {
@@ -26,10 +26,11 @@ export function seedLocations() {
     }
   });
 
-  prisma.location
-    .createMany({
+  try {
+    await prisma.location.createMany({
       data: locations,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
+    });
+  } catch (error: unknown) {
+    await handleError(error);
+  }
 }

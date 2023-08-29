@@ -15,7 +15,7 @@ interface InputFormFieldProps<Values extends FieldValues>
   label?: string;
   description?: string;
   placeholder?: string;
-  type?: "number" | "text" | "hidden";
+  type?: "number" | "text";
 }
 
 export const InputFormField = <Values extends FieldValues>(

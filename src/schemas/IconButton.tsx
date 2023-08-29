@@ -1,17 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
-import { cn } from "@/lib/utils";
 import {
+  IconDefinition,
   faCheck,
   faEnvelope,
-  faHamburger,
   faPaperPlane,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import { cn } from "@/lib/utils";
+import React, { useMemo } from "react";
 
-export enum IconButtonVarient {
+export type IconButtonOptions = {
+  icon: IconDefinition;
+  background: string;
+};
+
+export enum IconButtonVariant {
   MAIL = "mail",
   MESSAGE = "message",
   LIKE = "like",
@@ -20,44 +25,47 @@ export enum IconButtonVarient {
 
 export type IconButtonProps = {
   label: string;
-  variant: IconButtonVarient;
+  variant: IconButtonVariant;
   type?: "button" | "submit" | "reset";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
 export function IconButton({ label, variant, type, onClick }: IconButtonProps) {
+  const option = useMemo(() => {
+    switch (variant) {
+      case IconButtonVariant.MAIL:
+        return {
+          icon: faEnvelope,
+          background: "bg-green-600",
+        } as IconButtonOptions;
+      case IconButtonVariant.MESSAGE:
+        return {
+          icon: faPaperPlane,
+          background: "bg-purple-600",
+        } as IconButtonOptions;
+      case IconButtonVariant.LIKE:
+        return {
+          icon: faCheck,
+          background: "bg-green-600",
+        } as IconButtonOptions;
+      default: // Trashcan
+        return {
+          icon: faTrashCan,
+          background: "bg-red-600",
+        } as IconButtonOptions;
+    }
+  }, [variant]);
   return (
     <FormattedTooltip content={label}>
       <Button
         onClick={onClick}
         className={cn(
           "w-16 h-16 text-white rounded-full shadow",
-          variant === IconButtonVarient.MAIL
-            ? `bg-green-600`
-            : variant === IconButtonVarient.MESSAGE
-            ? `bg-purple-600`
-            : variant === IconButtonVarient.LIKE
-            ? `bg-green-600`
-            : variant === IconButtonVarient.TRASH
-            ? `bg-red-600`
-            : ""
+          option.background
         )}
         type={type}
       >
-        <FontAwesomeIcon
-          className="h-full w-full"
-          icon={
-            variant === IconButtonVarient.MAIL
-              ? faEnvelope
-              : variant === IconButtonVarient.MESSAGE
-              ? faPaperPlane
-              : variant === IconButtonVarient.TRASH
-              ? faTrashCan
-              : variant === IconButtonVarient.LIKE
-              ? faCheck
-              : faHamburger
-          }
-        />
+        <FontAwesomeIcon className="h-full w-full" icon={option.icon} />
       </Button>
     </FormattedTooltip>
   );

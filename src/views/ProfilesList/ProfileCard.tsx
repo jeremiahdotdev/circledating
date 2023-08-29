@@ -1,4 +1,4 @@
-import { IconButton, IconButtonVarient } from "../../schemas/IconButton";
+import { IconButton, IconButtonVariant } from "../../schemas/IconButton";
 import { ProfileAttribute } from "./ProfileAttribute";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
 import { ProfileLocation } from "./ProfileCardLocation";
@@ -29,7 +29,7 @@ export type ProfileCardProps = {
   profile: ProfileSchemaType;
 };
 
-function IsPerfectMatch(profile: ProfileSchemaType) {
+function IsProfilePerfectMatch(profile: ProfileSchemaType) {
   if (profile.religion !== state.currentUser.religion) return false;
   if (profile.drinking !== state.currentUser.drinking) return false;
   if (profile.activity !== state.currentUser.activity) return false;
@@ -49,8 +49,8 @@ export function ProfileCard({ profile }: ProfileCardProps) {
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
-  const isPerfectMatch = useMemo(() => {
-    return IsPerfectMatch(profile);
+  const isProfilePerfectMatch = useMemo(() => {
+    return IsProfilePerfectMatch(profile);
   }, [profile]);
   const isLiked = useMemo(() => {
     return state.currentUser.affections?.find(
@@ -67,12 +67,14 @@ export function ProfileCard({ profile }: ProfileCardProps) {
   return (
     <div className="pt-4">
       <em className="bg-gradient-to-r from-cyan-400 to-fuchsia-300 bg-clip-text font-extrabold text-transparent">
-        {isPerfectMatch && "Perfect Match"}&nbsp;
+        {isProfilePerfectMatch && "Perfect Match"}&nbsp;
       </em>
       <div
         className={cn(
           "flex h-full max-w-3xl flex-col rounded-md border bg-background p-3 ",
-          isPerfectMatch ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100" : ""
+          isProfilePerfectMatch
+Does            ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100"
+            : ""
         )}
       >
         <div className="mx-6 flex h-full max-w-full flex-wrap items-center justify-center text-sm ring-offset-background sm:justify-between sm:pt-6 ">
@@ -178,19 +180,19 @@ export function ProfileCard({ profile }: ProfileCardProps) {
           {isLiked ? (
             <Link href={`/messages/${profile.username}`}>
               <IconButton
-                variant={IconButtonVarient.MAIL}
+                variant={IconButtonVariant.MAIL}
                 label={"They like you! Start a conversation."}
               />
             </Link>
           ) : (
             <IconButton
-              variant={IconButtonVarient.LIKE}
+              variant={IconButtonVariant.LIKE}
               label={"Like!"}
               onClick={hide}
             />
           )}
           <IconButton
-            variant={IconButtonVarient.TRASH}
+            variant={IconButtonVariant.TRASH}
             label={"Hide this user"}
             onClick={hide}
           />

@@ -1,9 +1,9 @@
 import { Messages } from "./data";
 import { UserMessage } from "@prisma/client";
-import { handleDisconnect, handleError } from "./util";
+import { handleError } from "./util";
 import { prisma } from "../../src/server/db";
 
-export function seedMessages() {
+export async function seedMessages() {
   const messages: UserMessage[] = Messages.map((message, index) => ({
     id: index.toString(),
     authorUsername: message.authorUsername,
@@ -13,10 +13,11 @@ export function seedMessages() {
     updatedAt: null,
   }));
 
-  prisma.userMessage
-    .createMany({
+  try {
+    await prisma.userMessage.createMany({
       data: messages,
-    })
-    .then(handleDisconnect)
-    .catch(handleError);
+    });
+  } catch (error: unknown) {
+    await handleError(error);
+  }
 }

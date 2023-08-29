@@ -8,6 +8,7 @@ import state from "@/utils/user.store";
 export type ProfilesViewProps = Record<never, never>;
 
 export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
+  // TODO: Switch to using getServerSideProps once we integrate a real state.
   const request = api.profiles.read.useQuery({
     currentUserProfile: state.currentUser,
     currentUserPreferences: state.currentUserPreferences,

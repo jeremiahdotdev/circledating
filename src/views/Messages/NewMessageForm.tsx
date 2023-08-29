@@ -1,6 +1,6 @@
 import { Form } from "@/components/ui/form";
 import { Gender } from ".prisma/client";
-import { IconButton, IconButtonVarient } from "../../schemas/IconButton";
+import { IconButton, IconButtonVariant } from "../../schemas/IconButton";
 import { MessageSchema, MessageSchemaType } from "@/schemas/Message";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
 import { api } from "@/utils/api";
@@ -25,7 +25,6 @@ export function NewMessageForm({
   const form = useForm<MessageSchemaType>({
     resolver: zodResolver(MessageSchema),
     defaultValues: {
-      id: "<ID>",
       createdAt: new Date(),
       updatedAt: null,
       authorUsername: state.currentUser.username,
@@ -70,7 +69,7 @@ export function NewMessageForm({
         ></TextAreaFormField>
         <IconButton
           label="Send"
-          variant={IconButtonVarient.MESSAGE}
+          variant={IconButtonVariant.MESSAGE}
           type="submit"
         />
       </form>
