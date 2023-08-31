@@ -6,6 +6,7 @@ import { prisma } from "../../src/server/db";
 export async function seedMessages() {
   const messages: UserMessage[] = Messages.map((message, index) => ({
     id: index.toString(),
+    conversationId: index.toString(),
     authorUsername: message.authorUsername,
     recipientUsername: message.recipientUsername,
     content: message.content,

@@ -8,7 +8,7 @@ const main = async () => {
   await seedLocations();
   await seedCircles();
   await seedUsers();
-  await seedMessages();
+  // await seedMessages();
 };
 
 main().then(handleDisconnect).catch(handleError);

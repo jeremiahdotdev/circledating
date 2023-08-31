@@ -28,9 +28,16 @@ export type IconButtonProps = {
   variant: IconButtonVariant;
   type?: "button" | "submit" | "reset";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 };
 
-export function IconButton({ label, variant, type, onClick }: IconButtonProps) {
+export function IconButton({
+  label,
+  variant,
+  type,
+  disabled,
+  onClick,
+}: IconButtonProps) {
   const option = useMemo(() => {
     switch (variant) {
       case IconButtonVariant.MAIL:
@@ -64,6 +71,7 @@ export function IconButton({ label, variant, type, onClick }: IconButtonProps) {
           option.background
         )}
         type={type}
+        disabled={disabled}
       >
         <FontAwesomeIcon className="h-full w-full" icon={option.icon} />
       </Button>

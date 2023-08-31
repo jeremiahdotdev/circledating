@@ -1,5 +1,6 @@
 import { Loading } from "@/components/nav/loading";
 import { ProfileList } from "../ProfilesList/ProfilesList";
+import { ReadProfileSchemaSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";
 import { memo } from "react";
 import React from "react";
@@ -9,14 +10,16 @@ export type ProfilesViewProps = Record<never, never>;
 
 export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
   // TODO: Switch to using getServerSideProps once we integrate a real state.
-  const request = api.profiles.read.useQuery({
+  const options: ReadProfileSchemaSchemaType = {
     currentUserProfile: state.currentUser,
     currentUserPreferences: state.currentUserPreferences,
-  });
+  };
+  const request = api.profiles.read.useQuery(options);
 
   if (!request.data) return <Loading />;
 
   const profiles = request.data.map((userProfile) => ({
+    userId: userProfile.userId,
     username: userProfile.username,
     sex: userProfile.sex,
     birthDate: userProfile.birthDate,

@@ -42,74 +42,75 @@ export async function seedCircles() {
   const circleReligionRestriction: CircleReligionRestriction[] = [];
   const circles: Circle[] = [];
 
+  let count = 0;
   CirclesList.forEach((circle: CircleSchemaType) => {
     circle.continentRestriction?.forEach((restriction) => {
       circleContinentRestriction.push({
         id: circleContinentRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.sexRestriction?.forEach((restriction) => {
       circleSexRestriction.push({
         id: circleSexRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.willingToRelocateRestriction?.forEach((restriction) => {
       circleRelocationRestriction.push({
         id: circleContinentRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.childrenRestriction?.forEach((restriction) => {
       circleChildrenRestriction.push({
         id: circleChildrenRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.ethnicityRestriction?.forEach((restriction) => {
       circleEthnicityRestriction.push({
         id: circleEthnicityRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.name,
         restriction: restriction,
       });
     });
     circle.drinkingRestriction?.forEach((restriction) => {
       circleDrinkingRestriction.push({
         id: circleDrinkingRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.consumablesRestriction?.forEach((restriction) => {
       circleConsumablesRestriction.push({
         id: circleConsumablesRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.politicalBeliefsRestriction?.forEach((restriction) => {
       circlePoliticalBeliefsRestriction.push({
         id: circlePoliticalBeliefsRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.levelOfEducationRestriction?.forEach((restriction) => {
       circleLevelOfEducationRestriction.push({
         id: circleContinentRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.purityRestriction?.forEach((restriction) => {
       circlePurityRestriction.push({
         id: circlePurityRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
@@ -117,7 +118,7 @@ export async function seedCircles() {
       (restriction) => {
         circleTraditionalRestriction.push({
           id: circleTraditionalRestriction.length.toString(),
-          circleName: circle.name,
+          circleId: circle.id ?? "",
           restriction: restriction,
         });
       }
@@ -125,32 +126,33 @@ export async function seedCircles() {
     circle.incomeRestriction?.forEach((restriction) => {
       circleIncomeRestriction.push({
         id: circleIncomeRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.maritalStatusRestriction?.forEach((restriction) => {
       circleMaritalStatusRestriction.push({
         id: circleMaritalStatusRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.activityRestriction?.forEach((restriction) => {
       circleActivityRestriction.push({
         id: circleActivityRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circle.religionRestriction?.forEach((restriction) => {
       circleReligionRestriction.push({
         id: circleReligionRestriction.length.toString(),
-        circleName: circle.name,
+        circleId: circle.id ?? "",
         restriction: restriction,
       });
     });
     circles.push({
+      id: `${++count}`,
       name: circle.name,
       label: circle.label,
       ageMinRestriction: circle.ageMinRestriction ?? null,
@@ -217,7 +219,11 @@ export async function seedCircles() {
     await prisma.circleReligionRestriction.createMany({
       data: circleReligionRestriction,
     });
+  } catch (error: unknown) {
+    await handleError(error);
+  }
 
+  try {
     await prisma.circle.createMany({
       data: circles,
     });

@@ -81,6 +81,12 @@ module.exports = {
       maxHeight: {
         navless: "calc(100vh - 74px)",
       },
+      boxShadow: {
+        outter: "0 1px 3px 0px rgba(0, 0, 0, 0.6)",
+        "outter-xl": "0 1px 3px 1px rgba(0, 0, 0, 0.6)",
+        "outter-soft": "0px 1px 8px 0px rgba(0, 0, 0, 0.3)",
+        "inner-xl": "inset 0 1px 3px 0px rgba(0, 0, 0, 0.6)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

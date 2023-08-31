@@ -16,6 +16,7 @@ import { z } from "zod";
 import dayjs from "dayjs";
 
 export const CircleSchema = z.object({
+  id: z.string().optional(),
   label: z.string().min(3).max(20),
   name: z.string().min(3).max(20),
   sexRestriction: z.array(GenderSchema).optional(),

@@ -1,37 +1,40 @@
 "use client";
 
-import { Conversation } from "./Conversation";
 import { MessageSchemaType } from "@/schemas/Message";
+import { MessagesPane } from "./MessagesPane";
 import { NewMessageForm } from "./NewMessageForm";
 import React, { useCallback, useState } from "react";
 import state from "@/utils/user.store";
 
 export type MessagingProps = {
-  conversation: MessageSchemaType[];
-  recipient: string;
+  messages?: MessageSchemaType[];
+  recipientUsername?: string;
+  conversationId?: string;
 };
-export function Messaging({ conversation, recipient }: MessagingProps) {
-  const [conversationState, setConversationState] = useState(
-    conversation.reverse()
-  );
+export function Messaging({
+  messages,
+  recipientUsername,
+  conversationId,
+}: MessagingProps) {
+  const [messagesState, setMessagesState] = useState(messages?.reverse());
   const onSend = useCallback(
     (message: MessageSchemaType) => {
-      setConversationState([message, ...conversationState]);
+      if (messagesState) setMessagesState([message, ...messagesState]);
     },
-    [conversationState]
+    [messagesState]
   );
+
   return (
-    <div className="flex max-h-navless min-h-navless w-full flex-col justify-between bg-background">
-      <div className="flex w-full flex-col-reverse items-center overflow-y-scroll pb-4">
-        <Conversation conversation={conversationState} />
+    <div className="flex flex-col">
+      <div className="h-full p-4 shadow-inner-xl">
+        <MessagesPane messages={messagesState} />
       </div>
-      <div className="flex w-full items-center justify-center sm:border-t">
-        <NewMessageForm
-          gender={state.currentUser.sex}
-          recipient={recipient}
-          onSend={onSend}
-        />
-      </div>
+      <NewMessageForm
+        gender={state.currentUser.sex}
+        recipientUsername={recipientUsername}
+        conversationId={conversationId}
+        onSend={onSend}
+      />
     </div>
   );
 }

@@ -12,23 +12,24 @@ import state from "@/utils/user.store";
 
 export type NewMessageBarProps = {
   gender: Gender;
-  recipient: string;
+  recipientUsername?: string;
+  conversationId?: string;
   onSend: (message: MessageSchemaType) => void;
 };
 
 export function NewMessageForm({
   gender,
-  recipient,
+  recipientUsername,
+  conversationId,
   onSend,
 }: NewMessageBarProps) {
   const { mutateAsync } = api.messages.create.useMutation();
   const form = useForm<MessageSchemaType>({
     resolver: zodResolver(MessageSchema),
     defaultValues: {
-      createdAt: new Date(),
-      updatedAt: null,
       authorUsername: state.currentUser.username,
-      recipientUsername: recipient,
+      recipientUsername: "<USER>",
+      conversationId: "<ID>",
     },
   });
   const onInvalidData = useCallback((errors: unknown) => {
@@ -36,13 +37,8 @@ export function NewMessageForm({
   }, []);
   const onValidData = useCallback(
     (data: MessageSchemaType) => {
-      data.createdAt = new Date();
-      data.id = [
-        data.authorUsername,
-        data.recipientUsername,
-        new Date().toISOString(),
-      ].join("-");
-
+      data.recipientUsername = recipientUsername ?? "";
+      data.conversationId = conversationId ?? "";
       mutateAsync(data)
         .then(() => {
           onSend(data);
@@ -50,7 +46,7 @@ export function NewMessageForm({
         })
         .catch((e) => console.log(e));
     },
-    [mutateAsync, onSend, form]
+    [conversationId, recipientUsername, mutateAsync, onSend, form]
   );
 
   return (
@@ -58,19 +54,21 @@ export function NewMessageForm({
       <form
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={form.handleSubmit(onValidData, onInvalidData)}
-        className="flex w-full flex-row items-center gap-3 sm:w-3/4"
+        className="flex items-center gap-3 sm:mx-12"
       >
         <TextAreaFormField
           name="content"
           className={cn(
-            "flex min-h-fit w-full resize-none flex-col flex-wrap justify-center rounded-full border px-8 text-xl outline-none ring-offset-background",
+            "resize-none rounded-full border px-8 text-xl outline-none ring-offset-background",
             gender == Gender.MALE ? "bg-cyan-50" : "bg-fuchsia-100"
           )}
+          disabled={!recipientUsername}
         ></TextAreaFormField>
         <IconButton
           label="Send"
           variant={IconButtonVariant.MESSAGE}
           type="submit"
+          disabled={!recipientUsername}
         />
       </form>
     </Form>
