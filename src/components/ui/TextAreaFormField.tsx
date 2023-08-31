@@ -17,6 +17,7 @@ interface TextAreaFormFieldProps<Values extends FieldValues>
   description?: string;
   placeholder?: string;
   className?: string;
+  disabled?: boolean;
 }
 
 export const TextAreaFormField = <Values extends FieldValues>(
@@ -32,6 +33,7 @@ export const TextAreaFormField = <Values extends FieldValues>(
           placeholder={props.placeholder ?? props.label}
           {...field}
           value={field.value ?? ""}
+          disabled={props.disabled}
         />
       </FormControl>
       {fieldState.error?.message && (

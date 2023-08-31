@@ -20,41 +20,49 @@ import { countries } from "../../src/globals/location";
 export const Circles = {
   Religion: {
     Christianity: {
+      id: "1",
       label: "Christianity",
       name: Religion.CHRISTIANITY,
       religionRestriction: [Religion.CHRISTIANITY],
     } as CircleSchemaType,
     Athiesm: {
+      id: "2",
       label: "Athiesm",
       name: Religion.ATHEISM,
       religionRestriction: [Religion.ATHEISM],
     } as CircleSchemaType,
     Agnosticism: {
+      id: "3",
       label: "Agnosticism",
       name: Religion.AGNOSTICISM,
       religionRestriction: [Religion.AGNOSTICISM],
     } as CircleSchemaType,
     Buddhism: {
+      id: "4",
       label: "Buddhism",
       name: Religion.BUDDHISM,
       religionRestriction: [Religion.BUDDHISM],
     } as CircleSchemaType,
     Mormonism: {
+      id: "5",
       label: "Mormonism",
       name: Religion.MORMONISM,
       religionRestriction: [Religion.MORMONISM],
     } as CircleSchemaType,
     Hinduism: {
+      id: "6",
       label: "Hinduism",
       name: Religion.HINDUISM,
       religionRestriction: [Religion.HINDUISM],
     } as CircleSchemaType,
     Judaism: {
+      id: "7",
       label: "Judaism",
       name: Religion.JUDAISM,
       religionRestriction: [Religion.JUDAISM],
     } as CircleSchemaType,
     Spiritual: {
+      id: "8",
       label: "Other/Spiritual",
       name: Religion.OTHER,
       religionRestriction: [Religion.OTHER],
@@ -62,21 +70,25 @@ export const Circles = {
   },
   Political: {
     Conservative: {
+      id: "9",
       label: "Conservative",
       name: PoliticalBeliefs.CONSERVATIVE,
       politicalBeliefsRestriction: [PoliticalBeliefs.CONSERVATIVE],
     } as CircleSchemaType,
     Moderate: {
+      id: "10",
       label: "Moderate",
       name: PoliticalBeliefs.MODERATE,
       politicalBeliefsRestriction: [PoliticalBeliefs.MODERATE],
     } as CircleSchemaType,
     Liberal: {
+      id: "11",
       label: "Liberal",
       name: PoliticalBeliefs.LIBERAL,
       politicalBeliefsRestriction: [PoliticalBeliefs.LIBERAL],
     } as CircleSchemaType,
     Independent: {
+      id: "12",
       label: "Independent",
       name: PoliticalBeliefs.INDEPENDENT,
       politicalBeliefsRestriction: [PoliticalBeliefs.INDEPENDENT],
@@ -84,11 +96,13 @@ export const Circles = {
   },
   Gender: {
     Male: {
+      id: "13",
       label: "Male",
       name: Gender.MALE,
       sexRestriction: [Gender.MALE],
     } as CircleSchemaType,
     Female: {
+      id: "14",
       label: "Female",
       name: Gender.FEMALE,
       sexRestriction: [Gender.FEMALE],
@@ -96,36 +110,43 @@ export const Circles = {
   },
   Continent: {
     NorthAmerica: {
+      id: "15",
       label: "North America",
       name: "North America",
       continentRestriction: ["North America"],
     } as CircleSchemaType,
     SouthAmerica: {
+      id: "16",
       label: "South America",
       name: "South America",
       continentRestriction: ["South America"],
     } as CircleSchemaType,
     Europe: {
+      id: "17",
       label: "Europe",
       name: "Europe",
       continentRestriction: ["Europe"],
     } as CircleSchemaType,
     Australia: {
+      id: "18",
       label: "Australia",
       name: "Australia",
       continentRestriction: ["Australia"],
     } as CircleSchemaType,
     Asia: {
+      id: "19",
       label: "Asia",
       name: "Asia",
       continentRestriction: ["Asia"],
     } as CircleSchemaType,
     Antarctica: {
+      id: "20",
       label: "Antarctica",
       name: "Antarctica",
       continentRestriction: ["Antarctica"],
     } as CircleSchemaType,
     Africa: {
+      id: "21",
       label: "Africa",
       name: "Africa",
       continentRestriction: ["Africa"],
@@ -133,6 +154,7 @@ export const Circles = {
   },
   Drinking: {
     Never: {
+      id: "22",
       label: "Never Drinks",
       name: Drinking.NEVER,
       drinkingRestriction: [Drinking.NEVER],
@@ -167,6 +189,7 @@ export const CirclesList = [
 
 export const Users = [
   {
+    userId: "1",
     username: "Jeremiah",
     sex: Gender.MALE,
     birthDate: new Date(1999, 4, 24),
@@ -198,22 +221,23 @@ export const Users = [
     email: "email@gmail.com",
     interactions: [
       {
-        initiatedUsername: "Jeremiah",
-        affectedUsername: "Tina",
+        initiatedUserId: "1",
+        affectedUserId: "3",
         isLiked: false,
         isBlocked: false,
       },
     ],
     affections: [
       {
-        initiatedUsername: "Tina",
-        affectedUsername: "Jeremiah",
+        initiatedUserId: "2",
+        affectedUserId: "1",
         isLiked: true,
         isBlocked: false,
       },
     ],
   },
   {
+    userId: "2",
     username: "Tina 2.0",
     sex: Gender.FEMALE,
     birthDate: new Date(1998, 2, 24),
@@ -245,6 +269,7 @@ export const Users = [
     email: "tina2@gmail.com",
   },
   {
+    userId: "3",
     username: "Tina",
     sex: Gender.FEMALE,
     birthDate: new Date(1998, 2, 24),
@@ -279,7 +304,7 @@ export const Users = [
 
 export const UsersPreferences = [
   {
-    id: "1",
+    userId: "1",
     username: "Jeremiah",
     sex: Gender.FEMALE,
     birthDate: new Date(1999, 4, 24),

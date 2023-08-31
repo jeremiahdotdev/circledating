@@ -3,7 +3,7 @@ import { GenderSchema } from "./Gender";
 import { z } from "zod";
 
 export const UserPreferencesSchema = z.object({
-  username: z.string().min(3).max(20),
+  userId: z.string(),
   minAge: z.number(),
   maxAge: z.number(),
   sex: GenderSchema.optional(),

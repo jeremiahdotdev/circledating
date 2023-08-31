@@ -12,10 +12,12 @@ import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
 import { ReligionSchema } from "./Religion";
 import { SelectedLocationSchema } from "./SelectedLocationSchema";
+import { UserPreferencesSchema } from "./UserPreferences";
 import { YesAndNoSchema } from "./YesAndNo";
 import { z } from "zod";
 
 export const ProfileSchema = z.object({
+  userId: z.string().optional(),
   username: z.string().min(3).max(20),
   // Propably this should be the other users id not their username -> this would need to be done on the backend side of things
   usersNotToBeMatchedWith: z.string().optional(),
@@ -42,4 +44,10 @@ export const ProfileSchema = z.object({
   circles: z.array(CircleSchema).nullable(),
 });
 
+export const ReadProfileSchema = z.object({
+  currentUserProfile: ProfileSchema,
+  currentUserPreferences: UserPreferencesSchema,
+});
+
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
+export type ReadProfileSchemaSchemaType = z.infer<typeof ReadProfileSchema>;

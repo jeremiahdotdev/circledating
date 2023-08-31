@@ -124,6 +124,7 @@ model Location {
 }
 
 model UserProfile {
+  userId          					 String           @id @default(uuid())
   username                           String           @unique
   sex                                Gender
   birthDate                          DateTime
@@ -148,22 +149,25 @@ model UserProfile {
   weightUnit                         WeightUnit
   User                               User[] @relation("userProfile")
   circles             				 UserCircle[]
+  userInteractions  	  			 UserInteraction[]    	@relation("userInteractions") 
+  userAffections    	  			 UserInteraction[]    	@relation("userAffections") 
 
   @@index([locationId])
 }
 
 model UserCircle {
   id         String        @id @default(uuid())
-  circleName String
-  Circle     Circle        @relation(fields: [circleName], references: [name])
-  username   String 
-  User       UserProfile   @relation(fields: [username], references: [username])
+  circleId   String
+  Circle     Circle        @relation(fields: [circleId], references: [id])
+  userId     String 
+  User       UserProfile   @relation(fields: [userId], references: [userId])
 
-  @@index([username])
-  @@index([circleName])
+  @@index([userId])
+  @@index([circleId])
 }
 
 model Circle {
+  id         									String        						@id @default(uuid())
   name                                          String                              @unique
   label                                         String                              @unique
   sexRestriction                                CircleSexRestriction[]
@@ -192,137 +196,137 @@ model Circle {
 
 model CircleContinentRestriction {
   id          String    @id @default(uuid())
-  circleName  String
-  circle      Circle    @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle    @relation(fields: [circleId], references: [id])
   restriction String
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleSexRestriction {
   id          String @id @default(uuid())
-  circleName  String
-  circle      Circle @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle @relation(fields: [circleId], references: [id])
   restriction Gender
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleRelocationRestriction {
   id          String         @id @default(uuid())
-  circleName  String
-  circle      Circle         @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle         @relation(fields: [circleId], references: [id])
   restriction YesNoOrUnknown
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleChildrenRestriction {
   id          String   @id @default(uuid())
-  circleName  String
-  circle      Circle   @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle   @relation(fields: [circleId], references: [id])
   restriction Children
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleEthnicityRestriction {
   id          String    @id @default(uuid())
-  circleName  String
-  circle      Circle    @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle    @relation(fields: [circleId], references: [id])
   restriction Ethnicity
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleDrinkingRestriction {
   id          String   @id @default(uuid())
-  circleName  String
-  circle      Circle   @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle   @relation(fields: [circleId], references: [id])
   restriction Drinking
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleConsumablesRestriction {
   id          String      @id @default(uuid())
-  circleName  String
-  circle      Circle      @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle      @relation(fields: [circleId], references: [id])
   restriction Consumables
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CirclePoliticalBeliefsRestriction {
   id          String           @id @default(uuid())
-  circleName  String
-  circle      Circle           @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle           @relation(fields: [circleId], references: [id])
   restriction PoliticalBeliefs
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleLevelOfEducationRestriction {
   id          String           @id @default(uuid())
-  circleName  String
-  circle      Circle           @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle           @relation(fields: [circleId], references: [id])
   restriction LevelOfEducation
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CirclePurityRestriction {
   id          String           @id @default(uuid())
-  circleName  String
-  circle      Circle           @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle           @relation(fields: [circleId], references: [id])
   restriction Purity
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleTraditionalRestriction {
   id          String         @id @default(uuid())
-  circleName  String
-  circle      Circle         @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle         @relation(fields: [circleId], references: [id])
   restriction YesNoOrUnknown
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleIncomeRestriction {
   id          String @id @default(uuid())
-  circleName  String
-  circle      Circle @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle @relation(fields: [circleId], references: [id])
   restriction Income
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleMaritalStatusRestriction {
   id          String        @id @default(uuid())
-  circleName  String
-  circle      Circle        @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle        @relation(fields: [circleId], references: [id])
   restriction MaritalStatus
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleActivityRestriction {
   id          String   @id @default(uuid())
-  circleName  String
-  circle      Circle   @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle   @relation(fields: [circleId], references: [id])
   restriction Activity
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model CircleReligionRestriction {
   id          String   @id @default(uuid())
-  circleName  String
-  circle      Circle   @relation(fields: [circleName], references: [name])
+  circleId  String
+  circle      Circle   @relation(fields: [circleId], references: [id])
   restriction Religion
 
-  @@index([circleName])
+  @@index([circleId])
 }
 
 model User {
@@ -335,16 +339,15 @@ model User {
   username			  String       			@unique
   preferences         UserPreferences[]
   authoredMessages    UserMessage[]    		@relation("authoredMessages") 
-  recievedMessages    UserMessage[]    		@relation("recievedMessages") 
-  userInteractions  	  			 UserInteraction[]    	@relation("userInteractions") 
-  userAffections    	  			 UserInteraction[]    	@relation("userAffections") 
+  recievedMessages    UserMessage[]    		@relation("recievedMessages")
+  conversations       UserConversation[]         
 
   @@index([username])
 }
 
 model UserPreferences {
-  username            String       @unique
-  user                User         @relation(fields: [username], references: [username])
+  userId              String       @unique
+  user                User         @relation(fields: [userId], references: [id])
   minAge              Int
   maxAge              Int
   sex                 Gender?
@@ -352,44 +355,66 @@ model UserPreferences {
   createdAt           DateTime     @default(now())
   updatedAt           DateTime?    @updatedAt
 
-  @@index([username])
+  @@index([userId])
 }
 
 model SelectedCircle {
   id         String            @id @default(uuid())
-  circleName String
-  Circle     Circle            @relation(fields: [circleName], references: [name])
-  username   String 
-  User       UserPreferences   @relation(fields: [username], references: [username])
+  circleId   String
+  Circle     Circle            @relation(fields: [circleId], references: [id])
+  userId   String 
+  User       UserPreferences   @relation(fields: [userId], references: [userId])
 
-  @@index([username])
-  @@index([circleName])
+  @@index([userId])
+  @@index([circleId])
 }
 
 
+
+model UserInteraction {
+  id                  String       @id @default(uuid())
+  initiatedUserId     String    
+  initiatedUser       UserProfile         @relation("userInteractions", fields: [initiatedUserId], references: [userId],  map: "user_initiated_fk")
+  affectedUserId      String  
+  affectedUser        UserProfile         @relation("userAffections", fields: [affectedUserId], references: [userId],  map: "user_affected_fk")
+  isLiked 			  Boolean
+  isBlocked			  Boolean
+
+  @@index([initiatedUserId])
+  @@index([affectedUserId])
+}
+
 model UserMessage {
   id                  String       @id @default(uuid())
+  conversationId      String?       @default(uuid())
+  conversation        Conversation? @relation(fields: [conversationId], references: [id])
   authorUsername      String    
-  authoredMessages    User         @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
+  author              User         @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
   recipientUsername   String  
-  recievedMessages    User         @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
+  recipient           User         @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
   content             String       @db.VarChar(2000) 
   createdAt           DateTime     @default(now())
   updatedAt           DateTime?    @updatedAt
 
+  @@index([conversationId])
   @@index([authorUsername])
   @@index([recipientUsername])
 }
+model Conversation {
+  id                  String       		@id @default(uuid())
+  users               UserConversation[] 
+  messages            UserMessage[]
+  createdAt           DateTime     		@default(now())
+  updatedAt           DateTime?    		@updatedAt
+}
 
-model UserInteraction {
-  id                  String       @id @default(uuid())
-  initiatedUsername   String    
-  initiatedUser       User         @relation("userInteractions", fields: [initiatedUsername], references: [username],  map: "user_initiated_fk")
-  affectedUsername    String  
-  affectedUser        User         @relation("userAffections", fields: [affectedUsername], references: [username],  map: "user_affected_fk")
-  isLiked 			  Boolean
-  isBlocked			  Boolean
+model UserConversation {
+  id                  String         @id @default(uuid())
+  userId              String       
+  conversationId      String         
+  user                User 		     @relation(fields: [userId], references: [id])
+  conversation        Conversation   @relation(fields: [conversationId], references: [id])
 
-  @@index([initiatedUsername])
-  @@index([affectedUsername])
+  @@index([userId])
+  @@index([conversationId])
 }

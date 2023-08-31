@@ -20,7 +20,9 @@ export async function seedUsers() {
     .then(handleDisconnect)
     .catch(handleError);
 
+  let userId = 0;
   const userProfiles: UserProfile[] = Users.map((userProfile) => ({
+    userId: `${userId++}`,
     username: userProfile.username,
     sex: userProfile.sex,
     birthDate: userProfile.birthDate,
@@ -46,14 +48,14 @@ export async function seedUsers() {
   }));
 
   const userCircles: UserCircle[] = [];
-  let count = 0;
-  Users.forEach(({ username, circles }) =>
-    circles.forEach(({ name }) => {
-      count++;
+  let circleId = 0;
+  Users.forEach(({ userId, circles }) =>
+    circles.forEach(({ id }) => {
+      circleId++;
       userCircles.push({
-        id: `${count}`,
-        circleName: name,
-        username: username,
+        id: `${circleId}`,
+        circleId: id ?? "",
+        userId: userId,
       });
     })
   );

@@ -1,4 +1,5 @@
 import { IconButton, IconButtonVariant } from "../../schemas/IconButton";
+import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ProfileAttribute } from "./ProfileAttribute";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
 import { ProfileLocation } from "./ProfileCardLocation";
@@ -21,12 +22,16 @@ import {
   faWineGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import dayjs from "dayjs";
 import state from "@/utils/user.store";
 
 export type ProfileCardProps = {
   profile: ProfileSchemaType;
+  interact: (
+    interaction: InteractionSchemaType,
+    profile: ProfileSchemaType
+  ) => void;
 };
 
 function IsProfilePerfectMatch(profile: ProfileSchemaType) {
@@ -43,9 +48,7 @@ function IsProfilePerfectMatch(profile: ProfileSchemaType) {
   return true;
 }
 
-export function ProfileCard({ profile }: ProfileCardProps) {
-  const [showCard, setShowCard] = useState(true);
-
+export function ProfileCard({ profile, interact }: ProfileCardProps) {
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
@@ -54,24 +57,34 @@ export function ProfileCard({ profile }: ProfileCardProps) {
   }, [profile]);
   const isLiked = useMemo(() => {
     return state.currentUser.affections?.find(
-      (i) => i.initiatedUsername === profile.username && i.isLiked
+      (i) => i.initiatedUserId === profile.userId && i.isLiked
     );
   }, [profile]);
-
-  const hide = useCallback(() => {
-    setShowCard(false);
-  }, [setShowCard]);
-
-  if (!showCard) return <></>;
-
+  const interaction = useCallback(
+    (isLiked: boolean, isBlocked: boolean) => {
+      return {
+        initiatedUserId: state.currentUser.userId,
+        affectedUserId: profile.userId,
+        isLiked: isLiked,
+        isBlocked: isBlocked,
+      } as InteractionSchemaType;
+    },
+    [profile.userId]
+  );
+  const likeThisProfile = useCallback(() => {
+    interact(interaction(true, false), profile);
+  }, [interaction, interact, profile]);
+  const blockThisProfile = useCallback(() => {
+    interact(interaction(false, true), profile);
+  }, [interaction, interact, profile]);
   return (
-    <div className="pt-4">
+    <div>
       <em className="bg-gradient-to-r from-cyan-400 to-fuchsia-300 bg-clip-text font-extrabold text-transparent">
         {isProfilePerfectMatch && "Perfect Match"}&nbsp;
       </em>
       <div
         className={cn(
-          "flex h-full max-w-3xl flex-col rounded-md border bg-background p-3 ",
+          "flex h-full max-w-3xl flex-col rounded-md shadow-outter-soft bg-background p-3 ",
           isProfilePerfectMatch
             ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100"
             : ""
@@ -94,8 +107,8 @@ export function ProfileCard({ profile }: ProfileCardProps) {
         </div>
         <div className="flex h-full max-w-full flex-wrap items-center justify-around border-b p-6 text-sm ring-offset-background">
           <div className="flex w-3/4 items-center justify-center sm:w-1/4 ">
-            {/*  DNR: profile.username needs to be changed to an ID or display name, to prevent doxxing */}
             <ProfilePicture
+              // TODO: Replace with actual picture.
               src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
               fallback={profile.username.substring(0, 1)}
               alt={profile.username + "_profile"}
@@ -182,19 +195,20 @@ export function ProfileCard({ profile }: ProfileCardProps) {
               <IconButton
                 variant={IconButtonVariant.MAIL}
                 label={"They like you! Start a conversation."}
+                onClick={likeThisProfile}
               />
             </Link>
           ) : (
             <IconButton
               variant={IconButtonVariant.LIKE}
               label={"Like!"}
-              onClick={hide}
+              onClick={likeThisProfile}
             />
           )}
           <IconButton
             variant={IconButtonVariant.TRASH}
             label={"Hide this user"}
-            onClick={hide}
+            onClick={blockThisProfile}
           />
         </div>
       </div>

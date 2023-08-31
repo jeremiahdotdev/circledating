@@ -4,7 +4,8 @@ import { UserPreferencesSchema } from "./UserPreferences";
 import { z } from "zod";
 
 export const UserSchema = z.object({
-  id: z.string().uuid(),
+  // TODO: enforce uuid
+  id: z.string(),
   email: z.string().email(),
   profile: ProfileSchema,
   preferences: UserPreferencesSchema,
