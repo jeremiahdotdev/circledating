@@ -1,0 +1,34 @@
+import { AboutColumn } from "./AboutColumn";
+import { Summary } from "./Summary";
+import React from "react";
+
+export function About() {
+  return (
+    <div>
+      :
+      <div className="grid grid-cols-2 border-b md:grid-cols-4">
+        <AboutColumn
+          className="bg-cyan-100"
+          heading={"Marriage minded."}
+          body={`Meet matches with a future. Get to know singles whose lives are already running parallel with your own.`}
+        />
+        <AboutColumn
+          className="bg-fuchsia-200"
+          heading={"Traditionally textured."}
+          body={`Circle Dating is for singles who want to build a traditional, one-man-one-woman marriage.`}
+        />
+        <AboutColumn
+          className="bg-fuchsia-200 md:bg-cyan-100"
+          heading={"Community centered."}
+          body={`Circle dating recreates real-world community in a format that makes connecting with other singles simple.`}
+        />
+        <AboutColumn
+          className="bg-cyan-100 md:bg-fuchsia-200"
+          heading={"Always affordable."}
+          body={`Meeting other singles doesn't have to break your budget. We keep our costs down so our membership can stay up.`}
+        />
+      </div>
+      <Summary />
+    </div>
+  );
+}
