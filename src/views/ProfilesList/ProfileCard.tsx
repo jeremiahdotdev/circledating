@@ -21,7 +21,6 @@ import {
   faWeight,
   faWineGlass,
 } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
 import React, { useCallback, useMemo } from "react";
 import dayjs from "dayjs";
 import state from "@/utils/user.store";
@@ -190,21 +189,11 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
           {profile.bio}
         </div>
         <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
-          {isLiked ? (
-            <Link href={`/messages/${profile.username}`}>
-              <IconButton
-                variant={IconButtonVariant.MAIL}
-                label={"They like you! Start a conversation."}
-                onClick={likeThisProfile}
-              />
-            </Link>
-          ) : (
-            <IconButton
-              variant={IconButtonVariant.LIKE}
-              label={"Like!"}
-              onClick={likeThisProfile}
-            />
-          )}
+          <IconButton
+            variant={isLiked ? IconButtonVariant.MAIL : IconButtonVariant.LIKE}
+            label={isLiked ? "They like you! Start a converation." : "Like!"}
+            onClick={likeThisProfile}
+          />
           <IconButton
             variant={IconButtonVariant.TRASH}
             label={"Hide this user"}

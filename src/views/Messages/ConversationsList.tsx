@@ -2,31 +2,53 @@
 
 import { Conversation } from "./Conversation";
 import { ConversationSchemaType } from "@/schemas/Conversation";
-import React, { useMemo } from "react";
+import { api } from "@/utils/api";
+import React, { useCallback, useMemo, useState } from "react";
 
 export type ConversationsListProps = {
   conversations: ConversationSchemaType[];
-  onClick?: (conversation: ConversationSchemaType) => void;
+  actionIsUnblock?: boolean;
+  onSelect: (conversation: ConversationSchemaType) => void;
 };
 export function ConversationsList({
   conversations,
-  onClick,
+  actionIsUnblock,
+  onSelect,
 }: ConversationsListProps) {
+  const { mutateAsync } = actionIsUnblock
+    ? api.conversations.unDelete.useMutation()
+    : api.conversations.softDelete.useMutation();
+  api.conversations.softDelete.useMutation();
+
+  const [conversationsState, setConversationsState] = useState(conversations);
+  const onAction = useCallback(
+    (conversation: ConversationSchemaType) => {
+      setConversationsState((oldValue) =>
+        oldValue.filter((c) => c.id !== conversation.id)
+      );
+      if (conversation.id)
+        mutateAsync({ id: conversation.id }).catch(console.log);
+    },
+    [mutateAsync]
+  );
+
   const renderedConversations = useMemo(() => {
-    if (conversations) {
-      return conversations?.map((conversation) => {
+    if (conversationsState) {
+      return conversationsState?.map((conversation) => {
         return (
           <Conversation
             key={conversation.id}
             conversation={conversation}
-            onClick={onClick}
+            actionIsUnblock={actionIsUnblock}
+            onSelect={onSelect}
+            onAction={onAction}
           />
         );
       });
     } else {
       return <></>;
     }
-  }, [conversations, onClick]);
+  }, [conversationsState, onSelect, onAction, actionIsUnblock]);
 
   return <div className="flex flex-col">{renderedConversations}</div>;
 }

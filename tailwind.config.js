@@ -81,6 +81,10 @@ module.exports = {
       maxHeight: {
         navless: "calc(100vh - 74px)",
       },
+      height: {
+        // TODO: h-full is not working. This is not ideal.
+        messaging: "calc(100vh - 74px - 97px)",
+      },
       boxShadow: {
         outter: "0 1px 3px 0px rgba(0, 0, 0, 0.6)",
         "outter-xl": "0 1px 3px 1px rgba(0, 0, 0, 0.6)",

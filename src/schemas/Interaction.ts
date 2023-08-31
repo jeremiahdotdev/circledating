@@ -10,6 +10,7 @@ export const InteractionSchema = z.object({
 
 export const createInteractionSchema = z.object({
   interaction: InteractionSchema,
+  isMatch: z.boolean().optional(),
 });
 
 export type InteractionSchemaType = z.infer<typeof InteractionSchema>;

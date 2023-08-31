@@ -10,7 +10,7 @@ export type MessagesPaneProps = {
 };
 export function MessagesPane({ messages }: MessagesPaneProps) {
   return (
-    <div className="flex h-full max-h-navless w-full flex-col-reverse">
+    <div className="flex h-full max-h-navless w-full flex-1 flex-col-reverse">
       {messages?.map(
         ({ createdAt, content, recipientUsername, authorUsername }, index) => {
           return (
