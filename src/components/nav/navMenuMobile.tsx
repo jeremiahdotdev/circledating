@@ -22,7 +22,7 @@ export function NavMenuMobile() {
         <FontAwesomeIcon className="h-5 w-5" icon={faBars} />
       </button>
       {showButtonList && (
-        <div className="absolute right-0 md:hidden">
+        <div className="absolute right-0 z-50 md:hidden">
           <NavButtonList />
         </div>
       )}
