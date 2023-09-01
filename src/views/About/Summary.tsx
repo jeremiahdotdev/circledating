@@ -2,7 +2,7 @@ import React from "react";
 
 export function Summary() {
   return (
-    <div className="my-8 space-y-4 p-8 leading-relaxed">
+    <div className="space-y-6 p-20 leading-relaxed">
       <h2 className="font-semibold italic">
         What makes Circle Dating different?
       </h2>

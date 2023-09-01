@@ -72,6 +72,10 @@ module.exports = {
       },
       backgroundImage: {
         "circle-pattern": "url('/CircleDating.svg')",
+        "church-sample": "url('/church-sample.jpeg')",
+      },
+      height: {
+        navless: "calc(100vh - 74px)",
       },
     },
   },
