@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Animation() {
   return (
-    <div className="h-3/4 w-screen bg-church-field bg-cover bg-center bg-no-repeat">
+    <div className="h-screen w-full border-b">
       <object type="image/svg+xml" data="./CircleDating_Animated.svg">
         svg-animation
       </object>
