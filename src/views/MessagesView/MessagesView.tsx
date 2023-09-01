@@ -1,6 +1,6 @@
 import { Loading } from "@/components/nav/loading";
 import { MessageSchemaType } from "@/schemas/Message";
-import { Messaging } from "./Messaging";
+import { Messaging } from "../../components/Messages/Messaging";
 import { PageNotFound } from "@/components/nav/pageNotFound";
 import { api } from "@/utils/api";
 import { memo } from "react";

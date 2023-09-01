@@ -1,5 +1,5 @@
 import { Circles } from "prisma/seeds/data";
-import { NewProfile } from "../NewProfile/NewProfile";
+import { NewProfile } from "../../components/NewProfile/NewProfile";
 import { memo } from "react";
 import React from "react";
 

@@ -3,7 +3,9 @@
 import { MessageSchemaType } from "@/schemas/Message";
 import { MessagesPane } from "./MessagesPane";
 import { NewMessageForm } from "./NewMessageForm";
+import { PageNotFound } from "../nav/pageNotFound";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
+import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
 import React, { useCallback, useState } from "react";
 import state from "@/utils/user.store";
@@ -25,9 +27,13 @@ export function Messaging({ messages }: MessagingProps) {
   );
 
   return (
-    <div className="flex flex-col">
+    <div className="flex max-h-navless flex-col">
       <div className="h-messaging p-4 shadow-inner-xl">
-        <MessagesPane messages={messagesState} />
+        {messagesState.length ? (
+          <MessagesPane messages={messagesState} />
+        ) : (
+          <PageNotFound error={systemMessages.INITIAL_MESSAGE} />
+        )}
       </div>
       <NewMessageForm
         gender={state.currentUser.sex}

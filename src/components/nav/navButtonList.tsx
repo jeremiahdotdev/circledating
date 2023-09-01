@@ -2,6 +2,7 @@ import { CurrentUserPreferences } from "./CurrentUserPreferences";
 import { NavButton } from "./navButton";
 import { NavSheetTrigger } from "./navSheetTrigger";
 import React from "react";
+import state from "@/utils/user.store";
 
 export function NavButtonList() {
   return (
@@ -12,6 +13,10 @@ export function NavButtonList() {
         href={"/matches?blocked=true"}
         as={"/blocked"}
         label={"Blocked"}
+      />
+      <NavButton
+        href={`/profile/${state.currentUser.username}`}
+        label={"Profile"}
       />
       <NavSheetTrigger
         label={"Filters"}

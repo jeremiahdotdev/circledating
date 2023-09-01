@@ -2,16 +2,16 @@ import {
   ConversationSchemaType,
   ReadConversationsSchemaType,
 } from "@/schemas/Conversation";
-import { ConversationsList } from "./ConversationsList";
+import { ConversationsList } from "../../components/Messages/ConversationsList";
 import { Loading } from "@/components/nav/loading";
 import { MessageSchemaType } from "@/schemas/Message";
-import { MessagesPane } from "./MessagesPane";
-import { NewMessageForm } from "./NewMessageForm";
+import { MessagesPane } from "../../components/Messages/MessagesPane";
+import { NewMessageForm } from "../../components/Messages/NewMessageForm";
 import { PageNotFound } from "@/components/nav/pageNotFound";
 import { api } from "@/utils/api";
 import { memo, useCallback, useState } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
-import { statuses } from "@/globals/statuses";
+import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
 import React from "react";
 import state from "@/utils/user.store";
@@ -62,7 +62,7 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
 
   if (!result?.success) return <Loading />;
   if (result?.success && !result.data.length)
-    return <PageNotFound error={statuses.NO_MATCHES} />;
+    return <PageNotFound error={systemMessages.NO_MATCHES} />;
 
   return (
     <main>

@@ -3,6 +3,7 @@
 import { ConversationPicture } from "./ConversationPicture";
 import { ConversationSchemaType } from "@/schemas/Conversation";
 import { IconButton, IconButtonVariant } from "@/schemas/IconButton";
+import Link from "next/link";
 import React, { useCallback } from "react";
 import state from "@/utils/user.store";
 
@@ -43,6 +44,10 @@ export function Conversation({
     [onAction, conversation]
   );
 
+  const stopPropagation = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => event.stopPropagation(),
+    []
+  );
   return (
     <div
       onClick={handleClick}
@@ -57,7 +62,12 @@ export function Conversation({
         />
       </div>
       <div className="w-full">
-        <h2 className="text-xl font-semibold">{usernames}</h2>
+        <div className="flex flex-row items-center">
+          <h2 className="text-xl font-semibold">{usernames}</h2>
+          <Link href={`/profile/${usernames}`} onClick={stopPropagation}>
+            <i className="px-2 underline">(See profile)</i>
+          </Link>
+        </div>
         <p className="text-gray-400">{messagePreview}</p>
       </div>
       <IconButton

@@ -1,4 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('tailwindcss').Config} */
+const plugin = require("tailwindcss/plugin");
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -84,6 +89,7 @@ module.exports = {
       height: {
         // TODO: h-full is not working. This is not ideal.
         messaging: "calc(100vh - 74px - 97px)",
+        navless: "calc(100vh - 74px)",
       },
       boxShadow: {
         outter: "0 1px 3px 0px rgba(0, 0, 0, 0.6)",
@@ -91,7 +97,25 @@ module.exports = {
         "outter-soft": "0px 1px 8px 0px rgba(0, 0, 0, 0.3)",
         "inner-xl": "inset 0 1px 3px 0px rgba(0, 0, 0, 0.6)",
       },
+      textShadow: {
+        sm: "1px 1px 2px rgba(0, 0, 0, 0.3)",
+        DEFAULT: "2px 2px 4px rgba(0, 0, 0, 0.4)",
+        lg: "4px 4px 8px rgba(0, 0, 0, 0.5)",
+        xl: "4px 4px 16px rgba(0, 0, 0, 0.6)",
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          "text-shadow": (value) => ({
+            textShadow: value,
+          }),
+        },
+        { values: theme("textShadow") }
+      );
+    }),
+  ],
 };

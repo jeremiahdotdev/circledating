@@ -1,3 +1,3 @@
-import { ConversationsView } from "@/views/Messages/ConversationsView";
+import { ConversationsView } from "@/views/ConversationView/ConversationsView";
 
 export default ConversationsView;

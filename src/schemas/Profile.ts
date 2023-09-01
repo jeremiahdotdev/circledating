@@ -6,6 +6,7 @@ import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
 import { IncomeSchema } from "./Income";
+import { InteractionSchema } from "./Interaction";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
@@ -41,13 +42,17 @@ export const ProfileSchema = z.object({
   religion: ReligionSchema,
   bio: z.string().optional(),
   weightUnit: z.enum(["KG", "LBS"]),
-  circles: z.array(CircleSchema).nullable(),
+  circles: z.array(CircleSchema).nullable().optional(),
+  interactions: z.array(InteractionSchema).nullable().optional(),
 });
 
 export const ReadProfileSchema = z.object({
+  username: z.string(),
+});
+export const ReadProfilesSchema = z.object({
   currentUserProfile: ProfileSchema,
   currentUserPreferences: UserPreferencesSchema,
 });
-
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
-export type ReadProfileSchemaSchemaType = z.infer<typeof ReadProfileSchema>;
+export type ReadProfileSchemaType = z.infer<typeof ReadProfileSchema>;
+export type ReadProfilesSchemaType = z.infer<typeof ReadProfilesSchema>;

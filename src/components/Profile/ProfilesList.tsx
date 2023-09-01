@@ -1,8 +1,10 @@
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { InteractionSchemaType } from "@/schemas/Interaction";
+import { PageNotFound } from "../nav/pageNotFound";
 import { ProfileCard } from "./ProfileCard";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";
+import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
 import React, { memo, useCallback, useState } from "react";
 import state from "@/utils/user.store";
@@ -33,6 +35,7 @@ export const ProfileList = memo(function ProfileList({
         isMatch: isMatch,
       })
         .then((result) => {
+          if (!isMatch) return;
           const route = `/messages/${profile.username}`;
           router
             .push(result?.id ? `${route}?id=${result.id}` : route, route)
@@ -43,7 +46,8 @@ export const ProfileList = memo(function ProfileList({
     [destroy, mutateAsync, router]
   );
 
-  if (profiles.length === 0) return <div>No profiles found</div>;
+  if (profiles.length === 0)
+    return <PageNotFound error={systemMessages.NO_PROFILES} />;
 
   return (
     <div className="flex w-full max-w-full flex-row flex-wrap items-center justify-center gap-6">
