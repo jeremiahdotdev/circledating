@@ -50,18 +50,19 @@ export const ProfileList = memo(function ProfileList({
     return <PageNotFound error={systemMessages.NO_PROFILES} />;
 
   return (
-    <div className="flex w-full max-w-full flex-row flex-wrap items-center justify-center gap-6">
-      <TransitionGroup component="ul">
-        {profilesState.map((profile: ProfileSchemaType) => (
-          <CSSTransition
-            key={profile.userId}
-            timeout={300}
-            classNames="flex-none translate-x-full ease-i-out scale-0 opacity-0 transition-all delay-300"
-          >
-            <ProfileCard profile={profile} interact={interact} />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
-    </div>
+    <TransitionGroup
+      component="ul"
+      className="flex w-full max-w-full flex-row flex-wrap items-center justify-center gap-6"
+    >
+      {profilesState.map((profile: ProfileSchemaType) => (
+        <CSSTransition
+          key={profile.userId}
+          timeout={300}
+          classNames="flex-none translate-x-full ease-i-out scale-0 opacity-0 transition-all delay-300"
+        >
+          <ProfileCard profile={profile} interact={interact} />
+        </CSSTransition>
+      ))}
+    </TransitionGroup>
   );
 });

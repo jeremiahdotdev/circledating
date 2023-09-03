@@ -7,7 +7,7 @@ import React from "react";
 
 export function Nav() {
   return (
-    <nav className="border-gray-200 bg-white shadow-md dark:bg-gray-900">
+    <nav className="z-50 border-gray-200 bg-white shadow-md dark:bg-gray-900">
       <div className="grid grid-cols-3 p-4">
         <Link
           href="/"

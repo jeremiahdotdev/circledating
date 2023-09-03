@@ -71,19 +71,19 @@ export const Circles = {
   Political: {
     Conservative: {
       id: "9",
-      label: "Conservative",
+      label: "Conservativism",
       name: PoliticalBeliefs.CONSERVATIVE,
       politicalBeliefsRestriction: [PoliticalBeliefs.CONSERVATIVE],
     } as CircleSchemaType,
     Moderate: {
       id: "10",
-      label: "Moderate",
+      label: "Moderatism",
       name: PoliticalBeliefs.MODERATE,
       politicalBeliefsRestriction: [PoliticalBeliefs.MODERATE],
     } as CircleSchemaType,
     Liberal: {
       id: "11",
-      label: "Liberal",
+      label: "Liberalism",
       name: PoliticalBeliefs.LIBERAL,
       politicalBeliefsRestriction: [PoliticalBeliefs.LIBERAL],
     } as CircleSchemaType,

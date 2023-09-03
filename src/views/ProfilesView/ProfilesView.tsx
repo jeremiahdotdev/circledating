@@ -26,7 +26,7 @@ export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
   }));
 
   return (
-    <main className="flex min-h-navless flex-col items-center justify-between">
+    <main className="flex min-h-navless flex-col items-center justify-between md:pt-6">
       <ProfileList profiles={profiles} />
     </main>
   );

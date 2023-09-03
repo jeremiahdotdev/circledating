@@ -1,8 +1,16 @@
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { Profile } from "./Profile";
+import { ProfileActions } from "./ProfileActions";
+import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
+import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
+import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
+import { ProfileLocation } from "./ProfileCardLocation";
+import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
+import { Separator } from "../ui/separator";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import React, { useMemo } from "react";
+import dayjs from "dayjs";
 import state from "@/utils/user.store";
 
 export type ProfileCardProps = {
@@ -32,10 +40,14 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
     return IsProfilePerfectMatch(profile);
   }, [profile]);
 
+  const age = useMemo(() => {
+    return dayjs().diff(profile.birthDate, "year");
+  }, [profile.birthDate]);
+
   return (
     <div>
       <em className="bg-gradient-to-r from-cyan-400 to-fuchsia-300 bg-clip-text font-extrabold text-transparent">
-        {isProfilePerfectMatch && "Perfect Match"}&nbsp;
+        {isProfilePerfectMatch && "Perfect Match"} &nbsp;
       </em>
       <div
         className={cn(
@@ -45,7 +57,112 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
             : ""
         )}
       >
-        <Profile profile={profile} interact={interact} />
+        <div className="mx-6 flex h-full max-w-full flex-wrap items-center justify-center text-sm ring-offset-background sm:justify-between sm:pt-6 ">
+          <Link href={`/profile/${profile.username}`}>
+            <h1 className="flex w-full justify-center text-lg sm:w-auto">
+              {profile.username} ({age})
+            </h1>
+          </Link>
+          <ProfileLocation
+            country={profile.location.country}
+            state={profile.location.state}
+            willingToRelocate={profile.willingToRelocate === "YES"}
+          />
+        </div>
+        <div className="flex h-full flex-wrap items-center justify-around border-b py-6 text-sm ring-offset-background sm:px-4">
+          <div className="flex w-3/4 items-center justify-center sm:w-1/4 ">
+            <ProfilePicture
+              // TODO: Replace with actual picture.
+              src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
+              fallback={profile.username.substring(0, 1)}
+              alt={profile.username + "_profile"}
+            />
+          </div>
+          <div className="grid h-full w-full px-6 sm:w-3/4 sm:grid-cols-32 ">
+            <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
+              <ProfileCardSubheading title={"General"} />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.religion}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={`${profile.religion}`}
+              />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.maritalStatus}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={`${profile.maritalStatus}`}
+              />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.politicalBeliefs}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={profile.politicalBeliefs}
+              />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.education}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={profile.levelOfEducation}
+              />
+            </div>
+            <Separator
+              orientation="vertical"
+              className="mx-auto hidden sm:block"
+            />
+            <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
+              <ProfileCardSubheading title={"Lifestyle"} />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.height}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={profile.height}
+              />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.weight}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={profile.weight}
+                weightUnit={profile.weightUnit}
+              />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.drinking}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={profile.drinking}
+              />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.consumables}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={profile.consumables}
+              />
+            </div>
+            <Separator
+              orientation="vertical"
+              className="mx-auto hidden sm:block"
+            />
+            <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
+              <ProfileAttribute
+                option={ProfileAttributeOptions.activityLevel}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={`${profile.activity}`}
+              />
+              <ProfileCardSubheading title={"Family"} />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.purity}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={profile.purity}
+              />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.children}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={profile.children}
+              />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.income}
+                variant={ProfileAttributeVariant.SMALL}
+                attribute={profile.income}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="mx-6 flex max-w-full items-center py-6 text-sm ring-offset-background sm:p-6">
+          {profile.bio}
+        </div>
+        {interact && <ProfileActions profile={profile} interact={interact} />}
       </div>
     </div>
   );

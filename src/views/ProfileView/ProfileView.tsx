@@ -1,6 +1,6 @@
 import { Loading } from "@/components/nav/loading";
 import { Profile } from "@/components/Profile/Profile";
-import { ProfileSchemaType, ReadProfileSchemaType } from "@/schemas/Profile";
+import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";
 import { memo } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
@@ -18,16 +18,16 @@ export const ProfileView: React.FC<ProfileViewProps> = memo(() => {
   const request = api.profiles.read.useQuery(options);
 
   if (!request.data) return <Loading />;
-
-  const profile: ProfileSchemaType = {
+  const profile = {
     ...request.data,
     bio: request.data.bio ?? "",
-    circles: null,
+    circles: request.data.circles.map((circle) => circle.Circle),
     interactions: null,
   };
 
   return (
-    <main className="m-auto flex min-h-navless max-w-screen-lg flex-col items-center justify-between">
+    // profiles and attributes and circles
+    <main className="mx-auto flex min-h-navless max-w-screen-lg flex-col items-center justify-between pt-6">
       <Profile profile={profile} />
     </main>
   );

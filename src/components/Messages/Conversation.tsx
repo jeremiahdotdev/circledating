@@ -1,8 +1,8 @@
 "use client";
 
-import { ConversationPicture } from "./ConversationPicture";
 import { ConversationSchemaType } from "@/schemas/Conversation";
 import { IconButton, IconButtonVariant } from "@/schemas/IconButton";
+import { ListItemPicture } from "../ui/ListItemPicture";
 import Link from "next/link";
 import React, { useCallback } from "react";
 import state from "@/utils/user.store";
@@ -54,7 +54,7 @@ export function Conversation({
       className="flex w-full cursor-pointer items-center justify-between gap-2 px-4 py-2 shadow-outter first:mt-0.5 hover:shadow-outter-xl"
     >
       <div className="aspect-square h-16 w-16">
-        <ConversationPicture
+        <ListItemPicture
           // TODO: Replace with actual picture.
           src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
           fallback={usernames.substring(0, 1)}
