@@ -1,11 +1,9 @@
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBaby,
-  faCalendar,
   faCalendarAlt,
   faDollarSign,
   faDumbbell,
-  faFlag,
   faGraduationCap,
   faHandHoldingDroplet,
   faLandmark,
