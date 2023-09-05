@@ -42,7 +42,6 @@ export async function seedCircles() {
   const circleReligionRestriction: CircleReligionRestriction[] = [];
   const circles: Circle[] = [];
 
-  const count = 0;
   CirclesList.forEach((circle: CircleSchemaType) => {
     circle.continentRestriction?.forEach((restriction) => {
       circleContinentRestriction.push({
