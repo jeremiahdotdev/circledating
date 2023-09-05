@@ -155,69 +155,72 @@ export async function seedCircles() {
       id: `${circle.id}`,
       name: circle.name,
       label: circle.label,
+      description: circle.description ?? null,
       ageMinRestriction: circle.ageMinRestriction ?? null,
       ageMaxRestriction: circle.ageMaxRestriction ?? null,
       maxWeightRestriction: circle.maxWeightRestriction ?? null,
       isFeatured: true,
       isPrivate: false,
+      updatedAt: null,
+      createdAt: new Date(),
     });
   });
 
   try {
-    // await prisma.circleContinentRestriction.createMany({
-    //   data: circleContinentRestriction,
-    // });
-    // await prisma.circleSexRestriction.createMany({
-    //   data: circleSexRestriction,
-    // });
-    // await prisma.circleRelocationRestriction.createMany({
-    //   data: circleRelocationRestriction,
-    // });
-    // await prisma.circleChildrenRestriction.createMany({
-    //   data: circleChildrenRestriction,
-    // });
-    // await prisma.circleEthnicityRestriction.createMany({
-    //   data: circleEthnicityRestriction,
-    // });
-    // await prisma.circleDrinkingRestriction.createMany({
-    //   data: circleDrinkingRestriction,
-    // });
-    // await prisma.circleConsumablesRestriction.createMany({
-    //   data: circleConsumablesRestriction,
-    // });
+    await prisma.circleContinentRestriction.createMany({
+      data: circleContinentRestriction,
+    });
+    await prisma.circleSexRestriction.createMany({
+      data: circleSexRestriction,
+    });
+    await prisma.circleRelocationRestriction.createMany({
+      data: circleRelocationRestriction,
+    });
+    await prisma.circleChildrenRestriction.createMany({
+      data: circleChildrenRestriction,
+    });
+    await prisma.circleEthnicityRestriction.createMany({
+      data: circleEthnicityRestriction,
+    });
+    await prisma.circleDrinkingRestriction.createMany({
+      data: circleDrinkingRestriction,
+    });
+    await prisma.circleConsumablesRestriction.createMany({
+      data: circleConsumablesRestriction,
+    });
     await prisma.circlePoliticalBeliefsRestriction.createMany({
       data: circlePoliticalBeliefsRestriction,
     });
-    // await prisma.circleLevelOfEducationRestriction.createMany({
-    //   data: circleLevelOfEducationRestriction,
-    // });
-    // await prisma.circlePurityRestriction.createMany({
-    //   data: circlePurityRestriction,
-    // });
-    // await prisma.circleTraditionalRestriction.createMany({
-    //   data: circleTraditionalRestriction,
-    // });
-    // await prisma.circleIncomeRestriction.createMany({
-    //   data: circleIncomeRestriction,
-    // });
-    // await prisma.circleMaritalStatusRestriction.createMany({
-    //   data: circleMaritalStatusRestriction,
-    // });
-    // await prisma.circleActivityRestriction.createMany({
-    //   data: circleActivityRestriction,
-    // });
-    // await prisma.circleReligionRestriction.createMany({
-    //   data: circleReligionRestriction,
-    // });
+    await prisma.circleLevelOfEducationRestriction.createMany({
+      data: circleLevelOfEducationRestriction,
+    });
+    await prisma.circlePurityRestriction.createMany({
+      data: circlePurityRestriction,
+    });
+    await prisma.circleTraditionalRestriction.createMany({
+      data: circleTraditionalRestriction,
+    });
+    await prisma.circleIncomeRestriction.createMany({
+      data: circleIncomeRestriction,
+    });
+    await prisma.circleMaritalStatusRestriction.createMany({
+      data: circleMaritalStatusRestriction,
+    });
+    await prisma.circleActivityRestriction.createMany({
+      data: circleActivityRestriction,
+    });
+    await prisma.circleReligionRestriction.createMany({
+      data: circleReligionRestriction,
+    });
   } catch (error: unknown) {
     await handleError(error);
   }
 
-  //   try {
-  //     await prisma.circle.createMany({
-  //       data: circles,
-  //     });
-  //   } catch (error: unknown) {
-  //     await handleError(error);
-  //   }
+  try {
+    await prisma.circle.createMany({
+      data: circles,
+    });
+  } catch (error: unknown) {
+    await handleError(error);
+  }
 }
