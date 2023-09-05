@@ -2,30 +2,45 @@ import {
   ConversationSchemaType,
   ReadConversationsSchemaType,
 } from "@/schemas/Conversation";
-import { ConversationsList } from "./ConversationsList";
+import { ConversationsList } from "../../components/Messages/ConversationsList";
 import { Loading } from "@/components/nav/loading";
 import { MessageSchemaType } from "@/schemas/Message";
-import { MessagesPane } from "./MessagesPane";
-import { NewMessageForm } from "./NewMessageForm";
+import { MessagesPane } from "../../components/Messages/MessagesPane";
+import { NewMessageForm } from "../../components/Messages/NewMessageForm";
 import { PageNotFound } from "@/components/nav/pageNotFound";
 import { api } from "@/utils/api";
 import { memo, useCallback, useState } from "react";
+import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
+import { systemMessages } from "@/globals/systemMessages";
+import { useRouter } from "next/router";
 import React from "react";
 import state from "@/utils/user.store";
 
 export type ConversationsViewProps = Record<never, never>;
 
 export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
+  const router = useRouter();
+  const actionIsUnblock = !!routerQueryAttributeToString(router.query.blocked);
   const [conversationState, setConversationState] = useState(
     {} as ConversationSchemaType
   );
-
-  const handleClickConversation = useCallback(
+  const handleSelectConversation = useCallback(
     (conversation: ConversationSchemaType) => {
       setConversationState(conversation);
     },
     []
   );
+  const handleRoute = useCallback(
+    (conversation: ConversationSchemaType) => {
+      const usernames = conversation.users
+        ?.filter((user) => user.id !== state.currentUser.userId)
+        ?.map((user) => user.username)
+        ?.join(",");
+      router.push(`/messages/${usernames}`).catch(console.log);
+    },
+    [router]
+  );
+
   const onSend = useCallback(
     (message: MessageSchemaType) => {
       setConversationState({
@@ -40,22 +55,30 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
   const options: ReadConversationsSchemaType = {
     userId: state.currentUser.userId,
   };
-  const result = api.conversations.read.useQuery(options).data;
+
+  const result = actionIsUnblock
+    ? api.conversations.readDeleted.useQuery(options).data
+    : api.conversations.read.useQuery(options).data;
 
   if (!result?.success) return <Loading />;
   if (result?.success && !result.data.length)
-    return <PageNotFound error={"No matches to show yet."} />;
+    return <PageNotFound error={systemMessages.NO_MATCHES} />;
 
   return (
     <main>
       <div className="lg:invisible lg:h-0 lg:w-0">
-        <ConversationsList conversations={result.data} />
+        <ConversationsList
+          conversations={result.data}
+          onSelect={handleRoute}
+          actionIsUnblock={actionIsUnblock}
+        />
       </div>
       <div className="invisible flex h-0 w-0 lg:visible lg:min-h-navless lg:w-full">
         <div className="md:w-1/4 ">
           <ConversationsList
             conversations={result.data}
-            onClick={handleClickConversation}
+            actionIsUnblock={actionIsUnblock}
+            onSelect={handleSelectConversation}
           />
         </div>
         <div className="flex h-full w-3/4 flex-col">

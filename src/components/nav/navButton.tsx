@@ -9,15 +9,17 @@ export type NavButtonProps = {
   className?: string;
   label: string;
   href: string;
+  as?: string;
 };
 
-export function NavButton({ label, href, className }: NavButtonProps) {
+export function NavButton({ label, href, as, className }: NavButtonProps) {
   const isActive = usePathname() === href;
 
   return (
     <li>
       <Link
         href={href}
+        as={as}
         className={cn(
           "block rounded py-2 pl-3 pr-4 md:p-0",
           classNames({

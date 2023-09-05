@@ -10,16 +10,17 @@ export function NavActivePageHeader() {
 
   return (
     <h2 className="flex self-center text-lg">
-      {router.pathname
-        .split("/")[1]
-        .split("-")
-        .reduce((word: string, path: string) => {
-          return cn(
-            word.charAt(0).toUpperCase() + word.substring(1),
-            path.charAt(0).toUpperCase() + path.substring(1)
-          );
-        }, "")}
-      {user && " - " + user.toString()}
+      {!user &&
+        router.pathname
+          .split("/")[1]
+          .split("-")
+          .reduce((word: string, path: string) => {
+            return cn(
+              word.charAt(0).toUpperCase() + word.substring(1),
+              path.charAt(0).toUpperCase() + path.substring(1)
+            );
+          }, "")}
+      {user && user.toString()}
     </h2>
   );
 }

@@ -3,10 +3,7 @@ import React from "react";
 
 export function Loading() {
   return (
-    <div
-      role="status"
-      className="flex h-full min-h-[300px] w-full items-center justify-center"
-    >
+    <div className="flex h-navless w-full items-center justify-center self-center">
       <svg
         aria-hidden="true"
         className="mr-2 inline h-16 w-16 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"

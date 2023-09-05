@@ -1,4 +1,4 @@
-import { MessagesView } from "@/views/Messages/MessagesView";
+import { MessagesView } from "@/views/MessagesView/MessagesView";
 import React from "react";
 
 export default function Page() {
