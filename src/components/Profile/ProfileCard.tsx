@@ -6,9 +6,10 @@ import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
 import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
+import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { Separator } from "../ui/separator";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import { routes } from "@/globals/routes";
 import React, { useMemo } from "react";
 import dayjs from "dayjs";
 import state from "@/utils/user.store";
@@ -58,11 +59,11 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
         )}
       >
         <div className="mx-6 flex h-full max-w-full flex-wrap items-center justify-center text-sm ring-offset-background sm:justify-between sm:pt-6 ">
-          <Link href={`/profile/${profile.username}`}>
+          <RouteOptionLink option={routes.profileByUsername(profile.username)}>
             <h1 className="flex w-full justify-center text-lg sm:w-auto">
               {profile.username} ({age})
             </h1>
-          </Link>
+          </RouteOptionLink>
           <ProfileLocation
             country={profile.location.country}
             state={profile.location.state}

@@ -5,9 +5,9 @@ import { seedMessages } from "./seeds/seedMessages";
 import { seedUsers } from "./seeds/seedUsers";
 
 const main = async () => {
-  await seedLocations();
+  // await seedLocations();
   await seedCircles();
-  await seedUsers();
+  // await seedUsers();
   // await seedMessages();
 };
 

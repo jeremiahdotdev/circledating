@@ -12,13 +12,17 @@ import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
 import { ReligionSchema } from "./Religion";
 import { YesAndNoSchema } from "./YesAndNo";
+import { useMemo } from "react";
 import { z } from "zod";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 export const CircleSchema = z.object({
   id: z.string().optional(),
   label: z.string().min(3).max(20),
   name: z.string().min(3).max(20),
+  description: z.string().max(2000).optional().nullable(),
   sexRestriction: z.array(GenderSchema).optional(),
   ageMaxRestriction: z.number().optional().nullable(),
   ageMinRestriction: z.number().optional().nullable(),
@@ -50,11 +54,18 @@ export const CircleSchema = z.object({
   activityRestriction: z.array(ActivitySchema).optional().nullable(),
   religionRestriction: z.array(ReligionSchema).optional().nullable(),
   customRestriction: z.array(CustomRestriction).optional().nullable(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().nullable().optional(),
+  _count: z
+    .object({
+      users: z.number(),
+    })
+    .optional(),
 });
+
 import { ProfileSchemaType } from "./Profile";
-import { useMemo } from "react";
-import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
+
+export type CircleSchemaType = z.infer<typeof CircleSchema>;
 
 export const MatchUserWithCircles = (
   user: ProfileSchemaType,
@@ -144,5 +155,3 @@ export const MatchUserWithCircles = (
     return false;
   return true;
 };
-
-export type CircleSchemaType = z.infer<typeof CircleSchema>;

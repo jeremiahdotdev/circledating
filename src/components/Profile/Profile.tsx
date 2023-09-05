@@ -1,9 +1,9 @@
 import { InteractionSchemaType } from "@/schemas/Interaction";
+import { ListItemCircle } from "../Circle/ListItemCircle";
 import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
-import { ProfileCircle } from "./ProfileCircle";
 import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
@@ -119,7 +119,7 @@ export function Profile({ profile, interact }: ProfileProps) {
       <ProfileSection>
         <div className="grid w-full sm:grid-cols-2">
           {profile.circles?.map((circle) => (
-            <ProfileCircle key={circle.name} circle={circle} />
+            <ListItemCircle key={circle.name} circle={circle} />
           ))}
         </div>
       </ProfileSection>

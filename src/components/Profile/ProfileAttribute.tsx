@@ -23,7 +23,7 @@ export enum ProfileAttributeVariant {
 
 export type ProfileAttributeProps = {
   option: ProfileAttributeOptionType;
-  attribute?: ProfileAttributeType | number;
+  attribute?: ProfileAttributeType | number | Date;
   weightUnit?: WeightUnit;
   variant?: ProfileAttributeVariant;
 };
@@ -49,6 +49,10 @@ export function ProfileAttribute({
       return attribute.toString();
     }
 
+    if (attribute instanceof Date) {
+      return attribute.toLocaleDateString();
+    }
+
     return formatProfileAttribute(attribute);
   }, [attribute, option, weightUnit]);
 
@@ -71,13 +75,10 @@ export function ProfileAttribute({
         );
       case ProfileAttributeVariant.LARGE:
         return (
-          <span className="grid w-full grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
+          <span className="grid h-16 w-full grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <FontAwesomeIcon
-                  className={"aspect-square h-8 w-8 p-2"}
-                  icon={option.icon}
-                />
+                <FontAwesomeIcon className={"h-6 p-2"} icon={option.icon} />
                 <b className="break-normal sm:w-full">{option.label}</b>
               </div>
               <b className="w-fit">&nbsp;•</b>

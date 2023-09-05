@@ -170,10 +170,13 @@ model Circle {
   id         									String        						@id @default(uuid())
   name                                          String                              @unique
   label                                         String                              @unique
-  sexRestriction                                CircleSexRestriction[]
+  description                                   String?                             @db.VarChar(2000)                             
+  isFeatured									Boolean                             @default(false)
+  isPrivate 									Boolean                             @default(false)
   ageMaxRestriction                             Int?
   ageMinRestriction                             Int?
   maxWeightRestriction                          Int?
+  sexRestriction                                CircleSexRestriction[]
   continentRestriction                          CircleContinentRestriction[]
   willingToRelocateRestriction                  CircleRelocationRestriction[]
   childrenRestriction                           CircleChildrenRestriction[]
@@ -190,7 +193,8 @@ model Circle {
   religionRestriction                           CircleReligionRestriction[]
   users                                         UserCircle[]
   selected                                      SelectedCircle[]
-
+  createdAt           							DateTime     						@default(now())
+  updatedAt           							DateTime?    						@updatedAt
   @@index([name])
 }
 

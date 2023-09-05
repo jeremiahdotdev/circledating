@@ -3,7 +3,8 @@
 import { ConversationSchemaType } from "@/schemas/Conversation";
 import { IconButton, IconButtonVariant } from "@/schemas/IconButton";
 import { ListItemPicture } from "../ui/ListItemPicture";
-import Link from "next/link";
+import { RouteOptionLink } from "@/utils/RouteOptionLink";
+import { routes } from "@/globals/routes";
 import React, { useCallback } from "react";
 import state from "@/utils/user.store";
 
@@ -64,9 +65,12 @@ export function Conversation({
       <div className="w-full">
         <div className="flex flex-row items-center">
           <h2 className="text-xl font-semibold">{usernames}</h2>
-          <Link href={`/profile/${usernames}`} onClick={stopPropagation}>
+          <RouteOptionLink
+            option={routes.profileByUsername(usernames)}
+            onClick={stopPropagation}
+          >
             <i className="px-2 underline">(See profile)</i>
-          </Link>
+          </RouteOptionLink>
         </div>
         <p className="text-gray-400">{messagePreview}</p>
       </div>

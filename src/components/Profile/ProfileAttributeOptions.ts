@@ -1,11 +1,15 @@
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBaby,
+  faCalendar,
+  faCalendarAlt,
   faDollarSign,
   faDumbbell,
+  faFlag,
   faGraduationCap,
   faHandHoldingDroplet,
   faLandmark,
+  faPeopleGroup,
   faPray,
   faRing,
   faRuler,
@@ -69,5 +73,14 @@ export const ProfileAttributeOptions = {
   income: {
     icon: faDollarSign,
     label: "Income",
+  },
+  // Circles
+  memberCount: {
+    icon: faPeopleGroup,
+    label: "Members",
+  },
+  foundedOn: {
+    icon: faCalendarAlt,
+    label: "Founded",
   },
 };

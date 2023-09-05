@@ -2,22 +2,23 @@ import { NavActivePageHeader } from "./navActivePageHeader";
 import { NavButtonList } from "./navButtonList";
 import { NavIcon } from "./navIcon";
 import { NavMenuMobile } from "./navMenuMobile";
-import Link from "next/link";
+import { RouteOptionLink } from "@/utils/RouteOptionLink";
+import { routes } from "@/globals/routes";
 import React from "react";
 
 export function Nav() {
   return (
     <nav className="z-50 border-gray-200 bg-white shadow-md dark:bg-gray-900">
       <div className="grid grid-cols-3 p-4">
-        <Link
-          href="/"
+        <RouteOptionLink
+          option={routes.default()}
           className="flex items-center justify-start md:justify-center"
         >
           <NavIcon />
           <span className="hidden self-center whitespace-nowrap px-2 text-2xl font-semibold dark:text-white sm:block">
             CircleDating
           </span>
-        </Link>
+        </RouteOptionLink>
         <div className="flex items-center justify-center">
           <NavActivePageHeader />
         </div>

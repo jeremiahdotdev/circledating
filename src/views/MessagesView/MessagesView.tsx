@@ -1,7 +1,7 @@
-import { Loading } from "@/components/nav/loading";
+import { Loading } from "@/components/Nav/loading";
 import { MessageSchemaType } from "@/schemas/Message";
 import { Messaging } from "../../components/Messages/Messaging";
-import { PageNotFound } from "@/components/nav/pageNotFound";
+import { PageNotFound } from "@/components/Nav/pageNotFound";
 import { api } from "@/utils/api";
 import { memo } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";

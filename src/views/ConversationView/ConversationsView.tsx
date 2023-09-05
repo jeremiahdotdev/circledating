@@ -3,11 +3,11 @@ import {
   ReadConversationsSchemaType,
 } from "@/schemas/Conversation";
 import { ConversationsList } from "../../components/Messages/ConversationsList";
-import { Loading } from "@/components/nav/loading";
+import { Loading } from "@/components/Nav/loading";
 import { MessageSchemaType } from "@/schemas/Message";
 import { MessagesPane } from "../../components/Messages/MessagesPane";
 import { NewMessageForm } from "../../components/Messages/NewMessageForm";
-import { PageNotFound } from "@/components/nav/pageNotFound";
+import { PageNotFound } from "@/components/Nav/pageNotFound";
 import { api } from "@/utils/api";
 import { memo, useCallback, useState } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";

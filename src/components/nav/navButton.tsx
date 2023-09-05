@@ -1,25 +1,23 @@
 "use client";
+import { RouteOption } from "@/globals/routes";
+import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import React from "react";
 import classNames from "classnames";
 
 export type NavButtonProps = {
   className?: string;
-  label: string;
-  href: string;
-  as?: string;
+  option: RouteOption;
 };
 
-export function NavButton({ label, href, as, className }: NavButtonProps) {
-  const isActive = usePathname() === href;
+export function NavButton({ option, className }: NavButtonProps) {
+  const isActive = usePathname() === option.href;
 
   return (
     <li>
-      <Link
-        href={href}
-        as={as}
+      <RouteOptionLink
+        option={option}
         className={cn(
           "block rounded py-2 pl-3 pr-4 md:p-0",
           classNames({
@@ -32,8 +30,8 @@ export function NavButton({ label, href, as, className }: NavButtonProps) {
         )}
         aria-current={isActive ? "page" : undefined}
       >
-        {label}
-      </Link>
+        {option.label}
+      </RouteOptionLink>
     </li>
   );
 }

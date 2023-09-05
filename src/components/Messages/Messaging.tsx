@@ -3,7 +3,7 @@
 import { MessageSchemaType } from "@/schemas/Message";
 import { MessagesPane } from "./MessagesPane";
 import { NewMessageForm } from "./NewMessageForm";
-import { PageNotFound } from "../nav/pageNotFound";
+import { PageNotFound } from "../Nav/pageNotFound";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";

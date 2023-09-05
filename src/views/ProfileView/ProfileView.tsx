@@ -26,7 +26,6 @@ export const ProfileView: React.FC<ProfileViewProps> = memo(() => {
   };
 
   return (
-    // profiles and attributes and circles
     <main className="mx-auto flex min-h-navless max-w-screen-lg flex-col items-center justify-between pt-6">
       <Profile profile={profile} />
     </main>

@@ -1,9 +1,10 @@
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { PageNotFound } from "../nav/pageNotFound";
+import { PageNotFound } from "../Nav/pageNotFound";
 import { ProfileCard } from "./ProfileCard";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";
+import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
 import React, { memo, useCallback, useState } from "react";
@@ -36,12 +37,15 @@ export const ProfileList = memo(function ProfileList({
       })
         .then((result) => {
           if (!isMatch) return;
-          const route = `/messages/${profile.username}`;
+          const option = routes.messagesByConversationIdAsUsername(
+            result?.id ?? "",
+            profile.username
+          );
           router
-            .push(result?.id ? `${route}?id=${result.id}` : route, route)
-            .catch((error) => console.log(error));
+            .push(result?.id ? option.href : option.as, option.as)
+            .catch(console.log);
         })
-        .catch((error) => console.log(error));
+        .catch(console.log);
     },
     [destroy, mutateAsync, router]
   );
