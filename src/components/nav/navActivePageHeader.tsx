@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React from "react";
 
 export function NavActivePageHeader() {
+  // TODO REMOVE COMMENT
   const router = useRouter();
   const user = router.query.user;
 
