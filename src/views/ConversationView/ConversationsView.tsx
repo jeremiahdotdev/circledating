@@ -3,14 +3,15 @@ import {
   ReadConversationsSchemaType,
 } from "@/schemas/Conversation";
 import { ConversationsList } from "../../components/Messages/ConversationsList";
-import { Loading } from "@/components/nav/loading";
+import { Loading } from "@/components/Shared/Loading";
 import { MessageSchemaType } from "@/schemas/Message";
 import { MessagesPane } from "../../components/Messages/MessagesPane";
 import { NewMessageForm } from "../../components/Messages/NewMessageForm";
-import { PageNotFound } from "@/components/nav/pageNotFound";
+import { PageNotFound } from "@/components/Shared/PageNotFound";
 import { api } from "@/utils/api";
 import { memo, useCallback, useState } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
+import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
 import React from "react";
@@ -36,7 +37,7 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
         ?.filter((user) => user.id !== state.currentUser.userId)
         ?.map((user) => user.username)
         ?.join(",");
-      router.push(`/messages/${usernames}`).catch(console.log);
+      router.push(routes.messagesByUsername(usernames).href).catch(console.log);
     },
     [router]
   );

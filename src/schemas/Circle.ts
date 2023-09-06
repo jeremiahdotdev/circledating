@@ -12,39 +12,71 @@ import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
 import { ReligionSchema } from "./Religion";
 import { YesAndNoSchema } from "./YesAndNo";
+import { useMemo } from "react";
 import { z } from "zod";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 export const CircleSchema = z.object({
   id: z.string().optional(),
   label: z.string().min(3).max(20),
   name: z.string().min(3).max(20),
+  description: z.string().max(2000).optional().nullable(),
   sexRestriction: z.array(GenderSchema).optional(),
-  ageMaxRestriction: z.number().optional(),
-  ageMinRestriction: z.number().optional(),
-  maxWeightRestriction: z.number().optional(),
-  continentRestriction: z.array(z.string()).optional(),
-  willingToRelocateRestriction: z.array(YesAndNoSchema).optional(),
-  childrenRestriction: z.array(ChildrenSchema).optional(),
-  ethnicityRestriction: z.array(EthnicitySchema).optional(),
-  drinkingRestriction: z.array(DrinkingSchema).optional(),
-  consumablesRestriction: z.array(ConsumablesSchema).optional(),
-  politicalBeliefsRestriction: z.array(PoliticalBeliefsSchema).optional(),
-  levelOfEducationRestriction: z.array(LevelOfEducationSchema).optional(),
-  purityRestriction: z.array(PuritySchema).optional(),
+  ageMaxRestriction: z.number().optional().nullable(),
+  ageMinRestriction: z.number().optional().nullable(),
+  maxWeightRestriction: z.number().optional().nullable(),
+  continentRestriction: z.array(z.string()).optional().nullable(),
+  willingToRelocateRestriction: z.array(YesAndNoSchema).optional().nullable(),
+  childrenRestriction: z.array(ChildrenSchema).optional().nullable(),
+  ethnicityRestriction: z.array(EthnicitySchema).optional().nullable(),
+  drinkingRestriction: z.array(DrinkingSchema).optional().nullable(),
+  consumablesRestriction: z.array(ConsumablesSchema).optional().nullable(),
+  politicalBeliefsRestriction: z
+    .array(PoliticalBeliefsSchema)
+    .optional()
+    .nullable(),
+  levelOfEducationRestriction: z
+    .array(LevelOfEducationSchema)
+    .optional()
+    .nullable(),
+  purityRestriction: z.array(PuritySchema).optional().nullable(),
   onlyLookingForTraditionalHouseholdRestriction: z
     .array(YesAndNoSchema)
-    .optional(),
-  incomeRestriction: z.array(IncomeSchema).optional(),
-  maritalStatusRestriction: z.array(MaritalStatusesSchema).optional(),
-  activityRestriction: z.array(ActivitySchema).optional(),
-  religionRestriction: z.array(ReligionSchema).optional(),
-  customRestriction: z.array(CustomRestriction).optional(),
+    .optional()
+    .nullable(),
+  incomeRestriction: z.array(IncomeSchema).optional().nullable(),
+  maritalStatusRestriction: z
+    .array(MaritalStatusesSchema)
+    .optional()
+    .nullable(),
+  activityRestriction: z.array(ActivitySchema).optional().nullable(),
+  religionRestriction: z.array(ReligionSchema).optional().nullable(),
+  customRestriction: z.array(CustomRestriction).optional().nullable(),
+  createdAt: z.date().optional(),
+  updatedAt: z.date().nullable().optional(),
+  links: z.array(LinkSchema).optional().nullable(),
+  users: z
+    .array(
+      z.object({
+        userId: z.string().optional(),
+      })
+    )
+    .optional()
+    .nullable(),
+  _count: z
+    .object({
+      users: z.number().optional(),
+    })
+    .optional()
+    .nullable(),
 });
+
+import { LinkSchema } from "./Link";
 import { ProfileSchemaType } from "./Profile";
-import { useMemo } from "react";
-import relativeTime from "dayjs/plugin/relativeTime";
-dayjs.extend(relativeTime);
+
+export type CircleSchemaType = z.infer<typeof CircleSchema>;
 
 export const MatchUserWithCircles = (
   user: ProfileSchemaType,
@@ -134,5 +166,3 @@ export const MatchUserWithCircles = (
     return false;
   return true;
 };
-
-export type CircleSchemaType = z.infer<typeof CircleSchema>;

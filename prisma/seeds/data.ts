@@ -71,19 +71,19 @@ export const Circles = {
   Political: {
     Conservative: {
       id: "9",
-      label: "Conservative",
+      label: "Conservativism",
       name: PoliticalBeliefs.CONSERVATIVE,
       politicalBeliefsRestriction: [PoliticalBeliefs.CONSERVATIVE],
     } as CircleSchemaType,
     Moderate: {
       id: "10",
-      label: "Moderate",
+      label: "Moderatism",
       name: PoliticalBeliefs.MODERATE,
       politicalBeliefsRestriction: [PoliticalBeliefs.MODERATE],
     } as CircleSchemaType,
     Liberal: {
       id: "11",
-      label: "Liberal",
+      label: "Liberalism",
       name: PoliticalBeliefs.LIBERAL,
       politicalBeliefsRestriction: [PoliticalBeliefs.LIBERAL],
     } as CircleSchemaType,
@@ -93,20 +93,6 @@ export const Circles = {
       name: PoliticalBeliefs.INDEPENDENT,
       politicalBeliefsRestriction: [PoliticalBeliefs.INDEPENDENT],
     } as CircleSchemaType,
-  },
-  Gender: {
-    Male: {
-      id: "13",
-      label: "Male",
-      name: Gender.MALE,
-      sexRestriction: [Gender.MALE],
-    } as CircleSchemaType,
-    Female: {
-      id: "14",
-      label: "Female",
-      name: Gender.FEMALE,
-      sexRestriction: [Gender.FEMALE],
-    },
   },
   Continent: {
     NorthAmerica: {
@@ -152,14 +138,6 @@ export const Circles = {
       continentRestriction: ["Africa"],
     } as CircleSchemaType,
   },
-  Drinking: {
-    Never: {
-      id: "22",
-      label: "Never Drinks",
-      name: Drinking.NEVER,
-      drinkingRestriction: [Drinking.NEVER],
-    } as CircleSchemaType,
-  },
 };
 
 export const CirclesList = [
@@ -182,9 +160,6 @@ export const CirclesList = [
   Circles.Continent.Asia,
   Circles.Continent.Europe,
   Circles.Continent.Africa,
-  Circles.Drinking.Never,
-  Circles.Gender.Male,
-  Circles.Gender.Female,
 ];
 
 export const Users = [

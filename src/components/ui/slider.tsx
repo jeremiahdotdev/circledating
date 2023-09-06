@@ -12,10 +12,10 @@ const Slider = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const [min, setMin] = React.useState(props.defaultValue?.[0] ?? props.min);
   const [max, setMax] = React.useState(props.defaultValue?.[1] ?? props.max);
-  const setMinMax = (v: number[]) => {
+  const setMinMax = React.useCallback((v: number[]) => {
     setMin(v[0]);
     setMax(v[1]);
-  };
+  }, []);
   return (
     <SliderPrimitive.Root
       ref={ref}

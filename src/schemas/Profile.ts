@@ -8,6 +8,7 @@ import { GenderSchema } from "./Gender";
 import { IncomeSchema } from "./Income";
 import { InteractionSchema } from "./Interaction";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
+import { LinkSchema } from "./Link";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
@@ -44,6 +45,7 @@ export const ProfileSchema = z.object({
   weightUnit: z.enum(["KG", "LBS"]),
   circles: z.array(CircleSchema).nullable().optional(),
   interactions: z.array(InteractionSchema).nullable().optional(),
+  links: z.array(LinkSchema).nullable().optional(),
 });
 
 export const ReadProfileSchema = z.object({

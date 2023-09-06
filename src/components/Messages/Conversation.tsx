@@ -1,9 +1,10 @@
 "use client";
 
-import { ConversationPicture } from "./ConversationPicture";
 import { ConversationSchemaType } from "@/schemas/Conversation";
-import { IconButton, IconButtonVariant } from "@/schemas/IconButton";
-import Link from "next/link";
+import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
+import { ListItemPicture } from "../ui/ListItemPicture";
+import { RouteOptionLink } from "@/utils/RouteOptionLink";
+import { routes } from "@/globals/routes";
 import React, { useCallback } from "react";
 import state from "@/utils/user.store";
 
@@ -54,7 +55,7 @@ export function Conversation({
       className="flex w-full cursor-pointer items-center justify-between gap-2 px-4 py-2 shadow-outter first:mt-0.5 hover:shadow-outter-xl"
     >
       <div className="aspect-square h-16 w-16">
-        <ConversationPicture
+        <ListItemPicture
           // TODO: Replace with actual picture.
           src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
           fallback={usernames.substring(0, 1)}
@@ -64,9 +65,12 @@ export function Conversation({
       <div className="w-full">
         <div className="flex flex-row items-center">
           <h2 className="text-xl font-semibold">{usernames}</h2>
-          <Link href={`/profile/${usernames}`} onClick={stopPropagation}>
+          <RouteOptionLink
+            option={routes.profileByUsername(usernames)}
+            onClick={stopPropagation}
+          >
             <i className="px-2 underline">(See profile)</i>
-          </Link>
+          </RouteOptionLink>
         </div>
         <p className="text-gray-400">{messagePreview}</p>
       </div>
@@ -74,7 +78,7 @@ export function Conversation({
         variant={
           actionIsUnblock ? IconButtonVariant.LIKE : IconButtonVariant.TRASH
         }
-        label={actionIsUnblock ? "Unblock" : "Unmatch"}
+        labelOverride={actionIsUnblock ? "Unblock" : "Unmatch"}
         onClick={takeAction}
       />
     </div>

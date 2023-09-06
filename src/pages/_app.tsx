@@ -1,7 +1,7 @@
 import "@/globals.css";
 import { AppProps } from "next/app";
 import { Inter } from "next/font/google";
-import { Nav } from "@/components/nav/nav";
+import { Nav } from "@/components/Nav/Nav";
 import { api } from "@/utils/api";
 import React from "react";
 

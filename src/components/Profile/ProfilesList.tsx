@@ -1,9 +1,11 @@
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { PageNotFound } from "../nav/pageNotFound";
+import { PageNotFound } from "../Shared/PageNotFound";
 import { ProfileCard } from "./ProfileCard";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";
+import { handleError } from "@/utils/handleError";
+import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
 import React, { memo, useCallback, useState } from "react";
@@ -36,12 +38,15 @@ export const ProfileList = memo(function ProfileList({
       })
         .then((result) => {
           if (!isMatch) return;
-          const route = `/messages/${profile.username}`;
+          const option = routes.messagesByConversationIdAsUsername(
+            result?.id ?? "",
+            profile.username
+          );
           router
-            .push(result?.id ? `${route}?id=${result.id}` : route, route)
-            .catch((error) => console.log(error));
+            .push(result?.id ? option.href : option.as, option.as)
+            .catch(handleError);
         })
-        .catch((error) => console.log(error));
+        .catch(handleError);
     },
     [destroy, mutateAsync, router]
   );
@@ -50,18 +55,19 @@ export const ProfileList = memo(function ProfileList({
     return <PageNotFound error={systemMessages.NO_PROFILES} />;
 
   return (
-    <div className="flex w-full max-w-full flex-row flex-wrap items-center justify-center gap-6">
-      <TransitionGroup component="ul">
-        {profilesState.map((profile: ProfileSchemaType) => (
-          <CSSTransition
-            key={profile.userId}
-            timeout={300}
-            classNames="flex-none translate-x-full ease-i-out scale-0 opacity-0 transition-all delay-300"
-          >
-            <ProfileCard profile={profile} interact={interact} />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
-    </div>
+    <TransitionGroup
+      component="ul"
+      className="flex w-full max-w-full flex-row flex-wrap items-center justify-center gap-6"
+    >
+      {profilesState.map((profile: ProfileSchemaType) => (
+        <CSSTransition
+          key={profile.userId}
+          timeout={300}
+          classNames="flex-none translate-x-full ease-i-out scale-0 opacity-0 transition-all delay-300"
+        >
+          <ProfileCard profile={profile} interact={interact} />
+        </CSSTransition>
+      ))}
+    </TransitionGroup>
   );
 });

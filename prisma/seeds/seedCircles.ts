@@ -42,7 +42,6 @@ export async function seedCircles() {
   const circleReligionRestriction: CircleReligionRestriction[] = [];
   const circles: Circle[] = [];
 
-  let count = 0;
   CirclesList.forEach((circle: CircleSchemaType) => {
     circle.continentRestriction?.forEach((restriction) => {
       circleContinentRestriction.push({
@@ -152,12 +151,17 @@ export async function seedCircles() {
       });
     });
     circles.push({
-      id: `${++count}`,
+      id: `${circle.id}`,
       name: circle.name,
       label: circle.label,
+      description: circle.description ?? null,
       ageMinRestriction: circle.ageMinRestriction ?? null,
       ageMaxRestriction: circle.ageMaxRestriction ?? null,
       maxWeightRestriction: circle.maxWeightRestriction ?? null,
+      isFeatured: true,
+      isPrivate: false,
+      updatedAt: null,
+      createdAt: new Date(),
     });
   });
 
@@ -171,51 +175,39 @@ export async function seedCircles() {
     await prisma.circleRelocationRestriction.createMany({
       data: circleRelocationRestriction,
     });
-
     await prisma.circleChildrenRestriction.createMany({
       data: circleChildrenRestriction,
     });
-
     await prisma.circleEthnicityRestriction.createMany({
       data: circleEthnicityRestriction,
     });
-
     await prisma.circleDrinkingRestriction.createMany({
       data: circleDrinkingRestriction,
     });
-
     await prisma.circleConsumablesRestriction.createMany({
       data: circleConsumablesRestriction,
     });
-
     await prisma.circlePoliticalBeliefsRestriction.createMany({
       data: circlePoliticalBeliefsRestriction,
     });
-
     await prisma.circleLevelOfEducationRestriction.createMany({
       data: circleLevelOfEducationRestriction,
     });
-
     await prisma.circlePurityRestriction.createMany({
       data: circlePurityRestriction,
     });
-
     await prisma.circleTraditionalRestriction.createMany({
       data: circleTraditionalRestriction,
     });
-
     await prisma.circleIncomeRestriction.createMany({
       data: circleIncomeRestriction,
     });
-
     await prisma.circleMaritalStatusRestriction.createMany({
       data: circleMaritalStatusRestriction,
     });
-
     await prisma.circleActivityRestriction.createMany({
       data: circleActivityRestriction,
     });
-
     await prisma.circleReligionRestriction.createMany({
       data: circleReligionRestriction,
     });

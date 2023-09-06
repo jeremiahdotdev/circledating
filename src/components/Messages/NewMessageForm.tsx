@@ -1,10 +1,11 @@
 import { Form } from "@/components/ui/form";
 import { Gender } from ".prisma/client";
-import { IconButton, IconButtonVariant } from "../../schemas/IconButton";
+import { IconButton, IconButtonVariant } from "../Shared/IconButton";
 import { MessageSchema, MessageSchemaType } from "@/schemas/Message";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
 import { api } from "@/utils/api";
 import { cn } from "@/lib/utils";
+import { handleError } from "@/utils/handleError";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback } from "react";
@@ -44,7 +45,7 @@ export function NewMessageForm({
           onSend(data);
           form.reset();
         })
-        .catch((e) => console.log(e));
+        .catch(handleError);
     },
     [conversationId, recipientUsername, mutateAsync, onSend, form]
   );
@@ -65,7 +66,6 @@ export function NewMessageForm({
           disabled={!recipientUsername}
         ></TextAreaFormField>
         <IconButton
-          label="Send"
           variant={IconButtonVariant.MESSAGE}
           type="submit"
           disabled={!recipientUsername}

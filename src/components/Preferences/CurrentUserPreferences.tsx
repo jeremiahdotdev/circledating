@@ -1,8 +1,8 @@
 import { Button } from "../ui/button";
 import { CheckboxList } from "../ui/CheckboxList";
 import { GenderSelectionValues } from "@/schemas/Gender";
-import { Preference } from "./preference";
-import { PreferencesSection } from "./preferencesSection";
+import { Preference } from "./Preference";
+import { PreferencesSection } from "./PreferencesSection";
 import { RadioButtonGroup } from "../ui/RadioButtonGroup";
 import { Slider } from "@/components/ui/slider";
 import React, { useMemo } from "react";

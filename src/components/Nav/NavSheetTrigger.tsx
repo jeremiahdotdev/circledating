@@ -1,10 +1,11 @@
 "use client";
+import { RouteOption } from "@/globals/routes";
+import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { SheetModal } from "../ui/SheetModal";
-import Link from "next/link";
 import React from "react";
 
 export type NavSheetTriggerProps = {
-  label: string;
+  option: RouteOption;
   trigger?: JSX.Element;
   title?: string;
   description?: string;
@@ -13,7 +14,7 @@ export type NavSheetTriggerProps = {
 };
 
 export function NavSheetTrigger({
-  label,
+  option,
   content,
   title,
   description,
@@ -22,12 +23,12 @@ export function NavSheetTrigger({
     <li>
       <SheetModal
         trigger={
-          <Link
-            href={"#"}
+          <RouteOptionLink
+            option={option}
             className="block rounded py-2 pl-3 pr-4 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0  md:hover:bg-transparent md:hover:text-cyan-300 md:dark:hover:bg-transparent md:dark:hover:text-cyan-100"
           >
-            {label}
-          </Link>
+            {option.label}
+          </RouteOptionLink>
         }
         title={title}
         description={description}

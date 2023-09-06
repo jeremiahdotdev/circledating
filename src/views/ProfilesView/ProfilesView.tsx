@@ -1,4 +1,4 @@
-import { Loading } from "@/components/nav/loading";
+import { Loading } from "@/components/Shared/Loading";
 import { ProfileList } from "../../components/Profile/ProfilesList";
 import { ReadProfilesSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";
@@ -23,10 +23,11 @@ export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
     bio: userProfile.bio ?? "",
     circles: null,
     interactions: null,
+    links: null,
   }));
 
   return (
-    <main className="flex min-h-navless flex-col items-center justify-between">
+    <main className="flex min-h-navless flex-col items-center justify-between md:pt-6">
       <ProfileList profiles={profiles} />
     </main>
   );

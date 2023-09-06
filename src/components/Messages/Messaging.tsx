@@ -1,9 +1,9 @@
 "use client";
 
 import { MessageSchemaType } from "@/schemas/Message";
-import { MessagesPane } from "./MessagesPane";
-import { NewMessageForm } from "./NewMessageForm";
-import { PageNotFound } from "../nav/pageNotFound";
+import { MessagesPane } from "@/components/Messages/MessagesPane";
+import { NewMessageForm } from "@/components/Messages/NewMessageForm";
+import { PageNotFound } from "@/components/Shared/PageNotFound";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";

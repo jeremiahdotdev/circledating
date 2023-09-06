@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 
 export type PageNotFoundProps = {
@@ -12,7 +11,7 @@ export function PageNotFound({ error }: PageNotFoundProps) {
           <h1 className="font-bold text-white text-shadow-sm">{error}</h1>
         </div>
       ) : (
-        <h1 className="font-bold">Hmmm... Nothing seems to be here</h1>
+        <h1 className="font-bold">Hmmm... Nothing seems to be here.</h1>
       )}
     </div>
   );

@@ -86,13 +86,10 @@ export const NewProfile = memo(function NewProfile({
 
   // Callbacks
   // Todo type the function parameter
-  const onInvalidData = useCallback(
-    (errors: unknown) => {
-      // Errors are presented in the errors object from the hook. the key is the name of the input and can be used to dynamically display the error message, see below for example
-      console.error(errors);
-    },
-    [form]
-  );
+  const onInvalidData = useCallback((errors: unknown) => {
+    // Errors are presented in the errors object from the hook. the key is the name of the input and can be used to dynamically display the error message, see below for example
+    console.error(errors);
+  }, []);
 
   const onValidData = useCallback(
     (data: ProfileSchemaType) => {

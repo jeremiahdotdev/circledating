@@ -1,26 +1,14 @@
 import { InteractionSchemaType } from "@/schemas/Interaction";
+import { ListItemCircle } from "../Circle/ListItemCircle";
 import { ProfileActions } from "./ProfileActions";
-import { ProfileAttribute } from "./ProfileAttribute";
+import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
+import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
+import { ProfileLinks } from "../Shared/ProfileLinks";
 import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
-import {
-  faBaby,
-  faDollarSign,
-  faDumbbell,
-  faGraduationCap,
-  faHandHoldingDroplet,
-  faLandmark,
-  faLocationDot,
-  faPray,
-  faRing,
-  faRuler,
-  faSmoking,
-  faWeight,
-  faWineGlass,
-} from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
+import { ProfileSection } from "./ProfileSection";
 import React, { useMemo } from "react";
 import dayjs from "dayjs";
 
@@ -38,109 +26,109 @@ export function Profile({ profile, interact }: ProfileProps) {
   }, [profile.birthDate]);
 
   return (
-    <div>
-      <div className="mx-6 flex h-full max-w-full flex-wrap items-center justify-center text-sm ring-offset-background sm:justify-between sm:pt-6 ">
-        <Link href={`/profile/${profile.username}`}>
-          <h1 className="flex w-full justify-center text-lg sm:w-auto">
-            {profile.username} ({age})
-          </h1>
-        </Link>
-        <span className="flex flex-row items-center">
-          <ProfileAttribute
-            icon={faLocationDot}
-            label={`${profile.location.state}, ${profile.location.country}`}
-            overrideShowLabel={true}
-          />
-          <ProfileLocation
-            willingToRelocate={profile.willingToRelocate === "YES"}
-          />
-        </span>
+    <div className="mx-2 flex max-w-screen-xl flex-col items-center justify-center gap-6">
+      <div className="w-3/4 flex-1 justify-center sm:w-1/3">
+        <ProfilePicture
+          // TODO: Replace with actual picture.
+          src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
+          fallback={profile.username.substring(0, 1)}
+          alt={profile.username + "_profile"}
+          className="md:m-2"
+        />
       </div>
-      <div className="flex h-full max-w-full flex-wrap items-center justify-around border-b p-6 text-sm ring-offset-background">
-        <div className="flex w-3/4 items-center justify-center sm:w-1/4 ">
-          <ProfilePicture
-            // TODO: Replace with actual picture.
-            src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
-            fallback={profile.username.substring(0, 1)}
-            alt={profile.username + "_profile"}
-          />
-        </div>
-        <div className="flex w-full  min-w-fit flex-col gap-2 p-1 sm:w-1/4 sm:border-l ">
+      <h1 className="flex w-full justify-center text-4xl sm:w-auto">
+        {profile.username} ({age})
+      </h1>
+      <ProfileLocation
+        country={profile.location.country}
+        state={profile.location.state}
+        willingToRelocate={profile.willingToRelocate === "YES"}
+      />
+      {profile.links && <ProfileLinks links={profile.links} />}
+      <ProfileSection>
+        <div className="grid h-full w-full items-center justify-around md:grid-cols-2 lg:grid-cols-3">
           <ProfileCardSubheading title={"General"} />
           <ProfileAttribute
-            icon={faPray}
+            option={ProfileAttributeOptions.religion}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={`${profile.religion}`}
-            label={"Religion"}
           />
           <ProfileAttribute
-            icon={faRing}
+            option={ProfileAttributeOptions.maritalStatus}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={`${profile.maritalStatus}`}
-            label={"Marital Status"}
           />
           <ProfileAttribute
-            icon={faLandmark}
+            option={ProfileAttributeOptions.politicalBeliefs}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={profile.politicalBeliefs}
-            label={"Political Beliefs"}
           />
           <ProfileAttribute
-            icon={faGraduationCap}
+            option={ProfileAttributeOptions.education}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={profile.levelOfEducation}
-            label={"Level of Education"}
           />
-        </div>
-        <div className="flex w-full min-w-fit flex-col gap-2 p-1 sm:w-1/4 sm:border-l">
+
           <ProfileCardSubheading title={"Lifestyle"} />
           <ProfileAttribute
-            icon={faRuler}
+            option={ProfileAttributeOptions.height}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={profile.height}
-            isHeight
-            label="Height"
           />
           <ProfileAttribute
-            icon={faWeight}
+            option={ProfileAttributeOptions.weight}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={profile.weight}
             weightUnit={profile.weightUnit}
-            label="Weight"
           />
           <ProfileAttribute
-            icon={faWineGlass}
+            option={ProfileAttributeOptions.drinking}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={profile.drinking}
-            label={"Drinking Level"}
           />
           <ProfileAttribute
-            icon={faSmoking}
+            option={ProfileAttributeOptions.consumables}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={profile.consumables}
-            label={"Smoking/Recreational drugs"}
           />
-        </div>
-        <div className="flex w-full min-w-fit flex-col gap-2 p-1  sm:w-1/4 sm:border-l">
           <ProfileAttribute
-            icon={faDumbbell}
+            option={ProfileAttributeOptions.activityLevel}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={`${profile.activity}`}
-            label={"Activity Level"}
           />
           <ProfileCardSubheading title={"Family"} />
           <ProfileAttribute
-            icon={faHandHoldingDroplet}
+            option={ProfileAttributeOptions.purity}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={profile.purity}
-            label={"Purity"}
           />
           <ProfileAttribute
-            icon={faBaby}
+            option={ProfileAttributeOptions.children}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={profile.children}
-            label={"Children"}
           />
           <ProfileAttribute
-            icon={faDollarSign}
+            option={ProfileAttributeOptions.income}
+            variant={ProfileAttributeVariant.LARGE}
             attribute={profile.income}
-            label={"Income"}
           />
         </div>
-      </div>
-      <div className="mx-6 flex max-w-full items-center py-6 text-sm ring-offset-background sm:p-6">
-        {profile.bio}
-      </div>
-      {interact && <ProfileActions profile={profile} interact={interact} />}
+      </ProfileSection>
+      <ProfileSection>
+        <p>{profile.bio}</p>
+      </ProfileSection>
+      <ProfileSection>
+        <div className="grid w-full sm:grid-cols-2">
+          {profile.circles?.map((circle) => (
+            <ListItemCircle key={circle.name} circle={circle} />
+          ))}
+        </div>
+      </ProfileSection>
+      {interact && (
+        <ProfileSection>
+          <ProfileActions profile={profile} interact={interact} />
+        </ProfileSection>
+      )}
     </div>
   );
 }

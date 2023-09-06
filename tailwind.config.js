@@ -76,7 +76,6 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
-        "circle-pattern": "url('/CircleDating.svg')",
         "church-field":
           "url('https://as1.ftcdn.net/v2/jpg/00/19/94/92/1000_F_19949237_n27l4aWK6acJGLCK0HAQ4XRpqy7QN7a0.jpg')",
       },
@@ -102,6 +101,9 @@ module.exports = {
         DEFAULT: "2px 2px 4px rgba(0, 0, 0, 0.4)",
         lg: "4px 4px 8px rgba(0, 0, 0, 0.5)",
         xl: "4px 4px 16px rgba(0, 0, 0, 0.6)",
+      },
+      gridTemplateColumns: {
+        32: "repeat(32, minmax(0, 1fr))",
       },
     },
   },

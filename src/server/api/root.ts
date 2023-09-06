@@ -1,3 +1,4 @@
+import { circleRouter } from "./routers/circleRouter";
 import { conversationRouter } from "./routers/conversationRouter";
 import { createTRPCRouter } from "./trpc";
 import { interactionRouter } from "./routers/interactionRouter";
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   messages: messagesRouter,
   interactions: interactionRouter,
   conversations: conversationRouter,
+  circles: circleRouter,
 });
 
 // export type definition of API
