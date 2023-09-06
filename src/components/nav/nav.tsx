@@ -1,7 +1,7 @@
-import { NavActivePageHeader } from "@/components/Nav/NavActivePageHeader";
-import { NavButtonList } from "@/components/Nav/NavButtonList";
-import { NavIcon } from "@/components/Nav/NavIcon";
-import { NavMenuMobile } from "@/components/Nav/NavMenuMobile";
+import { NavActivePageHeader } from "./NavActivePageHeader";
+import { NavButtonList } from "./NavButtonList";
+import { NavIcon } from "./NavIcon";
+import { NavMenuMobile } from "./NavMenuMobile";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { routes } from "@/globals/routes";
 import React from "react";
