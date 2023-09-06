@@ -5,6 +5,7 @@ import { memo } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { useRouter } from "next/router";
 import React from "react";
+import state from "@/utils/user.store";
 
 export type CircleProfileViewProps = Record<never, never>;
 
@@ -13,6 +14,7 @@ export const CircleProfileView: React.FC<CircleProfileViewProps> = memo(() => {
   const circleName = routerQueryAttributeToString(router.query.circle);
   const options = {
     name: circleName,
+    currentUserProfile: state.currentUser,
   };
   const request = api.circles.read.useQuery(options);
 

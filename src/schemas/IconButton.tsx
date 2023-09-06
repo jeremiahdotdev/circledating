@@ -4,6 +4,8 @@ import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
 import {
   IconDefinition,
   faCheck,
+  faDoorClosed,
+  faDoorOpen,
   faEnvelope,
   faPaperPlane,
   faTrashCan,
@@ -13,7 +15,9 @@ import React, { useMemo } from "react";
 
 export type IconButtonOptions = {
   icon: IconDefinition;
-  background: string;
+  style: string;
+  label: string;
+  showLabel?: boolean;
 };
 
 export enum IconButtonVariant {
@@ -21,10 +25,11 @@ export enum IconButtonVariant {
   MESSAGE = "message",
   LIKE = "like",
   TRASH = "trash",
+  JOIN = "join",
+  LEAVE = "leave",
 }
 
 export type IconButtonProps = {
-  label: string;
   variant: IconButtonVariant;
   type?: "button" | "submit" | "reset";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -32,7 +37,6 @@ export type IconButtonProps = {
 };
 
 export function IconButton({
-  label,
   variant,
   type,
   disabled,
@@ -42,38 +46,58 @@ export function IconButton({
     switch (variant) {
       case IconButtonVariant.MAIL:
         return {
+          label: "They like you! Start a conversation",
           icon: faEnvelope,
-          background: "bg-green-600",
+          style: "h-16 bg-green-600",
         } as IconButtonOptions;
       case IconButtonVariant.MESSAGE:
         return {
+          label: "Message",
           icon: faPaperPlane,
-          background: "bg-purple-600",
+          style: "h-16 bg-purple-600",
         } as IconButtonOptions;
       case IconButtonVariant.LIKE:
         return {
+          label: "Like!",
           icon: faCheck,
-          background: "bg-green-600",
+          style: "h-16 bg-green-600",
+        } as IconButtonOptions;
+      case IconButtonVariant.JOIN:
+        return {
+          label: "Join",
+          showLabel: true,
+          icon: faDoorClosed,
+          style: "h-12 py-3 bg-green-600",
+        } as IconButtonOptions;
+      case IconButtonVariant.LEAVE:
+        return {
+          label: "Leave",
+          showLabel: true,
+          icon: faDoorOpen,
+          style: "h-12 py-3 bg-red-600",
         } as IconButtonOptions;
       default: // Trashcan
         return {
+          label: "Block",
           icon: faTrashCan,
-          background: "bg-red-600",
+          style: "h-16 bg-red-600",
         } as IconButtonOptions;
     }
   }, [variant]);
   return (
-    <FormattedTooltip content={label}>
+    <FormattedTooltip content={option.label}>
       <Button
         onClick={onClick}
         className={cn(
-          "w-16 h-16 text-white rounded-full shadow",
-          option.background
+          "text-white rounded-full shadow",
+          option.style,
+          option.showLabel ? "" : "aspect-square"
         )}
         type={type}
         disabled={disabled}
       >
         <FontAwesomeIcon className="h-full w-full" icon={option.icon} />
+        {option.showLabel && <h4 className="pl-2 text-lg"> {option.label} </h4>}
       </Button>
     </FormattedTooltip>
   );

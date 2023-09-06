@@ -23,6 +23,7 @@ export const CircleSchema = z.object({
   label: z.string().min(3).max(20),
   name: z.string().min(3).max(20),
   description: z.string().max(2000).optional().nullable(),
+  link: z.string().max(60).optional().nullable(),
   sexRestriction: z.array(GenderSchema).optional(),
   ageMaxRestriction: z.number().optional().nullable(),
   ageMinRestriction: z.number().optional().nullable(),
@@ -56,11 +57,20 @@ export const CircleSchema = z.object({
   customRestriction: z.array(CustomRestriction).optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
+  users: z
+    .array(
+      z.object({
+        userId: z.string().optional(),
+      })
+    )
+    .optional()
+    .nullable(),
   _count: z
     .object({
-      users: z.number(),
+      users: z.number().optional(),
     })
-    .optional(),
+    .optional()
+    .nullable(),
 });
 
 import { ProfileSchemaType } from "./Profile";

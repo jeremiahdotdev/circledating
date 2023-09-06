@@ -8,6 +8,7 @@ export const routes = {
   default: () => ({ href: "/" }),
   nowhere: (label?: string) => ({ href: "#", as: "", label: label }),
   circles: () => ({ href: "/circles", label: "Circles" }),
+  newCircle: () => ({ href: "/new-circle", label: "Create a Circle" }),
   search: () => ({ href: "/search", label: "Profiles" }),
   matches: () => ({ href: "/matches", label: "Matched" }),
   blocked: () => ({
@@ -22,6 +23,10 @@ export const routes = {
   circleByCircleName: (circleName: string) => ({
     href: `/circle/${circleName}`,
     as: `/circle/${circleName}`,
+  }),
+  messagesByUsername: (username: string) => ({
+    href: `/messages/${username}`,
+    as: `/messages/${username}`,
   }),
   messagesByConversationIdAsUsername: (id: string, username: string) => ({
     href: `/messages/${username}?id=${id}`,

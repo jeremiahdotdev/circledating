@@ -65,7 +65,6 @@ export function NewMessageForm({
           disabled={!recipientUsername}
         ></TextAreaFormField>
         <IconButton
-          label="Send"
           variant={IconButtonVariant.MESSAGE}
           type="submit"
           disabled={!recipientUsername}

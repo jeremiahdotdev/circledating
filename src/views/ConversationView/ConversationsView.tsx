@@ -11,6 +11,7 @@ import { PageNotFound } from "@/components/Nav/pageNotFound";
 import { api } from "@/utils/api";
 import { memo, useCallback, useState } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
+import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
 import React from "react";
@@ -36,7 +37,7 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
         ?.filter((user) => user.id !== state.currentUser.userId)
         ?.map((user) => user.username)
         ?.join(",");
-      router.push(`/messages/${usernames}`).catch(console.log);
+      router.push(routes.messagesByUsername(usernames).href).catch(console.log);
     },
     [router]
   );

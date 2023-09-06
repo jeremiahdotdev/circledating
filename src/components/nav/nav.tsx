@@ -12,7 +12,7 @@ export function Nav() {
       <div className="grid grid-cols-3 p-4">
         <RouteOptionLink
           option={routes.default()}
-          className="flex items-center justify-start md:justify-center"
+          className="flex items-center justify-start"
         >
           <NavIcon />
           <span className="hidden self-center whitespace-nowrap px-2 text-2xl font-semibold dark:text-white sm:block">

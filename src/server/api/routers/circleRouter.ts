@@ -75,12 +75,23 @@ export const circleRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string(),
+        currentUserProfile: ProfileSchema,
       })
     )
     .query(async ({ input, ctx }) => {
       const data = await ctx.prisma.circle.findUnique({
-        where: input,
+        where: {
+          name: input.name,
+        },
         include: {
+          users: {
+            where: {
+              userId: input.currentUserProfile.userId,
+            },
+            select: {
+              userId: true,
+            },
+          },
           _count: {
             select: { users: true },
           },
@@ -118,6 +129,38 @@ export const circleRouter = createTRPCRouter({
             contains: input.circleNamePartial,
           },
           AND: isCompatibleWithCurrentUser(input.currentUserProfile),
+        },
+      });
+    }),
+  removeUserFromCircle: publicProcedure
+    .input(
+      z.object({
+        circleId: z.string(),
+        userId: z.string(),
+        currentUserProfile: ProfileSchema,
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.userCircle.deleteMany({
+        where: {
+          circleId: input.circleId,
+          userId: input.userId,
+        },
+      });
+    }),
+  addUserToCircle: publicProcedure
+    .input(
+      z.object({
+        circleId: z.string(),
+        userId: z.string(),
+        currentUserProfile: ProfileSchema,
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.userCircle.create({
+        data: {
+          circleId: input.circleId,
+          userId: input.userId,
         },
       });
     }),

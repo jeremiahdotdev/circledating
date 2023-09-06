@@ -157,10 +157,13 @@ model UserProfile {
 
 model UserCircle {
   id         String        @id @default(uuid())
+  flare      String?        
   circleId   String
   Circle     Circle        @relation(fields: [circleId], references: [id])
   userId     String 
   User       UserProfile   @relation(fields: [userId], references: [userId])
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime?     @updatedAt
 
   @@index([userId])
   @@index([circleId])
@@ -170,7 +173,9 @@ model Circle {
   id         									String        						@id @default(uuid())
   name                                          String                              @unique
   label                                         String                              @unique
-  description                                   String?                             @db.VarChar(2000)                             
+  description                                   String?                             @db.VarChar(2000)               
+  link											String?                             @db.VarChar(70)     
+  flare											String?
   isFeatured									Boolean                             @default(false)
   isPrivate 									Boolean                             @default(false)
   ageMaxRestriction                             Int?
@@ -200,7 +205,7 @@ model Circle {
 
 model CircleContinentRestriction {
   id          String    @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle    @relation(fields: [circleId], references: [id])
   restriction String
 
@@ -209,7 +214,7 @@ model CircleContinentRestriction {
 
 model CircleSexRestriction {
   id          String @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle @relation(fields: [circleId], references: [id])
   restriction Gender
 
@@ -218,7 +223,7 @@ model CircleSexRestriction {
 
 model CircleRelocationRestriction {
   id          String         @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle         @relation(fields: [circleId], references: [id])
   restriction YesNoOrUnknown
 
@@ -227,7 +232,7 @@ model CircleRelocationRestriction {
 
 model CircleChildrenRestriction {
   id          String   @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle   @relation(fields: [circleId], references: [id])
   restriction Children
 
@@ -236,7 +241,7 @@ model CircleChildrenRestriction {
 
 model CircleEthnicityRestriction {
   id          String    @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle    @relation(fields: [circleId], references: [id])
   restriction Ethnicity
 
@@ -245,7 +250,7 @@ model CircleEthnicityRestriction {
 
 model CircleDrinkingRestriction {
   id          String   @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle   @relation(fields: [circleId], references: [id])
   restriction Drinking
 
@@ -254,7 +259,7 @@ model CircleDrinkingRestriction {
 
 model CircleConsumablesRestriction {
   id          String      @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle      @relation(fields: [circleId], references: [id])
   restriction Consumables
 
@@ -263,7 +268,7 @@ model CircleConsumablesRestriction {
 
 model CirclePoliticalBeliefsRestriction {
   id          String           @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle           @relation(fields: [circleId], references: [id])
   restriction PoliticalBeliefs
 
@@ -272,7 +277,7 @@ model CirclePoliticalBeliefsRestriction {
 
 model CircleLevelOfEducationRestriction {
   id          String           @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle           @relation(fields: [circleId], references: [id])
   restriction LevelOfEducation
 
@@ -281,7 +286,7 @@ model CircleLevelOfEducationRestriction {
 
 model CirclePurityRestriction {
   id          String           @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle           @relation(fields: [circleId], references: [id])
   restriction Purity
 
@@ -299,7 +304,7 @@ model CircleTraditionalRestriction {
 
 model CircleIncomeRestriction {
   id          String @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle @relation(fields: [circleId], references: [id])
   restriction Income
 
@@ -308,7 +313,7 @@ model CircleIncomeRestriction {
 
 model CircleMaritalStatusRestriction {
   id          String        @id @default(uuid())
-  circleId  String
+  circleId    String
   circle      Circle        @relation(fields: [circleId], references: [id])
   restriction MaritalStatus
 
@@ -366,14 +371,12 @@ model SelectedCircle {
   id         String            @id @default(uuid())
   circleId   String
   Circle     Circle            @relation(fields: [circleId], references: [id])
-  userId   String 
+  userId     String 
   User       UserPreferences   @relation(fields: [userId], references: [userId])
 
   @@index([userId])
   @@index([circleId])
 }
-
-
 
 model UserInteraction {
   id                  String       @id @default(uuid())
