@@ -56,6 +56,8 @@ export async function seedUsers() {
         id: `${circleId}`,
         circleId: id ?? "",
         userId: userId,
+        createdAt: new Date(),
+        updatedAt: null,
       });
     })
   );
