@@ -1,7 +1,7 @@
-import { NavActivePageHeader } from "@/components/Nav/navActivePageHeader";
-import { NavButtonList } from "@/components/Nav/navButtonList";
-import { NavIcon } from "@/components/Nav/navIcon";
-import { NavMenuMobile } from "@/components/Nav/navMenuMobile";
+import { NavActivePageHeader } from "@/components/Nav/NavActivePageHeader";
+import { NavButtonList } from "@/components/Nav/NavButtonList";
+import { NavIcon } from "@/components/Nav/NavIcon";
+import { NavMenuMobile } from "@/components/Nav/NavMenuMobile";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { routes } from "@/globals/routes";
 import React from "react";
@@ -12,10 +12,10 @@ export function Nav() {
       <div className="grid grid-cols-3 p-4">
         <RouteOptionLink
           option={routes.default()}
-          className="flex items-center justify-start"
+          className="flex items-center justify-center"
         >
           <NavIcon />
-          <span className="hidden self-center whitespace-nowrap px-2 text-2xl font-semibold dark:text-white sm:block">
+          <span className="hidden whitespace-nowrap px-2 text-2xl font-semibold dark:text-white sm:block">
             CircleDating
           </span>
         </RouteOptionLink>

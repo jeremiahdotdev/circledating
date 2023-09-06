@@ -1,10 +1,11 @@
 import { CircleSchemaType } from "@/schemas/Circle";
-import { IconButton, IconButtonVariant } from "@/schemas/IconButton";
+import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSection } from "./ProfileSection";
 import { api } from "@/utils/api";
+import { handleError } from "@/utils/handleError";
 import React, { useCallback, useState } from "react";
 import state from "@/utils/user.store";
 
@@ -16,31 +17,24 @@ export function CircleProfile({ circle }: CircleProfileProps) {
   const leave = api.circles.removeUserFromCircle.useMutation();
   const join = api.circles.addUserToCircle.useMutation();
   const [circleState, setCircleState] = useState(circle);
+  const isMember = circleState?.users?.length;
   const handleJoinOrLeave = useCallback(() => {
-    if (circleState?.users?.length) {
-      leave
-        .mutateAsync({
-          circleId: circleState.id ?? "",
-          userId: state.currentUser.userId,
-          currentUserProfile: state.currentUser,
-        })
-        .then(() => {
-          setCircleState({ ...circleState, users: null });
-        })
-        .catch(console.log);
-    } else {
-      join
-        .mutateAsync({
-          circleId: circleState.id ?? "",
-          userId: state.currentUser.userId,
-          currentUserProfile: state.currentUser,
-        })
-        .then(() => {
-          setCircleState({ ...circleState, users: [{ userId: "" }] });
-        })
-        .catch(console.log);
-    }
-  }, [leave, join, circleState]);
+    const service = isMember ? leave : join;
+    service
+      .mutateAsync({
+        circleId: circleState.id ?? "",
+        userId: state.currentUser.userId,
+        currentUserProfile: state.currentUser,
+      })
+      .then(() => {
+        setCircleState({
+          ...circleState,
+          users: isMember ? null : [{ userId: "" }],
+        });
+      })
+      .catch(handleError);
+  }, [leave, join, circleState, isMember]);
+
   return (
     <div className="mx-2 flex max-w-screen-xl flex-col items-center justify-center gap-6">
       <div className="flex w-3/4 justify-center sm:w-1/2">
@@ -55,14 +49,9 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         <h1 className="flex w-full justify-center text-4xl sm:w-auto">
           {circle.label}
         </h1>
-        <div></div>
       </span>
       <IconButton
-        variant={
-          circleState?.users?.length
-            ? IconButtonVariant.LEAVE
-            : IconButtonVariant.JOIN
-        }
+        variant={isMember ? IconButtonVariant.LEAVE : IconButtonVariant.JOIN}
         onClick={handleJoinOrLeave}
       />
       {circle.link && (

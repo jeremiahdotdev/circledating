@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { CircleList } from "@/components/Circle/CircleList";
 import { CircleSchemaType } from "@/schemas/Circle";
-import { Loading } from "@/components/Nav/loading";
+import { Loading } from "@/components/Shared/Loading";
 import { SearchCirclesForm } from "../../components/Circle/SearchCirclesForm";
 import { api } from "@/utils/api";
+import { handleError } from "@/utils/handleError";
 import { memo, useCallback, useState } from "react";
 import { routes } from "@/globals/routes";
 import { useRouter } from "next/router";
@@ -25,13 +26,13 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
         currentUserProfile: state.currentUser,
       })
         .then(setSearchCirclesState)
-        .catch(console.log);
+        .catch(handleError);
     },
     [mutateAsync]
   );
   const handleClick = useCallback(() => {
     const route = routes.newCircle();
-    router.push(route.href).catch(console.log);
+    router.push(route.href).catch(handleError);
   }, [router]);
   const options = {
     currentUserProfile: state.currentUser,

@@ -1,7 +1,7 @@
 "use client";
 
 import { ConversationSchemaType } from "@/schemas/Conversation";
-import { IconButton, IconButtonVariant } from "@/schemas/IconButton";
+import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ListItemPicture } from "../ui/ListItemPicture";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { routes } from "@/globals/routes";
@@ -78,7 +78,7 @@ export function Conversation({
         variant={
           actionIsUnblock ? IconButtonVariant.LIKE : IconButtonVariant.TRASH
         }
-        label={actionIsUnblock ? "Unblock" : "Unmatch"}
+        labelOverride={actionIsUnblock ? "Unblock" : "Unmatch"}
         onClick={takeAction}
       />
     </div>

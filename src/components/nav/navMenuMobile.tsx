@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NavButtonList } from "./navButtonList";
+import { NavButtonList } from "./NavButtonList";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import React, { useCallback, useState } from "react";
 

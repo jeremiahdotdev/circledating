@@ -34,12 +34,14 @@ export type IconButtonProps = {
   type?: "button" | "submit" | "reset";
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
+  labelOverride?: string;
 };
 
 export function IconButton({
   variant,
   type,
   disabled,
+  labelOverride,
   onClick,
 }: IconButtonProps) {
   const option = useMemo(() => {
@@ -85,7 +87,7 @@ export function IconButton({
     }
   }, [variant]);
   return (
-    <FormattedTooltip content={option.label}>
+    <FormattedTooltip content={labelOverride ?? option.label}>
       <Button
         onClick={onClick}
         className={cn(
@@ -97,7 +99,9 @@ export function IconButton({
         disabled={disabled}
       >
         <FontAwesomeIcon className="h-full w-full" icon={option.icon} />
-        {option.showLabel && <h4 className="pl-2 text-lg"> {option.label} </h4>}
+        {option.showLabel && (
+          <h4 className="pl-2 text-lg"> {labelOverride ?? option.label} </h4>
+        )}
       </Button>
     </FormattedTooltip>
   );

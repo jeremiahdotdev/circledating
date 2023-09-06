@@ -1,5 +1,5 @@
 import { CircleProfile } from "@/components/Profile/CircleProfile";
-import { Loading } from "@/components/Nav/loading";
+import { Loading } from "@/components/Shared/Loading";
 import { api } from "@/utils/api";
 import { memo } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";

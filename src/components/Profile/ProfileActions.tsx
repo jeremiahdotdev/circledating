@@ -1,4 +1,4 @@
-import { IconButton, IconButtonVariant } from "../../schemas/IconButton";
+import { IconButton, IconButtonVariant } from "../Shared/IconButton";
 import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import React, { useCallback, useMemo } from "react";

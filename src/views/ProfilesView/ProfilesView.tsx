@@ -1,4 +1,4 @@
-import { Loading } from "@/components/Nav/loading";
+import { Loading } from "@/components/Shared/Loading";
 import { ProfileList } from "../../components/Profile/ProfilesList";
 import { ReadProfilesSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";

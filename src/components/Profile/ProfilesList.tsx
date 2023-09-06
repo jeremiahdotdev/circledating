@@ -1,9 +1,10 @@
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { PageNotFound } from "../Nav/pageNotFound";
+import { PageNotFound } from "../Shared/PageNotFound";
 import { ProfileCard } from "./ProfileCard";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";
+import { handleError } from "@/utils/handleError";
 import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
@@ -26,26 +27,26 @@ export const ProfileList = memo(function ProfileList({
     [setProfilesState, profilesState]
   );
   const interact = useCallback(
-    (interaction: InteractionSchemaType, profile: ProfileSchemaType) => {
+    async (interaction: InteractionSchemaType, profile: ProfileSchemaType) => {
       const isMatch = !!state.currentUser.affections?.find(
         (i) => i.initiatedUserId === profile.userId && i.isLiked
       );
       destroy(profile);
-      mutateAsync({
-        interaction: interaction,
-        isMatch: isMatch,
-      })
-        .then((result) => {
-          if (!isMatch) return;
+      try {
+        const result = await mutateAsync({
+          interaction: interaction,
+          isMatch: isMatch,
+        });
+        if (isMatch) {
           const option = routes.messagesByConversationIdAsUsername(
             result?.id ?? "",
             profile.username
           );
-          router
-            .push(result?.id ? option.href : option.as, option.as)
-            .catch(console.log);
-        })
-        .catch(console.log);
+          await router.push(result?.id ? option.href : option.as, option.as);
+        }
+      } catch (e: unknown) {
+        handleError(e);
+      }
     },
     [destroy, mutateAsync, router]
   );

@@ -1,6 +1,6 @@
-import { CurrentUserPreferences } from "@/components/Nav/CurrentUserPreferences";
-import { NavButton } from "@/components/Nav/navButton";
-import { NavSheetTrigger } from "@/components/Nav/navSheetTrigger";
+import { CurrentUserPreferences } from "@/components/Preferences/CurrentUserPreferences";
+import { NavButton } from "@/components/Nav/NavButton";
+import { NavSheetTrigger } from "@/components/Nav/NavSheetTrigger";
 import { routes } from "@/globals/routes";
 import React from "react";
 import state from "@/utils/user.store";
