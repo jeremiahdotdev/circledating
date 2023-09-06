@@ -4,6 +4,7 @@ import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
+import { ProfileLinks } from "../Shared/ProfileLinks";
 import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
@@ -43,7 +44,7 @@ export function Profile({ profile, interact }: ProfileProps) {
         state={profile.location.state}
         willingToRelocate={profile.willingToRelocate === "YES"}
       />
-
+      {profile.links && <ProfileLinks links={profile.links} />}
       <ProfileSection>
         <div className="grid h-full w-full items-center justify-around md:grid-cols-2 lg:grid-cols-3">
           <ProfileCardSubheading title={"General"} />

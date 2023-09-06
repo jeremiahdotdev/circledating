@@ -1,4 +1,4 @@
-import { CircleProfile } from "@/components/Profile/CircleProfile";
+import { CircleProfile } from "@/components/Circle/CircleProfile";
 import { Loading } from "@/components/Shared/Loading";
 import { api } from "@/utils/api";
 import { memo } from "react";

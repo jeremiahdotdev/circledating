@@ -27,26 +27,26 @@ export const ProfileList = memo(function ProfileList({
     [setProfilesState, profilesState]
   );
   const interact = useCallback(
-    async (interaction: InteractionSchemaType, profile: ProfileSchemaType) => {
+    (interaction: InteractionSchemaType, profile: ProfileSchemaType) => {
       const isMatch = !!state.currentUser.affections?.find(
         (i) => i.initiatedUserId === profile.userId && i.isLiked
       );
       destroy(profile);
-      try {
-        const result = await mutateAsync({
-          interaction: interaction,
-          isMatch: isMatch,
-        });
-        if (isMatch) {
+      mutateAsync({
+        interaction: interaction,
+        isMatch: isMatch,
+      })
+        .then((result) => {
+          if (!isMatch) return;
           const option = routes.messagesByConversationIdAsUsername(
             result?.id ?? "",
             profile.username
           );
-          await router.push(result?.id ? option.href : option.as, option.as);
-        }
-      } catch (e: unknown) {
-        handleError(e);
-      }
+          router
+            .push(result?.id ? option.href : option.as, option.as)
+            .catch(handleError);
+        })
+        .catch(handleError);
     },
     [destroy, mutateAsync, router]
   );

@@ -23,6 +23,7 @@ export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
     bio: userProfile.bio ?? "",
     circles: null,
     interactions: null,
+    links: null,
   }));
 
   return (

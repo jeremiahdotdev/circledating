@@ -98,6 +98,7 @@ export const profileRouter = createTRPCRouter({
       },
       include: {
         location: true,
+        links: true,
         circles: {
           include: {
             Circle: true,

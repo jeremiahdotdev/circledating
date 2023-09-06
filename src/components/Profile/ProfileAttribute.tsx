@@ -5,6 +5,7 @@ import {
   ProfileAttributeType,
   formatProfileAttribute,
 } from "@/utils/formatProfileAttribute";
+import { Url, isUrl } from "@/schemas/Link";
 import { WeightUnit } from "@prisma/client";
 import { heightValueMap } from "@/schemas/Height";
 import React, { useMemo } from "react";
@@ -23,7 +24,7 @@ export enum ProfileAttributeVariant {
 
 export type ProfileAttributeProps = {
   option: ProfileAttributeOptionType;
-  attribute?: ProfileAttributeType | number | Date;
+  attribute?: ProfileAttributeType | number | Date | Url;
   weightUnit?: WeightUnit;
   variant?: ProfileAttributeVariant;
 };
@@ -53,6 +54,13 @@ export function ProfileAttribute({
       return attribute.toLocaleDateString();
     }
 
+    if (isUrl(attribute)) {
+      return (
+        <a className="text-blue-600" href={attribute}>
+          {attribute}
+        </a>
+      );
+    }
     return formatProfileAttribute(attribute);
   }, [attribute, option, weightUnit]);
 
@@ -93,7 +101,7 @@ export function ProfileAttribute({
     }
   }, [variant, attribute, labelText, option]);
   return (
-    <span className="flex">
+    <span className="flex min-w-fit">
       <FormattedTooltip content={option.label}>
         {renderVariant}
       </FormattedTooltip>

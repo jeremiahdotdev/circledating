@@ -92,6 +92,7 @@ export const circleRouter = createTRPCRouter({
               userId: true,
             },
           },
+          links: true,
           _count: {
             select: { users: true },
           },

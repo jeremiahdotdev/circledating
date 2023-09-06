@@ -1,9 +1,13 @@
 import { CircleSchemaType } from "@/schemas/Circle";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
-import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
-import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
-import { ProfilePicture } from "./ProfilePicture";
-import { ProfileSection } from "./ProfileSection";
+import {
+  ProfileAttribute,
+  ProfileAttributeVariant,
+} from "../Profile/ProfileAttribute";
+import { ProfileAttributeOptions } from "../Profile/ProfileAttributeOptions";
+import { ProfileLinks } from "../Shared/ProfileLinks";
+import { ProfilePicture } from "../Profile/ProfilePicture";
+import { ProfileSection } from "../Profile/ProfileSection";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
 import React, { useCallback, useState } from "react";
@@ -34,7 +38,6 @@ export function CircleProfile({ circle }: CircleProfileProps) {
       })
       .catch(handleError);
   }, [leave, join, circleState, isMember]);
-
   return (
     <div className="mx-2 flex max-w-screen-xl flex-col items-center justify-center gap-6">
       <div className="flex w-3/4 justify-center sm:w-1/2">
@@ -54,12 +57,8 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         variant={isMember ? IconButtonVariant.LEAVE : IconButtonVariant.JOIN}
         onClick={handleJoinOrLeave}
       />
-      {circle.link && (
-        <a className="flex w-full justify-center text-2xl font-light sm:w-auto">
-          ({circle.link})
-        </a>
-      )}
-      <div className="grid sm:grid-cols-2">
+      {circle.links && <ProfileLinks links={circle.links} />}
+      <div className="flex md:flex-row">
         <ProfileAttribute
           option={ProfileAttributeOptions.memberCount}
           attribute={circle?._count?.users ?? 0}
@@ -70,6 +69,16 @@ export function CircleProfile({ circle }: CircleProfileProps) {
           attribute={circle?.createdAt}
           variant={ProfileAttributeVariant.LARGE}
         />
+        {circle.links?.map(({ href, id }) => {
+          return (
+            <ProfileAttribute
+              key={id}
+              option={ProfileAttributeOptions.link}
+              attribute={href}
+              variant={ProfileAttributeVariant.LARGE}
+            />
+          );
+        })}
       </div>
       {circle.description && (
         <ProfileSection>

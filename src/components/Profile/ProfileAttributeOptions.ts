@@ -2,6 +2,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import {
   faBaby,
   faCalendarAlt,
+  faChain,
   faDollarSign,
   faDumbbell,
   faGraduationCap,
@@ -80,5 +81,10 @@ export const ProfileAttributeOptions = {
   foundedOn: {
     icon: faCalendarAlt,
     label: "Founded",
+  },
+  // Both
+  link: {
+    icon: faChain,
+    label: "Linked Account",
   },
 };
