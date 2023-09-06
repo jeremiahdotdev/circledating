@@ -157,7 +157,6 @@ model UserProfile {
 
 model UserCircle {
   id         String        @id @default(uuid())
-  flare      String?        
   circleId   String
   Circle     Circle        @relation(fields: [circleId], references: [id])
   userId     String 
@@ -175,7 +174,6 @@ model Circle {
   label                                         String                              @unique
   description                                   String?                             @db.VarChar(2000)               
   link											String?                             @db.VarChar(70)     
-  flare											String?
   isFeatured									Boolean                             @default(false)
   isPrivate 									Boolean                             @default(false)
   ageMaxRestriction                             Int?
