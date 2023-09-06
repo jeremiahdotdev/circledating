@@ -17,6 +17,7 @@ export const profileRouter = createTRPCRouter({
         },
         // TODO: Make sure circles save correctly once we add a "circles" multiselector to the New-Profile section.
         circles: {},
+        links: {},
       },
     });
   }),
