@@ -56,7 +56,7 @@ export const CircleSchema = z.object({
   customRestriction: z.array(CustomRestriction).optional().nullable(),
   createdAt: z.date().optional(),
   updatedAt: z.date().nullable().optional(),
-  links: z.array(LinkSchema).optional(),
+  links: z.array(LinkSchema).optional().nullable(),
   users: z
     .array(
       z.object({

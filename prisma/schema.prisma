@@ -174,7 +174,6 @@ model Circle {
   name                                          String                              @unique
   label                                         String                              @unique
   description                                   String?                             @db.VarChar(2000)               
-  link											String?                             @db.VarChar(70)     
   isFeatured									Boolean                             @default(false)
   isPrivate 									Boolean                             @default(false)
   ageMaxRestriction                             Int?
