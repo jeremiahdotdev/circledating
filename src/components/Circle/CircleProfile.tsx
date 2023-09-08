@@ -1,5 +1,6 @@
 import { CircleSchemaType } from "@/schemas/Circle";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
+import { ItemList } from "../Shared/ItemList";
 import {
   ProfileAttribute,
   ProfileAttributeVariant,
@@ -7,9 +8,12 @@ import {
 import { ProfileAttributeOptions } from "../Profile/ProfileAttributeOptions";
 import { ProfileLinks } from "../Shared/ProfileLinks";
 import { ProfilePicture } from "../Profile/ProfilePicture";
+import { ProfileSchemaType } from "@/schemas/Profile";
 import { ProfileSection } from "../Profile/ProfileSection";
+import { SearchForm } from "./SearchForm";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
+import { isCircle } from "../Shared/ListItem";
 import React, { useCallback, useState } from "react";
 import state from "@/utils/user.store";
 
@@ -18,10 +22,17 @@ export type CircleProfileProps = {
 };
 
 export function CircleProfile({ circle }: CircleProfileProps) {
+  const [circleState, setCircleState] = useState(circle);
+  const [searchProfileState, setSearchProfileState] = useState(
+    [] as ProfileSchemaType[]
+  );
+
   const leave = api.circles.removeUserFromCircle.useMutation();
   const join = api.circles.addUserToCircle.useMutation();
-  const [circleState, setCircleState] = useState(circle);
+  const search = api.circles.searchCircleForUser.useMutation();
+
   const isMember = circleState?.users?.length;
+
   const handleJoinOrLeave = useCallback(() => {
     const service = isMember ? leave : join;
     service
@@ -38,8 +49,45 @@ export function CircleProfile({ circle }: CircleProfileProps) {
       })
       .catch(handleError);
   }, [leave, join, circleState, isMember]);
+
+  const handleKick = useCallback(
+    (userToKick: ProfileSchemaType | CircleSchemaType) => {
+      if (!isCircle(userToKick) && userToKick.userId && circleState.id)
+        leave
+          .mutateAsync({
+            circleId: circleState.id,
+            userId: userToKick.userId,
+            currentUserProfile: state.currentUser,
+          })
+          .then(() => {
+            setSearchProfileState([
+              ...searchProfileState.filter(
+                (i) => i.userId !== userToKick.userId
+              ),
+            ]);
+          })
+          .catch(handleError);
+    },
+    [leave, circleState, setSearchProfileState, searchProfileState]
+  );
+
+  const handleSearch = useCallback(
+    (searchText: string) => {
+      if (circle.id)
+        search
+          .mutateAsync({
+            circleId: circle.id,
+            usernamePartial: searchText,
+            currentUserProfile: state.currentUser,
+          })
+          .then(setSearchProfileState)
+          .catch(handleError);
+    },
+    [search, circle]
+  );
+
   return (
-    <div className="mx-2 flex max-w-screen-xl flex-col items-center justify-center gap-6">
+    <div className="mx-2 flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
       <div className="flex w-3/4 justify-center sm:w-1/2">
         <ProfilePicture
           // TODO: Replace with actual picture.
@@ -81,10 +129,17 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         })}
       </div>
       {circle.description && (
-        <ProfileSection>
+        <ProfileSection heading={`About`}>
           <p>{circle.description}</p>
         </ProfileSection>
       )}
+      {/* // TODO: Check if admin */}
+      <ProfileSection heading={`Users`}>
+        <SearchForm handleSearch={handleSearch} />
+        <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
+          <ItemList items={searchProfileState} deleteAction={handleKick} />
+        </div>
+      </ProfileSection>
     </div>
   );
 }

@@ -41,7 +41,7 @@ export const ProfileSchema = z.object({
   maritalStatus: MaritalStatusesSchema,
   activity: ActivitySchema,
   religion: ReligionSchema,
-  bio: z.string().optional(),
+  bio: z.string().optional().nullable(),
   weightUnit: z.enum(["KG", "LBS"]),
   circles: z.array(CircleSchema).nullable().optional(),
   interactions: z.array(InteractionSchema).nullable().optional(),

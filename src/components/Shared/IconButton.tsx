@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ConfirmAction } from "../ui/ConfirmAction";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
 import {
@@ -9,9 +10,10 @@ import {
   faEnvelope,
   faPaperPlane,
   faTrashCan,
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "@/lib/utils";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 export type IconButtonOptions = {
   icon: IconDefinition;
@@ -27,6 +29,7 @@ export enum IconButtonVariant {
   TRASH = "trash",
   JOIN = "join",
   LEAVE = "leave",
+  REMOVE = "remove",
 }
 
 export type IconButtonProps = {
@@ -35,6 +38,7 @@ export type IconButtonProps = {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   labelOverride?: string;
+  confirmationRequired?: boolean;
 };
 
 export function IconButton({
@@ -42,8 +46,11 @@ export function IconButton({
   type,
   disabled,
   labelOverride,
+  confirmationRequired,
   onClick,
 }: IconButtonProps) {
+  const [dialogOpenState, setDialogOpenState] = useState(false);
+
   const option = useMemo(() => {
     switch (variant) {
       case IconButtonVariant.MAIL:
@@ -78,31 +85,78 @@ export function IconButton({
           icon: faDoorOpen,
           style: "h-12 py-3 bg-red-600",
         } as IconButtonOptions;
-      default: // Trashcan
+      case IconButtonVariant.TRASH:
         return {
           label: "Block",
           icon: faTrashCan,
           style: "h-16 bg-red-600",
         } as IconButtonOptions;
+      default: // Trashcan
+        return {
+          label: "Remove",
+          icon: faX,
+          style: "h-8 p-2 bg-red-600",
+        } as IconButtonOptions;
     }
   }, [variant]);
+
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation();
+      if (onClick) {
+        if (confirmationRequired) {
+          setDialogOpenState(true);
+        } else {
+          onClick(event);
+        }
+      }
+    },
+    [setDialogOpenState, onClick, confirmationRequired]
+  );
+
+  const handleConfirm = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (onClick) onClick(event);
+      setDialogOpenState(false);
+    },
+    [setDialogOpenState, onClick]
+  );
+
+  const handleCancel = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setDialogOpenState(false);
+    },
+    [setDialogOpenState]
+  );
   return (
-    <FormattedTooltip content={labelOverride ?? option.label}>
-      <Button
-        onClick={onClick}
-        className={cn(
-          "text-white rounded-full shadow",
-          option.style,
-          option.showLabel ? "" : "aspect-square"
-        )}
-        type={type}
-        disabled={disabled}
-      >
-        <FontAwesomeIcon className="h-full w-full" icon={option.icon} />
-        {option.showLabel && (
-          <h4 className="pl-2 text-lg"> {labelOverride ?? option.label} </h4>
-        )}
-      </Button>
-    </FormattedTooltip>
+    <>
+      <FormattedTooltip content={labelOverride ?? option.label}>
+        <Button
+          onClick={handleClick}
+          className={cn(
+            "text-white rounded-full shadow",
+            option.style,
+            option.showLabel ? "" : "aspect-square"
+          )}
+          type={type}
+          disabled={disabled}
+        >
+          <FontAwesomeIcon className="h-full w-full" icon={option.icon} />
+
+          {option.showLabel && (
+            <h4 className="pl-2 text-lg"> {labelOverride ?? option.label} </h4>
+          )}
+        </Button>
+      </FormattedTooltip>
+      <ConfirmAction
+        open={dialogOpenState}
+        actionConfirm={handleConfirm}
+        actionCancel={handleCancel}
+      />
+    </>
   );
 }

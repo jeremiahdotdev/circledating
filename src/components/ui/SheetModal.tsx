@@ -28,7 +28,7 @@ export function SheetModal({
   return (
     <Sheet>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
-      <SheetContent>
+      <SheetContent className="max-h-screen">
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description} </SheetDescription>

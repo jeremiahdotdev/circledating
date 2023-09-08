@@ -1,5 +1,5 @@
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { ListItemCircle } from "../Circle/ListItemCircle";
+import { ListItem } from "../Shared/ListItem";
 import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
@@ -45,7 +45,10 @@ export function Profile({ profile, interact }: ProfileProps) {
         willingToRelocate={profile.willingToRelocate === "YES"}
       />
       {profile.links && <ProfileLinks links={profile.links} />}
-      <ProfileSection>
+      <ProfileSection heading={"About"}>
+        <p>{profile.bio}</p>
+      </ProfileSection>
+      <ProfileSection heading={"Attributes"}>
         <div className="grid h-full w-full items-center justify-around md:grid-cols-2 lg:grid-cols-3">
           <ProfileCardSubheading title={"General"} />
           <ProfileAttribute
@@ -114,13 +117,10 @@ export function Profile({ profile, interact }: ProfileProps) {
           />
         </div>
       </ProfileSection>
-      <ProfileSection>
-        <p>{profile.bio}</p>
-      </ProfileSection>
-      <ProfileSection>
+      <ProfileSection heading={`Circles`}>
         <div className="grid w-full sm:grid-cols-2">
           {profile.circles?.map((circle) => (
-            <ListItemCircle key={circle.name} circle={circle} />
+            <ListItem key={circle.name} item={circle} />
           ))}
         </div>
       </ProfileSection>

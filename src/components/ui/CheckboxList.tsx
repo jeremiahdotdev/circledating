@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import React, { useMemo } from "react";
 
 export type CheckboxProps = {
-  label: string;
+  label: React.ReactNode;
   value?: string;
   checked?: boolean;
 };
@@ -15,20 +15,20 @@ export type CheckboxListProps = {
 export function CheckboxList({ options }: CheckboxListProps) {
   const renderedOptions = useMemo(() => {
     return options.map(({ label, value, checked }) => (
-      <div key={value} className="flex-1 items-center space-x-2">
+      <div key={value} className="flex flex-1 items-center">
         <Checkbox
-          className="rounded-full"
+          className="h-5 w-5 rounded-full border-y"
           id={value}
           defaultChecked={checked}
         />
         <label
           htmlFor={value}
-          className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="w-full text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {label}
         </label>
       </div>
     ));
   }, [options]);
-  return <div className="m-2 flex flex-col gap-2">{renderedOptions}</div>;
+  return <div className="flex flex-col">{renderedOptions}</div>;
 }

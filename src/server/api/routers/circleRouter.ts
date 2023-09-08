@@ -108,10 +108,31 @@ export const circleRouter = createTRPCRouter({
     )
     .query(({ input, ctx }) => {
       return ctx.prisma.circle.findMany({
+        take: 5,
         where: {
           isPrivate: false,
           isFeatured: true,
           AND: isCompatibleWithCurrentUser(input.currentUserProfile),
+          users: {
+            none: {
+              userId: input.currentUserProfile.userId,
+            },
+          },
+        },
+      });
+    }),
+  readCirclesByUser: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+      })
+    )
+    .query(({ input, ctx }) => {
+      return ctx.prisma.circle.findMany({
+        where: {
+          users: {
+            some: input,
+          },
         },
       });
     }),
@@ -130,6 +151,32 @@ export const circleRouter = createTRPCRouter({
             contains: input.circleNamePartial,
           },
           AND: isCompatibleWithCurrentUser(input.currentUserProfile),
+        },
+      });
+    }),
+  searchCircleForUser: publicProcedure
+    .input(
+      z.object({
+        circleId: z.string(),
+        usernamePartial: z.string(),
+        currentUserProfile: ProfileSchema,
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.userProfile.findMany({
+        take: 100,
+        where: {
+          username: {
+            contains: input.usernamePartial,
+          },
+          circles: {
+            some: {
+              circleId: input.circleId,
+            },
+          },
+        },
+        include: {
+          location: true,
         },
       });
     }),

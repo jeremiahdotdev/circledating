@@ -43,7 +43,7 @@ export const profileRouter = createTRPCRouter({
           circles: {
             some: {
               circleId: {
-                in: input.currentUserPreferences.selectedCircles.map(
+                in: input.currentUserPreferences?.selectedCircles?.map(
                   (circle) => circle.id ?? "0"
                 ),
               },

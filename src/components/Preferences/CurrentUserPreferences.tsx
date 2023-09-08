@@ -1,55 +1,162 @@
 import { Button } from "../ui/button";
-import { CheckboxList } from "../ui/CheckboxList";
-import { GenderSelectionValues } from "@/schemas/Gender";
+import { ComboboxOption } from "../ui/combobox";
+import { ConsumablesSelectionValues } from "@/schemas/Consumables";
+import { DrinkingSelectionValues } from "@/schemas/Drinking";
+import { Form } from "../ui/form";
+import { MultiSelectFormField } from "../ui/MultiSelectFormField";
+import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { Preference } from "./Preference";
-import { PreferencesSection } from "./PreferencesSection";
-import { RadioButtonGroup } from "../ui/RadioButtonGroup";
+import { ReligionSelectionValues } from "@/schemas/Religion";
+import { SelectedLocationType } from "@/schemas/SelectedLocationSchema";
 import { Slider } from "@/components/ui/slider";
-import React, { useMemo } from "react";
+import { SliderFormField } from "../ui/SliderFormField";
+import {
+  UserPreferencesSchema,
+  UserPreferencesSchemaType,
+} from "@/schemas/UserPreferences";
+import { countries } from "@/globals/location";
+import { handleError } from "@/utils/handleError";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useCallback, useMemo } from "react";
 import state from "@/utils/user.store";
 
 export function CurrentUserPreferences() {
-  const renderedCircles = useMemo(
-    () =>
-      state.currentUser.circles.map((circle) => ({
-        value: circle.name,
-        label: circle.label,
-        checked: state.currentUserPreferences.selectedCircles.includes(circle),
-      })),
-    []
-  );
+  const form = useForm<UserPreferencesSchemaType>({
+    resolver: zodResolver(UserPreferencesSchema),
+  });
+
+  const selectedContinentsState = form.watch("searchContinents") as
+    | string[]
+    | undefined;
+  const selectedCountriesState = form.watch("searchCountries") as
+    | string[]
+    | undefined;
+
+  const continentValues: ComboboxOption<SelectedLocationType>[] =
+    useMemo(() => {
+      const result: ComboboxOption<SelectedLocationType>[] = [];
+      countries.forEach(({ continent }) => {
+        if (!result.map((r) => r.value).includes(continent)) {
+          result.push({
+            value: continent,
+            label: continent,
+          });
+        }
+      });
+      return result;
+    }, []);
+  const countryValues: ComboboxOption<SelectedLocationType>[] = useMemo(() => {
+    const result: ComboboxOption<SelectedLocationType>[] = [];
+    countries.forEach(({ continent, country }) => {
+      if (selectedContinentsState?.includes(continent)) {
+        result.push({
+          value: country,
+          label: country,
+        });
+      }
+    });
+    return result;
+  }, [selectedContinentsState]);
+  const stateValues: ComboboxOption<SelectedLocationType>[] = useMemo(() => {
+    const result: ComboboxOption<SelectedLocationType>[] = [];
+    countries.forEach(({ states, country }) => {
+      if (selectedCountriesState?.includes(country)) {
+        states.forEach((state) => {
+          result.push({
+            value: state,
+            label: state,
+          });
+        });
+      }
+    });
+    return result;
+  }, [selectedCountriesState]);
+
+  const onInvalidData = useCallback(handleError, []);
+  const onValidData = useCallback((data: UserPreferencesSchemaType) => {
+    console.log(data);
+    // TODO: Handle the promise correctly here!
+  }, []);
+  const handleSubmit = useCallback(() => {
+    form.handleSubmit(onValidData, onInvalidData);
+  }, [form, onValidData, onInvalidData]);
   return (
     <div className="flex h-full max-h-navless w-full flex-col">
-      <form className="flex h-full flex-col ">
-        <PreferencesSection name="Active Circles">
-          <CheckboxList options={renderedCircles} />
-        </PreferencesSection>
-        <PreferencesSection name="Filters">
-          <Preference name="Sex">
-            <RadioButtonGroup
-              options={[
-                ...GenderSelectionValues,
-                { value: "", label: "Either" },
-              ]}
-              disabled={true}
-              selectedValue={state.currentUserPreferences.sex}
-            />
-          </Preference>
-          <Preference name="Age">
-            <Slider
-              defaultValue={[
-                state.currentUserPreferences.minAge ?? 18,
-                state.currentUserPreferences.maxAge ?? 99,
-              ]}
-              step={1}
-              className="w-full"
-              min={18}
-              max={99}
-            />
-          </Preference>
-        </PreferencesSection>
-        <Button type="submit">Save</Button>
-      </form>
+      <Form {...form}>
+        <form
+          onSubmit={handleSubmit}
+          className="flex h-full flex-col justify-between"
+        >
+          <div>
+            <Preference name="Age">
+              <SliderFormField
+                name="ageRange"
+                control={form.control}
+                defaultValue={[
+                  state.currentUserPreferences.minAge ?? 18,
+                  state.currentUserPreferences.maxAge ?? 99,
+                ]}
+                step={1}
+                min={18}
+                max={99}
+                className="w-full"
+              />
+            </Preference>
+            <Preference name="Religion">
+              <MultiSelectFormField
+                name="religion"
+                control={form.control}
+                options={ReligionSelectionValues}
+              />
+            </Preference>
+            <Preference name="Politcal Beliefs">
+              <MultiSelectFormField
+                name="politicalBeliefs"
+                control={form.control}
+                options={PoliticalBeliefsSelectionValues}
+              />
+            </Preference>
+            <Preference name="Alcohol">
+              <MultiSelectFormField
+                name="drinking"
+                control={form.control}
+                options={DrinkingSelectionValues}
+              />
+            </Preference>
+            <Preference name="Tobacco / Drugs">
+              <MultiSelectFormField
+                name="consumables"
+                control={form.control}
+                options={ConsumablesSelectionValues}
+              />
+            </Preference>
+            <Preference name="Location">
+              <MultiSelectFormField
+                name="searchContinents"
+                control={form.control}
+                options={continentValues}
+                placeholder="Select continent..."
+              />
+              <MultiSelectFormField
+                name="searchCountries"
+                control={form.control}
+                options={countryValues}
+                placeholder="Select countries..."
+              />
+              <MultiSelectFormField
+                name="searchStates"
+                control={form.control}
+                options={stateValues}
+                placeholder="Select states/provinces..."
+              />
+            </Preference>
+          </div>
+          <Button type="submit" className="bg-purple-600">
+            Save
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }
