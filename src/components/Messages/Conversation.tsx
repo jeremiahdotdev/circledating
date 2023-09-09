@@ -11,7 +11,7 @@ import state from "@/utils/user.store";
 export type ConversationProps = {
   conversation: ConversationSchemaType;
   onSelect: (conversation: ConversationSchemaType) => void;
-  onAction: (conversation: ConversationSchemaType) => void;
+  onAction: (conversation: ConversationSchemaType) => Promise<void> | undefined;
   actionIsUnblock?: boolean;
 };
 export function Conversation({
@@ -40,7 +40,7 @@ export function Conversation({
   const takeAction = useCallback(
     (click: React.MouseEvent<HTMLButtonElement>) => {
       click.stopPropagation();
-      onAction(conversation);
+      return onAction(conversation);
     },
     [onAction, conversation]
   );
