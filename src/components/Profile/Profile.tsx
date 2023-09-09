@@ -20,7 +20,7 @@ export type ProfileProps = {
   interact?: (
     interaction: InteractionSchemaType,
     profile: ProfileSchemaType
-  ) => void;
+  ) => Promise<void>;
 };
 
 export function Profile({ profile, interact }: ProfileProps) {

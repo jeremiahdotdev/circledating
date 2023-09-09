@@ -19,7 +19,7 @@ export type ProfileCardProps = {
   interact: (
     interaction: InteractionSchemaType,
     profile: ProfileSchemaType
-  ) => void;
+  ) => Promise<void>;
 };
 
 function IsProfilePerfectMatch(profile: ProfileSchemaType) {

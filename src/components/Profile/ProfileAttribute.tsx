@@ -109,7 +109,7 @@ export function ProfileAttribute({
       default:
         return <></>;
     }
-  }, [variant, attribute, option]);
+  }, [variant, attribute, option, label]);
   return (
     <span className="flex w-full min-w-fit sm:w-fit">
       <FormattedTooltip content={option.label}>

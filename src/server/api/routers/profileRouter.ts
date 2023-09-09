@@ -82,6 +82,7 @@ export const profileRouter = createTRPCRouter({
           },
           links: {},
           interactions: {},
+          affections: {},
         },
       });
     }),

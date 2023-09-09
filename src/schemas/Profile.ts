@@ -47,6 +47,7 @@ export const Profile = {
   ...ProfilePartial,
   circles: z.array(CircleSchema).optional(),
   interactions: z.array(InteractionSchema).optional(),
+  affections: z.array(InteractionSchema).optional(),
   links: z.array(LinkSchema).optional(),
 };
 export const ProfileSchema = z.object(Profile);

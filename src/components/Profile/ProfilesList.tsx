@@ -32,21 +32,19 @@ export const ProfileList = memo(function ProfileList({
         (i) => i.initiatedUserId === profile.userId && i.isLiked
       );
       destroy(profile);
-      mutateAsync({
+      return mutateAsync({
         interaction: interaction,
         isMatch: isMatch,
-      })
-        .then((result) => {
-          if (!isMatch) return;
-          const option = routes.messagesByConversationIdAsUsername(
-            result?.id ?? "",
-            profile.username
-          );
-          router
-            .push(result?.id ? option.href : option.as, option.as)
-            .catch(handleError);
-        })
-        .catch(handleError);
+      }).then((result) => {
+        if (!isMatch) return;
+        const option = routes.messagesByConversationIdAsUsername(
+          result?.id ?? "",
+          profile.username
+        );
+        router
+          .push(result?.id ? option.href : option.as, option.as)
+          .catch(handleError);
+      });
     },
     [destroy, mutateAsync, router]
   );

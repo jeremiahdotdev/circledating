@@ -273,6 +273,7 @@ export const Users = [
     email: "tina2@gmail.com",
     links: [],
     interactions: [],
+    affections: [],
   },
   {
     userId: "3",
@@ -307,6 +308,7 @@ export const Users = [
     email: "tina@gmail.com",
     links: [],
     interactions: [],
+    affections: [],
   },
 ];
 
