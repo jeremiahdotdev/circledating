@@ -1,4 +1,4 @@
-import { User, UserCircle, UserProfile } from "@prisma/client";
+import { User, UserCircle, UserProfile, UserType } from "@prisma/client";
 import { Users } from "./data";
 import { handleDisconnect, handleError } from "./util";
 import { prisma } from "../../src/server/db";
@@ -54,6 +54,7 @@ export async function seedUsers() {
       circleId++;
       userCircles.push({
         id: `${circleId}`,
+        circleTitle: UserType.PLEB,
         circleId: id ?? "",
         userId: userId,
         createdAt: new Date(),
