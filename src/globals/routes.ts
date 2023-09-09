@@ -21,7 +21,7 @@ export const routes = {
     href: `/profile/${username}`,
     label: "Profile",
   }),
-  circleByCircleName: (circleName: string) => ({
+  circleByCircleNameAsLabel: (circleName: string, circleLabel?: string) => ({
     href: `/circle/${circleName}`,
     as: `/circle/${circleName}`,
   }),

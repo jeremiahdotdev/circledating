@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CircleSchemaType } from "@/schemas/Circle";
-import { ItemList } from "@/components/Shared/ItemList";
+import { ItemList, ParseItem } from "@/components/Shared/ItemList";
 import { Loading } from "@/components/Shared/Loading";
 import { SearchForm } from "../../components/Circle/SearchForm";
 import { api } from "@/utils/api";
@@ -54,7 +54,7 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Your Circles</h2>
             <div className="max-h-96 w-full">
-              <ItemList items={currentCircles} />
+              <ItemList items={currentCircles.map(ParseItem)} />
             </div>
           </div>
         )}
@@ -62,7 +62,7 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Suggested for you</h2>
             <div className="max-h-96 w-full">
-              <ItemList items={featuredCircles} />
+              <ItemList items={featuredCircles.map(ParseItem)} />
             </div>
           </div>
         )}
@@ -70,7 +70,7 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
           <h2 className="w-full text-start text-xl">Find a Circle</h2>
           <SearchForm handleSearch={handleSearch} />
           <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
-            <ItemList items={searchCirclesState} />
+            <ItemList items={searchCirclesState.map(ParseItem)} />
           </div>
         </div>
         <div className="m-12 flex h-full w-full flex-col items-center justify-center gap-4">

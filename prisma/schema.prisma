@@ -115,6 +115,12 @@ enum YesNoOrUnknown {
   UNKNOWN
 }
 
+enum UserType {
+  CIRCLE_MOD
+  CIRCLE_OWNER
+  PLEB
+}
+
 model Location {
   id          String        @id @default(uuid())
   continent   String
@@ -157,13 +163,14 @@ model UserProfile {
 }
 
 model UserCircle {
-  id         String        @id @default(uuid())
-  circleId   String
-  Circle     Circle        @relation(fields: [circleId], references: [id])
-  userId     String 
-  User       UserProfile   @relation(fields: [userId], references: [userId])
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime?     @updatedAt
+  id          String        @id @default(uuid())
+  circleTitle UserType      @default(PLEB)
+  circleId    String
+  Circle      Circle        @relation(fields: [circleId], references: [id])
+  userId      String 
+  User        UserProfile   @relation(fields: [userId], references: [userId])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?     @updatedAt
 
   @@index([userId])
   @@index([circleId])
@@ -196,7 +203,8 @@ model Circle {
   religionRestriction                           CircleReligionRestriction[]
   users                                         UserCircle[]
   selected                                      SelectedCircle[]
-  links         					            CircleLink[]        
+  links         					            CircleLink[]   
+  requests										CircleRequest[]     
   createdAt           							DateTime     						@default(now())
   updatedAt           							DateTime?    						@updatedAt
   @@index([name])
@@ -348,6 +356,7 @@ model User {
   preferences         UserPreferences[]
   authoredMessages    UserMessage[]    		@relation("authoredMessages") 
   recievedMessages    UserMessage[]    		@relation("recievedMessages")
+  authoredRequests    CircleRequest[]       
   conversations       UserConversation[]         
 
   @@index([username])
@@ -439,7 +448,21 @@ model CircleLink {
   id                  String         @id @default(uuid())
   circleId            String       
   href                String         
-  user                Circle         @relation(fields: [circleId], references: [id])  
+  circle              Circle         @relation(fields: [circleId], references: [id])  
 
   @@index([circleId])    
+}
+
+model CircleRequest {
+  id                  String         @id @default(uuid())
+  circleId            String
+  userId              String
+  message             String         
+  author              User           @relation(fields: [userId], references: [id])
+  circle              Circle         @relation(fields: [circleId], references: [id])  
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime?      @updatedAt
+
+  @@index([circleId])    
+  @@index([userId])    
 }

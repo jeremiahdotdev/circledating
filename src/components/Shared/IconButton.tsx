@@ -25,12 +25,14 @@ export type IconButtonOptions = {
 
 export enum IconButtonVariant {
   MAIL = "mail",
+  REQUEST = "request",
   MESSAGE = "message",
   LIKE = "like",
   TRASH = "trash",
   JOIN = "join",
   LEAVE = "leave",
   REMOVE = "remove",
+  ADD = "add",
 }
 
 export type IconButtonProps = {
@@ -58,9 +60,16 @@ export function IconButton({
     switch (variant) {
       case IconButtonVariant.MAIL:
         return {
-          label: "They like you! Start a conversation",
+          label: "They like you! Start a conversation.",
           icon: faEnvelope,
           style: "h-16 bg-green-600",
+        } as IconButtonOptions;
+      case IconButtonVariant.REQUEST:
+        return {
+          label: "Ask to join.",
+          icon: faEnvelope,
+          showLabel: true,
+          style: "h-12 py-3 bg-blue-600 whitespace-nowrap",
         } as IconButtonOptions;
       case IconButtonVariant.MESSAGE:
         return {
@@ -94,7 +103,13 @@ export function IconButton({
           icon: faTrashCan,
           style: "h-16 bg-red-600",
         } as IconButtonOptions;
-      default: // Trashcan
+      case IconButtonVariant.ADD:
+        return {
+          label: "Add",
+          icon: faCheck,
+          style: "h-8 p-2 bg-green-600",
+        } as IconButtonOptions;
+      default: // x
         return {
           label: "Remove",
           icon: faX,

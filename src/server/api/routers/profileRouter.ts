@@ -4,10 +4,66 @@ import {
   ProfileSchemaType,
   isProfile,
 } from "@/schemas/Profile";
-import { UserPreferencesSchema } from "@/schemas/UserPreferences";
+import {
+  UserPreferencesSchema,
+  UserPreferencesSchemaType,
+} from "@/schemas/UserPreferences";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { getSecureLinks } from "@/schemas/Link";
 import { z } from "zod";
+
+export const handlePreferences = (preferences: UserPreferencesSchemaType) => {
+  const filters = [];
+  if (preferences.consumables.length)
+    filters.push({
+      consumables: {
+        in: preferences.consumables,
+      },
+    });
+  if (preferences.drinking.length)
+    filters.push({
+      drinking: {
+        in: preferences.drinking,
+      },
+    });
+  if (preferences.politicalBeliefs.length)
+    filters.push({
+      politicalBeliefs: {
+        in: preferences.politicalBeliefs,
+      },
+    });
+  if (preferences.religion.length)
+    filters.push({
+      religion: {
+        in: preferences.religion,
+      },
+    });
+  if (preferences.searchContinents.length)
+    filters.push({
+      location: {
+        continent: {
+          in: preferences.searchContinents,
+        },
+      },
+    });
+  if (preferences.searchCountries.length)
+    filters.push({
+      location: {
+        country: {
+          in: preferences.searchCountries,
+        },
+      },
+    });
+  if (preferences.searchStates.length)
+    filters.push({
+      location: {
+        state: {
+          in: preferences.searchStates,
+        },
+      },
+    });
+  return filters;
+};
 
 export const profileRouter = createTRPCRouter({
   create: publicProcedure
@@ -65,63 +121,7 @@ export const profileRouter = createTRPCRouter({
             ),
           },
           // Optional filters - If supplied, check against filter.
-          AND: [
-            input.currentUserPreferences.consumables.length
-              ? {
-                  consumables: {
-                    in: input.currentUserPreferences.consumables,
-                  },
-                }
-              : {},
-            input.currentUserPreferences.drinking.length
-              ? {
-                  drinking: {
-                    in: input.currentUserPreferences.drinking,
-                  },
-                }
-              : {},
-            input.currentUserPreferences.politicalBeliefs.length
-              ? {
-                  politicalBeliefs: {
-                    in: input.currentUserPreferences.politicalBeliefs,
-                  },
-                }
-              : {},
-            input.currentUserPreferences.religion.length
-              ? {
-                  religion: {
-                    in: input.currentUserPreferences.religion,
-                  },
-                }
-              : {},
-            input.currentUserPreferences.searchContinents.length
-              ? {
-                  location: {
-                    continent: {
-                      in: input.currentUserPreferences.searchContinents,
-                    },
-                  },
-                }
-              : {},
-            input.currentUserPreferences.searchCountries.length
-              ? {
-                  location: {
-                    country: {
-                      in: input.currentUserPreferences.searchCountries,
-                    },
-                  },
-                }
-              : {},
-            input.currentUserPreferences.searchStates.length
-              ? {
-                  location: {
-                    state: {
-                      in: input.currentUserPreferences.searchStates,
-                    },
-                  },
-                }
-              : {},
-          ],
+          AND: handlePreferences(input.currentUserPreferences),
           affections: {
             none: {
               initiatedUserId: input.currentUserProfile.userId,

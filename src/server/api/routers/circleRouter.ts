@@ -1,6 +1,7 @@
 import { CircleLink, UserLink } from "@prisma/client";
 import { CircleSchemaType } from "@/schemas/Circle";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
+import { RequestSchemaType } from "@/schemas/Request";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { getSecureLinks } from "@/schemas/Link";
 import { z } from "zod";
@@ -105,7 +106,7 @@ export const circleRouter = createTRPCRouter({
       })
     )
     .query(async ({ input, ctx }) => {
-      const data = await ctx.prisma.circle.findUnique({
+      const result = await ctx.prisma.circle.findUnique({
         where: {
           name: input.name,
         },
@@ -118,13 +119,36 @@ export const circleRouter = createTRPCRouter({
               userId: true,
             },
           },
+          requests: {
+            select: {
+              id: true,
+              userId: true,
+              circleId: true,
+              message: true,
+              author: {
+                select: {
+                  username: true,
+                },
+              },
+              createdAt: true,
+            },
+          },
           links: true,
           _count: {
             select: { users: true },
           },
         },
       });
-      return data;
+
+      const circle = {
+        ...result,
+        requests: result?.requests?.map((r) => ({
+          ...r,
+          username: r.author.username,
+        })) as RequestSchemaType[],
+      };
+
+      return circle;
     }),
   readFeatured: publicProcedure
     .input(
@@ -272,6 +296,39 @@ export const circleRouter = createTRPCRouter({
     .mutation(({ input, ctx }) => {
       return ctx.prisma.userCircle.create({
         data: {
+          circleId: input.circleId,
+          userId: input.userId,
+        },
+      });
+    }),
+  requestToJoinCircle: publicProcedure
+    .input(
+      z.object({
+        circleId: z.string(),
+        userId: z.string(),
+        currentUserProfile: ProfileSchema,
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.circleRequest.create({
+        data: {
+          message: "Requesting to join circle",
+          circleId: input.circleId,
+          userId: input.userId,
+        },
+      });
+    }),
+  denyRequestToJoinCircle: publicProcedure
+    .input(
+      z.object({
+        circleId: z.string(),
+        userId: z.string(),
+        currentUserProfile: ProfileSchema,
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      return ctx.prisma.circleRequest.deleteMany({
+        where: {
           circleId: input.circleId,
           userId: input.userId,
         },

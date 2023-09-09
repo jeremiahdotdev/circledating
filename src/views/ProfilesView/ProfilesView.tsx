@@ -1,6 +1,6 @@
 import { Loading } from "@/components/Shared/Loading";
 import { ProfileList } from "../../components/Profile/ProfilesList";
-import { ProfileSchemaType, ReadProfilesSchemaType } from "@/schemas/Profile";
+import { ProfileSchemaType } from "@/schemas/Profile";
 import { UserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { api } from "@/utils/api";
 import { memo } from "react";
@@ -15,12 +15,10 @@ export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
   const currentUserPreferences: UserPreferencesSchemaType =
     state.currentUserPreferences;
 
-  const options: ReadProfilesSchemaType = {
+  const request = api.profiles.readMany.useQuery({
     currentUserProfile: currentUserProfile,
     currentUserPreferences: currentUserPreferences,
-  };
-
-  const request = api.profiles.readMany.useQuery(options);
+  });
 
   if (!request.data) return <Loading />;
 

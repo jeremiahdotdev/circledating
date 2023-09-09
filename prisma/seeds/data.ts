@@ -23,6 +23,8 @@ const circleBase = {
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   createdAt: new Date(),
   updatedAt: null,
+  isFeatured: true,
+  isPrivate: false,
 };
 export const Circles = {
   Religion: {
@@ -86,9 +88,9 @@ export const Circles = {
   Political: {
     Conservative: {
       id: "9",
+      name: PoliticalBeliefs.CONSERVATIVE,
       label: "Conservativism",
       ...circleBase,
-      name: PoliticalBeliefs.CONSERVATIVE,
       politicalBeliefsRestriction: [PoliticalBeliefs.CONSERVATIVE],
     } as CircleSchemaType,
     Moderate: {
@@ -317,10 +319,7 @@ export const UsersPreferences: UserPreferencesSchemaType[] = [
     searchCountries: [] as string[],
     searchStates: [] as string[],
     religion: [],
-    selectedCircles: [
-      Circles.Religion.Christianity,
-      Circles.Political.Conservative,
-    ],
+    selectedCircles: [Circles.Religion.Christianity],
     politicalBeliefs: [],
     drinking: [],
     consumables: [],

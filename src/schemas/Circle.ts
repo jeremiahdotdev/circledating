@@ -23,6 +23,8 @@ export const Circle = {
   label: z.string().min(3).max(20),
   name: z.string().min(3).max(20),
   description: z.string().max(2000),
+  isPrivate: z.boolean(),
+  isFeatured: z.boolean(),
   createdAt: z.date(),
   updatedAt: z.date().nullable(),
   ageMaxRestriction: z.number().optional().nullable(),
@@ -47,6 +49,7 @@ export const Circle = {
   religionRestriction: z.array(ReligionSchema).optional(),
   customRestriction: z.array(CustomRestriction).optional(),
   links: z.array(LinkSchema).optional(),
+  requests: z.array(RequestSchema).optional().nullable(),
   users: z
     .array(
       z.object({
@@ -67,6 +70,7 @@ export const CircleWithAggregatesSchema = z.object({
 
 import { LinkSchema } from "./Link";
 import { ProfileSchemaType } from "./Profile";
+import { RequestSchema } from "./Request";
 
 export type CircleSchemaType = z.infer<typeof CircleSchema>;
 export type CircleWithAggregatesSchemaType = z.infer<

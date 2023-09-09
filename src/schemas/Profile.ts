@@ -17,7 +17,7 @@ import { SelectedLocationSchema } from "./SelectedLocationSchema";
 import { YesAndNoSchema } from "./YesAndNo";
 import { z } from "zod";
 
-export const Profile = {
+export const ProfilePartial = {
   userId: z.string(),
   username: z.string().min(3).max(20),
   sex: GenderSchema,
@@ -40,17 +40,21 @@ export const Profile = {
   religion: ReligionSchema,
   bio: z.string(),
   weightUnit: z.enum(["KG", "LBS"]),
+};
+export const ProfilePartialSchema = z.object(ProfilePartial);
+
+export const Profile = {
+  ...ProfilePartial,
   circles: z.array(CircleSchema).optional(),
   interactions: z.array(InteractionSchema).optional(),
   links: z.array(LinkSchema).optional(),
 };
+export const ProfileSchema = z.object(Profile);
 
 export const CreateProfileSchema = z.object({
   ...Profile,
   userId: z.string().optional(),
 });
-
-export const ProfileSchema = z.object(Profile);
 
 export type CreateProfileSchemaType = z.infer<typeof CreateProfileSchema>;
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;

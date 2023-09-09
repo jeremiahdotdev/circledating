@@ -1,5 +1,5 @@
 import { CircleProfile } from "@/components/Circle/CircleProfile";
-import { CircleSchemaType } from "@/schemas/Circle";
+import { CircleWithAggregatesSchemaType } from "@/schemas/Circle";
 import { Loading } from "@/components/Shared/Loading";
 import { api } from "@/utils/api";
 import { isUrl } from "@/schemas/Link";
@@ -24,10 +24,12 @@ export const CircleProfileView: React.FC<CircleProfileViewProps> = memo(() => {
 
   const circle = {
     ...request.data,
-    links: request.data.links.map((link) =>
-      isUrl(link.href) ? link : { ...link, href: `https://${link.href}` }
-    ),
-  } as CircleSchemaType;
+    links: request.data.links
+      ? request.data.links.map((link) =>
+          isUrl(link.href) ? link : { ...link, href: `https://${link.href}` }
+        )
+      : [],
+  } as CircleWithAggregatesSchemaType;
 
   return (
     <main className="mx-auto flex min-h-navless max-w-screen-lg flex-col items-center justify-between pt-6">

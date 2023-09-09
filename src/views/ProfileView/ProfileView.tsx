@@ -1,6 +1,5 @@
 import { Loading } from "@/components/Shared/Loading";
 import { Profile } from "@/components/Profile/Profile";
-import { ProfileSchemaType, ReadProfileSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";
 import { memo } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";

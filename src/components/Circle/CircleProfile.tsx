@@ -1,9 +1,6 @@
-import {
-  CircleSchemaType,
-  CircleWithAggregatesSchemaType,
-} from "@/schemas/Circle";
+import { CircleWithAggregatesSchemaType } from "@/schemas/Circle";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
-import { ItemList } from "../Shared/ItemList";
+import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import {
   ProfileAttribute,
   ProfileAttributeVariant,
@@ -16,7 +13,8 @@ import { ProfileSection } from "../Profile/ProfileSection";
 import { SearchForm } from "./SearchForm";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
-import { isCircle } from "../Shared/ListItem";
+import { routes } from "@/globals/routes";
+import { useRouter } from "next/router";
 import React, { useCallback, useState } from "react";
 import state from "@/utils/user.store";
 
@@ -25,51 +23,72 @@ export type CircleProfileProps = {
 };
 
 export function CircleProfile({ circle }: CircleProfileProps) {
+  const router = useRouter();
   const [circleState, setCircleState] = useState(circle);
   const [searchProfileState, setSearchProfileState] = useState(
     [] as ProfileSchemaType[]
   );
-
+  const [requestingProfileState, setRequestingProfileState] = useState(
+    circle.requests ?? []
+  );
   const leave = api.circles.removeUserFromCircle.useMutation();
   const join = api.circles.addUserToCircle.useMutation();
+  const request = api.circles.requestToJoinCircle.useMutation();
+  const remove = api.circles.denyRequestToJoinCircle.useMutation();
   const search = api.circles.searchCircleForUser.useMutation();
 
   const isMember = circleState?.users?.length;
+  const isPrivate = true;
 
-  const handleJoinOrLeave = useCallback(() => {
-    const service = isMember ? leave : join;
-    return service
-      .mutateAsync({
-        circleId: circleState.id ?? "",
-        userId: state.currentUser.userId,
-        currentUserProfile: state.currentUser,
-      })
-      .then(() => {
-        setCircleState({
-          ...circleState,
-          users: isMember ? null : [{ userId: "" }],
-        });
-      });
-  }, [leave, join, circleState, isMember]);
+  const circlePayload = useCallback(
+    (userId: string) => ({
+      circleId: circleState.id,
+      userId: userId,
+      currentUserProfile: state.currentUser,
+    }),
+    [circleState]
+  );
+
+  const handleJoinOrLeaveOrRequest = useCallback(async () => {
+    const service = !isMember ? (isPrivate ? request : join) : leave;
+
+    await service.mutateAsync(circlePayload(state.currentUser.userId));
+    setCircleState({
+      ...circleState,
+      users: isMember ? null : [{ userId: "" }],
+    });
+  }, [circleState, leave, join, request, isPrivate, isMember, circlePayload]);
 
   const handleKick = useCallback(
-    (userToKick: ProfileSchemaType | CircleSchemaType) => {
-      if (!isCircle(userToKick) && userToKick.userId && circleState.id)
-        return leave
-          .mutateAsync({
-            circleId: circleState.id,
-            userId: userToKick.userId,
-            currentUserProfile: state.currentUser,
-          })
-          .then(() => {
-            setSearchProfileState([
-              ...searchProfileState.filter(
-                (i) => i.userId !== userToKick.userId
-              ),
-            ]);
-          });
+    async (userIdItem: ItemType) => {
+      await leave.mutateAsync(circlePayload(userIdItem.value));
+      setSearchProfileState([
+        ...searchProfileState.filter((i) => i.userId !== userIdItem.value),
+      ]);
     },
-    [leave, circleState, setSearchProfileState, searchProfileState]
+    [leave, circlePayload, setSearchProfileState, searchProfileState]
+  );
+
+  const handleDeny = useCallback(
+    async (userIdItem: ItemType) => {
+      await remove.mutateAsync(circlePayload(userIdItem.value));
+      setRequestingProfileState([
+        ...requestingProfileState.filter((i) => i.userId !== userIdItem.value),
+      ]);
+    },
+    [remove, circlePayload, setRequestingProfileState, requestingProfileState]
+  );
+
+  const handleAccept = useCallback(
+    async (userIdItem: ItemType) => {
+      await join.mutateAsync(circlePayload(userIdItem.value));
+      // removes the request
+      await remove.mutateAsync(circlePayload(userIdItem.value));
+      setSearchProfileState([
+        ...searchProfileState.filter((i) => i.userId !== userIdItem.value),
+      ]);
+    },
+    [join, remove, circlePayload, setSearchProfileState, searchProfileState]
   );
 
   const handleSearch = useCallback(
@@ -85,6 +104,15 @@ export function CircleProfile({ circle }: CircleProfileProps) {
           .catch(handleError);
     },
     [search, circle]
+  );
+
+  const handleRoute = useCallback(
+    (userIdItem: ItemType) => {
+      router
+        .push(routes.profileByUsername(userIdItem.label).href)
+        .catch(handleError);
+    },
+    [router]
   );
 
   return (
@@ -103,8 +131,14 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         </h1>
       </span>
       <IconButton
-        variant={isMember ? IconButtonVariant.LEAVE : IconButtonVariant.JOIN}
-        onClick={handleJoinOrLeave}
+        variant={
+          !isMember
+            ? isPrivate
+              ? IconButtonVariant.REQUEST
+              : IconButtonVariant.JOIN
+            : IconButtonVariant.LEAVE
+        }
+        onClick={handleJoinOrLeaveOrRequest}
       />
       {circle.links && <ProfileLinks links={circle.links} />}
       <div className="flex md:flex-row">
@@ -138,7 +172,22 @@ export function CircleProfile({ circle }: CircleProfileProps) {
       <ProfileSection heading={`Users`}>
         <SearchForm handleSearch={handleSearch} />
         <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
-          <ItemList items={searchProfileState} deleteAction={handleKick} />
+          <ItemList
+            items={searchProfileState.map(ParseItem)}
+            clickAction={handleRoute}
+            deleteAction={handleKick}
+          />
+        </div>
+      </ProfileSection>
+      {/* // TODO: Check if admin */}
+      <ProfileSection heading={`Requests`}>
+        <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
+          <ItemList
+            items={requestingProfileState.map(ParseItem)}
+            clickAction={handleRoute}
+            deleteAction={handleDeny}
+            createAction={handleAccept}
+          />
         </div>
       </ProfileSection>
     </div>

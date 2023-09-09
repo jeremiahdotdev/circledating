@@ -1,5 +1,5 @@
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { ListItem } from "../Shared/ListItem";
+import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
@@ -9,7 +9,10 @@ import { ProfileLocation } from "./ProfileCardLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { ProfileSection } from "./ProfileSection";
-import React, { useMemo } from "react";
+import { handleError } from "@/utils/handleError";
+import { routes } from "@/globals/routes";
+import { useRouter } from "next/router";
+import React, { useCallback, useMemo } from "react";
 import dayjs from "dayjs";
 
 export type ProfileProps = {
@@ -21,11 +24,22 @@ export type ProfileProps = {
 };
 
 export function Profile({ profile, interact }: ProfileProps) {
+  const router = useRouter();
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
 
-  console.log(profile.circles);
+  const handleRoute = useCallback(
+    (circleNameItem: ItemType) => {
+      const route = routes.circleByCircleNameAsLabel(
+        circleNameItem.value,
+        circleNameItem.label
+      );
+
+      router.push(route.href, route.as).catch(handleError);
+    },
+    [router]
+  );
   return (
     <div className="mx-2 flex max-w-screen-xl flex-col items-center justify-center gap-6">
       <div className="w-3/4 flex-1 justify-center sm:w-1/3">
@@ -120,9 +134,12 @@ export function Profile({ profile, interact }: ProfileProps) {
       </ProfileSection>
       <ProfileSection heading={`Circles`}>
         <div className="grid w-full sm:grid-cols-2">
-          {profile.circles?.map((circle) => (
-            <ListItem key={circle.name} item={circle} />
-          ))}
+          {profile.circles && (
+            <ItemList
+              items={profile.circles.map(ParseItem)}
+              clickAction={handleRoute}
+            />
+          )}
         </div>
       </ProfileSection>
       {interact && (
