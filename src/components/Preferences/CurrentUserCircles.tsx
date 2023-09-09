@@ -13,10 +13,7 @@ export function CurrentUserCircles() {
 
   const handleRoute = useCallback(
     (circleNameItem: ItemType) => {
-      const route = routes.circleByCircleNameAsLabel(
-        circleNameItem.value,
-        circleNameItem.label
-      );
+      const route = routes.circleByCircleNameAsLabel(circleNameItem.value);
       router.push(route.href, route.as).catch(handleError);
     },
     [router]

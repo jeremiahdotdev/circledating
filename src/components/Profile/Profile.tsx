@@ -31,10 +31,7 @@ export function Profile({ profile, interact }: ProfileProps) {
 
   const handleRoute = useCallback(
     (circleNameItem: ItemType) => {
-      const route = routes.circleByCircleNameAsLabel(
-        circleNameItem.value,
-        circleNameItem.label
-      );
+      const route = routes.circleByCircleNameAsLabel(circleNameItem.value);
 
       router.push(route.href, route.as).catch(handleError);
     },
