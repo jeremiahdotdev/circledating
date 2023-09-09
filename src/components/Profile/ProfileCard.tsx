@@ -84,22 +84,22 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
               <ProfileCardSubheading title={"General"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.religion}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={`${profile.religion}`}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.maritalStatus}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={`${profile.maritalStatus}`}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.politicalBeliefs}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.politicalBeliefs}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.education}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.levelOfEducation}
               />
             </div>
@@ -111,23 +111,23 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
               <ProfileCardSubheading title={"Lifestyle"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.height}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.height}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.weight}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.weight}
                 weightUnit={profile.weightUnit}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.drinking}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.drinking}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.consumables}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.consumables}
               />
             </div>
@@ -138,23 +138,23 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
             <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
               <ProfileAttribute
                 option={ProfileAttributeOptions.activityLevel}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={`${profile.activity}`}
               />
               <ProfileCardSubheading title={"Family"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.purity}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.purity}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.children}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.children}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.income}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.income}
               />
             </div>

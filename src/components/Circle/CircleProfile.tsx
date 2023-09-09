@@ -1,4 +1,7 @@
-import { CircleSchemaType } from "@/schemas/Circle";
+import {
+  CircleSchemaType,
+  CircleWithAggregatesSchemaType,
+} from "@/schemas/Circle";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ItemList } from "../Shared/ItemList";
 import {
@@ -18,7 +21,7 @@ import React, { useCallback, useState } from "react";
 import state from "@/utils/user.store";
 
 export type CircleProfileProps = {
-  circle: CircleSchemaType;
+  circle: CircleWithAggregatesSchemaType;
 };
 
 export function CircleProfile({ circle }: CircleProfileProps) {
@@ -35,7 +38,7 @@ export function CircleProfile({ circle }: CircleProfileProps) {
 
   const handleJoinOrLeave = useCallback(() => {
     const service = isMember ? leave : join;
-    service
+    return service
       .mutateAsync({
         circleId: circleState.id ?? "",
         userId: state.currentUser.userId,
@@ -46,14 +49,13 @@ export function CircleProfile({ circle }: CircleProfileProps) {
           ...circleState,
           users: isMember ? null : [{ userId: "" }],
         });
-      })
-      .catch(handleError);
+      });
   }, [leave, join, circleState, isMember]);
 
   const handleKick = useCallback(
     (userToKick: ProfileSchemaType | CircleSchemaType) => {
       if (!isCircle(userToKick) && userToKick.userId && circleState.id)
-        leave
+        return leave
           .mutateAsync({
             circleId: circleState.id,
             userId: userToKick.userId,
@@ -65,8 +67,7 @@ export function CircleProfile({ circle }: CircleProfileProps) {
                 (i) => i.userId !== userToKick.userId
               ),
             ]);
-          })
-          .catch(handleError);
+          });
     },
     [leave, circleState, setSearchProfileState, searchProfileState]
   );
@@ -110,12 +111,12 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         <ProfileAttribute
           option={ProfileAttributeOptions.memberCount}
           attribute={circle?._count?.users ?? 0}
-          variant={ProfileAttributeVariant.LARGE}
+          variant={ProfileAttributeVariant.PROFILE}
         />
         <ProfileAttribute
           option={ProfileAttributeOptions.foundedOn}
           attribute={circle?.createdAt}
-          variant={ProfileAttributeVariant.LARGE}
+          variant={ProfileAttributeVariant.PROFILE}
         />
         {circle.links?.map(({ href, id }) => {
           return (
@@ -123,7 +124,7 @@ export function CircleProfile({ circle }: CircleProfileProps) {
               key={id}
               option={ProfileAttributeOptions.link}
               attribute={href}
-              variant={ProfileAttributeVariant.LARGE}
+              variant={ProfileAttributeVariant.PROFILE}
             />
           );
         })}

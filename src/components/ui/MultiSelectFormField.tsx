@@ -22,6 +22,7 @@ interface MultiSelectFormFieldProps<Values extends FieldValues>
   description?: string;
   override?: string;
   placeholder?: string;
+  selected?: string[];
 }
 
 export const MultiSelectFormField = <Values extends FieldValues>({
@@ -29,6 +30,7 @@ export const MultiSelectFormField = <Values extends FieldValues>({
   options,
   description,
   placeholder,
+  selected,
   ...props
 }: MultiSelectFormFieldProps<Values>) => {
   const { field, fieldState } = useController(props);
@@ -48,6 +50,7 @@ export const MultiSelectFormField = <Values extends FieldValues>({
           placeholder={placeholder}
           options={options}
           {...field}
+          selected={selected}
           onChange={onChange}
         />
       </FormControl>

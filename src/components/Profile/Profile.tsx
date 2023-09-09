@@ -25,6 +25,7 @@ export function Profile({ profile, interact }: ProfileProps) {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
 
+  console.log(profile.circles);
   return (
     <div className="mx-2 flex max-w-screen-xl flex-col items-center justify-center gap-6">
       <div className="w-3/4 flex-1 justify-center sm:w-1/3">
@@ -53,66 +54,66 @@ export function Profile({ profile, interact }: ProfileProps) {
           <ProfileCardSubheading title={"General"} />
           <ProfileAttribute
             option={ProfileAttributeOptions.religion}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={`${profile.religion}`}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.maritalStatus}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={`${profile.maritalStatus}`}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.politicalBeliefs}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.politicalBeliefs}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.education}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.levelOfEducation}
           />
 
           <ProfileCardSubheading title={"Lifestyle"} />
           <ProfileAttribute
             option={ProfileAttributeOptions.height}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.height}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.weight}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.weight}
             weightUnit={profile.weightUnit}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.drinking}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.drinking}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.consumables}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.consumables}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.activityLevel}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={`${profile.activity}`}
           />
           <ProfileCardSubheading title={"Family"} />
           <ProfileAttribute
             option={ProfileAttributeOptions.purity}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.purity}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.children}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.children}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.income}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.income}
           />
         </div>

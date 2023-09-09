@@ -6,7 +6,9 @@ import React from "react";
 
 export type ItemListProps = {
   items: ProfileSchemaType[] | CircleSchemaType[];
-  deleteAction?: (item: ProfileSchemaType | CircleSchemaType) => void;
+  deleteAction?: (
+    item: ProfileSchemaType | CircleSchemaType
+  ) => Promise<void> | undefined;
 };
 
 export const ItemList = memo(({ items, deleteAction }: ItemListProps) => {

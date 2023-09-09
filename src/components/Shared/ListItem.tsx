@@ -13,7 +13,9 @@ export type ListItemProps = {
   item: CircleSchemaType | ProfileSchemaType;
   hidePicture?: boolean;
   deleteRequiresConfirmation?: boolean;
-  deleteAction?: (item: ProfileSchemaType | CircleSchemaType) => void;
+  deleteAction?: (
+    item: ProfileSchemaType | CircleSchemaType
+  ) => Promise<void> | undefined;
 };
 
 export function isCircle(
@@ -41,7 +43,7 @@ export function ListItem({
 }: ListItemProps) {
   const router = useRouter();
   const handleClick = useCallback(() => {
-    if (deleteAction) deleteAction(item);
+    if (deleteAction) return deleteAction(item);
   }, [deleteAction, item]);
   const getVariant = (x: CircleSchemaType | ProfileSchemaType) => {
     if (isCircle(x)) {
@@ -57,9 +59,14 @@ export function ListItem({
     }
   };
   const variant = getVariant(item);
-  const handleRoute = useCallback(() => {
-    router.push(variant.option.href).catch(handleError);
-  }, [router, variant]);
+  const handleRoute = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      router.push(variant.option.href).catch(handleError);
+    },
+    [router, variant]
+  );
   return (
     <div className="w-full cursor-pointer px-4" onClick={handleRoute}>
       <span className="flex items-center border-y py-2">
@@ -72,11 +79,14 @@ export function ListItem({
             />
           </div>
         )}
-        <div className="flex w-full justify-center font-extralight text-slate-950">
+        <div className="flex w-full justify-center font-extralight text-slate-950 text-shadow-sm">
           {variant.label}
         </div>
         <div className="flex min-h-[40px] cursor-pointer items-center justify-center gap-2">
-          <FontAwesomeIcon className="h-6" icon={faMagnifyingGlass} />
+          <FontAwesomeIcon
+            className="h-6 drop-shadow-2xl"
+            icon={faMagnifyingGlass}
+          />
           {deleteAction && (
             <IconButton
               variant={IconButtonVariant.REMOVE}

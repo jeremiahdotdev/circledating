@@ -13,6 +13,7 @@ import {
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "@/lib/utils";
+import { handleError } from "@/utils/handleError";
 import React, { useCallback, useMemo, useState } from "react";
 
 export type IconButtonOptions = {
@@ -35,7 +36,9 @@ export enum IconButtonVariant {
 export type IconButtonProps = {
   variant: IconButtonVariant;
   type?: "button" | "submit" | "reset";
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => Promise<void> | undefined;
   disabled?: boolean;
   labelOverride?: string;
   confirmationRequired?: boolean;
@@ -50,7 +53,7 @@ export function IconButton({
   onClick,
 }: IconButtonProps) {
   const [dialogOpenState, setDialogOpenState] = useState(false);
-
+  const [disabledState, setDisabledState] = useState(false);
   const option = useMemo(() => {
     switch (variant) {
       case IconButtonVariant.MAIL:
@@ -100,28 +103,32 @@ export function IconButton({
     }
   }, [variant]);
 
+  const enableButton = useCallback(() => {
+    setDisabledState(false);
+  }, []);
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       if (onClick) {
+        setDisabledState(true);
         if (confirmationRequired) {
           setDialogOpenState(true);
         } else {
-          onClick(event);
+          onClick(event)?.then(enableButton).catch(handleError);
         }
       }
     },
-    [setDialogOpenState, onClick, confirmationRequired]
+    [setDialogOpenState, onClick, enableButton, confirmationRequired]
   );
 
   const handleConfirm = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
       event.stopPropagation();
-      if (onClick) onClick(event);
       setDialogOpenState(false);
+      if (onClick) onClick(event)?.then(enableButton).catch(handleError);
     },
-    [setDialogOpenState, onClick]
+    [setDialogOpenState, onClick, enableButton]
   );
 
   const handleCancel = useCallback(
@@ -138,12 +145,12 @@ export function IconButton({
         <Button
           onClick={handleClick}
           className={cn(
-            "text-white rounded-full shadow",
+            "text-white rounded-full shadow-outter",
             option.style,
             option.showLabel ? "" : "aspect-square"
           )}
           type={type}
-          disabled={disabled}
+          disabled={disabled || disabledState}
         >
           <FontAwesomeIcon className="h-full w-full" icon={option.icon} />
 

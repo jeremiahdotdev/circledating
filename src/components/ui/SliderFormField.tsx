@@ -52,6 +52,7 @@ export const SliderFormField = <Values extends FieldValues>({
           min={min}
           max={max}
           className={className}
+          defaultValue={props.defaultValue}
         />
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}

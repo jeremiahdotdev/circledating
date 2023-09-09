@@ -17,9 +17,10 @@ export type ProfileAttributeOptions = {
 };
 
 export enum ProfileAttributeVariant {
-  SMALL = "small",
+  PROFILE_CARD = "profile_card",
   DEFAULT = "default",
-  LARGE = "large",
+  PROFILE = "profile",
+  PROFILE_LINK = "profile_link",
 }
 
 export type ProfileAttributeProps = {
@@ -35,7 +36,7 @@ export function ProfileAttribute({
   weightUnit,
   variant = ProfileAttributeVariant.DEFAULT,
 }: ProfileAttributeProps) {
-  const labelText = useMemo(() => {
+  const label = useMemo(() => {
     if (!attribute) return option.label;
 
     if (typeof attribute === "number" && option.isHeight) {
@@ -66,7 +67,7 @@ export function ProfileAttribute({
 
   const renderVariant = useMemo(() => {
     switch (variant) {
-      case ProfileAttributeVariant.SMALL:
+      case ProfileAttributeVariant.PROFILE_CARD:
         return (
           <>
             <FontAwesomeIcon
@@ -77,11 +78,11 @@ export function ProfileAttribute({
               {option.label} {attribute ? " • " : ""}
             </b>
             <p className="pl-1 text-sm font-extralight text-slate-950">
-              {labelText}
+              {label}
             </p>
           </>
         );
-      case ProfileAttributeVariant.LARGE:
+      case ProfileAttributeVariant.PROFILE:
         return (
           <span className="grid h-16 w-full grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
             <div className="flex items-center justify-between">
@@ -89,19 +90,28 @@ export function ProfileAttribute({
                 <FontAwesomeIcon className={"h-6 p-2"} icon={option.icon} />
                 <b className="break-normal sm:w-full">{option.label}</b>
               </div>
-              <b className="w-fit">&nbsp;•</b>
+              <b className="w-fit text-shadow-sm">&nbsp;•</b>
             </div>
-            <div className="pl-1 font-extralight text-slate-950">
-              {labelText}
+            <div className="pl-1 font-extralight text-slate-950 text-shadow-sm">
+              {label}
+            </div>
+          </span>
+        );
+      case ProfileAttributeVariant.PROFILE_LINK:
+        return (
+          <span className="w-full flex-col items-center justify-center border-y">
+            <div className="flex w-full items-center justify-center py-2 sm:px-6">
+              <FontAwesomeIcon className={"h-6 p-2"} icon={option.icon} />
+              <div className="pl-1 font-extralight text-slate-950">{label}</div>
             </div>
           </span>
         );
       default:
         return <></>;
     }
-  }, [variant, attribute, labelText, option]);
+  }, [variant, attribute, option]);
   return (
-    <span className="flex min-w-fit">
+    <span className="flex w-full min-w-fit sm:w-fit">
       <FormattedTooltip content={option.label}>
         {renderVariant}
       </FormattedTooltip>

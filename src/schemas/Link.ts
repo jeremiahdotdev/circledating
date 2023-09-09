@@ -1,3 +1,4 @@
+import { CircleLink, UserLink } from "@prisma/client";
 import { z } from "zod";
 
 export type Url = `https://${string}`;
@@ -14,3 +15,13 @@ export const LinkSchema = z.object({
 });
 
 export type LinkSchemaType = z.infer<typeof LinkSchema>;
+
+export function getSecureLinks(links: UserLink[] | CircleLink[] | undefined) {
+  if (!links) return [];
+
+  const secureLinks: LinkSchemaType[] = [];
+  links.forEach(
+    (l) => isUrl(l.href) && secureLinks.push({ ...l, href: l.href })
+  );
+  return secureLinks;
+}

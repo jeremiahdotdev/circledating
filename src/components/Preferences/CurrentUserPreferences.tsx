@@ -8,7 +8,6 @@ import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { Preference } from "./Preference";
 import { ReligionSelectionValues } from "@/schemas/Religion";
 import { SelectedLocationType } from "@/schemas/SelectedLocationSchema";
-import { Slider } from "@/components/ui/slider";
 import { SliderFormField } from "../ui/SliderFormField";
 import {
   UserPreferencesSchema,
@@ -22,16 +21,17 @@ import React, { useCallback, useMemo } from "react";
 import state from "@/utils/user.store";
 
 export function CurrentUserPreferences() {
+  const currentUserPreferences = state.currentUserPreferences;
+
   const form = useForm<UserPreferencesSchemaType>({
     resolver: zodResolver(UserPreferencesSchema),
+    defaultValues: {
+      sex: currentUserPreferences.sex,
+    },
   });
 
-  const selectedContinentsState = form.watch("searchContinents") as
-    | string[]
-    | undefined;
-  const selectedCountriesState = form.watch("searchCountries") as
-    | string[]
-    | undefined;
+  const selectedContinentsState = form.watch("searchContinents");
+  const selectedCountriesState = form.watch("searchCountries");
 
   const continentValues: ComboboxOption<SelectedLocationType>[] =
     useMemo(() => {
@@ -93,10 +93,7 @@ export function CurrentUserPreferences() {
               <SliderFormField
                 name="ageRange"
                 control={form.control}
-                defaultValue={[
-                  state.currentUserPreferences.minAge ?? 18,
-                  state.currentUserPreferences.maxAge ?? 99,
-                ]}
+                defaultValue={currentUserPreferences.ageRange ?? [18, 99]}
                 step={1}
                 min={18}
                 max={99}
@@ -108,6 +105,7 @@ export function CurrentUserPreferences() {
                 name="religion"
                 control={form.control}
                 options={ReligionSelectionValues}
+                selected={currentUserPreferences.religion}
               />
             </Preference>
             <Preference name="Politcal Beliefs">
@@ -115,6 +113,7 @@ export function CurrentUserPreferences() {
                 name="politicalBeliefs"
                 control={form.control}
                 options={PoliticalBeliefsSelectionValues}
+                selected={currentUserPreferences.politicalBeliefs}
               />
             </Preference>
             <Preference name="Alcohol">
@@ -122,6 +121,7 @@ export function CurrentUserPreferences() {
                 name="drinking"
                 control={form.control}
                 options={DrinkingSelectionValues}
+                selected={currentUserPreferences.drinking}
               />
             </Preference>
             <Preference name="Tobacco / Drugs">
@@ -129,6 +129,7 @@ export function CurrentUserPreferences() {
                 name="consumables"
                 control={form.control}
                 options={ConsumablesSelectionValues}
+                selected={currentUserPreferences.consumables}
               />
             </Preference>
             <Preference name="Location">
@@ -136,18 +137,21 @@ export function CurrentUserPreferences() {
                 name="searchContinents"
                 control={form.control}
                 options={continentValues}
+                selected={currentUserPreferences.searchContinents}
                 placeholder="Select continent..."
               />
               <MultiSelectFormField
                 name="searchCountries"
                 control={form.control}
                 options={countryValues}
+                selected={currentUserPreferences.searchCountries}
                 placeholder="Select countries..."
               />
               <MultiSelectFormField
                 name="searchStates"
                 control={form.control}
                 options={stateValues}
+                selected={currentUserPreferences.searchStates}
                 placeholder="Select states/provinces..."
               />
             </Preference>

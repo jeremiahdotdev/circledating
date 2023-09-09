@@ -10,8 +10,8 @@ import { z } from "zod";
 export const UserPreferencesSchema = z.object({
   userId: z.string(),
   ageRange: z.array(z.number()),
-  sex: GenderSchema.optional(),
-  selectedCircles: z.array(CircleSchema).optional(),
+  sex: GenderSchema,
+  selectedCircles: z.array(CircleSchema),
   searchContinents: z.array(SelectedLocation),
   searchCountries: z.array(SelectedLocation),
   searchStates: z.array(SelectedLocation),

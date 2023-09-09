@@ -17,7 +17,7 @@ export type MultiSelectOption = ComboboxOption<
 >;
 export type MultiSelectProps = {
   options: MultiSelectOption[];
-  selected?: MultiSelectOption[];
+  selected?: string[];
   placeholder?: string;
   onChange?: (value: ProfileAttributeType[] | SelectedLocationType[]) => void;
 };
@@ -30,8 +30,9 @@ export function MultiSelect({
 }: MultiSelectProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
+  const selectedOptions = options.filter((o) => selected?.includes(o.value));
   const [selectedState, setSelectedState] = React.useState<MultiSelectOption[]>(
-    selected ?? []
+    selectedOptions ?? []
   );
   const [inputValue, setInputValue] = React.useState("");
 

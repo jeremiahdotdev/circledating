@@ -145,12 +145,12 @@ model UserProfile {
   maritalStatus                      MaritalStatus
   activity                           Activity
   religion                           Religion
-  bio                                String?          @db.LongText
+  bio                                String          @db.LongText
   weightUnit                         WeightUnit
   User                               User[] @relation("userProfile")
   circles             				 UserCircle[]
-  userInteractions  	  			 UserInteraction[]    	@relation("userInteractions") 
-  userAffections    	  			 UserInteraction[]    	@relation("userAffections") 
+  interactions  	  			     UserInteraction[]    	@relation("userInteractions") 
+  affections    	  			     UserInteraction[]    	@relation("userAffections") 
   links         					 UserLink[]        
 
   @@index([locationId])
@@ -173,7 +173,7 @@ model Circle {
   id         									String        						@id @default(uuid())
   name                                          String                              @unique
   label                                         String                              @unique
-  description                                   String?                             @db.VarChar(2000)               
+  description                                   String                              @db.LongText            
   isFeatured									Boolean                             @default(false)
   isPrivate 									Boolean                             @default(false)
   ageMaxRestriction                             Int?
@@ -398,7 +398,7 @@ model UserMessage {
   author              User         @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
   recipientUsername   String  
   recipient           User         @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
-  content             String       @db.VarChar(2000) 
+  content             String       @db.LongText
   createdAt           DateTime     @default(now())
   updatedAt           DateTime?    @updatedAt
 

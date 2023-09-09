@@ -3,10 +3,13 @@
 import { ActivitySelectionValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
 import { ChildrenSelectionValues } from "@/schemas/Children";
-import { CircleSchemaType, MatchUserWithCircles } from "@/schemas/Circle";
-import { CirclesList } from "prisma/seeds/data";
+import { CircleSchemaType } from "@/schemas/Circle";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
+import {
+  CreateProfileSchema,
+  CreateProfileSchemaType,
+} from "@/schemas/Profile";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { DropdownFormField } from "@/components/ui/DropdownFormField";
@@ -20,7 +23,6 @@ import { LabeledInputFormField } from "@/components/ui/LabeledInputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
 import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
-import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
 import { PuritySelectionValues } from "@/schemas/Purity";
 import { ReligionSelectionValues } from "@/schemas/Religion";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
@@ -44,8 +46,8 @@ export type NewProfileProps = {
 export const NewProfile = memo(function NewProfile({
   circle,
 }: NewProfileProps) {
-  const form = useForm<ProfileSchemaType>({
-    resolver: zodResolver(ProfileSchema),
+  const form = useForm<CreateProfileSchemaType>({
+    resolver: zodResolver(CreateProfileSchema),
     defaultValues: {
       weightUnit: WeightUnit.LBS,
     },
@@ -90,10 +92,7 @@ export const NewProfile = memo(function NewProfile({
   const onInvalidData = useCallback(handleError, []);
 
   const onValidData = useCallback(
-    (data: ProfileSchemaType) => {
-      data.circles = CirclesList.filter((circle) =>
-        MatchUserWithCircles(data, circle)
-      );
+    (data: CreateProfileSchemaType) => {
       // TODO: Handle the promise correctly here!
       void mutateAsync(data);
     },
@@ -119,7 +118,7 @@ export const NewProfile = memo(function NewProfile({
               inlineLabel="u/"
               description="This is the username you use to log into Reddit."
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="sex"
               control={form.control}
               label="What is your sex?"
@@ -131,7 +130,7 @@ export const NewProfile = memo(function NewProfile({
               label="birth date"
               description="This is used to calculate your age."
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="weightUnit"
               control={form.control}
               label="Which unit do you use?"
@@ -146,14 +145,14 @@ export const NewProfile = memo(function NewProfile({
               labelPosition="right"
               type="number"
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="height"
               control={form.control}
               label="What is your height?"
               options={HeightStringSelectOptions}
               type="number"
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="ethnicity"
               control={form.control}
               label="What is your ethnicity?"
@@ -162,19 +161,19 @@ export const NewProfile = memo(function NewProfile({
           </section>
           <FormSectionHeading>Location</FormSectionHeading>
           <section className={styles.section}>
-            <ComboBoxFormField<ProfileSchemaType, string>
+            <ComboBoxFormField<CreateProfileSchemaType, string>
               name="location.country"
               control={form.control}
               label="What is your country of residence?"
               options={countryValues}
             />
-            <ComboBoxFormField<ProfileSchemaType, string>
+            <ComboBoxFormField<CreateProfileSchemaType, string>
               name="location.state"
               control={form.control}
               label="What is your state/province of residence?"
               options={stateValues}
             />
-            <ComboBoxFormField<ProfileSchemaType, string>
+            <ComboBoxFormField<CreateProfileSchemaType, string>
               name="willingToRelocate"
               control={form.control}
               label="Are you willing to relocate?"
@@ -183,25 +182,25 @@ export const NewProfile = memo(function NewProfile({
           </section>
           <FormSectionHeading>Family</FormSectionHeading>
           <section>
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="children"
               control={form.control}
               label="Do you have/want kids?"
               options={ChildrenSelectionValues}
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="maritalStatus"
               control={form.control}
               label="Have you ever been married?"
               options={MaritalStatusesSelectionValues}
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="onlyLookingForTraditionalHousehold"
               control={form.control}
               label="Are you only looking for a traditional household?"
               options={YesAndNoSelectionValues}
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="income"
               control={form.control}
               label="What type of houshold are you looking for?"
@@ -210,25 +209,25 @@ export const NewProfile = memo(function NewProfile({
           </section>
           <FormSectionHeading>Lifestyle</FormSectionHeading>
           <section className={styles.section}>
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="consumables"
               control={form.control}
               label="Do you consume any of the following?"
               options={ConsumablesSelectionValues}
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="drinking"
               control={form.control}
               label="How often do you drink?"
               options={DrinkingSelectionValues}
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="activity"
               control={form.control}
               label="How often do you excercise?"
               options={ActivitySelectionValues}
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="purity"
               control={form.control}
               label="What is your stance on purity?"
@@ -237,21 +236,21 @@ export const NewProfile = memo(function NewProfile({
           </section>
           <FormSectionHeading>About You</FormSectionHeading>
           <section>
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               control={form.control}
               name="religion"
               label="What is your religion?"
               options={ReligionSelectionValues}
               override={circle.religionRestriction?.[0]}
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="politicalBeliefs"
               control={form.control}
               label="What is your political stance?"
               options={PoliticalBeliefsSelectionValues}
               override={circle.politicalBeliefsRestriction?.[0]}
             />
-            <DropdownFormField<ProfileSchemaType>
+            <DropdownFormField<CreateProfileSchemaType>
               name="levelOfEducation"
               control={form.control}
               label="What is the highest level of education to have obtained?"
