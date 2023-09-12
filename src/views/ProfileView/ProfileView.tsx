@@ -18,9 +18,5 @@ export const ProfileView: React.FC<ProfileViewProps> = memo(() => {
 
   if (!request.data) return <Loading />;
 
-  return (
-    <main className="mx-auto flex min-h-navless max-w-screen-lg flex-col items-center justify-between pt-6">
-      <Profile profile={request.data} />
-    </main>
-  );
+  return <Profile profile={request.data} />;
 });

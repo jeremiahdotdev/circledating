@@ -11,7 +11,6 @@ import { MaritalStatusesSchema } from "./MaritalStatuses";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
 import { ReligionSchema } from "./Religion";
-import { useMemo } from "react";
 import { z } from "zod";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -65,7 +64,6 @@ export const CircleWithAggregatesSchema = z.object({
 });
 
 import { LinkSchema } from "./Link";
-import { ProfileSchemaType } from "./Profile";
 import { RequestSchema } from "./Request";
 
 export type CircleSchemaType = z.infer<typeof CircleSchema>;

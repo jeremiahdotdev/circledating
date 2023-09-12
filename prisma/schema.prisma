@@ -187,19 +187,19 @@ model Circle {
   ageMaxRestriction                             Int?
   ageMinRestriction                             Int?
   maxWeightRestriction                          Int?
-  sexRestriction                                CircleSexRestriction[]
-  continentRestriction                          CircleContinentRestriction[]
-  childrenRestriction                           CircleChildrenRestriction[]
-  ethnicityRestriction                          CircleEthnicityRestriction[]
-  drinkingRestriction                           CircleDrinkingRestriction[]
-  consumablesRestriction                        CircleConsumablesRestriction[]
-  politicalBeliefsRestriction                   CirclePoliticalBeliefsRestriction[]
-  levelOfEducationRestriction                   CircleLevelOfEducationRestriction[]
-  purityRestriction                             CirclePurityRestriction[]
-  incomeRestriction                             CircleIncomeRestriction[]
-  maritalStatusRestriction                      CircleMaritalStatusRestriction[]
-  activityRestriction                           CircleActivityRestriction[]
-  religionRestriction                           CircleReligionRestriction[]
+  sexRestriction                                Json?
+  continentRestriction                          Json?
+  childrenRestriction                           Json?
+  ethnicityRestriction                          Json?
+  drinkingRestriction                           Json?
+  consumablesRestriction                        Json?
+  politicalBeliefsRestriction                   Json?
+  levelOfEducationRestriction                   Json?
+  purityRestriction                             Json?
+  incomeRestriction                             Json?
+  maritalStatusRestriction                      Json?
+  activityRestriction                           Json?
+  religionRestriction                           Json?
   users                                         UserCircle[]
   selected                                      SelectedCircle[]
   links         					            CircleLink[]   
@@ -208,125 +208,6 @@ model Circle {
   updatedAt           							DateTime?    						@updatedAt
   @@index([name])
 }
-
-model CircleContinentRestriction {
-  id          String    @id @default(uuid())
-  circleId    String
-  circle      Circle    @relation(fields: [circleId], references: [id])
-  restriction String
-
-  @@index([circleId])
-}
-
-model CircleSexRestriction {
-  id          String @id @default(uuid())
-  circleId    String
-  circle      Circle @relation(fields: [circleId], references: [id])
-  restriction Gender
-
-  @@index([circleId])
-}
-
-
-model CircleChildrenRestriction {
-  id          String   @id @default(uuid())
-  circleId    String
-  circle      Circle   @relation(fields: [circleId], references: [id])
-  restriction Children
-
-  @@index([circleId])
-}
-
-model CircleEthnicityRestriction {
-  id          String    @id @default(uuid())
-  circleId    String
-  circle      Circle    @relation(fields: [circleId], references: [id])
-  restriction Ethnicity
-
-  @@index([circleId])
-}
-
-model CircleDrinkingRestriction {
-  id          String   @id @default(uuid())
-  circleId    String
-  circle      Circle   @relation(fields: [circleId], references: [id])
-  restriction Drinking
-
-  @@index([circleId])
-}
-
-model CircleConsumablesRestriction {
-  id          String      @id @default(uuid())
-  circleId    String
-  circle      Circle      @relation(fields: [circleId], references: [id])
-  restriction Consumables
-
-  @@index([circleId])
-}
-
-model CirclePoliticalBeliefsRestriction {
-  id          String           @id @default(uuid())
-  circleId    String
-  circle      Circle           @relation(fields: [circleId], references: [id])
-  restriction PoliticalBeliefs
-
-  @@index([circleId])
-}
-
-model CircleLevelOfEducationRestriction {
-  id          String           @id @default(uuid())
-  circleId    String
-  circle      Circle           @relation(fields: [circleId], references: [id])
-  restriction LevelOfEducation
-
-  @@index([circleId])
-}
-
-model CirclePurityRestriction {
-  id          String           @id @default(uuid())
-  circleId    String
-  circle      Circle           @relation(fields: [circleId], references: [id])
-  restriction Purity
-
-  @@index([circleId])
-}
-
-model CircleIncomeRestriction {
-  id          String @id @default(uuid())
-  circleId    String
-  circle      Circle @relation(fields: [circleId], references: [id])
-  restriction Income
-
-  @@index([circleId])
-}
-
-model CircleMaritalStatusRestriction {
-  id          String        @id @default(uuid())
-  circleId    String
-  circle      Circle        @relation(fields: [circleId], references: [id])
-  restriction MaritalStatus
-
-  @@index([circleId])
-}
-
-model CircleActivityRestriction {
-  id          String   @id @default(uuid())
-  circleId  String
-  circle      Circle   @relation(fields: [circleId], references: [id])
-  restriction Activity
-
-  @@index([circleId])
-}
-
-model CircleReligionRestriction {
-  id          String   @id @default(uuid())
-  circleId  String
-  circle      Circle   @relation(fields: [circleId], references: [id])
-  restriction Religion
-
-  @@index([circleId])
-}
-
 model User {
   id                  String       			@id @default(uuid())
   email               String       			@unique

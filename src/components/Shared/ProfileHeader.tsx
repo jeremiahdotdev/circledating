@@ -9,7 +9,7 @@ export type ProfileHeaderProps = {
 export function ProfileHeader({ header, image }: ProfileHeaderProps) {
   return (
     <div className="mx-2 flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
-      <div className="flex w-3/4 justify-center sm:w-1/3">
+      <div className="flex aspect-square w-3/4 justify-center sm:w-1/3">
         <ProfilePicture
           src={image}
           fallback={header.substring(0, 1)}

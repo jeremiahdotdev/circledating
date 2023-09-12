@@ -1,6 +1,6 @@
 import { Location } from "@prisma/client";
 import { countries } from "../../src//globals/location";
-import { handleError } from "./util";
+import { handlePrismaError } from "./util";
 import { prisma } from "../../src/server/db";
 
 export async function seedLocations() {
@@ -31,6 +31,6 @@ export async function seedLocations() {
       data: locations,
     });
   } catch (error: unknown) {
-    await handleError(error);
+    await handlePrismaError(error);
   }
 }

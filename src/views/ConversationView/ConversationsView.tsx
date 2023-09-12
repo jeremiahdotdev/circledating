@@ -67,7 +67,7 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
     return <PageNotFound error={systemMessages.NO_MATCHES} />;
 
   return (
-    <main>
+    <div>
       <div className="lg:invisible lg:h-0 lg:w-0">
         <ConversationsList
           conversations={result.data}
@@ -99,6 +99,6 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
           />
         </div>
       </div>
-    </main>
+    </div>
   );
 });

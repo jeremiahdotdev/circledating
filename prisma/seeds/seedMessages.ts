@@ -1,6 +1,6 @@
 import { Messages } from "./data";
 import { UserMessage } from "@prisma/client";
-import { handleError } from "./util";
+import { handlePrismaError } from "./util";
 import { prisma } from "../../src/server/db";
 
 export async function seedMessages() {
@@ -19,6 +19,6 @@ export async function seedMessages() {
       data: messages,
     });
   } catch (error: unknown) {
-    await handleError(error);
+    await handlePrismaError(error);
   }
 }

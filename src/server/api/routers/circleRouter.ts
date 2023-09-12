@@ -1,4 +1,4 @@
-import { CircleLink, UserLink } from "@prisma/client";
+import { CircleLink, Prisma, UserLink } from "@prisma/client";
 import { CircleSchemaType } from "@/schemas/Circle";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
 import { RequestSchemaType } from "@/schemas/Request";
@@ -13,14 +13,12 @@ export const isCompatibleWithCurrentUser = (
     OR: [
       {
         religionRestriction: {
-          some: {
-            restriction: currentUserProfile.religion,
-          },
+          array_contains: currentUserProfile.religion,
         },
       },
       {
         religionRestriction: {
-          none: {},
+          equals: Prisma.AnyNull,
         },
       },
     ],
@@ -29,14 +27,12 @@ export const isCompatibleWithCurrentUser = (
     OR: [
       {
         politicalBeliefsRestriction: {
-          some: {
-            restriction: currentUserProfile.politicalBeliefs,
-          },
+          array_contains: currentUserProfile.politicalBeliefs,
         },
       },
       {
         politicalBeliefsRestriction: {
-          none: {},
+          equals: Prisma.AnyNull,
         },
       },
     ],
@@ -45,14 +41,12 @@ export const isCompatibleWithCurrentUser = (
     OR: [
       {
         continentRestriction: {
-          some: {
-            restriction: currentUserProfile.location.continent,
-          },
+          array_contains: currentUserProfile.location.continent,
         },
       },
       {
         continentRestriction: {
-          none: {},
+          equals: Prisma.AnyNull,
         },
       },
     ],
@@ -61,14 +55,12 @@ export const isCompatibleWithCurrentUser = (
     OR: [
       {
         sexRestriction: {
-          some: {
-            restriction: currentUserProfile.sex,
-          },
+          array_contains: currentUserProfile.sex,
         },
       },
       {
         sexRestriction: {
-          none: {},
+          equals: Prisma.AnyNull,
         },
       },
     ],
@@ -179,53 +171,10 @@ export const circleRouter = createTRPCRouter({
         where: {
           code: input.code,
         },
-        include: {
-          ...allRestrictions,
-        },
       });
 
       const circle = {
         ...result,
-        religionRestriction: result?.religionRestriction.map(
-          (r) => r.restriction
-        ),
-        sexRestriction: result?.sexRestriction.map((r) => r.restriction),
-        incomeRestriction: result?.incomeRestriction.map((r) => r.restriction),
-        purityRestriction: result?.purityRestriction.map((r) => r.restriction),
-        activityRestriction: result?.activityRestriction.map(
-          (r) => r.restriction
-        ),
-        childrenRestriction: result?.childrenRestriction.map(
-          (r) => r.restriction
-        ),
-        drinkingRestriction: result?.drinkingRestriction.map(
-          (r) => r.restriction
-        ),
-        continentRestriction: result?.continentRestriction.map(
-          (r) => r.restriction
-        ),
-        ethnicityRestriction: result?.ethnicityRestriction.map(
-          (r) => r.restriction
-        ),
-        consumablesRestriction: result?.consumablesRestriction.map(
-          (r) => r.restriction
-        ),
-        maritalStatusRestriction: result?.maritalStatusRestriction.map(
-          (r) => r.restriction
-        ),
-        levelOfEducationRestriction: result?.levelOfEducationRestriction.map(
-          (r) => r.restriction
-        ),
-        politicalBeliefsRestriction: result?.politicalBeliefsRestriction.map(
-          (r) => r.restriction
-        ),
-        willingToRelocateRestriction: result?.willingToRelocateRestriction.map(
-          (r) => r.restriction
-        ),
-        onlyLookingForTraditionalHouseholdRestriction:
-          result?.onlyLookingForTraditionalHouseholdRestriction.map(
-            (r) => r.restriction
-          ),
       };
 
       return circle;

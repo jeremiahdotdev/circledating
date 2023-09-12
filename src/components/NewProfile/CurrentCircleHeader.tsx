@@ -8,7 +8,7 @@ export type CurrentCircleHeaderProps = {
 export function CurrentCircleHeader({ circle }: CurrentCircleHeaderProps) {
   return (
     <span className="flex w-full items-center gap-2 sm:px-8">
-      <span className="flex h-24">
+      <span className="flex h-24 w-24">
         {circle && circle.label && (
           <ProfilePicture
             // TODO : image

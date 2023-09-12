@@ -54,7 +54,7 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
   const currentCircles = requestCurrent.data;
 
   return (
-    <main className="flex w-full justify-center">
+    <div className="flex w-full justify-center">
       <div className="flex w-full flex-col items-center justify-between gap-16 px-2 py-12 sm:w-3/4">
         {currentCircles.length && (
           <div className="flex w-full flex-col gap-4">
@@ -97,6 +97,6 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
           </Button>
         </div>
       </div>
-    </main>
+    </div>
   );
 });
