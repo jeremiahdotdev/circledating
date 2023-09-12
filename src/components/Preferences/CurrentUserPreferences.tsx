@@ -3,6 +3,7 @@ import { ComboboxOption } from "../ui/combobox";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { Form } from "../ui/form";
+import { IncomeSelectionValues } from "@/schemas/Income";
 import { MultiSelectFormField } from "../ui/MultiSelectFormField";
 import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { Preference } from "./Preference";
@@ -78,88 +79,94 @@ export function CurrentUserPreferences() {
     console.log(data);
     // TODO: Handle the promise correctly here!
   }, []);
-  const handleSubmit = useCallback(() => {
-    form.handleSubmit(onValidData, onInvalidData);
-  }, [form, onValidData, onInvalidData]);
+
   return (
     <div className="flex h-full max-h-navless w-full flex-col">
-      <Form {...form}>
-        <form
-          onSubmit={handleSubmit}
-          className="flex h-full flex-col justify-between"
-        >
-          <div>
-            <Preference name="Age">
-              <SliderFormField
-                name="ageRange"
-                control={form.control}
-                defaultValue={currentUserPreferences.ageRange ?? [18, 99]}
-                step={1}
-                min={18}
-                max={99}
-                className="w-full"
-              />
-            </Preference>
-            <Preference name="Religion">
-              <MultiSelectFormField
-                name="religion"
-                control={form.control}
-                options={ReligionSelectionValues}
-                selected={currentUserPreferences.religion}
-              />
-            </Preference>
-            <Preference name="Politcal Beliefs">
-              <MultiSelectFormField
-                name="politicalBeliefs"
-                control={form.control}
-                options={PoliticalBeliefsSelectionValues}
-                selected={currentUserPreferences.politicalBeliefs}
-              />
-            </Preference>
-            <Preference name="Alcohol">
-              <MultiSelectFormField
-                name="drinking"
-                control={form.control}
-                options={DrinkingSelectionValues}
-                selected={currentUserPreferences.drinking}
-              />
-            </Preference>
-            <Preference name="Tobacco / Drugs">
-              <MultiSelectFormField
-                name="consumables"
-                control={form.control}
-                options={ConsumablesSelectionValues}
-                selected={currentUserPreferences.consumables}
-              />
-            </Preference>
-            <Preference name="Location">
-              <MultiSelectFormField
-                name="searchContinents"
-                control={form.control}
-                options={continentValues}
-                selected={currentUserPreferences.searchContinents}
-                placeholder="Select continent..."
-              />
-              <MultiSelectFormField
-                name="searchCountries"
-                control={form.control}
-                options={countryValues}
-                selected={currentUserPreferences.searchCountries}
-                placeholder="Select countries..."
-              />
-              <MultiSelectFormField
-                name="searchStates"
-                control={form.control}
-                options={stateValues}
-                selected={currentUserPreferences.searchStates}
-                placeholder="Select states/provinces..."
-              />
-            </Preference>
-          </div>
-          <Button type="submit" className="bg-purple-600">
-            Save
-          </Button>
-        </form>
+      <Form
+        form={form}
+        onSubmit={form.handleSubmit(onValidData, onInvalidData)}
+        className="flex items-center gap-3 sm:mx-12"
+      >
+        <div>
+          <Preference name="Age">
+            <SliderFormField
+              name="ageRange"
+              control={form.control}
+              defaultValue={currentUserPreferences.ageRange ?? [18, 99]}
+              step={1}
+              min={18}
+              max={99}
+              className="w-full"
+            />
+          </Preference>
+          <Preference name="Religion">
+            <MultiSelectFormField
+              name="religion"
+              control={form.control}
+              options={ReligionSelectionValues}
+              selected={currentUserPreferences.religion}
+            />
+          </Preference>
+          <Preference name="Politcal Beliefs">
+            <MultiSelectFormField
+              name="politicalBeliefs"
+              control={form.control}
+              options={PoliticalBeliefsSelectionValues}
+              selected={currentUserPreferences.politicalBeliefs}
+            />
+          </Preference>
+          <Preference name="Alcohol">
+            <MultiSelectFormField
+              name="drinking"
+              control={form.control}
+              options={DrinkingSelectionValues}
+              selected={currentUserPreferences.drinking}
+            />
+          </Preference>
+          <Preference name="Tobacco / Drugs">
+            <MultiSelectFormField
+              name="consumables"
+              control={form.control}
+              options={ConsumablesSelectionValues}
+              selected={currentUserPreferences.consumables}
+            />
+          </Preference>
+          <Preference name="income">
+            <MultiSelectFormField
+              name="income"
+              control={form.control}
+              options={IncomeSelectionValues}
+              selected={currentUserPreferences.income}
+              placeholder="Select preferred income level..."
+            />
+          </Preference>
+          <Preference name="Location">
+            <MultiSelectFormField
+              name="searchContinents"
+              control={form.control}
+              options={continentValues}
+              selected={currentUserPreferences.searchContinents}
+              placeholder="Select continent..."
+            />
+            <MultiSelectFormField
+              name="searchCountries"
+              control={form.control}
+              options={countryValues}
+              selected={currentUserPreferences.searchCountries}
+              placeholder="Select countries..."
+            />
+            <MultiSelectFormField
+              name="searchStates"
+              control={form.control}
+              options={stateValues}
+              selected={currentUserPreferences.searchStates}
+              placeholder="Select states/provinces..."
+            />
+          </Preference>
+        </div>
+        <Button type="submit" className="bg-purple-600">
+          Save
+        </Button>
       </Form>
     </div>
   );

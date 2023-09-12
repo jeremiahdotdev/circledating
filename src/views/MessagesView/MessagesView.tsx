@@ -24,9 +24,5 @@ export const MessagesView: React.FC<MessagesViewProps> = memo(() => {
 
   const messages: MessageSchemaType[] = request.data;
 
-  return (
-    <main className="min-h-navless">
-      <Messaging messages={messages} />
-    </main>
-  );
+  return <Messaging messages={messages} />;
 });

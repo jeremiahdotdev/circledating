@@ -7,14 +7,44 @@ import {
   FieldPath,
   FieldValues,
   FormProvider,
+  UseFormReturn,
   useFormContext,
 } from "react-hook-form";
 import { Slot } from "@radix-ui/react-slot";
 
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { handleError } from "@/utils/handleError";
 
-const Form = FormProvider;
+type FormProps<T extends FieldValues> = {
+  children: React.ReactNode | React.ReactNode[];
+  form: UseFormReturn<T, unknown, undefined>;
+  onSubmit: (
+    e?: React.BaseSyntheticEvent<object, unknown, unknown> | undefined
+  ) => Promise<void>;
+  className: string;
+};
+
+const Form = <TFieldValues extends FieldValues = FieldValues>({
+  children,
+  form,
+  className,
+  onSubmit,
+}: FormProps<TFieldValues>) => {
+  const handleSubmit = React.useCallback(
+    (e?: React.BaseSyntheticEvent<object, unknown, unknown> | undefined) => {
+      if (e) onSubmit(e).catch(handleError);
+    },
+    [onSubmit]
+  );
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={handleSubmit} className={className}>
+        {children}
+      </form>
+    </FormProvider>
+  );
+};
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,

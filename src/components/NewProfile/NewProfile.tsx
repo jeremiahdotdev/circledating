@@ -10,12 +10,13 @@ import {
   CreateProfileSchema,
   CreateProfileSchemaType,
 } from "@/schemas/Profile";
+import { CurrentCircleHeader } from "./CurrentCircleHeader";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { DropdownFormField } from "@/components/ui/DropdownFormField";
 import { EthnicitySelectionValues } from "@/schemas/Ethnicity";
 import { Form } from "@/components/ui/form";
-import { FormSectionHeading } from "@/components/ui/formsectionheading";
+import { FormSection } from "../ui/FormSection";
 import { GenderSelectionValues } from "@/schemas/Gender";
 import { HeightStringSelectOptions } from "@/schemas/Height";
 import { IncomeSelectionValues } from "@/schemas/Income";
@@ -36,10 +37,9 @@ import { memo, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import styles from "./NewProfile.module.scss";
 
 export type NewProfileProps = {
-  circle: CircleSchemaType;
+  circle?: CircleSchemaType;
 };
 
 // eslint-disable-next-line max-lines-per-function
@@ -100,173 +100,174 @@ export const NewProfile = memo(function NewProfile({
   );
 
   return (
-    <div className={styles.newProfile}>
-      <h1>New Account: {circle?.label}</h1>
-      <Form {...form}>
-        <form
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onSubmit={form.handleSubmit(onValidData, onInvalidData)}
-          className="w-full sm:w-3/4"
-        >
-          <FormSectionHeading>General</FormSectionHeading>
-          <section>
-            <LabeledInputFormField
-              control={form.control}
-              name="username"
-              label="What is your reddit username?"
-              placeholder="username"
-              inlineLabel="u/"
-              description="This is the username you use to log into Reddit."
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="sex"
-              control={form.control}
-              label="What is your sex?"
-              options={GenderSelectionValues}
-            />
-            <DatepickerFormField
-              control={form.control}
-              name="birthDate"
-              label="birth date"
-              description="This is used to calculate your age."
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="weightUnit"
-              control={form.control}
-              label="Which unit do you use?"
-              options={WeightUnitOptions}
-            />
-            <LabeledInputFormField
-              control={form.control}
-              name="weight"
-              label="What is your current weight?"
-              placeholder="...be honest!"
-              inlineLabel={selectedWeightUnit}
-              labelPosition="right"
-              type="number"
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="height"
-              control={form.control}
-              label="What is your height?"
-              options={HeightStringSelectOptions}
-              type="number"
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="ethnicity"
-              control={form.control}
-              label="What is your ethnicity?"
-              options={EthnicitySelectionValues}
-            />
-          </section>
-          <FormSectionHeading>Location</FormSectionHeading>
-          <section className={styles.section}>
-            <ComboBoxFormField<CreateProfileSchemaType, string>
-              name="location.country"
-              control={form.control}
-              label="What is your country of residence?"
-              options={countryValues}
-            />
-            <ComboBoxFormField<CreateProfileSchemaType, string>
-              name="location.state"
-              control={form.control}
-              label="What is your state/province of residence?"
-              options={stateValues}
-            />
-            <ComboBoxFormField<CreateProfileSchemaType, string>
-              name="willingToRelocate"
-              control={form.control}
-              label="Are you willing to relocate?"
-              options={YesAndNoSelectionValues}
-            />
-          </section>
-          <FormSectionHeading>Family</FormSectionHeading>
-          <section>
-            <DropdownFormField<CreateProfileSchemaType>
-              name="children"
-              control={form.control}
-              label="Do you have/want kids?"
-              options={ChildrenSelectionValues}
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="maritalStatus"
-              control={form.control}
-              label="Have you ever been married?"
-              options={MaritalStatusesSelectionValues}
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="onlyLookingForTraditionalHousehold"
-              control={form.control}
-              label="Are you only looking for a traditional household?"
-              options={YesAndNoSelectionValues}
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="income"
-              control={form.control}
-              label="What type of houshold are you looking for?"
-              options={IncomeSelectionValues}
-            />
-          </section>
-          <FormSectionHeading>Lifestyle</FormSectionHeading>
-          <section className={styles.section}>
-            <DropdownFormField<CreateProfileSchemaType>
-              name="consumables"
-              control={form.control}
-              label="Do you consume any of the following?"
-              options={ConsumablesSelectionValues}
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="drinking"
-              control={form.control}
-              label="How often do you drink?"
-              options={DrinkingSelectionValues}
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="activity"
-              control={form.control}
-              label="How often do you excercise?"
-              options={ActivitySelectionValues}
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="purity"
-              control={form.control}
-              label="What is your stance on purity?"
-              options={PuritySelectionValues}
-            />
-          </section>
-          <FormSectionHeading>About You</FormSectionHeading>
-          <section>
-            <DropdownFormField<CreateProfileSchemaType>
-              control={form.control}
-              name="religion"
-              label="What is your religion?"
-              options={ReligionSelectionValues}
-              override={circle.religionRestriction?.[0]}
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="politicalBeliefs"
-              control={form.control}
-              label="What is your political stance?"
-              options={PoliticalBeliefsSelectionValues}
-              override={circle.politicalBeliefsRestriction?.[0]}
-            />
-            <DropdownFormField<CreateProfileSchemaType>
-              name="levelOfEducation"
-              control={form.control}
-              label="What is the highest level of education to have obtained?"
-              options={LevelOfEducationSelectionValues}
-            />
-            <TextAreaFormField
-              control={form.control}
-              name="bio"
-              label="Bio"
-              placeholder="Describe yourself! Passions, faith, career, hobbies, et cetera."
-            />
-          </section>
-          <Button className="mt-2 w-20 px-12" type="submit">
-            Submit
-          </Button>
-        </form>
+    <div className="flex w-full flex-col items-center justify-center py-4">
+      <CurrentCircleHeader circle={circle} />
+      <Form
+        form={form}
+        onSubmit={form.handleSubmit(onValidData, onInvalidData)}
+        className="w-full sm:w-3/4"
+      >
+        <FormSection heading="General">
+          <LabeledInputFormField
+            control={form.control}
+            name="username"
+            label="What is your reddit username?"
+            placeholder="username"
+            inlineLabel="u/"
+            description="This is the username you use to log into Reddit."
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="sex"
+            control={form.control}
+            label="What is your sex?"
+            options={GenderSelectionValues}
+          />
+          <DatepickerFormField
+            control={form.control}
+            name="birthDate"
+            label="birth date"
+            description="This is used to calculate your age."
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="weightUnit"
+            control={form.control}
+            label="Which unit do you use?"
+            options={WeightUnitOptions}
+          />
+          <LabeledInputFormField
+            control={form.control}
+            name="weight"
+            label="What is your current weight?"
+            placeholder="...be honest!"
+            inlineLabel={selectedWeightUnit}
+            labelPosition="right"
+            type="number"
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="height"
+            control={form.control}
+            label="What is your height?"
+            options={HeightStringSelectOptions}
+            type="number"
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="ethnicity"
+            control={form.control}
+            label="What is your ethnicity?"
+            options={EthnicitySelectionValues}
+          />
+        </FormSection>
+        <FormSection heading="Location">
+          <ComboBoxFormField<CreateProfileSchemaType, string>
+            name="location.country"
+            control={form.control}
+            label="What is your country of residence?"
+            options={countryValues}
+          />
+          <ComboBoxFormField<CreateProfileSchemaType, string>
+            name="location.state"
+            control={form.control}
+            label="What is your state/province of residence?"
+            options={stateValues}
+          />
+          <ComboBoxFormField<CreateProfileSchemaType, string>
+            name="willingToRelocate"
+            control={form.control}
+            label="Are you willing to relocate?"
+            options={YesAndNoSelectionValues}
+          />
+        </FormSection>
+        <FormSection heading="Family">
+          <DropdownFormField<CreateProfileSchemaType>
+            name="children"
+            control={form.control}
+            label="Do you have/want kids?"
+            options={ChildrenSelectionValues}
+            filterOn={circle?.childrenRestriction}
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="maritalStatus"
+            control={form.control}
+            label="Have you ever been married?"
+            options={MaritalStatusesSelectionValues}
+            filterOn={circle?.maritalStatusRestriction}
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="onlyLookingForTraditionalHousehold"
+            control={form.control}
+            label="Are you only looking for a traditional household?"
+            options={YesAndNoSelectionValues}
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="income"
+            control={form.control}
+            label="What type of houshold are you looking for?"
+            options={IncomeSelectionValues}
+            filterOn={circle?.incomeRestriction}
+          />
+        </FormSection>
+        <FormSection heading="Lifestyle">
+          <DropdownFormField<CreateProfileSchemaType>
+            name="consumables"
+            control={form.control}
+            label="Do you consume any of the following?"
+            options={ConsumablesSelectionValues}
+            filterOn={circle?.consumablesRestriction}
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="drinking"
+            control={form.control}
+            label="How often do you drink?"
+            options={DrinkingSelectionValues}
+            filterOn={circle?.drinkingRestriction}
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="activity"
+            control={form.control}
+            label="How often do you excercise?"
+            options={ActivitySelectionValues}
+            filterOn={circle?.activityRestriction}
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="purity"
+            control={form.control}
+            label="What is your stance on purity?"
+            options={PuritySelectionValues}
+            filterOn={circle?.purityRestriction}
+          />
+        </FormSection>
+        <FormSection heading="About You">
+          <DropdownFormField<CreateProfileSchemaType>
+            control={form.control}
+            name="religion"
+            label="What is your religion?"
+            options={ReligionSelectionValues}
+            filterOn={circle?.religionRestriction}
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="politicalBeliefs"
+            control={form.control}
+            label="What is your political stance?"
+            options={PoliticalBeliefsSelectionValues}
+            filterOn={circle?.politicalBeliefsRestriction}
+          />
+          <DropdownFormField<CreateProfileSchemaType>
+            name="levelOfEducation"
+            control={form.control}
+            label="What is the highest level of education to have obtained?"
+            options={LevelOfEducationSelectionValues}
+            filterOn={circle?.levelOfEducationRestriction}
+          />
+          <TextAreaFormField
+            control={form.control}
+            name="bio"
+            label="Bio"
+            placeholder="Describe yourself! Passions, faith, career, hobbies, et cetera."
+          />
+        </FormSection>
+        <Button className="mt-2 w-20 px-12" type="submit">
+          Submit
+        </Button>
       </Form>
     </div>
   );

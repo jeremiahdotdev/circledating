@@ -93,6 +93,24 @@ export const noRestrictions = {
   onlyLookingForTraditionalHouseholdRestriction: [],
   customRestriction: [],
 };
+export const allRestrictions = {
+  religionRestriction: true,
+  sexRestriction: true,
+  incomeRestriction: true,
+  purityRestriction: true,
+  activityRestriction: true,
+  childrenRestriction: true,
+  drinkingRestriction: true,
+  continentRestriction: true,
+  ethnicityRestriction: true,
+  consumablesRestriction: true,
+  maritalStatusRestriction: true,
+  levelOfEducationRestriction: true,
+  politicalBeliefsRestriction: true,
+  willingToRelocateRestriction: true,
+  onlyLookingForTraditionalHouseholdRestriction: true,
+};
+
 export const secureLinks = (links: UserLink[] | CircleLink[] | undefined) => ({
   links: getSecureLinks(links),
 });
@@ -146,6 +164,68 @@ export const circleRouter = createTRPCRouter({
           ...r,
           username: r.author.username,
         })) as RequestSchemaType[],
+      };
+
+      return circle;
+    }),
+  readByCode: publicProcedure
+    .input(
+      z.object({
+        code: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const result = await ctx.prisma.circle.findUnique({
+        where: {
+          code: input.code,
+        },
+        include: {
+          ...allRestrictions,
+        },
+      });
+
+      const circle = {
+        ...result,
+        religionRestriction: result?.religionRestriction.map(
+          (r) => r.restriction
+        ),
+        sexRestriction: result?.sexRestriction.map((r) => r.restriction),
+        incomeRestriction: result?.incomeRestriction.map((r) => r.restriction),
+        purityRestriction: result?.purityRestriction.map((r) => r.restriction),
+        activityRestriction: result?.activityRestriction.map(
+          (r) => r.restriction
+        ),
+        childrenRestriction: result?.childrenRestriction.map(
+          (r) => r.restriction
+        ),
+        drinkingRestriction: result?.drinkingRestriction.map(
+          (r) => r.restriction
+        ),
+        continentRestriction: result?.continentRestriction.map(
+          (r) => r.restriction
+        ),
+        ethnicityRestriction: result?.ethnicityRestriction.map(
+          (r) => r.restriction
+        ),
+        consumablesRestriction: result?.consumablesRestriction.map(
+          (r) => r.restriction
+        ),
+        maritalStatusRestriction: result?.maritalStatusRestriction.map(
+          (r) => r.restriction
+        ),
+        levelOfEducationRestriction: result?.levelOfEducationRestriction.map(
+          (r) => r.restriction
+        ),
+        politicalBeliefsRestriction: result?.politicalBeliefsRestriction.map(
+          (r) => r.restriction
+        ),
+        willingToRelocateRestriction: result?.willingToRelocateRestriction.map(
+          (r) => r.restriction
+        ),
+        onlyLookingForTraditionalHouseholdRestriction:
+          result?.onlyLookingForTraditionalHouseholdRestriction.map(
+            (r) => r.restriction
+          ),
       };
 
       return circle;

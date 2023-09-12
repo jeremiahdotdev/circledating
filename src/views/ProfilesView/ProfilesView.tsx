@@ -22,9 +22,5 @@ export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
 
   if (!request.data) return <Loading />;
 
-  return (
-    <main className="flex min-h-navless flex-col items-center justify-between md:pt-6">
-      <ProfileList profiles={request.data} />
-    </main>
-  );
+  return <ProfileList profiles={request.data} />;
 });

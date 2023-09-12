@@ -12,7 +12,7 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Nav />
-      <main className={classNames("sm:py-[74px]", inter.className)}>
+      <main className={classNames("sm:pt-[67px]", inter.className)}>
         <Component {...pageProps} />
       </main>
     </>

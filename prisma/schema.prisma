@@ -183,12 +183,12 @@ model Circle {
   description                                   String                              @db.LongText            
   isFeatured									Boolean                             @default(false)
   isPrivate 									Boolean                             @default(false)
+  code         									String        						@unique @default(uuid())
   ageMaxRestriction                             Int?
   ageMinRestriction                             Int?
   maxWeightRestriction                          Int?
   sexRestriction                                CircleSexRestriction[]
   continentRestriction                          CircleContinentRestriction[]
-  willingToRelocateRestriction                  CircleRelocationRestriction[]
   childrenRestriction                           CircleChildrenRestriction[]
   ethnicityRestriction                          CircleEthnicityRestriction[]
   drinkingRestriction                           CircleDrinkingRestriction[]
@@ -196,7 +196,6 @@ model Circle {
   politicalBeliefsRestriction                   CirclePoliticalBeliefsRestriction[]
   levelOfEducationRestriction                   CircleLevelOfEducationRestriction[]
   purityRestriction                             CirclePurityRestriction[]
-  onlyLookingForTraditionalHouseholdRestriction CircleTraditionalRestriction[]
   incomeRestriction                             CircleIncomeRestriction[]
   maritalStatusRestriction                      CircleMaritalStatusRestriction[]
   activityRestriction                           CircleActivityRestriction[]
@@ -228,14 +227,6 @@ model CircleSexRestriction {
   @@index([circleId])
 }
 
-model CircleRelocationRestriction {
-  id          String         @id @default(uuid())
-  circleId    String
-  circle      Circle         @relation(fields: [circleId], references: [id])
-  restriction YesNoOrUnknown
-
-  @@index([circleId])
-}
 
 model CircleChildrenRestriction {
   id          String   @id @default(uuid())
@@ -296,15 +287,6 @@ model CirclePurityRestriction {
   circleId    String
   circle      Circle           @relation(fields: [circleId], references: [id])
   restriction Purity
-
-  @@index([circleId])
-}
-
-model CircleTraditionalRestriction {
-  id          String         @id @default(uuid())
-  circleId  String
-  circle      Circle         @relation(fields: [circleId], references: [id])
-  restriction YesNoOrUnknown
 
   @@index([circleId])
 }

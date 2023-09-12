@@ -25,6 +25,7 @@ const circleBase = {
   updatedAt: null,
   isFeatured: true,
   isPrivate: false,
+  code: "fjklsaghjafklghakgjadhkl",
 };
 export const Circles = {
   Religion: {
@@ -325,6 +326,7 @@ export const UsersPreferences: UserPreferencesSchemaType[] = [
     politicalBeliefs: [],
     drinking: [],
     consumables: [],
+    income: [],
     updatedAt: new Date(),
     createdAt: new Date(),
   },

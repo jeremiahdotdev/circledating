@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { CircleSchemaType } from "@/schemas/Circle";
-import { ItemList, ParseItem } from "@/components/Shared/ItemList";
+import { ItemList, ItemType, ParseItem } from "@/components/Shared/ItemList";
 import { Loading } from "@/components/Shared/Loading";
 import { SearchForm } from "../../components/Circle/SearchForm";
 import { api } from "@/utils/api";
@@ -34,7 +34,13 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
     const route = routes.newCircle();
     router.push(route.href).catch(handleError);
   }, [router]);
-
+  const handleRoute = useCallback(
+    (circleNameItem: ItemType) => {
+      const route = routes.circleByCircleNameAsLabel(circleNameItem.value);
+      router.push(route.href, route.as).catch(handleError);
+    },
+    [router]
+  );
   const requestFeatured = api.circles.readFeatured.useQuery({
     currentUserProfile: state.currentUser,
   });
@@ -54,7 +60,10 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Your Circles</h2>
             <div className="max-h-96 w-full">
-              <ItemList items={currentCircles.map(ParseItem)} />
+              <ItemList
+                items={currentCircles.map(ParseItem)}
+                clickAction={handleRoute}
+              />
             </div>
           </div>
         )}
@@ -62,7 +71,10 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Suggested for you</h2>
             <div className="max-h-96 w-full">
-              <ItemList items={featuredCircles.map(ParseItem)} />
+              <ItemList
+                items={featuredCircles.map(ParseItem)}
+                clickAction={handleRoute}
+              />
             </div>
           </div>
         )}
@@ -70,7 +82,10 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
           <h2 className="w-full text-start text-xl">Find a Circle</h2>
           <SearchForm handleSearch={handleSearch} />
           <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
-            <ItemList items={searchCirclesState.map(ParseItem)} />
+            <ItemList
+              items={searchCirclesState.map(ParseItem)}
+              clickAction={handleRoute}
+            />
           </div>
         </div>
         <div className="m-12 flex h-full w-full flex-col items-center justify-center gap-4">

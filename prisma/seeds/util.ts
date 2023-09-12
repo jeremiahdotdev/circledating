@@ -1,9 +1,10 @@
+import { handleError } from "@/utils/handleError";
 import { prisma } from "../../src/server/db";
 
 export const handleDisconnect = async () => {
   await prisma.$disconnect();
 };
-export const handleError = async (e: unknown) => {
-  console.error(e);
+export const handlePrismaError = async (e: unknown) => {
+  handleError(e);
   await prisma.$disconnect();
 };

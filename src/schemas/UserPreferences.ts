@@ -2,6 +2,7 @@ import { CircleSchema } from "./Circle";
 import { ConsumablesSchema } from "./Consumables";
 import { DrinkingSchema } from "./Drinking";
 import { GenderSchema } from "./Gender";
+import { IncomeSchema } from "./Income";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { ReligionSchema } from "./Religion";
 import { SelectedLocation } from "./SelectedLocationSchema";
@@ -19,6 +20,7 @@ export const UserPreferencesSchema = z.object({
   politicalBeliefs: z.array(PoliticalBeliefsSchema),
   drinking: z.array(DrinkingSchema),
   consumables: z.array(ConsumablesSchema),
+  income: z.array(IncomeSchema),
 
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),

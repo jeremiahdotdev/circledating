@@ -5,9 +5,10 @@ import {
   ProfileAttribute,
   ProfileAttributeVariant,
 } from "../Profile/ProfileAttribute";
+import { ProfileAttributeList } from "../Shared/ProfileAttributeList";
 import { ProfileAttributeOptions } from "../Profile/ProfileAttributeOptions";
+import { ProfileHeader } from "../Shared/ProfileHeader";
 import { ProfileLinks } from "../Shared/ProfileLinks";
-import { ProfilePicture } from "../Profile/ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { ProfileSection } from "../Profile/ProfileSection";
 import { SearchForm } from "./SearchForm";
@@ -38,7 +39,7 @@ export function CircleProfile({ circle }: CircleProfileProps) {
   const search = api.circles.searchCircleForUser.useMutation();
 
   const isMember = circleState?.users?.length;
-  const isPrivate = true;
+  const isPrivate = circleState?.isPrivate;
 
   const circlePayload = useCallback(
     (userId: string) => ({
@@ -116,20 +117,11 @@ export function CircleProfile({ circle }: CircleProfileProps) {
   );
 
   return (
-    <div className="mx-2 flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
-      <div className="flex w-3/4 justify-center sm:w-1/2">
-        <ProfilePicture
-          // TODO: Replace with actual picture.
-          fallback={circle.name.substring(0, 1)}
-          alt={circle.name + "_profile"}
-          className="text-4xl md:m-2"
-        />
-      </div>
-      <span className="flex items-center gap-2">
-        <h1 className="flex w-full justify-center text-4xl sm:w-auto">
-          {circle.label}
-        </h1>
-      </span>
+    <div className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
+      <ProfileHeader
+        // TODO: Replace with actual picture.
+        header={circle.label}
+      />
       <IconButton
         variant={
           !isMember
@@ -140,8 +132,7 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         }
         onClick={handleJoinOrLeaveOrRequest}
       />
-      {circle.links && <ProfileLinks links={circle.links} />}
-      <div className="flex md:flex-row">
+      <ProfileAttributeList>
         <ProfileAttribute
           option={ProfileAttributeOptions.memberCount}
           attribute={circle?._count?.users ?? 0}
@@ -152,17 +143,8 @@ export function CircleProfile({ circle }: CircleProfileProps) {
           attribute={circle?.createdAt}
           variant={ProfileAttributeVariant.PROFILE}
         />
-        {circle.links?.map(({ href, id }) => {
-          return (
-            <ProfileAttribute
-              key={id}
-              option={ProfileAttributeOptions.link}
-              attribute={href}
-              variant={ProfileAttributeVariant.PROFILE}
-            />
-          );
-        })}
-      </div>
+        {circle.links && <ProfileLinks links={circle.links} />}
+      </ProfileAttributeList>
       {circle.description && (
         <ProfileSection heading={`About`}>
           <p>{circle.description}</p>

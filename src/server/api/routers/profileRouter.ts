@@ -62,6 +62,12 @@ export const handlePreferences = (preferences: UserPreferencesSchemaType) => {
         },
       },
     });
+  if (preferences.income.length)
+    filters.push({
+      income: {
+        in: preferences.income,
+      },
+    });
   return filters;
 };
 

@@ -1,4 +1,4 @@
-import { handleDisconnect, handleError } from "./seeds/util";
+import { handleDisconnect, handlePrismaError } from "./seeds/util";
 import { seedCircles } from "./seeds/seedCircles";
 // import { seedLocations } from "./seeds/seedLocations";
 // import { seedMessages } from "./seeds/seedMessages";
@@ -11,4 +11,4 @@ const main = async () => {
   // await seedMessages();
 };
 
-main().then(handleDisconnect).catch(handleError);
+main().then(handleDisconnect).catch(handlePrismaError);

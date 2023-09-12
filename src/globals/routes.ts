@@ -23,7 +23,7 @@ export const routes = {
   }),
   circleByCircleNameAsLabel: (circleName: string) => ({
     href: `/circle/${circleName}`,
-    as: `/circle/${circleName}`,
+    as: `/circle/${circleName.toLowerCase()}`,
   }),
   messagesByUsername: (username: string) => ({
     href: `/messages/${username}`,

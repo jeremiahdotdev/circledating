@@ -2,11 +2,12 @@ import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
+import { ProfileAttributeList } from "../Shared/ProfileAttributeList";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
+import { ProfileHeader } from "../Shared/ProfileHeader";
 import { ProfileLinks } from "../Shared/ProfileLinks";
 import { ProfileLocation } from "./ProfileCardLocation";
-import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { ProfileSection } from "./ProfileSection";
 import { handleError } from "@/utils/handleError";
@@ -38,25 +39,22 @@ export function Profile({ profile, interact }: ProfileProps) {
     [router]
   );
   return (
-    <div className="mx-2 flex max-w-screen-xl flex-col items-center justify-center gap-6">
-      <div className="w-3/4 flex-1 justify-center sm:w-1/3">
-        <ProfilePicture
-          // TODO: Replace with actual picture.
-          src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
-          fallback={profile.username.substring(0, 1)}
-          alt={profile.username + "_profile"}
-          className="md:m-2"
-        />
-      </div>
-      <h1 className="flex w-full justify-center text-4xl sm:w-auto">
-        {profile.username} ({age})
-      </h1>
+    <div className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
+      <ProfileHeader
+        // TODO: Replace with actual picture.
+        image="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
+        header={`${profile.username} (${age})`}
+      />
       <ProfileLocation
         country={profile.location.country}
         state={profile.location.state}
         willingToRelocate={profile.willingToRelocate === "YES"}
       />
-      {profile.links && <ProfileLinks links={profile.links} />}
+      {profile.links && (
+        <ProfileAttributeList>
+          <ProfileLinks links={profile.links} />
+        </ProfileAttributeList>
+      )}
       <ProfileSection heading={"About"}>
         <p>{profile.bio}</p>
       </ProfileSection>

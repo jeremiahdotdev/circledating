@@ -33,9 +33,7 @@ export function NewMessageForm({
       conversationId: "<ID>",
     },
   });
-  const onInvalidData = useCallback((errors: unknown) => {
-    console.error(errors);
-  }, []);
+  const onInvalidData = useCallback(handleError, []);
   const onValidData = useCallback(
     (data: MessageSchemaType) => {
       data.recipientUsername = recipientUsername ?? "";
@@ -51,26 +49,24 @@ export function NewMessageForm({
   );
 
   return (
-    <Form {...form}>
-      <form
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onSubmit={form.handleSubmit(onValidData, onInvalidData)}
-        className="flex items-center gap-3 sm:mx-12"
-      >
-        <TextAreaFormField
-          name="content"
-          className={cn(
-            "resize-none rounded-full border px-8 text-xl outline-none ring-offset-background",
-            gender == Gender.MALE ? "bg-cyan-50" : "bg-fuchsia-100"
-          )}
-          disabled={!recipientUsername}
-        ></TextAreaFormField>
-        <IconButton
-          variant={IconButtonVariant.MESSAGE}
-          type="submit"
-          disabled={!recipientUsername}
-        />
-      </form>
+    <Form
+      form={form}
+      onSubmit={form.handleSubmit(onValidData, onInvalidData)}
+      className="flex items-center gap-3 sm:mx-12"
+    >
+      <TextAreaFormField
+        name="content"
+        className={cn(
+          "resize-none rounded-full border px-8 text-xl outline-none ring-offset-background",
+          gender == Gender.MALE ? "bg-cyan-50" : "bg-fuchsia-100"
+        )}
+        disabled={!recipientUsername}
+      ></TextAreaFormField>
+      <IconButton
+        variant={IconButtonVariant.MESSAGE}
+        type="submit"
+        disabled={!recipientUsername}
+      />
     </Form>
   );
 }
