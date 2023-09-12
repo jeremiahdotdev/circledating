@@ -13,8 +13,26 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import dayjs from "dayjs";
 
-export function DatePicker() {
-  const [date, setDate] = React.useState<Date>();
+export type DatePickerProps = {
+  label: string;
+  onChange: (date: Date) => void;
+  value: Date | undefined;
+};
+
+export function DatePicker({
+  label,
+  onChange: realOnChange,
+  value,
+}: DatePickerProps) {
+  const onChange = React.useCallback(
+    (day: Date | undefined) => {
+      if (day) {
+        realOnChange(day);
+      }
+    },
+    [realOnChange]
+  );
+
   const from = dayjs().add(-99, "year").toDate();
   const to = dayjs().add(-18, "year").toDate();
   return (
@@ -24,19 +42,19 @@ export function DatePicker() {
           variant={"outline"}
           className={cn(
             "w-[240px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            !value && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {value ? format(value, "PPP") : <span>{label}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className=" w-auto p-0">
         <Calendar
           mode="single"
           captionLayout="dropdown-buttons"
-          selected={date}
-          onSelect={setDate}
+          selected={value}
+          onSelect={onChange}
           fromDate={from}
           toDate={to}
         />
