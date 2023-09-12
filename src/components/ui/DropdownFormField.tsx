@@ -38,7 +38,7 @@ export const DropdownFormField = <Values extends FieldValues>({
       } else if (type === "number") {
         return String(field.value);
       }
-  }, [field.value, type]);
+  }, [field.value, type, options]);
 
   const onChange = useCallback(
     (value: string) => {
