@@ -18,5 +18,6 @@ export const ProfileView: React.FC<ProfileViewProps> = memo(() => {
 
   if (!request.data) return <Loading />;
 
-  return <Profile profile={request.data} />;
+  // TODO: check auth
+  return <Profile profile={request.data} canEdit={true} />;
 });

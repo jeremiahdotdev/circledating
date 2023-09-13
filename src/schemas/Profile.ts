@@ -19,6 +19,7 @@ import { z } from "zod";
 
 export const ProfilePartial = {
   userId: z.string(),
+  imageId: z.string().optional(),
   username: z.string().min(3).max(20),
   sex: GenderSchema,
   birthDate: z.date(),

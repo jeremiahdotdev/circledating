@@ -24,9 +24,7 @@ export function ProfileHeader({ header, image, canEdit }: ProfileHeaderProps) {
         />
         {canEdit && (
           <span className="absolute bottom-0 right-0">
-            <DialogModal setOpen={setOpenState} open={openState}>
-              <AvatarUpload />
-            </DialogModal>
+            <DialogModal setOpen={setOpenState} open={openState}></DialogModal>
             <IconButton
               variant={IconButtonVariant.UPLOAD}
               action={handleOpen}

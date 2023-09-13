@@ -33,4 +33,7 @@ export const routes = {
     href: `/messages/${username}?id=${id}`,
     as: `/messages/${username}`,
   }),
+  uploadAvatar: (filename: string) => ({
+    href: `/api/avatar/upload?filename=${filename}`,
+  }),
 };
