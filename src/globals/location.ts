@@ -1,5 +1,6 @@
 export const countries = [
   {
+    continent: "Asia",
     country: "Afghanistan",
     states: [
       "Badakhshan",
@@ -39,6 +40,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Albania",
     states: [
       "Berat",
@@ -56,6 +58,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Algeria",
     states: [
       "Adrar",
@@ -109,6 +112,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Andorra",
     states: [
       "Andorra la Vella",
@@ -121,6 +125,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Angola",
     states: [
       "Bengo",
@@ -144,10 +149,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Antarctica",
     states: [],
   },
   {
+    continent: "North America",
     country: "Antigua and Barbuda",
     states: [
       "Barbuda",
@@ -161,6 +168,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Antarctica",
     country: "Argentina",
     states: [
       "Buenos Aires",
@@ -190,6 +198,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Armenia",
     states: [
       "Aragatsotn",
@@ -206,10 +215,12 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Australia",
     states: [],
   },
   {
+    continent: "Asia",
     country: "Austria",
     states: [
       "Burgenland",
@@ -224,6 +235,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Azerbaijan",
     states: [
       "Abseron Rayonu",
@@ -300,6 +312,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Bahamas",
     states: [
       "Acklins and Crooked Islands",
@@ -326,6 +339,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Bahrain",
     states: [
       "Al Hadd",
@@ -343,10 +357,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Bangladesh",
     states: ["Barisal", "Chittagong", "Dhaka", "Khulna", "Rajshahi", "Sylhet"],
   },
   {
+    continent: "North America",
     country: "Barbados",
     states: [
       "Christ Church",
@@ -363,6 +379,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Belarus",
     states: [
       "Brest",
@@ -375,6 +392,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Belgium",
     states: [
       "Antwerpen",
@@ -393,6 +411,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Belize",
     states: [
       "Belize",
@@ -404,6 +423,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Benin",
     states: [
       "Alibori",
@@ -421,6 +441,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Bermuda",
     states: [
       "Devonshire",
@@ -437,6 +458,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Bhutan",
     states: [
       "Bumthang",
@@ -462,6 +484,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Bolivia",
     states: [
       "Chuquisaca",
@@ -476,6 +499,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Bosnia and Herzegovina",
     states: [
       "Una-Sana [Federation]",
@@ -498,6 +522,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Botswana",
     states: [
       "Central",
@@ -512,6 +537,7 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Brazil",
     states: [
       "Acre",
@@ -544,10 +570,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Brunei",
     states: ["Belait", "Brunei and Muara", "Temburong", "Tutong"],
   },
   {
+    continent: "Africa",
     country: "Bulgaria",
     states: [
       "Blagoevgrad",
@@ -581,6 +609,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Antarctica",
     country: "Burkina Faso",
     states: [
       "Bale",
@@ -631,6 +660,7 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Burma",
     states: [
       "Ayeyarwady",
@@ -650,6 +680,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Burundi",
     states: [
       "Bubanza",
@@ -672,6 +703,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Cambodia",
     states: [
       "Banteay Mean Chey",
@@ -701,6 +733,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Cameroon",
     states: [
       "Adamaoua",
@@ -716,6 +749,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Canada",
     states: [
       "Alberta",
@@ -734,10 +768,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Cape Verde",
     states: [],
   },
   {
+    continent: "Asia",
     country: "Central African Republic",
     states: [
       "Bamingui-Bangoran",
@@ -760,6 +796,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Chad",
     states: [
       "Batha",
@@ -779,6 +816,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Chile",
     states: [
       "Aysen",
@@ -797,6 +835,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "China",
     states: [
       "Anhui",
@@ -833,6 +872,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Colombia",
     states: [
       "Amazonas",
@@ -871,10 +911,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Comoros",
     states: ["Grande Comore (Njazidja)", "Anjouan (Nzwani)", "Moheli (Mwali)"],
   },
   {
+    continent: "Africa",
     country: "Congo, Democratic Republic",
     states: [
       "Bandundu",
@@ -891,6 +933,7 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Congo, Republic of the",
     states: [
       "Bouenza",
@@ -907,6 +950,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Costa Rica",
     states: [
       "Alajuela",
@@ -919,10 +963,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Cote d'Ivoire",
     states: [],
   },
   {
+    continent: "Oceania",
     country: "Croatia",
     states: [
       "Bjelovarsko-Bilogorska",
@@ -949,6 +995,7 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Cuba",
     states: [
       "Camaguey",
@@ -969,6 +1016,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Cyprus",
     states: [
       "Famagusta",
@@ -980,6 +1028,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Czech Republic",
     states: [
       "Jihocesky Kraj",
@@ -999,6 +1048,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Denmark",
     states: [
       "Arhus",
@@ -1020,10 +1070,12 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Djibouti",
     states: ["Ali Sabih", "Dikhil", "Djibouti", "Obock", "Tadjoura"],
   },
   {
+    continent: "Europe",
     country: "Dominica",
     states: [
       "Saint Andrew",
@@ -1039,6 +1091,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Dominican Republic",
     states: [
       "Azua",
@@ -1076,6 +1129,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "East Timor",
     states: [
       "Aileu",
@@ -1094,6 +1148,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Ecuador",
     states: [
       "Azuay",
@@ -1121,6 +1176,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Egypt",
     states: [
       "Ad Daqahliyah",
@@ -1152,6 +1208,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "El Salvador",
     states: [
       "Ahuachapan",
@@ -1171,6 +1228,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Equatorial Guinea",
     states: [
       "Annobon",
@@ -1183,6 +1241,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Eritrea",
     states: [
       "Anseba",
@@ -1194,6 +1253,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Estonia",
     states: [
       "Harjumaa (Tallinn)",
@@ -1214,6 +1274,7 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Ethiopia",
     states: [
       "Addis Ababa",
@@ -1230,6 +1291,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Fiji",
     states: [
       "Central (Suva)",
@@ -1240,6 +1302,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Finland",
     states: [
       "Aland",
@@ -1251,6 +1314,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "France",
     states: [
       "Alsace",
@@ -1278,6 +1342,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Gabon",
     states: [
       "Estuaire",
@@ -1292,6 +1357,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Gambia",
     states: [
       "Banjul",
@@ -1303,10 +1369,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Georgia",
     states: [],
   },
   {
+    continent: "Africa",
     country: "Germany",
     states: [
       "Baden-Wuerttemberg",
@@ -1328,6 +1396,7 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Ghana",
     states: [
       "Ashanti",
@@ -1343,6 +1412,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Greece",
     states: [
       "Agion Oros",
@@ -1400,6 +1470,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Greenland",
     states: [
       "Avannaa (Nordgronland)",
@@ -1408,6 +1479,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Grenada",
     states: [
       "Carriacou and Petit Martinique",
@@ -1420,6 +1492,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Guatemala",
     states: [
       "Alta Verapaz",
@@ -1447,6 +1520,7 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Guinea",
     states: [
       "Beyla",
@@ -1486,6 +1560,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Guinea-Bissau",
     states: [
       "Bafata",
@@ -1500,6 +1575,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Antarctica",
     country: "Guyana",
     states: [
       "Barima-Waini",
@@ -1515,6 +1591,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Haiti",
     states: [
       "Artibonite",
@@ -1529,6 +1606,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Honduras",
     states: [
       "Atlantida",
@@ -1552,10 +1630,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Hong Kong",
     states: [],
   },
   {
+    continent: "Europe",
     country: "Hungary",
     states: [
       "Bacs-Kiskun",
@@ -1600,6 +1680,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Iceland",
     states: [
       "Austurland",
@@ -1613,6 +1694,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "India",
     states: [
       "Andaman and Nicobar Islands",
@@ -1653,6 +1735,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Indonesia",
     states: [
       "Aceh",
@@ -1691,6 +1774,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Iran",
     states: [
       "Ardabil",
@@ -1726,6 +1810,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Iraq",
     states: [
       "Al Anbar",
@@ -1749,6 +1834,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Ireland",
     states: [
       "Carlow",
@@ -1780,6 +1866,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Israel",
     states: [
       "Central",
@@ -1791,6 +1878,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Italy",
     states: [
       "Abruzzo",
@@ -1816,6 +1904,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Jamaica",
     states: [
       "Clarendon",
@@ -1835,6 +1924,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Japan",
     states: [
       "Aichi",
@@ -1887,6 +1977,7 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Jordan",
     states: [
       "Ajlun",
@@ -1904,6 +1995,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Kazakhstan",
     states: [
       "Almaty Oblysy",
@@ -1926,6 +2018,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Antarctica",
     country: "Kenya",
     states: [
       "Central",
@@ -1939,10 +2032,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Kiribati",
     states: [],
   },
   {
+    continent: "North America",
     country: "Korea North",
     states: [
       "Chagang",
@@ -1961,6 +2056,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Korea South",
     states: [
       "Seoul",
@@ -1982,6 +2078,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Kuwait",
     states: [
       "Al Ahmadi",
@@ -1993,6 +2090,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Kyrgyzstan",
     states: [
       "Batken Oblasty",
@@ -2006,6 +2104,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Laos",
     states: [
       "Attapu",
@@ -2029,6 +2128,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Latvia",
     states: [
       "Aizkraukles Rajons",
@@ -2067,6 +2167,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Lebanon",
     states: [
       "Beyrouth",
@@ -2078,6 +2179,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Lesotho",
     states: [
       "Berea",
@@ -2093,6 +2195,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Liberia",
     states: [
       "Bomi",
@@ -2113,6 +2216,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Libya",
     states: [
       "Ajdabiya",
@@ -2143,6 +2247,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Liechtenstein",
     states: [
       "Balzers",
@@ -2159,6 +2264,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Lithuania",
     states: [
       "Alytaus",
@@ -2174,10 +2280,12 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Luxembourg",
     states: ["Diekirch", "Grevenmacher", "Luxembourg"],
   },
   {
+    continent: "Asia",
     country: "Macedonia",
     states: [
       "Aerodrom",
@@ -2268,6 +2376,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Madagascar",
     states: [
       "Antananarivo",
@@ -2279,6 +2388,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Malawi",
     states: [
       "Balaka",
@@ -2311,6 +2421,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Malaysia",
     states: [
       "Johor",
@@ -2331,6 +2442,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Maldives",
     states: [
       "Alifu",
@@ -2356,6 +2468,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Mali",
     states: [
       "Bamako (Capital)",
@@ -2370,14 +2483,17 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Malta",
     states: [],
   },
   {
+    continent: "Asia",
     country: "Marshall Islands",
     states: [],
   },
   {
+    continent: "Europe",
     country: "Mauritania",
     states: [
       "Adrar",
@@ -2396,6 +2512,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Mauritius",
     states: [
       "Agalega Islands",
@@ -2413,6 +2530,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Mexico",
     states: [
       "Aguascalientes",
@@ -2450,10 +2568,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Micronesia",
     states: [],
   },
   {
+    continent: "Africa",
     country: "Moldova",
     states: [
       "Anenii Noi",
@@ -2496,6 +2616,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Mongolia",
     states: [
       "Arhangay",
@@ -2523,6 +2644,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Morocco",
     states: [
       "Agadir",
@@ -2567,10 +2689,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Monaco",
     states: [],
   },
   {
+    continent: "Asia",
     country: "Mozambique",
     states: [
       "Cabo Delgado",
@@ -2587,6 +2711,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Namibia",
     states: [
       "Caprivi",
@@ -2605,10 +2730,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Nauru",
     states: [],
   },
   {
+    continent: "Africa",
     country: "Nepal",
     states: [
       "Bagmati",
@@ -2628,6 +2755,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Netherlands",
     states: [
       "Drenthe",
@@ -2645,6 +2773,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "New Zealand",
     states: [
       "Auckland",
@@ -2667,6 +2796,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Nicaragua",
     states: [
       "Atlantico Norte",
@@ -2689,6 +2819,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Niger",
     states: [
       "Agadez",
@@ -2702,6 +2833,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Nigeria",
     states: [
       "Abia",
@@ -2744,6 +2876,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Norway",
     states: [
       "Akershus",
@@ -2768,6 +2901,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Oman",
     states: [
       "Ad Dakhiliyah",
@@ -2781,6 +2915,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Pakistan",
     states: [
       "Balochistan",
@@ -2792,6 +2927,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Panama",
     states: [
       "Bocas del Toro",
@@ -2807,6 +2943,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Papua New Guinea",
     states: [
       "Bougainville",
@@ -2832,6 +2969,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Paraguay",
     states: [
       "Alto Paraguay",
@@ -2855,6 +2993,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Peru",
     states: [
       "Amazonas",
@@ -2885,6 +3024,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Philippines",
     states: [
       "Abra",
@@ -2969,6 +3109,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Poland",
     states: [
       "Greater Poland (Wielkopolskie)",
@@ -2990,6 +3131,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Portugal",
     states: [
       "Aveiro",
@@ -3015,6 +3157,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Qatar",
     states: [
       "Ad Dawhah",
@@ -3030,6 +3173,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Romania",
     states: [
       "Alba",
@@ -3077,6 +3221,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Russia",
     states: [
       "Amur",
@@ -3171,6 +3316,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Rwanda",
     states: [
       "Butare",
@@ -3188,6 +3334,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Samoa",
     states: [
       "A'ana",
@@ -3204,6 +3351,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "San Marino",
     states: [
       "Acquaviva",
@@ -3218,10 +3366,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Sao Tome",
     states: [],
   },
   {
+    continent: "Europe",
     country: "Saudi Arabia",
     states: [
       "Al Bahah",
@@ -3240,6 +3390,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Senegal",
     states: [
       "Dakar",
@@ -3256,10 +3407,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Serbia and Montenegro",
     states: ["Kosovo", "Montenegro", "Serbia", "Vojvodina"],
   },
   {
+    continent: "Oceania",
     country: "Seychelles",
     states: [
       "Anse aux Pins",
@@ -3288,14 +3441,17 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Sierra Leone",
     states: [],
   },
   {
+    continent: "Africa",
     country: "Singapore",
     states: [],
   },
   {
+    continent: "Africa",
     country: "Slovakia",
     states: [
       "Banskobystricky",
@@ -3309,6 +3465,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Slovenia",
     states: [
       "Ajdovscina",
@@ -3507,6 +3664,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Solomon Islands",
     states: [
       "Central",
@@ -3522,6 +3680,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Somalia",
     states: [
       "Awdal",
@@ -3545,6 +3704,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "South Africa",
     states: [
       "Eastern Cape",
@@ -3559,6 +3719,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Spain",
     states: [
       "Andalucia",
@@ -3583,6 +3744,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Sri Lanka",
     states: [
       "Central",
@@ -3596,6 +3758,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Sudan",
     states: [
       "A'ali an Nil",
@@ -3627,6 +3790,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Suriname",
     states: [
       "Brokopondo",
@@ -3642,10 +3806,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Swaziland",
     states: ["Hhohho", "Lubombo", "Manzini", "Shiselweni"],
   },
   {
+    continent: "Asia",
     country: "Sweden",
     states: [
       "Blekinge",
@@ -3672,6 +3838,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Switzerland",
     states: [
       "Aargau",
@@ -3703,6 +3870,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Syria",
     states: [
       "Al Hasakah",
@@ -3722,6 +3890,7 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Taiwan",
     states: [
       "Chang-hua",
@@ -3752,10 +3921,12 @@ export const countries = [
     ],
   },
   {
+    continent: "South America",
     country: "Tajikistan",
     states: [],
   },
   {
+    continent: "Asia",
     country: "Tanzania",
     states: [
       "Arusha",
@@ -3787,6 +3958,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Thailand",
     states: [
       "Amnat Charoen",
@@ -3868,14 +4040,17 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Togo",
     states: ["Kara", "Plateaux", "Savanes", "Centrale", "Maritime"],
   },
   {
+    continent: "Europe",
     country: "Tonga",
     states: [],
   },
   {
+    continent: "North America",
     country: "Trinidad and Tobago",
     states: [
       "Couva",
@@ -3896,6 +4071,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Tunisia",
     states: [
       "Ariana (Aryanah)",
@@ -3925,6 +4101,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Turkey",
     states: [
       "Adana",
@@ -4011,6 +4188,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Turkmenistan",
     states: [
       "Ahal Welayaty (Ashgabat)",
@@ -4021,6 +4199,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Uganda",
     states: [
       "Adjumani",
@@ -4082,6 +4261,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Ukraine",
     states: [
       "Cherkasy",
@@ -4114,6 +4294,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "United Arab Emirates",
     states: [
       "Abu Dhabi",
@@ -4126,10 +4307,12 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "United Kingdom",
     states: [],
   },
   {
+    continent: "North America",
     country: "United States",
     states: [
       "Alabama",
@@ -4186,6 +4369,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Uruguay",
     states: [
       "Artigas",
@@ -4210,6 +4394,7 @@ export const countries = [
     ],
   },
   {
+    continent: "North America",
     country: "Uzbekistan",
     states: [
       "Andijon Viloyati",
@@ -4229,10 +4414,12 @@ export const countries = [
     ],
   },
   {
+    continent: "Oceania",
     country: "Vanuatu",
     states: ["Malampa", "Penama", "Sanma", "Shefa", "Tafea", "Torba"],
   },
   {
+    continent: "Europe",
     country: "Venezuela",
     states: [
       "Amazonas",
@@ -4263,6 +4450,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Vietnam",
     states: [
       "An Giang",
@@ -4332,6 +4520,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Asia",
     country: "Yemen",
     states: [
       "Abyan",
@@ -4356,6 +4545,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Europe",
     country: "Zambia",
     states: [
       "Central",
@@ -4370,6 +4560,7 @@ export const countries = [
     ],
   },
   {
+    continent: "Africa",
     country: "Zimbabwe",
     states: [
       "Bulawayo",

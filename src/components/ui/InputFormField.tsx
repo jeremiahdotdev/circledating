@@ -12,10 +12,12 @@ import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 interface InputFormFieldProps<Values extends FieldValues>
   extends UseControllerProps<Values> {
-  label: string;
+  label?: string;
   description?: string;
   placeholder?: string;
   type?: "number" | "text";
+  className?: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export const InputFormField = <Values extends FieldValues>(
@@ -24,13 +26,15 @@ export const InputFormField = <Values extends FieldValues>(
   const { field, fieldState } = useController(props);
 
   return (
-    <FormItem className="mb-2 flex flex-col">
+    <FormItem className="flex w-full flex-col items-center ">
       <FormLabel>{props.label}</FormLabel>
       <FormControl>
         <Input
           placeholder={props.placeholder ?? props.label}
           {...field}
           type={props.type ?? "text"}
+          className={props.className}
+          onChange={props.onChange}
         />
       </FormControl>
       {fieldState.error?.message && (

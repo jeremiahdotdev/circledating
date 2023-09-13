@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider     = "mysql"
   url          = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -118,13 +117,15 @@ enum YesNoOrUnknown {
 
 model Location {
   id          String        @id @default(uuid())
+  continent   String
   country     String
   state       String
   UserProfile UserProfile[]
 }
 
 model UserProfile {
-  redditUserName                     String           @unique
+  userId          					 String           @id @default(uuid())
+  username                           String           @unique
   sex                                Gender
   birthDate                          DateTime
   height                             Int
@@ -146,20 +147,299 @@ model UserProfile {
   religion                           Religion
   bio                                String?          @db.LongText
   weightUnit                         WeightUnit
-  User                               User[]
+  User                               User[] @relation("userProfile")
+  circles             				 UserCircle[]
+  userInteractions  	  			 UserInteraction[]    	@relation("userInteractions") 
+  userAffections    	  			 UserInteraction[]    	@relation("userAffections") 
+  links         					 UserLink[]        
 
   @@index([locationId])
 }
 
-model User {
-  id             String      @id @default(uuid())
-  username 	 String      @unique
-  email          String      @unique
-  password       String
-  profile        UserProfile? @relation(fields: [redditUserName], references: [redditUserName])
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  redditUserName String?
+model UserCircle {
+  id         String        @id @default(uuid())
+  circleId   String
+  Circle     Circle        @relation(fields: [circleId], references: [id])
+  userId     String 
+  User       UserProfile   @relation(fields: [userId], references: [userId])
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime?     @updatedAt
 
-  @@index([redditUserName])
+  @@index([userId])
+  @@index([circleId])
+}
+
+model Circle {
+  id         									String        						@id @default(uuid())
+  name                                          String                              @unique
+  label                                         String                              @unique
+  description                                   String?                             @db.VarChar(2000)               
+  isFeatured									Boolean                             @default(false)
+  isPrivate 									Boolean                             @default(false)
+  ageMaxRestriction                             Int?
+  ageMinRestriction                             Int?
+  maxWeightRestriction                          Int?
+  sexRestriction                                CircleSexRestriction[]
+  continentRestriction                          CircleContinentRestriction[]
+  willingToRelocateRestriction                  CircleRelocationRestriction[]
+  childrenRestriction                           CircleChildrenRestriction[]
+  ethnicityRestriction                          CircleEthnicityRestriction[]
+  drinkingRestriction                           CircleDrinkingRestriction[]
+  consumablesRestriction                        CircleConsumablesRestriction[]
+  politicalBeliefsRestriction                   CirclePoliticalBeliefsRestriction[]
+  levelOfEducationRestriction                   CircleLevelOfEducationRestriction[]
+  purityRestriction                             CirclePurityRestriction[]
+  onlyLookingForTraditionalHouseholdRestriction CircleTraditionalRestriction[]
+  incomeRestriction                             CircleIncomeRestriction[]
+  maritalStatusRestriction                      CircleMaritalStatusRestriction[]
+  activityRestriction                           CircleActivityRestriction[]
+  religionRestriction                           CircleReligionRestriction[]
+  users                                         UserCircle[]
+  selected                                      SelectedCircle[]
+  links         					            CircleLink[]        
+  createdAt           							DateTime     						@default(now())
+  updatedAt           							DateTime?    						@updatedAt
+  @@index([name])
+}
+
+model CircleContinentRestriction {
+  id          String    @id @default(uuid())
+  circleId    String
+  circle      Circle    @relation(fields: [circleId], references: [id])
+  restriction String
+
+  @@index([circleId])
+}
+
+model CircleSexRestriction {
+  id          String @id @default(uuid())
+  circleId    String
+  circle      Circle @relation(fields: [circleId], references: [id])
+  restriction Gender
+
+  @@index([circleId])
+}
+
+model CircleRelocationRestriction {
+  id          String         @id @default(uuid())
+  circleId    String
+  circle      Circle         @relation(fields: [circleId], references: [id])
+  restriction YesNoOrUnknown
+
+  @@index([circleId])
+}
+
+model CircleChildrenRestriction {
+  id          String   @id @default(uuid())
+  circleId    String
+  circle      Circle   @relation(fields: [circleId], references: [id])
+  restriction Children
+
+  @@index([circleId])
+}
+
+model CircleEthnicityRestriction {
+  id          String    @id @default(uuid())
+  circleId    String
+  circle      Circle    @relation(fields: [circleId], references: [id])
+  restriction Ethnicity
+
+  @@index([circleId])
+}
+
+model CircleDrinkingRestriction {
+  id          String   @id @default(uuid())
+  circleId    String
+  circle      Circle   @relation(fields: [circleId], references: [id])
+  restriction Drinking
+
+  @@index([circleId])
+}
+
+model CircleConsumablesRestriction {
+  id          String      @id @default(uuid())
+  circleId    String
+  circle      Circle      @relation(fields: [circleId], references: [id])
+  restriction Consumables
+
+  @@index([circleId])
+}
+
+model CirclePoliticalBeliefsRestriction {
+  id          String           @id @default(uuid())
+  circleId    String
+  circle      Circle           @relation(fields: [circleId], references: [id])
+  restriction PoliticalBeliefs
+
+  @@index([circleId])
+}
+
+model CircleLevelOfEducationRestriction {
+  id          String           @id @default(uuid())
+  circleId    String
+  circle      Circle           @relation(fields: [circleId], references: [id])
+  restriction LevelOfEducation
+
+  @@index([circleId])
+}
+
+model CirclePurityRestriction {
+  id          String           @id @default(uuid())
+  circleId    String
+  circle      Circle           @relation(fields: [circleId], references: [id])
+  restriction Purity
+
+  @@index([circleId])
+}
+
+model CircleTraditionalRestriction {
+  id          String         @id @default(uuid())
+  circleId  String
+  circle      Circle         @relation(fields: [circleId], references: [id])
+  restriction YesNoOrUnknown
+
+  @@index([circleId])
+}
+
+model CircleIncomeRestriction {
+  id          String @id @default(uuid())
+  circleId    String
+  circle      Circle @relation(fields: [circleId], references: [id])
+  restriction Income
+
+  @@index([circleId])
+}
+
+model CircleMaritalStatusRestriction {
+  id          String        @id @default(uuid())
+  circleId    String
+  circle      Circle        @relation(fields: [circleId], references: [id])
+  restriction MaritalStatus
+
+  @@index([circleId])
+}
+
+model CircleActivityRestriction {
+  id          String   @id @default(uuid())
+  circleId  String
+  circle      Circle   @relation(fields: [circleId], references: [id])
+  restriction Activity
+
+  @@index([circleId])
+}
+
+model CircleReligionRestriction {
+  id          String   @id @default(uuid())
+  circleId  String
+  circle      Circle   @relation(fields: [circleId], references: [id])
+  restriction Religion
+
+  @@index([circleId])
+}
+
+model User {
+  id                  String       			@id @default(uuid())
+  email               String       			@unique
+  password            String
+  profile             UserProfile  			@relation("userProfile", fields: [username], references: [username],  map: "user_profile_fk")
+  createdAt           DateTime     			@default(now())
+  updatedAt           DateTime?    			@updatedAt
+  username			  String       			@unique
+  preferences         UserPreferences[]
+  authoredMessages    UserMessage[]    		@relation("authoredMessages") 
+  recievedMessages    UserMessage[]    		@relation("recievedMessages")
+  conversations       UserConversation[]         
+
+  @@index([username])
+}
+
+model UserPreferences {
+  userId              String       @unique
+  user                User         @relation(fields: [userId], references: [id])
+  minAge              Int
+  maxAge              Int
+  sex                 Gender?
+  circles             SelectedCircle[]
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime?    @updatedAt
+
+  @@index([userId])
+}
+
+model SelectedCircle {
+  id         String            @id @default(uuid())
+  circleId   String
+  Circle     Circle            @relation(fields: [circleId], references: [id])
+  userId     String 
+  User       UserPreferences   @relation(fields: [userId], references: [userId])
+
+  @@index([userId])
+  @@index([circleId])
+}
+
+model UserInteraction {
+  id                  String       @id @default(uuid())
+  initiatedUserId     String    
+  initiatedUser       UserProfile         @relation("userInteractions", fields: [initiatedUserId], references: [userId],  map: "user_initiated_fk")
+  affectedUserId      String  
+  affectedUser        UserProfile         @relation("userAffections", fields: [affectedUserId], references: [userId],  map: "user_affected_fk")
+  isLiked 			  Boolean
+  isBlocked			  Boolean
+
+  @@index([initiatedUserId])
+  @@index([affectedUserId])
+}
+
+model UserMessage {
+  id                  String       @id @default(uuid())
+  conversationId      String?       @default(uuid())
+  conversation        Conversation? @relation(fields: [conversationId], references: [id])
+  authorUsername      String    
+  author              User         @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
+  recipientUsername   String  
+  recipient           User         @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
+  content             String       @db.VarChar(2000) 
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime?    @updatedAt
+
+  @@index([conversationId])
+  @@index([authorUsername])
+  @@index([recipientUsername])
+}
+model Conversation {
+  id                  String       		@id @default(uuid())
+  users               UserConversation[] 
+  messages            UserMessage[]
+  createdAt           DateTime     		@default(now())
+  updatedAt           DateTime?    		@updatedAt
+  deletedAt           DateTime?    		
+}
+
+model UserConversation {
+  id                  String         @id @default(uuid())
+  userId              String       
+  conversationId      String         
+  user                User 		     @relation(fields: [userId], references: [id])
+  conversation        Conversation   @relation(fields: [conversationId], references: [id])
+
+  @@index([userId])
+  @@index([conversationId])
+}
+
+model UserLink {
+  id                  String         @id @default(uuid())
+  userId              String       
+  href                String         
+  user                UserProfile    @relation(fields: [userId], references: [userId])  
+
+  @@index([userId])    
+}
+
+model CircleLink {
+  id                  String         @id @default(uuid())
+  circleId            String       
+  href                String         
+  user                Circle         @relation(fields: [circleId], references: [id])  
+
+  @@index([circleId])    
 }

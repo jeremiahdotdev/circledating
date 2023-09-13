@@ -1,4 +1,8 @@
+import { circleRouter } from "./routers/circleRouter";
+import { conversationRouter } from "./routers/conversationRouter";
 import { createTRPCRouter } from "./trpc";
+import { interactionRouter } from "./routers/interactionRouter";
+import { messagesRouter } from "./routers/messagesRouter";
 import { profileRouter } from "./routers/profileRouter";
 import { userRouter } from "./routers/userRouter";
 
@@ -9,6 +13,10 @@ import { userRouter } from "./routers/userRouter";
  */
 export const appRouter = createTRPCRouter({
   profiles: profileRouter,
+  messages: messagesRouter,
+  interactions: interactionRouter,
+  conversations: conversationRouter,
+  circles: circleRouter,
   users: userRouter,
 });
 
