@@ -13,7 +13,7 @@ import { ProfileSection } from "./ProfileSection";
 import { handleError } from "@/utils/handleError";
 import { routes } from "@/globals/routes";
 import { useRouter } from "next/router";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import dayjs from "dayjs";
 
 export type ProfileProps = {
