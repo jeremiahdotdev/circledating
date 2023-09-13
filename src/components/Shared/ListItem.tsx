@@ -64,14 +64,14 @@ export function ListItem({
           {deleteAction && (
             <IconButton
               variant={IconButtonVariant.REMOVE}
-              onClick={handleDeleteClick}
+              action={handleDeleteClick}
               confirmationRequired={deleteRequiresConfirmation}
             />
           )}
           {createAction && (
             <IconButton
               variant={IconButtonVariant.ADD}
-              onClick={handleCreateClick}
+              action={handleCreateClick}
               confirmationRequired={createRequiresConfirmation}
             />
           )}

@@ -22,7 +22,7 @@ type FormProps<T extends FieldValues> = {
   onSubmit: (
     e?: React.BaseSyntheticEvent<object, unknown, unknown> | undefined
   ) => Promise<void>;
-  className: string;
+  className?: string;
 };
 
 const Form = <TFieldValues extends FieldValues = FieldValues>({
@@ -32,8 +32,8 @@ const Form = <TFieldValues extends FieldValues = FieldValues>({
   onSubmit,
 }: FormProps<TFieldValues>) => {
   const handleSubmit = React.useCallback(
-    (e?: React.BaseSyntheticEvent<object, unknown, unknown> | undefined) => {
-      if (e) onSubmit(e).catch(handleError);
+    (e?: React.BaseSyntheticEvent<object, unknown, unknown>) => {
+      onSubmit(e).catch(handleError);
     },
     [onSubmit]
   );

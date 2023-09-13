@@ -11,7 +11,7 @@ export const FormSection = memo(({ heading, children }: FormSectionProps) => {
   return (
     <>
       <FormSectionHeading>{heading}</FormSectionHeading>
-      <section className="sm:mx-8">{children}</section>
+      <section className="flex flex-col gap-2 sm:mx-8">{children}</section>
     </>
   );
 });

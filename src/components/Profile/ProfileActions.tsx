@@ -40,12 +40,9 @@ export function ProfileActions({ profile, interact }: ProfileActionsProps) {
     <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
       <IconButton
         variant={isLiked ? IconButtonVariant.MAIL : IconButtonVariant.LIKE}
-        onClick={likeThisProfile}
+        action={likeThisProfile}
       />
-      <IconButton
-        variant={IconButtonVariant.TRASH}
-        onClick={blockThisProfile}
-      />
+      <IconButton variant={IconButtonVariant.TRASH} action={blockThisProfile} />
     </div>
   );
 }

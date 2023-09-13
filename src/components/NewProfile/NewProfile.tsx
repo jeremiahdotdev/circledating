@@ -20,6 +20,7 @@ import { FormSection } from "../ui/FormSection";
 import { GenderSelectionValues } from "@/schemas/Gender";
 import { HeightStringSelectOptions } from "@/schemas/Height";
 import { IncomeSelectionValues } from "@/schemas/Income";
+import { InputFormField } from "../ui/InputFormField";
 import { LabeledInputFormField } from "@/components/ui/LabeledInputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
@@ -53,7 +54,8 @@ export const NewProfile = memo(function NewProfile({
     },
   });
 
-  const { mutateAsync } = api.profiles.create.useMutation();
+  const search = api.profiles.isUsernameUnique.useMutation();
+  const create = api.profiles.create.useMutation();
 
   // The forms type says this is always a string, but that is the defined case for the form. If no country is selected, it's undefined.
   const selectedCountry = form.watch("location.country") as string | undefined;
@@ -69,18 +71,11 @@ export const NewProfile = memo(function NewProfile({
     []
   );
   const stateValues = useMemo(() => {
-    if (!selectedCountry) {
-      return [];
-    }
-
+    if (!selectedCountry) return [];
     const country = countries.find(
       (country) => country.country === selectedCountry
     );
-
-    if (!country) {
-      return [];
-    }
-
+    if (!country) return [];
     return country.states.map((state) => ({
       value: state,
       label: state,
@@ -94,9 +89,29 @@ export const NewProfile = memo(function NewProfile({
   const onValidData = useCallback(
     (data: CreateProfileSchemaType) => {
       // TODO: Handle the promise correctly here!
-      void mutateAsync(data);
+      if (circle) data.circles = [circle];
+      void create.mutateAsync(data);
     },
-    [mutateAsync]
+    [create, circle]
+  );
+
+  const searchUsername = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      search
+        .mutateAsync({ username: e.target.value })
+        .then((result) => {
+          if (result) {
+            form.clearErrors("username");
+          } else {
+            form.control.setError("username", {
+              type: "non-unique-username",
+              message: "That username is taken!",
+            });
+          }
+        })
+        .catch(handleError);
+    },
+    [search, form]
   );
 
   return (
@@ -108,25 +123,27 @@ export const NewProfile = memo(function NewProfile({
         className="w-full sm:w-3/4"
       >
         <FormSection heading="General">
-          <LabeledInputFormField
+          <InputFormField
             control={form.control}
             name="username"
             label="What is your reddit username?"
             placeholder="username"
-            inlineLabel="u/"
-            description="This is the username you use to log into Reddit."
+            onChange={searchUsername}
+            required={true}
           />
           <DropdownFormField<CreateProfileSchemaType>
             name="sex"
             control={form.control}
             label="What is your sex?"
             options={GenderSelectionValues}
+            required={true}
           />
           <DatepickerFormField
             control={form.control}
             name="birthDate"
-            label="birth date"
-            description="This is used to calculate your age."
+            label="What is your birth date?"
+            description="This is only used to calculate your age."
+            required={true}
           />
           <DropdownFormField<CreateProfileSchemaType>
             name="weightUnit"
@@ -138,7 +155,6 @@ export const NewProfile = memo(function NewProfile({
             control={form.control}
             name="weight"
             label="What is your current weight?"
-            placeholder="...be honest!"
             inlineLabel={selectedWeightUnit}
             labelPosition="right"
             type="number"
@@ -163,18 +179,21 @@ export const NewProfile = memo(function NewProfile({
             control={form.control}
             label="What is your country of residence?"
             options={countryValues}
+            required={true}
           />
           <ComboBoxFormField<CreateProfileSchemaType, string>
             name="location.state"
             control={form.control}
             label="What is your state/province of residence?"
             options={stateValues}
+            required={true}
           />
           <ComboBoxFormField<CreateProfileSchemaType, string>
             name="willingToRelocate"
             control={form.control}
             label="Are you willing to relocate?"
             options={YesAndNoSelectionValues}
+            required={true}
           />
         </FormSection>
         <FormSection heading="Family">
@@ -184,6 +203,7 @@ export const NewProfile = memo(function NewProfile({
             label="Do you have/want kids?"
             options={ChildrenSelectionValues}
             filterOn={circle?.childrenRestriction}
+            required={true}
           />
           <DropdownFormField<CreateProfileSchemaType>
             name="maritalStatus"
@@ -191,12 +211,7 @@ export const NewProfile = memo(function NewProfile({
             label="Have you ever been married?"
             options={MaritalStatusesSelectionValues}
             filterOn={circle?.maritalStatusRestriction}
-          />
-          <DropdownFormField<CreateProfileSchemaType>
-            name="onlyLookingForTraditionalHousehold"
-            control={form.control}
-            label="Are you only looking for a traditional household?"
-            options={YesAndNoSelectionValues}
+            required={true}
           />
           <DropdownFormField<CreateProfileSchemaType>
             name="income"
@@ -204,6 +219,7 @@ export const NewProfile = memo(function NewProfile({
             label="What type of houshold are you looking for?"
             options={IncomeSelectionValues}
             filterOn={circle?.incomeRestriction}
+            required={true}
           />
         </FormSection>
         <FormSection heading="Lifestyle">
@@ -213,6 +229,7 @@ export const NewProfile = memo(function NewProfile({
             label="Do you consume any of the following?"
             options={ConsumablesSelectionValues}
             filterOn={circle?.consumablesRestriction}
+            required={true}
           />
           <DropdownFormField<CreateProfileSchemaType>
             name="drinking"
@@ -220,6 +237,7 @@ export const NewProfile = memo(function NewProfile({
             label="How often do you drink?"
             options={DrinkingSelectionValues}
             filterOn={circle?.drinkingRestriction}
+            required={true}
           />
           <DropdownFormField<CreateProfileSchemaType>
             name="activity"
@@ -227,6 +245,7 @@ export const NewProfile = memo(function NewProfile({
             label="How often do you excercise?"
             options={ActivitySelectionValues}
             filterOn={circle?.activityRestriction}
+            required={true}
           />
           <DropdownFormField<CreateProfileSchemaType>
             name="purity"
@@ -234,6 +253,7 @@ export const NewProfile = memo(function NewProfile({
             label="What is your stance on purity?"
             options={PuritySelectionValues}
             filterOn={circle?.purityRestriction}
+            required={true}
           />
         </FormSection>
         <FormSection heading="About You">
@@ -243,6 +263,7 @@ export const NewProfile = memo(function NewProfile({
             label="What is your religion?"
             options={ReligionSelectionValues}
             filterOn={circle?.religionRestriction}
+            required={true}
           />
           <DropdownFormField<CreateProfileSchemaType>
             name="politicalBeliefs"
@@ -250,6 +271,7 @@ export const NewProfile = memo(function NewProfile({
             label="What is your political stance?"
             options={PoliticalBeliefsSelectionValues}
             filterOn={circle?.politicalBeliefsRestriction}
+            required={true}
           />
           <DropdownFormField<CreateProfileSchemaType>
             name="levelOfEducation"
@@ -257,12 +279,14 @@ export const NewProfile = memo(function NewProfile({
             label="What is the highest level of education to have obtained?"
             options={LevelOfEducationSelectionValues}
             filterOn={circle?.levelOfEducationRestriction}
+            required={true}
           />
           <TextAreaFormField
             control={form.control}
             name="bio"
             label="Bio"
             placeholder="Describe yourself! Passions, faith, career, hobbies, et cetera."
+            required={true}
           />
         </FormSection>
         <Button className="mt-2 w-20 px-12" type="submit">

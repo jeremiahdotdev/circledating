@@ -74,8 +74,8 @@ export const handlePreferences = (preferences: UserPreferencesSchemaType) => {
 export const profileRouter = createTRPCRouter({
   create: publicProcedure
     .input(CreateProfileSchema)
-    .mutation(({ input, ctx }) => {
-      return ctx.prisma.userProfile.create({
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.prisma.userProfile.create({
         data: {
           ...input,
           location: {
@@ -91,6 +91,7 @@ export const profileRouter = createTRPCRouter({
           affections: {},
         },
       });
+      return result;
     }),
   readMany: publicProcedure
     .input(
@@ -190,5 +191,22 @@ export const profileRouter = createTRPCRouter({
       };
 
       return profile as ProfileSchemaType;
+    }),
+  isUsernameUnique: publicProcedure
+    .input(
+      z.object({
+        username: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.prisma.userProfile.findUnique({
+        where: {
+          username: input.username,
+        },
+        select: {
+          userId: true,
+        },
+      });
+      return !result;
     }),
 });

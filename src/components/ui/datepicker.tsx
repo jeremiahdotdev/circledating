@@ -19,11 +19,7 @@ export type DatePickerProps = {
   value: Date | undefined;
 };
 
-export function DatePicker({
-  label,
-  onChange: realOnChange,
-  value,
-}: DatePickerProps) {
+export function DatePicker({ onChange: realOnChange, value }: DatePickerProps) {
   const onChange = React.useCallback(
     (day: Date | undefined) => {
       if (day) {
@@ -41,12 +37,12 @@ export function DatePicker({
         <Button
           variant={"outline"}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "justify-start text-left font-normal",
             !value && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, "PPP") : <span>{label}</span>}
+          {value ? format(value, "PPP") : <span>Select...</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className=" w-auto p-0">

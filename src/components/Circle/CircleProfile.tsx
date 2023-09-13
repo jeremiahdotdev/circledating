@@ -130,7 +130,7 @@ export function CircleProfile({ circle }: CircleProfileProps) {
               : IconButtonVariant.JOIN
             : IconButtonVariant.LEAVE
         }
-        onClick={handleJoinOrLeaveOrRequest}
+        action={handleJoinOrLeaveOrRequest}
       />
       <ProfileAttributeList>
         <ProfileAttribute

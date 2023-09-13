@@ -5,6 +5,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
+import { RequiredAsterisk } from "./RequiredAsterisk";
 import { Textarea } from "./textarea";
 import { cn } from "@/lib/utils";
 import { useController } from "react-hook-form";
@@ -18,6 +19,7 @@ interface TextAreaFormFieldProps<Values extends FieldValues>
   placeholder?: string;
   className?: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
 export const TextAreaFormField = <Values extends FieldValues>(
@@ -26,7 +28,9 @@ export const TextAreaFormField = <Values extends FieldValues>(
   const { field, fieldState } = useController(props);
   return (
     <FormItem className="flex w-full flex-col justify-center">
-      <FormLabel>{props.label}</FormLabel>
+      <FormLabel>
+        {props.label} <RequiredAsterisk required={props.required} />
+      </FormLabel>
       <FormControl>
         <Textarea
           className={cn("flex flex-col", props.className)}

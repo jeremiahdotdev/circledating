@@ -13,18 +13,19 @@ import { ProfileSection } from "./ProfileSection";
 import { handleError } from "@/utils/handleError";
 import { routes } from "@/globals/routes";
 import { useRouter } from "next/router";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
 
 export type ProfileProps = {
   profile: ProfileSchemaType;
+  canEdit?: boolean;
   interact?: (
     interaction: InteractionSchemaType,
     profile: ProfileSchemaType
   ) => Promise<void>;
 };
 
-export function Profile({ profile, interact }: ProfileProps) {
+export function Profile({ profile, canEdit, interact }: ProfileProps) {
   const router = useRouter();
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
@@ -38,11 +39,13 @@ export function Profile({ profile, interact }: ProfileProps) {
     },
     [router]
   );
+
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
       <ProfileHeader
+        canEdit={canEdit}
         // TODO: Replace with actual picture.
-        image="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
+        image="https://res.cloudinary.com/dqpbm3xll/image/upload/v1694616299/samples/smile.jpg"
         header={`${profile.username} (${age})`}
       />
       <ProfileLocation

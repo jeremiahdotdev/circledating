@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
+import { RequiredAsterisk } from "./RequiredAsterisk";
 import React, { useCallback, useMemo } from "react";
 
 interface DropdownFormFieldProps<Values extends FieldValues>
@@ -20,6 +21,7 @@ interface DropdownFormFieldProps<Values extends FieldValues>
   description?: string;
   type?: "text" | "number";
   filterOn?: string[];
+  required?: boolean;
 }
 
 export const DropdownFormField = <Values extends FieldValues>({
@@ -28,6 +30,7 @@ export const DropdownFormField = <Values extends FieldValues>({
   description,
   type = "text",
   filterOn,
+  required,
   ...props
 }: DropdownFormFieldProps<Values>) => {
   const { field, fieldState } = useController(props);
@@ -53,7 +56,10 @@ export const DropdownFormField = <Values extends FieldValues>({
 
   return (
     <FormItem className="mb-2 flex flex-col">
-      <FormLabel>{label}</FormLabel>
+      <FormLabel>
+        {label}
+        <RequiredAsterisk required={required} />
+      </FormLabel>
       <FormControl>
         <Dropdown
           label={label}

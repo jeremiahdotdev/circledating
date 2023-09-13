@@ -99,7 +99,7 @@ export function ProfileAttribute({
         );
       case ProfileAttributeVariant.PROFILE_LINK:
         return (
-          <span className="w-full flex-col items-center justify-center border-y">
+          <span className="w-full flex-col items-center justify-center border-y sm:w-fit">
             <div className="flex w-full items-center justify-center py-2 sm:px-6">
               <FontAwesomeIcon className={"h-6 p-2"} icon={option.icon} />
               <div className="pl-1 font-extralight text-slate-950">{label}</div>
@@ -111,7 +111,7 @@ export function ProfileAttribute({
     }
   }, [variant, attribute, option, label]);
   return (
-    <span className="flex w-full min-w-fit sm:w-fit">
+    <span className="flex w-full min-w-fit items-center justify-center">
       <FormattedTooltip content={option.label}>
         {renderVariant}
       </FormattedTooltip>

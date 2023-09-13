@@ -11,24 +11,30 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
+import { RequiredAsterisk } from "./RequiredAsterisk";
 import React from "react";
 
 interface DatepickerFormFieldProps<Values extends FieldValues>
   extends UseControllerProps<Values> {
   label: string;
   description?: string;
+  required?: boolean;
 }
 
 export const DatepickerFormField = <Values extends FieldValues>({
   label,
   description,
+  required,
   ...props
 }: DatepickerFormFieldProps<Values>) => {
   const { field, fieldState } = useController(props);
 
   return (
     <FormItem className="mb-2 flex flex-col">
-      <FormLabel>{label}</FormLabel>
+      <FormLabel>
+        {label}
+        <RequiredAsterisk required={required} />
+      </FormLabel>
       <FormControl>
         <DatePicker label={label} {...field} />
       </FormControl>

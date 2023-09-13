@@ -10,6 +10,7 @@ import {
   faEnvelope,
   faPaperPlane,
   faTrashCan,
+  faUpload,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "@/lib/utils";
@@ -33,14 +34,15 @@ export enum IconButtonVariant {
   LEAVE = "leave",
   REMOVE = "remove",
   ADD = "add",
+  UPLOAD = "upload",
 }
 
 export type IconButtonProps = {
   variant: IconButtonVariant;
   type?: "button" | "submit" | "reset";
-  onClick?: (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => Promise<void> | undefined;
+  action?:
+    | ((event: React.MouseEvent<HTMLButtonElement>) => Promise<void>)
+    | ((event: React.MouseEvent<HTMLButtonElement>) => void);
   disabled?: boolean;
   labelOverride?: string;
   confirmationRequired?: boolean;
@@ -52,7 +54,7 @@ export function IconButton({
   disabled,
   labelOverride,
   confirmationRequired,
-  onClick,
+  action,
 }: IconButtonProps) {
   const [dialogOpenState, setDialogOpenState] = useState(false);
   const [disabledState, setDisabledState] = useState(false);
@@ -109,6 +111,12 @@ export function IconButton({
           icon: faCheck,
           style: "h-8 p-2 bg-green-600",
         } as IconButtonOptions;
+      case IconButtonVariant.UPLOAD:
+        return {
+          label: "Upload New Photo",
+          icon: faUpload,
+          style: "h-8 p-2 bg-cyan-500",
+        } as IconButtonOptions;
       default: // x
         return {
           label: "Remove",
@@ -123,27 +131,30 @@ export function IconButton({
   }, []);
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
-      if (onClick) {
-        setDisabledState(true);
+      if (action) {
+        event.stopPropagation();
         if (confirmationRequired) {
           setDialogOpenState(true);
         } else {
-          onClick(event)?.then(enableButton).catch(handleError);
+          setDisabledState(true);
+          const result = action(event)?.then(enableButton).catch(handleError);
+          if (!result?.then) enableButton();
         }
       }
     },
-    [setDialogOpenState, onClick, enableButton, confirmationRequired]
+    [setDialogOpenState, action, enableButton, confirmationRequired]
   );
 
   const handleConfirm = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      event.stopPropagation();
-      setDialogOpenState(false);
-      if (onClick) onClick(event)?.then(enableButton).catch(handleError);
+      if (action) {
+        event.preventDefault();
+        event.stopPropagation();
+        setDialogOpenState(false);
+        action(event)?.then(enableButton).catch(handleError);
+      }
     },
-    [setDialogOpenState, onClick, enableButton]
+    [setDialogOpenState, action, enableButton]
   );
 
   const handleCancel = useCallback(

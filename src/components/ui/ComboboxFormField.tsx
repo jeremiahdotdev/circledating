@@ -6,6 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
+import { RequiredAsterisk } from "./RequiredAsterisk";
 import { useController } from "react-hook-form";
 import React from "react";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
@@ -17,6 +18,7 @@ interface ComboBoxFormFieldProps<
   label: string;
   options: ComboboxOption<ValueType>[];
   description?: string;
+  required?: boolean;
 }
 
 export const ComboBoxFormField = <
@@ -29,7 +31,10 @@ export const ComboBoxFormField = <
 
   return (
     <FormItem className="mb-2 flex flex-col">
-      <FormLabel>{props.label}</FormLabel>
+      <FormLabel>
+        {props.label}
+        <RequiredAsterisk required={props.required} />
+      </FormLabel>
       <FormControl>
         <Combobox
           onSelect={field.onChange}
