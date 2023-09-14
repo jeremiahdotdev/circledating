@@ -188,7 +188,7 @@ model Circle {
   ageMinRestriction                             Int?
   maxWeightRestriction                          Int?
   sexRestriction                                Json?
-  continentRestriction                          Json?
+  countryRestriction                            Json?
   childrenRestriction                           Json?
   ethnicityRestriction                          Json?
   drinkingRestriction                           Json?

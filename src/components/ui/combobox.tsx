@@ -15,32 +15,63 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 export type ComboboxOption<ComboBoxType> = {
   value: ComboBoxType;
   label: string;
 };
 
-export function Combobox<ComboBoxType>(props: {
+export type ComboboxProps<ComboBoxType> = {
   name: string;
   options: ComboboxOption<ComboBoxType>[];
   onSelect?: (value: ComboBoxType | undefined) => void;
-}) {
+  filterOn?: ComboBoxType[];
+};
+
+export function Combobox<ComboBoxType>({
+  name,
+  options,
+  filterOn,
+  onSelect,
+}: ComboboxProps<ComboBoxType>) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<ComboBoxType | undefined>(undefined);
 
-  const onSelect = useCallback(
+  const handleSelect = useCallback(
     (currentLabel: string) => {
-      const currentValue = props.options.find((option) => {
+      const currentValue = options.find((option) => {
         return option.label.toLowerCase() === currentLabel;
       })?.value;
       setValue(currentValue);
-      if (props.onSelect) props.onSelect(currentValue ?? undefined);
+      if (onSelect) onSelect(currentValue ?? undefined);
       setOpen(false);
     },
-    [props]
+    [onSelect, options]
   );
+
+  const filteredOptions = useMemo(() => {
+    let result = options;
+
+    if (filterOn && filterOn.length) {
+      result = options.filter((option) => filterOn.includes(option.value));
+    }
+    return result;
+  }, [options, filterOn]);
+
+  const renderedOptions = useMemo(() => {
+    return filteredOptions.map((option: ComboboxOption<ComboBoxType>) => (
+      <CommandItem key={option.label} onSelect={handleSelect}>
+        <Check
+          className={cn(
+            "mr-2 h-4 w-4",
+            value === option.value ? "opacity-100" : "opacity-0"
+          )}
+        />
+        {option.label}
+      </CommandItem>
+    ));
+  }, [filteredOptions, handleSelect, value]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -52,10 +83,10 @@ export function Combobox<ComboBoxType>(props: {
           className="justify-between"
         >
           {value
-            ? props.options.find((option) => {
+            ? filteredOptions.find((option) => {
                 return option.value === value;
               })?.label
-            : `Select ${props.name}...`}
+            : `Select ${name}...`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -63,19 +94,7 @@ export function Combobox<ComboBoxType>(props: {
         <Command className="max-h-[400px]">
           <CommandInput placeholder={"Search..."} />
           <CommandEmpty>No results.</CommandEmpty>
-          <CommandGroup>
-            {props.options.map((option: ComboboxOption<ComboBoxType>) => (
-              <CommandItem key={option.label} onSelect={onSelect}>
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value === option.value ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                {option.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <CommandGroup>{renderedOptions}</CommandGroup>
         </Command>
       </PopoverContent>
     </Popover>

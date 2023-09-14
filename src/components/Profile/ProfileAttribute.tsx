@@ -84,7 +84,7 @@ export function ProfileAttribute({
         );
       case ProfileAttributeVariant.PROFILE:
         return (
-          <span className="grid h-16 w-full grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
+          <span className="grid h-16 w-full grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:w-fit sm:p-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <FontAwesomeIcon className={"h-6 p-2"} icon={option.icon} />
@@ -111,10 +111,6 @@ export function ProfileAttribute({
     }
   }, [variant, attribute, option, label]);
   return (
-    <span className="flex w-full min-w-fit items-center justify-center">
-      <FormattedTooltip content={option.label}>
-        {renderVariant}
-      </FormattedTooltip>
-    </span>
+    <FormattedTooltip content={option.label}>{renderVariant}</FormattedTooltip>
   );
 }

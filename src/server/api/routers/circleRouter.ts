@@ -1,9 +1,10 @@
-import { CircleLink, Prisma, UserLink } from "@prisma/client";
-import { CircleSchemaType } from "@/schemas/Circle";
+import { CircleLink, Prisma, UserLink, UserType } from "@prisma/client";
+import { CircleSchemaType, CreateCircleSchema } from "@/schemas/Circle";
+import { LinkSchemaType, getSecureLinks } from "@/schemas/Link";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
 import { RequestSchemaType } from "@/schemas/Request";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { getSecureLinks } from "@/schemas/Link";
+import { parseAsIdentifier } from "@/utils/parseAsIdentifier";
 import { z } from "zod";
 
 export const isCompatibleWithCurrentUser = (
@@ -40,12 +41,12 @@ export const isCompatibleWithCurrentUser = (
   {
     OR: [
       {
-        continentRestriction: {
+        countryRestriction: {
           array_contains: currentUserProfile.location.continent,
         },
       },
       {
-        continentRestriction: {
+        countryRestriction: {
           equals: Prisma.AnyNull,
         },
       },
@@ -75,7 +76,7 @@ export const noRestrictions = {
   activityRestriction: [],
   childrenRestriction: [],
   drinkingRestriction: [],
-  continentRestriction: [],
+  countryRestriction: [],
   ethnicityRestriction: [],
   consumablesRestriction: [],
   maritalStatusRestriction: [],
@@ -93,7 +94,7 @@ export const allRestrictions = {
   activityRestriction: true,
   childrenRestriction: true,
   drinkingRestriction: true,
-  continentRestriction: true,
+  countryRestriction: true,
   ethnicityRestriction: true,
   consumablesRestriction: true,
   maritalStatusRestriction: true,
@@ -108,6 +109,40 @@ export const secureLinks = (links: UserLink[] | CircleLink[] | undefined) => ({
 });
 
 export const circleRouter = createTRPCRouter({
+  create: publicProcedure
+    .input(z.object({ circle: CreateCircleSchema, user: ProfileSchema }))
+    .mutation(async ({ input, ctx }) => {
+      const handleLinks = input.circle.links
+        ? {
+            createMany: {
+              data: [input.circle.links].map(
+                (link) =>
+                  ({
+                    href: link,
+                    id: undefined,
+                    userId: undefined,
+                    circleId: input.circle.id,
+                  }) as LinkSchemaType
+              ),
+            },
+          }
+        : {};
+      const result = await ctx.prisma.circle.create({
+        data: {
+          ...input.circle,
+          name: parseAsIdentifier(input.circle.label),
+          users: {
+            create: {
+              userId: input.user.userId,
+              circleTitle: UserType.CIRCLE_OWNER,
+            },
+          },
+          requests: undefined,
+          links: handleLinks,
+        },
+      });
+      return result;
+    }),
   read: publicProcedure
     .input(
       z.object({
@@ -362,5 +397,24 @@ export const circleRouter = createTRPCRouter({
           userId: input.userId,
         },
       });
+    }),
+  isCircleNameUnique: publicProcedure
+    .input(
+      z.object({
+        label: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.prisma.circle.findMany({
+        where: {
+          name: {
+            equals: parseAsIdentifier(input.label),
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      return !result.length;
     }),
 });

@@ -18,7 +18,7 @@ export async function seedCircles() {
       ageMaxRestriction: circle.ageMaxRestriction ?? null,
       maxWeightRestriction: circle.maxWeightRestriction ?? null,
       sexRestriction: circle.sexRestriction as Prisma.JsonArray,
-      continentRestriction: circle.continentRestriction as Prisma.JsonArray,
+      countryRestriction: circle.countryRestriction as Prisma.JsonArray,
       childrenRestriction: circle.childrenRestriction as Prisma.JsonArray,
       ethnicityRestriction: circle.ethnicityRestriction as Prisma.JsonArray,
       drinkingRestriction: circle.drinkingRestriction as Prisma.JsonArray,
@@ -48,9 +48,9 @@ export async function seedCircles() {
           ...c,
           sexRestriction:
             c.sexRestriction !== null ? c.sexRestriction : Prisma.JsonNull,
-          continentRestriction:
-            c.continentRestriction !== null
-              ? c.continentRestriction
+          countryRestriction:
+            c.countryRestriction !== null
+              ? c.countryRestriction
               : Prisma.JsonNull,
           childrenRestriction:
             c.childrenRestriction !== null

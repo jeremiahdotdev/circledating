@@ -19,6 +19,7 @@ interface ComboBoxFormFieldProps<
   options: ComboboxOption<ValueType>[];
   description?: string;
   required?: boolean;
+  filterOn?: ValueType[];
 }
 
 export const ComboBoxFormField = <
@@ -40,6 +41,7 @@ export const ComboBoxFormField = <
           onSelect={field.onChange}
           name={props.label}
           options={props.options}
+          filterOn={props.filterOn}
         />
       </FormControl>
       {props.description && (

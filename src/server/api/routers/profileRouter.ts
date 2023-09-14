@@ -199,14 +199,16 @@ export const profileRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const result = await ctx.prisma.userProfile.findUnique({
+      const result = await ctx.prisma.userProfile.findMany({
         where: {
-          username: input.username,
+          username: {
+            equals: input.username,
+          },
         },
         select: {
           userId: true,
         },
       });
-      return !result;
+      return !result.length;
     }),
 });

@@ -6,6 +6,7 @@ export type RadioButtonGroupProps = {
   options: RadioButtonGroupOptions[];
   disabled?: boolean;
   selectedValue?: string;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 export type RadioButtonGroupOptions = {
   label: string;
@@ -15,9 +16,14 @@ export function RadioButtonGroup({
   options,
   disabled,
   selectedValue,
+  onChange,
 }: RadioButtonGroupProps) {
   return (
-    <RadioGroup defaultValue="comfortable" className="flex gap-2">
+    <RadioGroup
+      defaultValue="comfortable"
+      className="flex gap-2"
+      onChange={onChange}
+    >
       {options.map(
         ({ value, label }: RadioButtonGroupOptions, index: number) => (
           <div
@@ -28,7 +34,7 @@ export function RadioButtonGroup({
               value={value}
               id="r2"
               disabled={disabled}
-              checked={selectedValue === value}
+              defaultChecked={selectedValue == value}
             />
             <Label htmlFor="r2">{label}</Label>
           </div>

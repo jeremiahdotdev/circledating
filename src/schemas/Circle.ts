@@ -30,7 +30,7 @@ export const Circle = {
   ageMinRestriction: z.number().optional().nullable(),
   maxWeightRestriction: z.number().optional().nullable(),
   sexRestriction: z.array(GenderSchema).optional(),
-  continentRestriction: z.array(z.string()).optional(),
+  countryRestriction: z.array(z.string()).optional(),
   childrenRestriction: z.array(ChildrenSchema).optional(),
   ethnicityRestriction: z.array(EthnicitySchema).optional(),
   drinkingRestriction: z.array(DrinkingSchema).optional(),
@@ -45,17 +45,21 @@ export const Circle = {
   customRestriction: z.array(CustomRestriction).optional(),
   links: z.array(LinkSchema).optional(),
   requests: z.array(RequestSchema).optional().nullable(),
-  users: z
-    .array(
-      z.object({
-        userId: z.string(),
-      })
-    )
-    .optional()
-    .nullable(),
+  users: z.array(UserCircleSchema).optional().nullable(),
 };
 
 export const CircleSchema = z.object(Circle);
+
+export const CreateCircleSchema = z.object({
+  ...Circle,
+  id: Circle.id.optional(),
+  name: Circle.name.optional(),
+  code: Circle.code.optional(),
+  links: z.string(),
+  updatedAt: Circle.updatedAt.optional(),
+  createdAt: Circle.createdAt.optional(),
+});
+
 export const CircleWithAggregatesSchema = z.object({
   ...Circle,
   _count: z.object({
@@ -65,8 +69,10 @@ export const CircleWithAggregatesSchema = z.object({
 
 import { LinkSchema } from "./Link";
 import { RequestSchema } from "./Request";
+import { UserCircleSchema } from "./UserCircle";
 
 export type CircleSchemaType = z.infer<typeof CircleSchema>;
+export type CreateCircleSchemaType = z.infer<typeof CreateCircleSchema>;
 export type CircleWithAggregatesSchemaType = z.infer<
   typeof CircleWithAggregatesSchema
 >;

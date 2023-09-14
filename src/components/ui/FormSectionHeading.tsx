@@ -2,7 +2,7 @@ import { memo } from "react";
 import React from "react";
 
 export type FormSectionHeadingProps = {
-  children: string;
+  children: React.ReactNode;
 };
 
 export const FormSectionHeading = memo(
