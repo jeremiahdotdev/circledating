@@ -13,6 +13,7 @@ export type ProfileHeaderProps = {
 export function ProfileHeader({ header, image, canEdit }: ProfileHeaderProps) {
   const [openState, setOpenState] = useState(false);
   const handleOpen = useCallback(() => setOpenState(true), []);
+
   return (
     <div className="mx-2 flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
       <div className="relative aspect-square w-3/4 flex-col justify-center sm:w-1/3">

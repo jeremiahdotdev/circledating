@@ -1,4 +1,5 @@
 import { CircleWithAggregatesSchemaType } from "@/schemas/Circle";
+import { FormButton } from "../ui/FormButton";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import {
@@ -11,6 +12,7 @@ import { ProfileHeader } from "../Shared/ProfileHeader";
 import { ProfileLinks } from "../Shared/ProfileLinks";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { ProfileSection } from "../Profile/ProfileSection";
+import { ReportAggregatesSchemaType } from "@/schemas/Report";
 import { SearchForm } from "./SearchForm";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
@@ -25,6 +27,14 @@ export type CircleProfileProps = {
 
 export function CircleProfile({ circle }: CircleProfileProps) {
   const router = useRouter();
+
+  const report = api.reports.readAllByCircle.useMutation();
+  const leave = api.circles.removeUserFromCircle.useMutation();
+  const join = api.circles.addUserToCircle.useMutation();
+  const request = api.circles.requestToJoinCircle.useMutation();
+  const remove = api.circles.denyRequestToJoinCircle.useMutation();
+  const search = api.circles.searchCircleForUser.useMutation();
+
   const [circleState, setCircleState] = useState(circle);
   const [searchProfileState, setSearchProfileState] = useState(
     [] as ProfileSchemaType[]
@@ -32,11 +42,9 @@ export function CircleProfile({ circle }: CircleProfileProps) {
   const [requestingProfileState, setRequestingProfileState] = useState(
     circle.requests ?? []
   );
-  const leave = api.circles.removeUserFromCircle.useMutation();
-  const join = api.circles.addUserToCircle.useMutation();
-  const request = api.circles.requestToJoinCircle.useMutation();
-  const remove = api.circles.denyRequestToJoinCircle.useMutation();
-  const search = api.circles.searchCircleForUser.useMutation();
+  const [reportedProfilesState, setReportedProfilesState] = useState(
+    [] as ReportAggregatesSchemaType[]
+  );
 
   const isMember = circleState?.users?.length;
   const isPrivate = circleState?.isPrivate;
@@ -56,7 +64,9 @@ export function CircleProfile({ circle }: CircleProfileProps) {
     await service.mutateAsync(circlePayload(state.currentUser.userId));
     setCircleState({
       ...circleState,
-      users: isMember ? null : [{ userId: "" }],
+      users: isMember
+        ? null
+        : [{ userId: "", userTitle: "PLEB", circleId: "" }],
     });
   }, [circleState, leave, join, request, isPrivate, isMember, circlePayload]);
 
@@ -116,6 +126,14 @@ export function CircleProfile({ circle }: CircleProfileProps) {
     [router]
   );
 
+  const handleLoadReports = useCallback(() => {
+    report
+      .mutateAsync({ circleId: circle.id })
+      .then((response) =>
+        setReportedProfilesState(response as ReportAggregatesSchemaType[])
+      )
+      .catch(handleError);
+  }, [report]);
   return (
     <div className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
       <ProfileHeader
@@ -151,6 +169,17 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         </ProfileSection>
       )}
       {/* // TODO: Check if admin */}
+      <ProfileSection heading={`Requests`}>
+        <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
+          <ItemList
+            items={requestingProfileState.map(ParseItem)}
+            clickAction={handleRoute}
+            deleteAction={handleDeny}
+            createAction={handleAccept}
+          />
+        </div>
+      </ProfileSection>
+      {/* // TODO: Check if admin */}
       <ProfileSection heading={`Users`}>
         <SearchForm handleSearch={handleSearch} />
         <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
@@ -162,15 +191,15 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         </div>
       </ProfileSection>
       {/* // TODO: Check if admin */}
-      <ProfileSection heading={`Requests`}>
+      <ProfileSection heading={`Reports`}>
         <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
           <ItemList
-            items={requestingProfileState.map(ParseItem)}
+            items={reportedProfilesState.map(ParseItem)}
             clickAction={handleRoute}
-            deleteAction={handleDeny}
-            createAction={handleAccept}
+            deleteAction={handleKick}
           />
         </div>
+        <FormButton label="Load..." onClick={handleLoadReports} />
       </ProfileSection>
     </div>
   );

@@ -138,6 +138,7 @@ export const circleRouter = createTRPCRouter({
             },
           },
           requests: undefined,
+          reports: undefined,
           links: handleLinks,
         },
       });
@@ -178,6 +179,7 @@ export const circleRouter = createTRPCRouter({
               createdAt: true,
             },
           },
+          reports: true,
           links: true,
           _count: {
             select: { users: true },

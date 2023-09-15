@@ -46,6 +46,7 @@ export const Circle = {
   links: z.array(LinkSchema).optional(),
   requests: z.array(RequestSchema).optional().nullable(),
   users: z.array(UserCircleSchema).optional().nullable(),
+  reports: z.array(ReportSchema).optional().nullable(),
 };
 
 export const CircleSchema = z.object(Circle);
@@ -68,6 +69,7 @@ export const CircleWithAggregatesSchema = z.object({
 });
 
 import { LinkSchema } from "./Link";
+import { ReportSchema } from "./Report";
 import { RequestSchema } from "./Request";
 import { UserCircleSchema } from "./UserCircle";
 

@@ -69,7 +69,7 @@ export function ProfileAttribute({
     switch (variant) {
       case ProfileAttributeVariant.PROFILE_CARD:
         return (
-          <>
+          <span className="flex w-full flex-row items-center ">
             <FontAwesomeIcon
               className="aspect-square h-5 w-5 pl-2"
               icon={option.icon}
@@ -80,14 +80,14 @@ export function ProfileAttribute({
             <p className="pl-1 text-sm font-extralight text-slate-950">
               {label}
             </p>
-          </>
+          </span>
         );
       case ProfileAttributeVariant.PROFILE:
         return (
           <span className="grid h-16 w-full grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:w-fit sm:p-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <FontAwesomeIcon className={"h-6 p-2"} icon={option.icon} />
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon className={"h-6"} icon={option.icon} />
                 <b className="break-normal sm:w-full">{option.label}</b>
               </div>
               <b className="w-fit text-shadow-sm">&nbsp;•</b>
@@ -100,8 +100,8 @@ export function ProfileAttribute({
       case ProfileAttributeVariant.PROFILE_LINK:
         return (
           <span className="w-full flex-col items-center justify-center border-y sm:w-fit">
-            <div className="flex w-full items-center justify-center py-2 sm:px-6">
-              <FontAwesomeIcon className={"h-6 p-2"} icon={option.icon} />
+            <div className="flex w-full items-center justify-center gap-2 py-5 sm:px-6">
+              <FontAwesomeIcon className={"h-6"} icon={option.icon} />
               <div className="pl-1 font-extralight text-slate-950">{label}</div>
             </div>
           </span>

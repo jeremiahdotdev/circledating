@@ -147,6 +147,7 @@ export const profileRouter = createTRPCRouter({
         },
         include: {
           location: true,
+          circles: true,
         },
       });
       const profiles: ProfileSchemaType[] = [];
@@ -155,7 +156,7 @@ export const profileRouter = createTRPCRouter({
           ...r,
           links: [],
           interactions: [],
-          circles: [],
+          circles: r.circles.map((c) => ({ id: c.circleId })),
         };
         if (isProfile(profile)) profiles.push(profile as ProfileSchemaType);
       });

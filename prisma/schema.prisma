@@ -204,6 +204,7 @@ model Circle {
   selected                                      SelectedCircle[]
   links         					            CircleLink[]   
   requests										CircleRequest[]     
+  reports										UserReport[]     
   createdAt           							DateTime     						@default(now())
   updatedAt           							DateTime?    						@updatedAt
   @@index([name])
@@ -219,6 +220,8 @@ model User {
   preferences         UserPreferences[]
   authoredMessages    UserMessage[]    		@relation("authoredMessages") 
   recievedMessages    UserMessage[]    		@relation("recievedMessages")
+  authoredReports     UserReport[]    		@relation("authoredReports") 
+  recievedReports     UserReport[]    		@relation("recievedReports")
   authoredRequests    CircleRequest[]       
   conversations       UserConversation[]         
 
@@ -278,6 +281,24 @@ model UserMessage {
   @@index([authorUsername])
   @@index([recipientUsername])
 }
+
+model UserReport {
+  id                  String       @id @default(uuid())
+  reporterUsername    String    
+  reporter            User         @relation("authoredReports", fields: [reporterUsername], references: [username],  map: "user_report_author_fk")
+  reportedUsername    String  
+  reportedUser        User         @relation("recievedReports", fields: [reportedUsername], references: [username],  map: "user_report_recipient_fk")
+  circleId            String?
+  circle              Circle?      @relation(fields: [circleId], references: [id])
+  message             String       @db.LongText
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime?    @updatedAt
+
+  @@index([circleId])
+  @@index([reporterUsername])
+  @@index([reportedUsername])
+}
+
 model Conversation {
   id                  String       		@id @default(uuid())
   users               UserConversation[] 

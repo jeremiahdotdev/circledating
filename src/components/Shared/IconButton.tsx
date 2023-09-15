@@ -8,6 +8,7 @@ import {
   faDoorClosed,
   faDoorOpen,
   faEnvelope,
+  faExclamation,
   faPaperPlane,
   faTrashCan,
   faUpload,
@@ -35,6 +36,7 @@ export enum IconButtonVariant {
   REMOVE = "remove",
   ADD = "add",
   UPLOAD = "upload",
+  REPORT = "report",
 }
 
 export type IconButtonProps = {
@@ -116,6 +118,12 @@ export function IconButton({
           label: "Upload New Photo",
           icon: faUpload,
           style: "h-8 p-2 bg-cyan-500",
+        } as IconButtonOptions;
+      case IconButtonVariant.REPORT:
+        return {
+          label: "Report",
+          icon: faExclamation,
+          style: "flex self-end h-6 w-6 p-1 bg-orange-400",
         } as IconButtonOptions;
       default: // x
         return {
