@@ -10,7 +10,7 @@ export type ListItemPictureProps = {
 export function ListItemPicture({ fallback, alt, src }: ListItemPictureProps) {
   return (
     <div className="flex aspect-square min-w-fit justify-around rounded-full bg-gray-400 bg-contain bg-no-repeat p-0.5">
-      <Avatar className="aspect-square min-w-[40px]">
+      <Avatar className="aspect-square min-w-[40px] shadow-outter">
         <AvatarImage src={src} alt={alt} className="object-cover" />
         <AvatarFallback>{fallback}</AvatarFallback>
       </Avatar>

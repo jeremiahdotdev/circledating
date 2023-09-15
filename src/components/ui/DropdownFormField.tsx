@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
+import { RequiredAsterisk } from "./RequiredAsterisk";
 import React, { useCallback, useMemo } from "react";
 
 interface DropdownFormFieldProps<Values extends FieldValues>
@@ -19,25 +20,28 @@ interface DropdownFormFieldProps<Values extends FieldValues>
   options: DropdownSelectOption[];
   description?: string;
   type?: "text" | "number";
-  override?: string;
+  filterOn?: string[];
+  required?: boolean;
 }
 
 export const DropdownFormField = <Values extends FieldValues>({
   label,
   options,
   description,
-  override,
   type = "text",
+  filterOn,
+  required,
   ...props
 }: DropdownFormFieldProps<Values>) => {
   const { field, fieldState } = useController(props);
   const correctedValue = useMemo(() => {
-    if (type === "text") {
-      return field.value as string;
-    } else if (type === "number") {
-      return String(field.value);
-    }
-  }, [field.value, type]);
+    if (options)
+      if (type === "text") {
+        return field.value as string;
+      } else if (type === "number") {
+        return String(field.value);
+      }
+  }, [field.value, type, options]);
 
   const onChange = useCallback(
     (value: string) => {
@@ -52,15 +56,18 @@ export const DropdownFormField = <Values extends FieldValues>({
 
   return (
     <FormItem className="mb-2 flex flex-col">
-      <FormLabel>{label}</FormLabel>
+      <FormLabel>
+        {label}
+        <RequiredAsterisk required={required} />
+      </FormLabel>
       <FormControl>
         <Dropdown
           label={label}
           options={options}
           {...field}
           onChange={onChange}
-          value={override ?? correctedValue}
-          override={override}
+          filterOn={filterOn}
+          value={correctedValue}
         />
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}

@@ -12,16 +12,12 @@ export type ProfileLinksProps = {
 };
 
 export function ProfileLinks({ links }: ProfileLinksProps) {
-  return (
-    <div className="flex flex-col flex-wrap justify-center gap-0">
-      {links.map(({ href, id }) => (
-        <ProfileAttribute
-          key={id}
-          option={ProfileAttributeOptions.link}
-          attribute={href}
-          variant={ProfileAttributeVariant.LARGE}
-        />
-      ))}
-    </div>
-  );
+  return links.map(({ href, id }) => (
+    <ProfileAttribute
+      key={id}
+      option={ProfileAttributeOptions.link}
+      attribute={href}
+      variant={ProfileAttributeVariant.PROFILE_LINK}
+    />
+  ));
 }

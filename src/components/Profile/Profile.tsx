@@ -1,127 +1,143 @@
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { ListItemCircle } from "../Circle/ListItemCircle";
+import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
+import { ProfileAttributeList } from "../Shared/ProfileAttributeList";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
+import { ProfileHeader } from "../Shared/ProfileHeader";
 import { ProfileLinks } from "../Shared/ProfileLinks";
 import { ProfileLocation } from "./ProfileCardLocation";
-import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { ProfileSection } from "./ProfileSection";
-import React, { useMemo } from "react";
+import { handleError } from "@/utils/handleError";
+import { routes } from "@/globals/routes";
+import { useRouter } from "next/router";
+import React, { useCallback, useMemo } from "react";
 import dayjs from "dayjs";
 
 export type ProfileProps = {
   profile: ProfileSchemaType;
+  canEdit?: boolean;
   interact?: (
     interaction: InteractionSchemaType,
     profile: ProfileSchemaType
-  ) => void;
+  ) => Promise<void>;
 };
 
-export function Profile({ profile, interact }: ProfileProps) {
+export function Profile({ profile, canEdit, interact }: ProfileProps) {
+  const router = useRouter();
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
 
+  const handleRoute = useCallback(
+    (circleNameItem: ItemType) => {
+      const route = routes.circleByCircleNameAsLabel(circleNameItem.value);
+
+      router.push(route.href, route.as).catch(handleError);
+    },
+    [router]
+  );
+
   return (
-    <div className="mx-2 flex max-w-screen-xl flex-col items-center justify-center gap-6">
-      <div className="w-3/4 flex-1 justify-center sm:w-1/3">
-        <ProfilePicture
-          // TODO: Replace with actual picture.
-          src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
-          fallback={profile.username.substring(0, 1)}
-          alt={profile.username + "_profile"}
-          className="md:m-2"
-        />
-      </div>
-      <h1 className="flex w-full justify-center text-4xl sm:w-auto">
-        {profile.username} ({age})
-      </h1>
+    <div className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
+      <ProfileHeader
+        canEdit={canEdit}
+        // TODO: Replace with actual picture.
+        image="https://res.cloudinary.com/dqpbm3xll/image/upload/v1694616299/samples/smile.jpg"
+        header={`${profile.username} (${age})`}
+      />
       <ProfileLocation
         country={profile.location.country}
         state={profile.location.state}
         willingToRelocate={profile.willingToRelocate === "YES"}
       />
-      {profile.links && <ProfileLinks links={profile.links} />}
-      <ProfileSection>
+      {profile.links && (
+        <ProfileAttributeList>
+          <ProfileLinks links={profile.links} />
+        </ProfileAttributeList>
+      )}
+      <ProfileSection heading={"About"}>
+        <p>{profile.bio}</p>
+      </ProfileSection>
+      <ProfileSection heading={"Attributes"}>
         <div className="grid h-full w-full items-center justify-around md:grid-cols-2 lg:grid-cols-3">
           <ProfileCardSubheading title={"General"} />
           <ProfileAttribute
             option={ProfileAttributeOptions.religion}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={`${profile.religion}`}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.maritalStatus}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={`${profile.maritalStatus}`}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.politicalBeliefs}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.politicalBeliefs}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.education}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.levelOfEducation}
           />
 
           <ProfileCardSubheading title={"Lifestyle"} />
           <ProfileAttribute
             option={ProfileAttributeOptions.height}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.height}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.weight}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.weight}
             weightUnit={profile.weightUnit}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.drinking}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.drinking}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.consumables}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.consumables}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.activityLevel}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={`${profile.activity}`}
           />
           <ProfileCardSubheading title={"Family"} />
           <ProfileAttribute
             option={ProfileAttributeOptions.purity}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.purity}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.children}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.children}
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.income}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.income}
           />
         </div>
       </ProfileSection>
-      <ProfileSection>
-        <p>{profile.bio}</p>
-      </ProfileSection>
-      <ProfileSection>
+      <ProfileSection heading={`Circles`}>
         <div className="grid w-full sm:grid-cols-2">
-          {profile.circles?.map((circle) => (
-            <ListItemCircle key={circle.name} circle={circle} />
-          ))}
+          {profile.circles && (
+            <ItemList
+              items={profile.circles.map(ParseItem)}
+              clickAction={handleRoute}
+            />
+          )}
         </div>
       </ProfileSection>
       {interact && (

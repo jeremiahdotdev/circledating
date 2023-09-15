@@ -20,7 +20,7 @@ export type DropdownProps = {
   options: DropdownSelectOption[];
   onChange: (value: string) => void;
   value: string | undefined;
-  override?: string;
+  filterOn?: string[];
 };
 
 export function Dropdown({
@@ -28,20 +28,30 @@ export function Dropdown({
   onChange,
   value,
   placeholder,
-  override,
+  filterOn,
 }: DropdownProps) {
-  const renderedOptions = useMemo(
-    () =>
-      options.map((option) => (
-        <SelectItem key={option.label} value={option.value}>
-          {option.label}
-        </SelectItem>
-      )),
-    [options]
-  );
+  const filteredOptions = useMemo(() => {
+    let result = options;
+
+    if (filterOn && filterOn.length) {
+      result = options.filter((option) => filterOn.includes(option.value));
+    }
+    return result;
+  }, [options, filterOn]);
+
+  const renderedOptions = useMemo(() => {
+    return filteredOptions.map((option) => (
+      <SelectItem key={option.label} value={option.value}>
+        {option.label}
+      </SelectItem>
+    ));
+  }, [filteredOptions]);
 
   return (
-    <Select onValueChange={onChange} value={value} disabled={!!override}>
+    <Select
+      onValueChange={onChange}
+      value={filteredOptions.length === 1 ? filteredOptions[0].value : value}
+    >
       <SelectTrigger>
         <SelectValue placeholder={placeholder ?? "Select..."} />
       </SelectTrigger>

@@ -76,3 +76,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Adapted calendar change */
+.rdp-vhidden {
+  @apply hidden;
+}

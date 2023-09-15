@@ -80,15 +80,15 @@ module.exports = {
           "url('https://as1.ftcdn.net/v2/jpg/00/19/94/92/1000_F_19949237_n27l4aWK6acJGLCK0HAQ4XRpqy7QN7a0.jpg')",
       },
       minHeight: {
-        navless: "calc(100vh - 74px)",
+        navless: "calc(100vh - 67px)",
       },
       maxHeight: {
-        navless: "calc(100vh - 74px)",
+        navless: "calc(100vh - 67px)",
       },
       height: {
-        // TODO: h-full is not working. This is not ideal.
-        messaging: "calc(100vh - 74px - 97px)",
-        navless: "calc(100vh - 74px)",
+        messaging: "calc(100vh - 97px)",
+        "messaging-navless": "calc(100vh - 67px - 97px)",
+        navless: "calc(100vh - 67px)",
       },
       boxShadow: {
         outter: "0 1px 3px 0px rgba(0, 0, 0, 0.6)",

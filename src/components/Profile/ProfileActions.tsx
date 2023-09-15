@@ -9,12 +9,13 @@ export type ProfileActionsProps = {
   interact: (
     interaction: InteractionSchemaType,
     profile: ProfileSchemaType
-  ) => void;
+  ) => Promise<void>;
 };
 
 export function ProfileActions({ profile, interact }: ProfileActionsProps) {
   const isLiked = useMemo(() => {
-    return state.currentUser.affections?.find(
+    const affections = state.currentUser.affections;
+    return affections?.find(
       (i) => i.initiatedUserId === profile.userId && i.isLiked
     );
   }, [profile]);
@@ -30,21 +31,18 @@ export function ProfileActions({ profile, interact }: ProfileActionsProps) {
     [profile.userId]
   );
   const likeThisProfile = useCallback(() => {
-    interact(interaction(true, false), profile);
+    return interact(interaction(true, false), profile);
   }, [interaction, interact, profile]);
   const blockThisProfile = useCallback(() => {
-    interact(interaction(false, true), profile);
+    return interact(interaction(false, true), profile);
   }, [interaction, interact, profile]);
   return (
     <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
       <IconButton
         variant={isLiked ? IconButtonVariant.MAIL : IconButtonVariant.LIKE}
-        onClick={likeThisProfile}
+        action={likeThisProfile}
       />
-      <IconButton
-        variant={IconButtonVariant.TRASH}
-        onClick={blockThisProfile}
-      />
+      <IconButton variant={IconButtonVariant.TRASH} action={blockThisProfile} />
     </div>
   );
 }

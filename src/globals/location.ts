@@ -1,3 +1,11 @@
+export const flattenedLocations = () => {
+  const result: string[] = [];
+  countries.forEach(({ continent, country, states }) =>
+    result.push(continent, country, ...states)
+  );
+  return result;
+};
+
 export const countries = [
   {
     continent: "Asia",

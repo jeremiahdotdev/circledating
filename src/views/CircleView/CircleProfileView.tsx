@@ -1,5 +1,5 @@
 import { CircleProfile } from "@/components/Circle/CircleProfile";
-import { CircleSchemaType } from "@/schemas/Circle";
+import { CircleWithAggregatesSchemaType } from "@/schemas/Circle";
 import { Loading } from "@/components/Shared/Loading";
 import { api } from "@/utils/api";
 import { isUrl } from "@/schemas/Link";
@@ -15,7 +15,7 @@ export const CircleProfileView: React.FC<CircleProfileViewProps> = memo(() => {
   const router = useRouter();
   const circleName = routerQueryAttributeToString(router.query.circle);
   const options = {
-    name: circleName,
+    name: circleName.toUpperCase(),
     currentUserProfile: state.currentUser,
   };
   const request = api.circles.read.useQuery(options);
@@ -24,14 +24,12 @@ export const CircleProfileView: React.FC<CircleProfileViewProps> = memo(() => {
 
   const circle = {
     ...request.data,
-    links: request.data.links.map((link) =>
-      isUrl(link.href) ? link : { ...link, href: `https://${link.href}` }
-    ),
-  } as CircleSchemaType;
+    links: request.data.links
+      ? request.data.links.map((link) =>
+          isUrl(link.href) ? link : { ...link, href: `https://${link.href}` }
+        )
+      : [],
+  } as CircleWithAggregatesSchemaType;
 
-  return (
-    <main className="mx-auto flex min-h-navless max-w-screen-lg flex-col items-center justify-between pt-6">
-      <CircleProfile circle={circle} />
-    </main>
-  );
+  return <CircleProfile circle={circle} />;
 });

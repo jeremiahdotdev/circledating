@@ -15,55 +15,73 @@ import {
   YesNoOrUnknown,
 } from "@prisma/client";
 import { CircleSchemaType } from "../../src/schemas/Circle";
+import { UserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { countries } from "../../src/globals/location";
 
+const circleBase = {
+  description:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  createdAt: new Date(),
+  updatedAt: null,
+  isFeatured: true,
+  isPrivate: false,
+  code: "fjklsaghjafklghakgjadhkl",
+};
 export const Circles = {
   Religion: {
     Christianity: {
       id: "1",
       label: "Christianity",
       name: Religion.CHRISTIANITY,
+      ...circleBase,
       religionRestriction: [Religion.CHRISTIANITY],
     } as CircleSchemaType,
     Athiesm: {
       id: "2",
       label: "Athiesm",
+      ...circleBase,
       name: Religion.ATHEISM,
       religionRestriction: [Religion.ATHEISM],
     } as CircleSchemaType,
     Agnosticism: {
       id: "3",
       label: "Agnosticism",
+      ...circleBase,
       name: Religion.AGNOSTICISM,
       religionRestriction: [Religion.AGNOSTICISM],
     } as CircleSchemaType,
     Buddhism: {
       id: "4",
       label: "Buddhism",
+      ...circleBase,
       name: Religion.BUDDHISM,
       religionRestriction: [Religion.BUDDHISM],
     } as CircleSchemaType,
     Mormonism: {
       id: "5",
       label: "Mormonism",
+      ...circleBase,
       name: Religion.MORMONISM,
       religionRestriction: [Religion.MORMONISM],
     } as CircleSchemaType,
     Hinduism: {
       id: "6",
       label: "Hinduism",
+      ...circleBase,
       name: Religion.HINDUISM,
       religionRestriction: [Religion.HINDUISM],
     } as CircleSchemaType,
     Judaism: {
       id: "7",
       label: "Judaism",
+      ...circleBase,
       name: Religion.JUDAISM,
       religionRestriction: [Religion.JUDAISM],
     } as CircleSchemaType,
     Spiritual: {
       id: "8",
       label: "Other/Spiritual",
+      ...circleBase,
       name: Religion.OTHER,
       religionRestriction: [Religion.OTHER],
     } as CircleSchemaType,
@@ -71,25 +89,29 @@ export const Circles = {
   Political: {
     Conservative: {
       id: "9",
-      label: "Conservativism",
       name: PoliticalBeliefs.CONSERVATIVE,
+      label: "Conservativism",
+      ...circleBase,
       politicalBeliefsRestriction: [PoliticalBeliefs.CONSERVATIVE],
     } as CircleSchemaType,
     Moderate: {
       id: "10",
       label: "Moderatism",
+      ...circleBase,
       name: PoliticalBeliefs.MODERATE,
       politicalBeliefsRestriction: [PoliticalBeliefs.MODERATE],
     } as CircleSchemaType,
     Liberal: {
       id: "11",
       label: "Liberalism",
+      ...circleBase,
       name: PoliticalBeliefs.LIBERAL,
       politicalBeliefsRestriction: [PoliticalBeliefs.LIBERAL],
     } as CircleSchemaType,
     Independent: {
       id: "12",
       label: "Independent",
+      ...circleBase,
       name: PoliticalBeliefs.INDEPENDENT,
       politicalBeliefsRestriction: [PoliticalBeliefs.INDEPENDENT],
     } as CircleSchemaType,
@@ -98,42 +120,49 @@ export const Circles = {
     NorthAmerica: {
       id: "15",
       label: "North America",
+      ...circleBase,
       name: "North America",
       continentRestriction: ["North America"],
     } as CircleSchemaType,
     SouthAmerica: {
       id: "16",
       label: "South America",
+      ...circleBase,
       name: "South America",
       continentRestriction: ["South America"],
     } as CircleSchemaType,
     Europe: {
       id: "17",
       label: "Europe",
+      ...circleBase,
       name: "Europe",
       continentRestriction: ["Europe"],
     } as CircleSchemaType,
     Australia: {
       id: "18",
       label: "Australia",
+      ...circleBase,
       name: "Australia",
       continentRestriction: ["Australia"],
     } as CircleSchemaType,
     Asia: {
       id: "19",
       label: "Asia",
+      ...circleBase,
       name: "Asia",
       continentRestriction: ["Asia"],
     } as CircleSchemaType,
     Antarctica: {
       id: "20",
       label: "Antarctica",
+      ...circleBase,
       name: "Antarctica",
       continentRestriction: ["Antarctica"],
     } as CircleSchemaType,
     Africa: {
       id: "21",
       label: "Africa",
+      ...circleBase,
       name: "Africa",
       continentRestriction: ["Africa"],
     } as CircleSchemaType,
@@ -210,6 +239,7 @@ export const Users = [
         isBlocked: false,
       },
     ],
+    links: [],
   },
   {
     userId: "2",
@@ -242,6 +272,9 @@ export const Users = [
     circles: [Circles.Religion.Christianity, Circles.Political.Conservative],
     password: "password1234",
     email: "tina2@gmail.com",
+    links: [],
+    interactions: [],
+    affections: [],
   },
   {
     userId: "3",
@@ -274,21 +307,28 @@ export const Users = [
     circles: [Circles.Religion.Christianity, Circles.Political.Conservative],
     password: "password1234",
     email: "tina@gmail.com",
+    links: [],
+    interactions: [],
+    affections: [],
   },
 ];
 
-export const UsersPreferences = [
+export const UsersPreferences: UserPreferencesSchemaType[] = [
   {
     userId: "1",
-    username: "Jeremiah",
     sex: Gender.FEMALE,
-    birthDate: new Date(1999, 4, 24),
-    maxAge: 30,
-    minAge: 18,
-    selectedCircles: [
-      Circles.Religion.Christianity,
-      Circles.Political.Conservative,
-    ],
+    ageRange: [18, 30],
+    searchContinents: [] as string[],
+    searchCountries: [] as string[],
+    searchStates: [] as string[],
+    religion: [],
+    selectedCircles: [Circles.Religion.Christianity],
+    politicalBeliefs: [],
+    drinking: [],
+    consumables: [],
+    income: [],
+    updatedAt: new Date(),
+    createdAt: new Date(),
   },
 ];
 

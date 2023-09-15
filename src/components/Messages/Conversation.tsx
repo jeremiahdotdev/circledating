@@ -11,7 +11,7 @@ import state from "@/utils/user.store";
 export type ConversationProps = {
   conversation: ConversationSchemaType;
   onSelect: (conversation: ConversationSchemaType) => void;
-  onAction: (conversation: ConversationSchemaType) => void;
+  onAction: (conversation: ConversationSchemaType) => Promise<void> | undefined;
   actionIsUnblock?: boolean;
 };
 export function Conversation({
@@ -40,7 +40,7 @@ export function Conversation({
   const takeAction = useCallback(
     (click: React.MouseEvent<HTMLButtonElement>) => {
       click.stopPropagation();
-      onAction(conversation);
+      return onAction(conversation);
     },
     [onAction, conversation]
   );
@@ -57,7 +57,7 @@ export function Conversation({
       <div className="aspect-square h-16 w-16">
         <ListItemPicture
           // TODO: Replace with actual picture.
-          src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
+          src="https://res.cloudinary.com/dqpbm3xll/image/upload/v1694616299/samples/smile.jpg"
           fallback={usernames.substring(0, 1)}
           alt={usernames}
         />
@@ -79,7 +79,7 @@ export function Conversation({
           actionIsUnblock ? IconButtonVariant.LIKE : IconButtonVariant.TRASH
         }
         labelOverride={actionIsUnblock ? "Unblock" : "Unmatch"}
-        onClick={takeAction}
+        action={takeAction}
       />
     </div>
   );

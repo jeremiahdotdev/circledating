@@ -28,7 +28,7 @@ export function Messaging({ messages }: MessagingProps) {
 
   return (
     <div className="flex max-h-navless flex-col">
-      <div className="h-messaging p-4 shadow-inner-xl">
+      <div className="h-messaging p-4 shadow-inner-xl sm:h-messaging-navless">
         {messagesState.length ? (
           <MessagesPane messages={messagesState} />
         ) : (

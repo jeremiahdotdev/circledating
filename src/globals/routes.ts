@@ -7,10 +7,11 @@ export type RouteOption = {
 export const routes = {
   default: () => ({ href: "/" }),
   nowhere: (label?: string) => ({ href: "#", as: "", label: label }),
-  circles: () => ({ href: "/circles", label: "Circles" }),
+  circles: () => ({ href: "/circles", label: "Find Circles" }),
   newCircle: () => ({ href: "/new-circle", label: "Create a Circle" }),
-  search: () => ({ href: "/search", label: "Profiles" }),
-  matches: () => ({ href: "/matches", label: "Matched" }),
+  search: () => ({ href: "/search", label: "Date" }),
+  matches: () => ({ href: "/matches", label: "Matches" }),
+  manage: () => ({ href: "/manage", label: "Manage" }),
   blocked: () => ({
     href: "/matches?blocked=true",
     as: "/blocked",
@@ -20,9 +21,9 @@ export const routes = {
     href: `/profile/${username}`,
     label: "Profile",
   }),
-  circleByCircleName: (circleName: string) => ({
+  circleByCircleNameAsLabel: (circleName: string) => ({
     href: `/circle/${circleName}`,
-    as: `/circle/${circleName}`,
+    as: `/circle/${circleName.toLowerCase()}`,
   }),
   messagesByUsername: (username: string) => ({
     href: `/messages/${username}`,
