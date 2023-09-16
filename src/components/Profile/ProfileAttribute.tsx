@@ -57,7 +57,7 @@ export function ProfileAttribute({
 
     if (isUrl(attribute)) {
       return (
-        <a className="text-blue-600" href={attribute}>
+        <a className="text-gender-accent" href={attribute}>
           {attribute}
         </a>
       );
@@ -69,9 +69,9 @@ export function ProfileAttribute({
     switch (variant) {
       case ProfileAttributeVariant.PROFILE_CARD:
         return (
-          <span className="flex w-full flex-row items-center ">
+          <span className="flex h-full w-full flex-row items-center ">
             <FontAwesomeIcon
-              className="aspect-square h-5 w-5 pl-2"
+              className="aspect-square w-7 pl-2"
               icon={option.icon}
             />
             <b className="flex sm:hidden">
@@ -84,13 +84,13 @@ export function ProfileAttribute({
         );
       case ProfileAttributeVariant.PROFILE:
         return (
-          <span className="grid h-16 w-full grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:w-fit sm:p-2">
+          <span className="grid h-16 grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <FontAwesomeIcon className={"h-6"} icon={option.icon} />
-                <b className="break-normal sm:w-full">{option.label}</b>
+                <FontAwesomeIcon className={"h-5"} icon={option.icon} />
+                <b className="break-normal">{option.label}</b>
               </div>
-              <b className="w-fit text-shadow-sm">&nbsp;•</b>
+              <b className="w-fit text-shadow-sm ">&nbsp;•</b>
             </div>
             <div className="pl-1 font-extralight text-slate-950 text-shadow-sm">
               {label}
@@ -102,7 +102,9 @@ export function ProfileAttribute({
           <span className="w-full flex-col items-center justify-center border-y sm:w-fit">
             <div className="flex w-full items-center justify-center gap-2 py-5 sm:px-6">
               <FontAwesomeIcon className={"h-6"} icon={option.icon} />
-              <div className="pl-1 font-extralight text-slate-950">{label}</div>
+              <div className="pl-1 font-extralight text-gender-accent">
+                {label}
+              </div>
             </div>
           </span>
         );

@@ -19,22 +19,21 @@ export function ProfileLocation({
 }: ProfileLocationProps) {
   return (
     <span className="flex flex-row items-center">
-      <span className="flex flex-row gap-1">
-        <FontAwesomeIcon className="h-5 w-5 pl-2" icon={faLocationDot} />
+      <span className="flex flex-row items-center gap-1">
+        <FormattedTooltip
+          content={willingToRelocate ? "Willing to relocate" : "Location"}
+        >
+          <FontAwesomeIcon
+            className="h-8 w-8 pl-2 text-slate-800"
+            icon={willingToRelocate ? faPlaneDeparture : faLocationDot}
+          />
+        </FormattedTooltip>
+
         <p className="pl-1 text-sm font-extralight text-slate-950">
           {state && `${state}, `}
           {country}
         </p>
       </span>
-
-      {willingToRelocate && (
-        <FormattedTooltip content="Willing to relocate">
-          <FontAwesomeIcon
-            className="h-4 w-4 pl-2 text-slate-800"
-            icon={faPlaneDeparture}
-          />
-        </FormattedTooltip>
-      )}
     </span>
   );
 }
