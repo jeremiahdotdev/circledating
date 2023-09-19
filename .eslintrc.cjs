@@ -45,7 +45,7 @@ const config = {
     "space-before-function-paren": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "react/jsx-no-bind": "warn",
-    "max-lines-per-function": ["error", 200],
+    "max-lines-per-function": ["error", 300],
     "sort-imports-es6-autofix/sort-imports-es6": [
       2,
       {

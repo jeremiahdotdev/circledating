@@ -27,6 +27,8 @@ export type ProfileAttributeProps = {
   option: ProfileAttributeOptionType;
   attribute?: ProfileAttributeType | number | Date | Url;
   weightUnit?: WeightUnit;
+  isEditMode?: boolean;
+  editor?: React.ReactNode;
   variant?: ProfileAttributeVariant;
 };
 
@@ -34,6 +36,8 @@ export function ProfileAttribute({
   option,
   attribute,
   weightUnit,
+  isEditMode,
+  editor,
   variant = ProfileAttributeVariant.DEFAULT,
 }: ProfileAttributeProps) {
   const label = useMemo(() => {
@@ -83,7 +87,15 @@ export function ProfileAttribute({
           </span>
         );
       case ProfileAttributeVariant.PROFILE:
-        return (
+        return isEditMode ? (
+          <span className="mx-2 flex items-center gap-2">
+            <FontAwesomeIcon
+              className={"aspect-square h-5"}
+              icon={option.icon}
+            />
+            <span className="w-full">{editor}</span>
+          </span>
+        ) : (
           <span className="grid h-16 grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -111,7 +123,7 @@ export function ProfileAttribute({
       default:
         return <></>;
     }
-  }, [variant, attribute, option, label]);
+  }, [variant, attribute, option, label, isEditMode, editor]);
   return (
     <FormattedTooltip content={option.label}>{renderVariant}</FormattedTooltip>
   );

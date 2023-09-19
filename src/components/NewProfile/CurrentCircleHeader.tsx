@@ -7,7 +7,8 @@ export type CurrentCircleHeaderProps = {
 };
 export function CurrentCircleHeader({ circle }: CurrentCircleHeaderProps) {
   return (
-    <span className="flex w-full items-center gap-2 sm:px-8">
+    <span className="flex w-full flex-col items-center gap-2 font-semibold tracking-tight sm:px-8 ">
+      <span className="text-3xl"> {circle?.label} </span>
       <span className="flex h-24 w-24">
         {circle && circle.label && (
           <ProfilePicture
@@ -18,9 +19,7 @@ export function CurrentCircleHeader({ circle }: CurrentCircleHeaderProps) {
           />
         )}
       </span>
-      <span className="text-4xl">
-        {circle?.label ? `${circle?.label} > ` : ""}Create a new account
-      </span>
+      <span className="text-3xl">- Create a new account -</span>
     </span>
   );
 }

@@ -4,7 +4,7 @@ import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
-import { ProfileLocation } from "./ProfileCardLocation";
+import { ProfileLocation } from "./ProfileLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";

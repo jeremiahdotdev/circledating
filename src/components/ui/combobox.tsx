@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import React, { useCallback, useMemo, useState } from "react";
+import classNames from "classnames";
 
 export type ComboboxOption<ComboBoxType> = {
   value: ComboBoxType;
@@ -23,20 +24,24 @@ export type ComboboxOption<ComboBoxType> = {
 };
 
 export type ComboboxProps<ComboBoxType> = {
-  name: string;
+  placeholder?: string;
   options: ComboboxOption<ComboBoxType>[];
   onSelect?: (value: ComboBoxType | undefined) => void;
   filterOn?: ComboBoxType[];
+  className?: string;
+  selectedValue?: ComboBoxType;
 };
 
 export function Combobox<ComboBoxType>({
-  name,
+  placeholder,
   options,
   filterOn,
+  className,
+  selectedValue,
   onSelect,
 }: ComboboxProps<ComboBoxType>) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<ComboBoxType | undefined>(undefined);
+  const [value, setValue] = useState<ComboBoxType | undefined>(selectedValue);
 
   const handleSelect = useCallback(
     (currentLabel: string) => {
@@ -60,17 +65,19 @@ export function Combobox<ComboBoxType>({
   }, [options, filterOn]);
 
   const renderedOptions = useMemo(() => {
-    return filteredOptions.map((option: ComboboxOption<ComboBoxType>) => (
-      <CommandItem key={option.label} onSelect={handleSelect}>
-        <Check
-          className={cn(
-            "mr-2 h-4 w-4",
-            value === option.value ? "opacity-100" : "opacity-0"
-          )}
-        />
-        {option.label}
-      </CommandItem>
-    ));
+    return filteredOptions.map(
+      (option: ComboboxOption<ComboBoxType>, index) => (
+        <CommandItem key={option.label + index} onSelect={handleSelect}>
+          <Check
+            className={cn(
+              "mr-2 h-4 w-4",
+              value === option.value ? "opacity-100" : "opacity-0"
+            )}
+          />
+          {option.label}
+        </CommandItem>
+      )
+    );
   }, [filteredOptions, handleSelect, value]);
 
   return (
@@ -80,17 +87,25 @@ export function Combobox<ComboBoxType>({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="justify-between"
+          className={classNames("justify-between", className)}
         >
           {value
             ? filteredOptions.find((option) => {
-                return option.value === value;
+                type keyType = { id: string };
+                if (typeof option.value === "object" && option.value) {
+                  return (
+                    (option.value as unknown as keyType).id ===
+                    (value as unknown as keyType).id
+                  );
+                } else {
+                  return option.value == value;
+                }
               })?.label
-            : `Select ${name}...`}
+            : placeholder ?? "Select..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0 ">
+      <PopoverContent className="max-w-screen-sm p-0 ">
         <Command className="max-h-[400px]">
           <CommandInput placeholder={"Search..."} />
           <CommandEmpty>No results.</CommandEmpty>

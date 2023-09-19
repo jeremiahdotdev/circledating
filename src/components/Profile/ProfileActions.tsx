@@ -1,10 +1,8 @@
 import { DialogModal } from "../ui/DialogModal";
-import { Form } from "../ui/form";
 import { IconButton, IconButtonVariant } from "../Shared/IconButton";
 import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { ReportProfileForm } from "./ReportProfileForm";
-import { TextAreaFormField } from "../ui/TextAreaFormField";
 import React, { useCallback, useMemo, useState } from "react";
 import state from "@/utils/user.store";
 
@@ -46,7 +44,7 @@ export function ProfileActions({ profile, interact }: ProfileActionsProps) {
   }, [interaction, interact, profile]);
   const reportThisProfile = useCallback(() => {
     handleOpen();
-  }, [interaction, interact, profile]);
+  }, [handleOpen]);
 
   return (
     <>
@@ -54,10 +52,12 @@ export function ProfileActions({ profile, interact }: ProfileActionsProps) {
         <IconButton
           variant={isLiked ? IconButtonVariant.MAIL : IconButtonVariant.LIKE}
           action={likeThisProfile}
+          className={"h-16 w-16"}
         />
         <IconButton
           variant={IconButtonVariant.TRASH}
           action={blockThisProfile}
+          className={"h-16 w-16"}
         />
       </div>
       <IconButton

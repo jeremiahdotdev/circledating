@@ -15,7 +15,11 @@ import {
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "@/lib/utils";
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import {
+  faCheckCircle,
+  faPenToSquare,
+  faXmarkCircle,
+} from "@fortawesome/free-regular-svg-icons";
 import { handleError } from "@/utils/handleError";
 import React, { useCallback, useMemo, useState } from "react";
 
@@ -39,6 +43,8 @@ export enum IconButtonVariant {
   UPLOAD = "upload",
   REPORT = "report",
   EDIT = "edit",
+  UPDATE = "update",
+  CANCEL = "cancel",
 }
 
 export type IconButtonProps = {
@@ -47,9 +53,11 @@ export type IconButtonProps = {
   action?:
     | ((event: React.MouseEvent<HTMLButtonElement>) => Promise<void>)
     | ((event: React.MouseEvent<HTMLButtonElement>) => void);
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   labelOverride?: string;
   confirmationRequired?: boolean;
+  className?: string;
 };
 
 export function IconButton({
@@ -58,6 +66,8 @@ export function IconButton({
   disabled,
   labelOverride,
   confirmationRequired,
+  className,
+  onClick,
   action,
 }: IconButtonProps) {
   const [dialogOpenState, setDialogOpenState] = useState(false);
@@ -107,7 +117,7 @@ export function IconButton({
         return {
           label: "Block",
           icon: faTrashCan,
-          style: "h-16 bg-red-600 shadow-outter",
+          style: "bg-red-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.ADD:
         return {
@@ -134,6 +144,20 @@ export function IconButton({
           style:
             "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none",
         } as IconButtonOptions;
+      case IconButtonVariant.UPDATE:
+        return {
+          label: "Update",
+          icon: faCheckCircle,
+          style:
+            "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none",
+        } as IconButtonOptions;
+      case IconButtonVariant.CANCEL:
+        return {
+          label: "Cancel",
+          icon: faXmarkCircle,
+          style:
+            "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none",
+        } as IconButtonOptions;
       default: // x
         return {
           label: "Remove",
@@ -154,12 +178,14 @@ export function IconButton({
           setDialogOpenState(true);
         } else {
           setDisabledState(true);
-          const result = action(event)?.then(enableButton).catch(handleError);
-          if (!result?.then) enableButton();
+          action(event)?.then(enableButton).catch(handleError);
+          enableButton();
         }
+      } else if (onClick) {
+        onClick(event);
       }
     },
-    [setDialogOpenState, action, enableButton, confirmationRequired]
+    [setDialogOpenState, action, enableButton, confirmationRequired, onClick]
   );
 
   const handleConfirm = useCallback(
@@ -190,9 +216,10 @@ export function IconButton({
           className={cn(
             "text-white rounded-full",
             option.style,
+            className,
             option.showLabel ? "" : "aspect-square"
           )}
-          type={type}
+          type={type ?? "button"}
           disabled={disabled || disabledState}
         >
           <FontAwesomeIcon className="h-full w-full" icon={option.icon} />

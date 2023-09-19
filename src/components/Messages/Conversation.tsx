@@ -64,12 +64,13 @@ export function Conversation({
       </div>
       <div className="w-full">
         <div className="flex flex-row items-center">
-          <h2 className="text-xl font-semibold">{usernames}</h2>
           <RouteOptionLink
             option={routes.profileByUsername(usernames)}
             onClick={stopPropagation}
           >
-            <i className="px-2 underline">(See profile)</i>
+            <h2 className="text-xl font-semibold hover:underline">
+              {usernames}
+            </h2>
           </RouteOptionLink>
         </div>
         <p className="text-gray-400">{messagePreview}</p>
@@ -79,6 +80,7 @@ export function Conversation({
           actionIsUnblock ? IconButtonVariant.LIKE : IconButtonVariant.TRASH
         }
         labelOverride={actionIsUnblock ? "Unblock" : "Unmatch"}
+        className={"h-12 w-12 p-3"}
         action={takeAction}
       />
     </div>

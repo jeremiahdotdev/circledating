@@ -19,9 +19,7 @@ import { handleError } from "@/utils/handleError";
 type FormProps<T extends FieldValues> = {
   children: React.ReactNode | React.ReactNode[];
   form: UseFormReturn<T, unknown, undefined>;
-  onSubmit: (
-    e?: React.BaseSyntheticEvent<object, unknown, unknown> | undefined
-  ) => Promise<void>;
+  onSubmit: (e?: React.FormEvent) => Promise<void>;
   className?: string;
 };
 
@@ -32,7 +30,7 @@ const Form = <TFieldValues extends FieldValues = FieldValues>({
   onSubmit,
 }: FormProps<TFieldValues>) => {
   const handleSubmit = React.useCallback(
-    (e?: React.BaseSyntheticEvent<object, unknown, unknown>) => {
+    (e: React.FormEvent) => {
       onSubmit(e).catch(handleError);
     },
     [onSubmit]

@@ -155,6 +155,7 @@ export const NewProfile = memo(function NewProfile({
             control={form.control}
             name="weight"
             label="What is your current weight?"
+            placeholder="Input..."
             inlineLabel={selectedWeightUnit}
             labelPosition="right"
             type="number"

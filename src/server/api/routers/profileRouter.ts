@@ -2,6 +2,7 @@ import {
   CreateProfileSchema,
   ProfileSchema,
   ProfileSchemaType,
+  UpdateProfileSchema,
   isProfile,
 } from "@/schemas/Profile";
 import {
@@ -89,6 +90,39 @@ export const profileRouter = createTRPCRouter({
           links: {},
           interactions: {},
           affections: {},
+        },
+      });
+      return result;
+    }),
+  update: publicProcedure
+    .input(UpdateProfileSchema)
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.prisma.userProfile.update({
+        where: {
+          userId: input.userId,
+        },
+        data: {
+          bio: input.bio,
+          weight: input.weight,
+          height: input.height,
+          income: input.income,
+          drinking: input.drinking,
+          consumables: input.consumables,
+          children: input.children,
+          purity: input.purity,
+          religion: input.religion,
+          politicalBeliefs: input.politicalBeliefs,
+          levelOfEducation: input.levelOfEducation,
+          activity: input.activity,
+          willingToRelocate: input.willingToRelocate,
+          ethnicity: input.ethnicity,
+          maritalStatus: input.maritalStatus,
+          location: {
+            connectOrCreate: {
+              create: { ...input.location },
+              where: { id: input.location.id },
+            },
+          },
         },
       });
       return result;

@@ -15,11 +15,13 @@ interface ComboBoxFormFieldProps<
   Values extends FieldValues,
   ValueType extends Values[keyof Values],
 > extends UseControllerProps<Values> {
-  label: string;
+  label?: string;
+  className?: string;
   options: ComboboxOption<ValueType>[];
   description?: string;
   required?: boolean;
   filterOn?: ValueType[];
+  selectedValue?: ValueType;
 }
 
 export const ComboBoxFormField = <
@@ -29,19 +31,21 @@ export const ComboBoxFormField = <
   props: ComboBoxFormFieldProps<Values, ValueType>
 ) => {
   const { field, fieldState } = useController(props);
-
   return (
-    <FormItem className="mb-2 flex flex-col">
-      <FormLabel>
-        {props.label}
-        <RequiredAsterisk required={props.required} />
-      </FormLabel>
+    <FormItem className="mb-2 flex w-full flex-col">
+      {props.label && (
+        <FormLabel>
+          {props.label}
+          <RequiredAsterisk required={props.required} />
+        </FormLabel>
+      )}
       <FormControl>
         <Combobox
           onSelect={field.onChange}
-          name={props.label}
           options={props.options}
           filterOn={props.filterOn}
+          className={props.className}
+          selectedValue={field.value}
         />
       </FormControl>
       {props.description && (
