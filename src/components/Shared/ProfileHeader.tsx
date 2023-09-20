@@ -8,9 +8,15 @@ export type ProfileHeaderProps = {
   header: string;
   image?: string;
   canEdit?: boolean;
+  handleUpdateImage?: (image: string) => void;
 };
 
-export function ProfileHeader({ header, image, canEdit }: ProfileHeaderProps) {
+export function ProfileHeader({
+  header,
+  image,
+  canEdit,
+  handleUpdateImage,
+}: ProfileHeaderProps) {
   const [openState, setOpenState] = useState(false);
   const handleOpen = useCallback(() => setOpenState(true), []);
 
@@ -23,10 +29,10 @@ export function ProfileHeader({ header, image, canEdit }: ProfileHeaderProps) {
           alt={header + "_profile"}
           className="text-4xl md:m-2"
         />
-        {canEdit && (
+        {canEdit && handleUpdateImage && (
           <span className="absolute bottom-0 right-0">
             <DialogModal setOpen={setOpenState} open={openState}>
-              <AvatarUpload />
+              <AvatarUpload imageHandler={handleUpdateImage} />
             </DialogModal>
             <IconButton
               variant={IconButtonVariant.UPLOAD}

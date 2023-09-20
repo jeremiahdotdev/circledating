@@ -22,7 +22,7 @@ import { z } from "zod";
 
 export const ProfilePartial = {
   userId: z.string(),
-  imageId: z.string().optional(),
+  image: z.string().optional(),
   username: z.string().min(3).max(20),
   sex: GenderSchema,
   birthDate: z.date(),
@@ -64,10 +64,17 @@ export const CreateProfileSchema = z.object({
 export const UpdateProfileSchema = z.object({
   ...ProfilePartial,
   location: LocationSchema,
+  links: z.array(LinkSchema).optional(),
+});
+
+export const UpdateImageSchema = z.object({
+  userId: z.string(),
+  image: z.string(),
 });
 
 export type CreateProfileSchemaType = z.infer<typeof CreateProfileSchema>;
 export type UpdateProfileSchemaType = z.infer<typeof UpdateProfileSchema>;
+export type UpdateImageSchemaType = z.infer<typeof UpdateImageSchema>;
 
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
 export type ProfilePartialSchemaType = z.infer<typeof ProfilePartialSchema>;

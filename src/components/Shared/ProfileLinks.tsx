@@ -9,15 +9,19 @@ import React from "react";
 
 export type ProfileLinksProps = {
   links: LinkSchemaType[];
+  isEditMode?: boolean;
+  editor?: React.ReactNode;
 };
 
-export function ProfileLinks({ links }: ProfileLinksProps) {
+export function ProfileLinks({ links, isEditMode, editor }: ProfileLinksProps) {
   return links.map(({ href, id }) => (
     <ProfileAttribute
       key={id}
       option={ProfileAttributeOptions.link}
       attribute={href}
       variant={ProfileAttributeVariant.PROFILE_LINK}
+      isEditMode={isEditMode}
+      editor={editor}
     />
   ));
 }

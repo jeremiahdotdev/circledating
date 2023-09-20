@@ -1,4 +1,9 @@
-import { CircleWithAggregatesSchemaType } from "@/schemas/Circle";
+import {
+  CircleWithAggregatesSchemaType,
+  UpdateCircleSchema,
+  UpdateCircleSchemaType,
+} from "@/schemas/Circle";
+import { Form } from "../ui/form";
 import { FormButton } from "../ui/FormButton";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
@@ -8,34 +13,42 @@ import {
 } from "../Profile/ProfileAttribute";
 import { ProfileAttributeList } from "../Shared/ProfileAttributeList";
 import { ProfileAttributeOptions } from "../Profile/ProfileAttributeOptions";
+import { ProfileDescription } from "../Profile/ProfileDescription";
 import { ProfileHeader } from "../Shared/ProfileHeader";
 import { ProfileLinks } from "../Shared/ProfileLinks";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { ProfileSection } from "../Profile/ProfileSection";
 import { ReportAggregatesSchemaType } from "@/schemas/Report";
 import { SearchForm } from "./SearchForm";
+import { TextAreaFormField } from "../ui/TextAreaFormField";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
 import { routes } from "@/globals/routes";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useState } from "react";
 import state from "@/utils/user.store";
 
 export type CircleProfileProps = {
   circle: CircleWithAggregatesSchemaType;
+  canEdit?: boolean;
 };
 
-export function CircleProfile({ circle }: CircleProfileProps) {
+export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
   const router = useRouter();
 
+  const update = api.circles.update.useMutation();
   const report = api.reports.readAllByCircle.useMutation();
   const leave = api.circles.removeUserFromCircle.useMutation();
   const join = api.circles.addUserToCircle.useMutation();
   const request = api.circles.requestToJoinCircle.useMutation();
   const remove = api.circles.denyRequestToJoinCircle.useMutation();
   const search = api.circles.searchCircleForUser.useMutation();
+  const updateImage = api.circles.updateImage.useMutation();
 
   const [circleState, setCircleState] = useState(circle);
+
   const [searchProfileState, setSearchProfileState] = useState(
     [] as ProfileSchemaType[]
   );
@@ -44,6 +57,38 @@ export function CircleProfile({ circle }: CircleProfileProps) {
   );
   const [reportedProfilesState, setReportedProfilesState] = useState(
     [] as ReportAggregatesSchemaType[]
+  );
+  const [editMode, setEditMode] = useState(false);
+
+  const handleUpdateImage = useCallback(
+    (imageURL: string) => {
+      updateImage
+        .mutateAsync({ id: circleState.id, image: imageURL })
+        .then(() => {
+          setCircleState({ ...circleState, image: imageURL });
+        })
+        .catch(handleError);
+    },
+    [updateImage, circleState, setCircleState]
+  );
+
+  const form = useForm<UpdateCircleSchemaType>({
+    resolver: zodResolver(UpdateCircleSchema),
+    defaultValues: {
+      ...circleState,
+    },
+  });
+
+  const onInvalidData = useCallback(handleError, []);
+  const onValidData = useCallback(
+    (data: UpdateCircleSchemaType) => {
+      setEditMode(false);
+      if (data.description !== circleState.description) {
+        update.mutateAsync(data).catch(handleError);
+        setCircleState({ ...circleState, ...data });
+      }
+    },
+    [setCircleState, update, circleState]
   );
 
   const isMember = circleState?.users?.length;
@@ -133,10 +178,17 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         setReportedProfilesState(response as ReportAggregatesSchemaType[])
       )
       .catch(handleError);
-  }, [report]);
+  }, [report, setReportedProfilesState, circle]);
   return (
-    <div className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
+    <Form
+      onSubmit={form.handleSubmit(onValidData, onInvalidData)}
+      form={form}
+      className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center gap-6"
+    >
       <ProfileHeader
+        canEdit={canEdit}
+        handleUpdateImage={handleUpdateImage}
+        image={circleState.image ?? ""}
         // TODO: Replace with actual picture.
         header={circle.label}
       />
@@ -164,43 +216,55 @@ export function CircleProfile({ circle }: CircleProfileProps) {
         {circle.links && <ProfileLinks links={circle.links} />}
       </ProfileAttributeList>
       {circle.description && (
-        <ProfileSection heading={`About`}>
-          <p>{circle.description}</p>
+        <ProfileSection
+          heading={`About`}
+          canEdit={canEdit}
+          setEditMode={setEditMode}
+          editMode={editMode}
+        >
+          <ProfileDescription
+            description={circleState.description}
+            isEditMode={editMode}
+            editor={
+              <TextAreaFormField name="description" control={form.control} />
+            }
+          />
         </ProfileSection>
       )}
-      {/* // TODO: Check if admin */}
-      <ProfileSection heading={`Requests`}>
-        <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
-          <ItemList
-            items={requestingProfileState.map(ParseItem)}
-            clickAction={handleRoute}
-            deleteAction={handleDeny}
-            createAction={handleAccept}
-          />
-        </div>
-      </ProfileSection>
-      {/* // TODO: Check if admin */}
-      <ProfileSection heading={`Users`}>
-        <SearchForm handleSearch={handleSearch} />
-        <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
-          <ItemList
-            items={searchProfileState.map(ParseItem)}
-            clickAction={handleRoute}
-            deleteAction={handleKick}
-          />
-        </div>
-      </ProfileSection>
-      {/* // TODO: Check if admin */}
-      <ProfileSection heading={`Reports`}>
-        <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
-          <ItemList
-            items={reportedProfilesState.map(ParseItem)}
-            clickAction={handleRoute}
-            deleteAction={handleKick}
-          />
-        </div>
-        <FormButton label="Load..." onClick={handleLoadReports} />
-      </ProfileSection>
-    </div>
+      {canEdit && (
+        <>
+          <ProfileSection heading={`Requests`}>
+            <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
+              <ItemList
+                items={requestingProfileState.map(ParseItem)}
+                clickAction={handleRoute}
+                deleteAction={handleDeny}
+                createAction={handleAccept}
+              />
+            </div>
+          </ProfileSection>
+          <ProfileSection heading={`Users`}>
+            <SearchForm handleSearch={handleSearch} />
+            <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
+              <ItemList
+                items={searchProfileState.map(ParseItem)}
+                clickAction={handleRoute}
+                deleteAction={handleKick}
+              />
+            </div>
+          </ProfileSection>
+          <ProfileSection heading={`Reports`}>
+            <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
+              <ItemList
+                items={reportedProfilesState.map(ParseItem)}
+                clickAction={handleRoute}
+                deleteAction={handleKick}
+              />
+            </div>
+            <FormButton label="Load..." onClick={handleLoadReports} />
+          </ProfileSection>
+        </>
+      )}
+    </Form>
   );
 }

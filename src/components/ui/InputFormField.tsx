@@ -16,7 +16,7 @@ interface InputFormFieldProps<Values extends FieldValues>
   label?: string;
   description?: string;
   placeholder?: string;
-  type?: "number" | "text";
+  type?: "number" | "text" | "array";
   className?: string;
   required?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;

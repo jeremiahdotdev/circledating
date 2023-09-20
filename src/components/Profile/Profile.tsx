@@ -51,6 +51,30 @@ export type ProfileProps = {
   ) => Promise<void>;
 };
 
+export const isDirty = (
+  data: ProfileSchemaType,
+  profileState: ProfileSchemaType
+) => {
+  return (
+    data.bio !== profileState.bio ||
+    data.activity !== profileState.activity ||
+    data.children !== profileState.children ||
+    data.consumables !== profileState.consumables ||
+    data.drinking !== profileState.drinking ||
+    data.ethnicity !== profileState.ethnicity ||
+    data.height !== profileState.height ||
+    data.income !== profileState.income ||
+    data.levelOfEducation !== profileState.levelOfEducation ||
+    data.location !== profileState.location ||
+    data.maritalStatus !== profileState.maritalStatus ||
+    data.purity !== profileState.purity ||
+    data.religion !== profileState.religion ||
+    data.weight !== profileState.weight ||
+    data.willingToRelocate !== profileState.willingToRelocate ||
+    data.politicalBeliefs !== profileState.politicalBeliefs
+  );
+};
+
 export function Profile({ profile, canEdit, interact }: ProfileProps) {
   const router = useRouter();
   const [profileState, setProfileState] = useState(
@@ -58,6 +82,20 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
   );
 
   const update = api.profiles.update.useMutation();
+  const updateImage = api.profiles.updateImage.useMutation();
+
+  const handleUpdateImage = useCallback(
+    (imageURL: string) => {
+      updateImage
+        .mutateAsync({ userId: profileState.userId, image: imageURL })
+        .then(() => {
+          setProfileState({ ...profileState, image: imageURL });
+        })
+        .catch(handleError);
+    },
+    [updateImage, profileState, setProfileState]
+  );
+
   const form = useForm<UpdateProfileSchemaType>({
     resolver: zodResolver(UpdateProfileSchema),
     defaultValues: {
@@ -69,25 +107,8 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
 
   const onValidData = useCallback(
     (data: UpdateProfileSchemaType) => {
-      setEditModeMode(false);
-      if (
-        data.bio !== profileState.bio ||
-        data.activity !== profileState.activity ||
-        data.children !== profileState.children ||
-        data.consumables !== profileState.consumables ||
-        data.drinking !== profileState.drinking ||
-        data.ethnicity !== profileState.ethnicity ||
-        data.height !== profileState.height ||
-        data.income !== profileState.income ||
-        data.levelOfEducation !== profileState.levelOfEducation ||
-        data.location !== profileState.location ||
-        data.maritalStatus !== profileState.maritalStatus ||
-        data.purity !== profileState.purity ||
-        data.religion !== profileState.religion ||
-        data.weight !== profileState.weight ||
-        data.willingToRelocate !== profileState.willingToRelocate ||
-        data.politicalBeliefs !== profileState.politicalBeliefs
-      ) {
+      setEditMode(false);
+      if (isDirty(profileState, data)) {
         update.mutateAsync(data).catch(handleError);
         setProfileState(data);
       }
@@ -108,7 +129,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
     [router]
   );
 
-  const [editMode, setEditModeMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   return (
     <Form
       onSubmit={form.handleSubmit(onValidData, onInvalidData)}
@@ -117,8 +138,8 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
     >
       <ProfileHeader
         canEdit={canEdit}
-        // TODO: Replace with actual picture.
-        image="https://res.cloudinary.com/dqpbm3xll/image/upload/v1694616299/samples/smile.jpg"
+        handleUpdateImage={handleUpdateImage}
+        image={profileState.image ?? ""}
         header={`${profile.username} (${age})`}
       />
       <ProfileLocation
@@ -137,14 +158,25 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
       />
       {profile.links && (
         <ProfileAttributeList>
-          <ProfileLinks links={profile.links} />
+          <ProfileLinks
+            links={profile.links}
+            isEditMode={editMode}
+            editor={
+              <InputFormField
+                name="links"
+                control={form.control}
+                type="array"
+                className="flex w-full self-center sm:w-72"
+              />
+            }
+          />
         </ProfileAttributeList>
       )}
       <ProfileSection
         heading={"About"}
         canEdit={true}
         editMode={editMode}
-        setEditMode={setEditModeMode}
+        setEditMode={setEditMode}
       >
         <ProfileDescription
           description={profileState.bio}
@@ -156,7 +188,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
         heading={"Attributes"}
         canEdit={true}
         editMode={editMode}
-        setEditMode={setEditModeMode}
+        setEditMode={setEditMode}
       >
         <div className="grid h-full w-full items-center justify-around md:grid-cols-2 lg:grid-cols-3">
           <ProfileCardSubheading title={"General"} />

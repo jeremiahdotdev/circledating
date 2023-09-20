@@ -2,6 +2,7 @@ import {
   CreateProfileSchema,
   ProfileSchema,
   ProfileSchemaType,
+  UpdateImageSchema,
   UpdateProfileSchema,
   isProfile,
 } from "@/schemas/Profile";
@@ -87,6 +88,7 @@ export const profileRouter = createTRPCRouter({
           circles: {
             connect: input.circles,
           },
+          image: "",
           links: {},
           interactions: {},
           affections: {},
@@ -123,6 +125,19 @@ export const profileRouter = createTRPCRouter({
               where: { id: input.location.id },
             },
           },
+        },
+      });
+      return result;
+    }),
+  updateImage: publicProcedure
+    .input(UpdateImageSchema)
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.prisma.userProfile.update({
+        where: {
+          userId: input.userId,
+        },
+        data: {
+          image: input.image,
         },
       });
       return result;

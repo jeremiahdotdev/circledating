@@ -7,8 +7,9 @@ export default async function handler(
   response: NextApiResponse
 ) {
   const file = routerQueryAttributeToString(request.query.filename);
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const blob = await put(file, request.body, {
+  const blob = await put(file.split(".")[0], request.body, {
     access: "public",
   });
 

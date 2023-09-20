@@ -31,5 +31,7 @@ export const CircleProfileView: React.FC<CircleProfileViewProps> = memo(() => {
       : [],
   } as CircleWithAggregatesSchemaType;
 
-  return <CircleProfile circle={circle} />;
+  // TODO: Check auth
+  const isAdmin = true;
+  return <CircleProfile circle={circle} canEdit={isAdmin} />;
 });

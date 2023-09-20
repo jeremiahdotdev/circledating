@@ -4,6 +4,7 @@ import { ConversationSchemaType } from "@/schemas/Conversation";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ListItemPicture } from "../ui/ListItemPicture";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
+import { api } from "@/utils/api";
 import { routes } from "@/globals/routes";
 import React, { useCallback } from "react";
 import state from "@/utils/user.store";
@@ -37,6 +38,9 @@ export function Conversation({
     onSelect(conversation);
   }, [onSelect, conversation]);
 
+  const request = api.profiles.read.useQuery({
+    username: usernames,
+  });
   const takeAction = useCallback(
     (click: React.MouseEvent<HTMLButtonElement>) => {
       click.stopPropagation();
@@ -56,8 +60,7 @@ export function Conversation({
     >
       <div className="aspect-square h-16 w-16">
         <ListItemPicture
-          // TODO: Replace with actual picture.
-          src="https://res.cloudinary.com/dqpbm3xll/image/upload/v1694616299/samples/smile.jpg"
+          src={request.data?.image}
           fallback={usernames.substring(0, 1)}
           alt={usernames}
         />

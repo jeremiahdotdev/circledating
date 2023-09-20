@@ -132,6 +132,7 @@ model Location {
 model UserProfile {
   userId          					 String           @id @default(uuid())
   username                           String           @unique
+  image                              String?           
   sex                                Gender
   birthDate                          DateTime
   height                             Int
@@ -180,6 +181,7 @@ model Circle {
   id         									String        						@id @default(uuid())
   name                                          String                              @unique
   label                                         String                              @unique
+  image                                         String?           
   description                                   String                              @db.LongText            
   isFeatured									Boolean                             @default(false)
   isPrivate 									Boolean                             @default(false)

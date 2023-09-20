@@ -70,6 +70,13 @@ export function ProfileAttribute({
   }, [attribute, option, weightUnit]);
 
   const renderVariant = useMemo(() => {
+    if (isEditMode)
+      return (
+        <span className="mx-2 flex items-center gap-2">
+          <FontAwesomeIcon className={"aspect-square h-5"} icon={option.icon} />
+          <span className="w-full">{editor}</span>
+        </span>
+      );
     switch (variant) {
       case ProfileAttributeVariant.PROFILE_CARD:
         return (
@@ -87,15 +94,7 @@ export function ProfileAttribute({
           </span>
         );
       case ProfileAttributeVariant.PROFILE:
-        return isEditMode ? (
-          <span className="mx-2 flex items-center gap-2">
-            <FontAwesomeIcon
-              className={"aspect-square h-5"}
-              icon={option.icon}
-            />
-            <span className="w-full">{editor}</span>
-          </span>
-        ) : (
+        return (
           <span className="grid h-16 grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">

@@ -1,5 +1,10 @@
 import { CircleLink, Prisma, UserLink, UserType } from "@prisma/client";
-import { CircleSchemaType, CreateCircleSchema } from "@/schemas/Circle";
+import {
+  CircleSchemaType,
+  CreateCircleSchema,
+  UpdateCircleSchema,
+  UpdateImageSchema,
+} from "@/schemas/Circle";
 import { LinkSchemaType, getSecureLinks } from "@/schemas/Link";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
 import { RequestSchemaType } from "@/schemas/Request";
@@ -144,6 +149,32 @@ export const circleRouter = createTRPCRouter({
       });
       return result;
     }),
+  update: publicProcedure
+    .input(UpdateCircleSchema)
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.prisma.circle.update({
+        data: {
+          description: input.description,
+        },
+        where: {
+          name: input.name,
+        },
+      });
+      return result;
+    }),
+  updateImage: publicProcedure
+    .input(UpdateImageSchema)
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.prisma.circle.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          image: input.image,
+        },
+      });
+      return result;
+    }),
   read: publicProcedure
     .input(
       z.object({
@@ -243,6 +274,7 @@ export const circleRouter = createTRPCRouter({
           ...noRestrictions,
           links: [],
           users: [],
+          image: c.image ?? "",
         };
         return circle;
       });
@@ -270,6 +302,7 @@ export const circleRouter = createTRPCRouter({
           ...noRestrictions,
           links: [],
           users: [],
+          image: c.image ?? "",
         };
         return circle;
       });
@@ -303,6 +336,7 @@ export const circleRouter = createTRPCRouter({
           ...noRestrictions,
           ...secureLinks(c?.links),
           users: [],
+          image: c.image ?? "",
         };
         return circle;
       });

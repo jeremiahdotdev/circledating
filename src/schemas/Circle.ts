@@ -20,6 +20,7 @@ export const Circle = {
   id: z.string(),
   label: z.string().min(3).max(20),
   name: z.string().min(3).max(20),
+  image: z.string().optional(),
   description: z.string().max(2000),
   isPrivate: z.boolean(),
   isFeatured: z.boolean(),
@@ -60,6 +61,14 @@ export const CreateCircleSchema = z.object({
   updatedAt: Circle.updatedAt.optional(),
   createdAt: Circle.createdAt.optional(),
 });
+export const UpdateCircleSchema = z.object({
+  name: Circle.name,
+  description: Circle.description,
+});
+export const UpdateImageSchema = z.object({
+  id: z.string(),
+  image: z.string(),
+});
 
 export const CircleWithAggregatesSchema = z.object({
   ...Circle,
@@ -74,6 +83,8 @@ import { RequestSchema } from "./Request";
 import { UserCircleSchema } from "./UserCircle";
 
 export type CircleSchemaType = z.infer<typeof CircleSchema>;
+export type UpdateImageSchemaType = z.infer<typeof UpdateImageSchema>;
+export type UpdateCircleSchemaType = z.infer<typeof UpdateCircleSchema>;
 export type CreateCircleSchemaType = z.infer<typeof CreateCircleSchema>;
 export type CircleWithAggregatesSchemaType = z.infer<
   typeof CircleWithAggregatesSchema

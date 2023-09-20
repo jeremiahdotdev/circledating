@@ -7,28 +7,54 @@ import Image from "next/image";
 import React from "react";
 import type { PutBlobResult } from "@vercel/blob";
 
-export default function AvatarUpload() {
+export type AvatarUploadProps = {
+  imageHandler: (imageURL: string) => void;
+};
+
+export default function AvatarUpload({ imageHandler }: AvatarUploadProps) {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
+  const [image, setImage] = useState("");
+  const [buttonText, setButtonText] = useState("Upload");
 
-  const file = inputFileRef?.current?.files?.[0];
+  const toBase64 = useCallback(
+    async (file: File) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+      }),
+    []
+  );
+
   const onSubmit = useCallback(
     (event: React.FormEvent) => {
+      const file = inputFileRef?.current?.files?.[0];
       event.preventDefault();
-      if (!file) return;
-      const options = {
-        method: "POST",
-        body: file,
-      };
-
-      fetch(routes.uploadAvatar(file.name).href, options)
-        .then(async (response) => {
-          const newBlob = (await response.json()) as PutBlobResult;
-          setBlob(newBlob);
-        })
-        .catch(handleError);
+      if (file)
+        toBase64(file)
+          .then(async (fileAsBase64) => {
+            const responseFromServer = await fetch(
+              routes.uploadAvatar(file.name).href,
+              {
+                method: "POST",
+                body: fileAsBase64 as string,
+              }
+            );
+            const newBlob = (await responseFromServer.json()) as PutBlobResult;
+            setBlob(newBlob);
+            imageHandler(newBlob.url);
+            const imageResponse = await fetch(newBlob.url, {
+              method: "GET",
+            });
+            const newImage = await imageResponse.text();
+            setImage(newImage);
+            setButtonText("Uploaded");
+          })
+          .catch(handleError);
     },
-    [file]
+    [toBase64, imageHandler]
   );
 
   return (
@@ -36,17 +62,16 @@ export default function AvatarUpload() {
       <div className="rounded-md border">
         <Input name="file" ref={inputFileRef} type="file" required />
         {blob && (
-          <Image
-            src={`${blob.url}`}
-            width={375}
-            height={375}
-            alt={file?.name ?? ""}
-          />
+          <Image src={image} width={375} height={375} alt={blob.pathname} />
         )}
       </div>
 
-      <Button type="submit" className="w-full bg-purple-600">
-        Upload
+      <Button
+        disabled={buttonText !== "Upload"}
+        type="submit"
+        className="w-full bg-purple-600"
+      >
+        {buttonText}
       </Button>
     </form>
   );

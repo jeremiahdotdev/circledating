@@ -74,8 +74,7 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
         <div className="flex h-full flex-wrap items-center justify-around border-b py-6 text-sm ring-offset-background sm:px-4">
           <div className="flex w-3/4 items-center justify-center pl-4 sm:w-1/4 ">
             <ProfilePicture
-              // TODO: Replace with actual picture.
-              src="https://res.cloudinary.com/dqpbm3xll/image/upload/v1694616299/samples/smile.jpg"
+              src={profile.image}
               fallback={profile.username.substring(0, 1)}
               alt={profile.username + "_profile"}
             />
