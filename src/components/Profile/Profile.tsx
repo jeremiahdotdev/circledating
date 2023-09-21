@@ -166,7 +166,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
         />
       </ProfileAttributeList>
       <ProfileSection
-        heading={"About"}
+        heading="About"
         canEdit={true}
         editMode={editMode}
         setEditMode={setEditMode}
@@ -178,13 +178,13 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
         />
       </ProfileSection>
       <ProfileSection
-        heading={"Attributes"}
+        heading="Attributes"
         canEdit={true}
         editMode={editMode}
         setEditMode={setEditMode}
       >
         <div className="grid h-full w-full items-center justify-around md:grid-cols-2 lg:grid-cols-3">
-          <ProfileCardSubheading title={"General"} />
+          <ProfileCardSubheading title="General" />
           <ProfileAttribute
             option={ProfileAttributeOptions.religion}
             variant={ProfileAttributeVariant.PROFILE}
@@ -346,7 +346,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
           />
         </div>
       </ProfileSection>
-      <ProfileSection heading={`Circles`}>
+      <ProfileSection heading="Circles">
         <div className="grid w-full sm:grid-cols-2">
           {profile.circles && (
             <ItemList

@@ -133,7 +133,7 @@ export const NewCircle = memo(function NewProfile() {
               { value: "", label: "Public" },
               { value: "easteregg", label: "Private" },
             ]}
-            selectedValue={""}
+            selectedValue=""
           />
         </FormSection>
         <FormSection

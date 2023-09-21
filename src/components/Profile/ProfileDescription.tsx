@@ -1,3 +1,4 @@
+import { systemMessages } from "@/globals/systemMessages";
 import React from "react";
 
 export type ProfileDescriptionProps = {
@@ -14,6 +15,6 @@ export function ProfileDescription({
   return isEditMode ? (
     <span className="w-full">{editor}</span>
   ) : (
-    <p>{description}</p>
+    <p>{description ?? systemMessages.NEW_CIRCLE_DESCRIPTION}</p>
   );
 }

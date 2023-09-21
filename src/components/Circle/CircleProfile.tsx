@@ -142,7 +142,6 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
   const handleAccept = useCallback(
     async (userIdItem: ItemType) => {
       await join.mutateAsync(circlePayload(userIdItem.value));
-      // removes the request
       await remove.mutateAsync(circlePayload(userIdItem.value));
       setSearchProfileState([
         ...searchProfileState.filter((i) => i.userId !== userIdItem.value),
@@ -193,7 +192,6 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
         canEdit={canEdit}
         handleUpdateImage={handleUpdateImage}
         image={circleState.image ?? ""}
-        // TODO: Replace with actual picture.
         header={circle.label}
       />
       <IconButton
@@ -230,25 +228,23 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
           }
         />
       </ProfileAttributeList>
-      {circle.description && (
-        <ProfileSection
-          heading={`About`}
-          canEdit={canEdit}
-          setEditMode={setEditMode}
-          editMode={editMode}
-        >
-          <ProfileDescription
-            description={circleState.description}
-            isEditMode={editMode}
-            editor={
-              <TextAreaFormField name="description" control={form.control} />
-            }
-          />
-        </ProfileSection>
-      )}
+      <ProfileSection
+        heading="About"
+        canEdit={canEdit}
+        setEditMode={setEditMode}
+        editMode={editMode}
+      >
+        <ProfileDescription
+          description={circleState.description}
+          isEditMode={editMode}
+          editor={
+            <TextAreaFormField name="description" control={form.control} />
+          }
+        />
+      </ProfileSection>
       {canEdit && (
         <>
-          <ProfileSection heading={`Requests`}>
+          <ProfileSection heading="Requests">
             <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
               <ItemList
                 items={requestingProfileState.map(ParseItem)}
@@ -258,7 +254,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
               />
             </div>
           </ProfileSection>
-          <ProfileSection heading={`Users`}>
+          <ProfileSection heading="Users">
             <SearchForm handleSearch={handleSearch} />
             <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
               <ItemList
@@ -268,7 +264,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
               />
             </div>
           </ProfileSection>
-          <ProfileSection heading={`Reports`}>
+          <ProfileSection heading="Reports">
             <div className="h-96 w-full overflow-y-scroll border py-3 shadow-inner-xl">
               <ItemList
                 items={reportedProfilesState.map(ParseItem)}
