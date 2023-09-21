@@ -14,14 +14,16 @@ export type ProfileLinksProps = {
 };
 
 export function ProfileLinks({ links, isEditMode, editor }: ProfileLinksProps) {
-  return links.map(({ href, id }) => (
-    <ProfileAttribute
-      key={id}
-      option={ProfileAttributeOptions.link}
-      attribute={href}
-      variant={ProfileAttributeVariant.PROFILE_LINK}
-      isEditMode={isEditMode}
-      editor={editor}
-    />
-  ));
+  if (isEditMode) {
+    return editor;
+  } else {
+    return links.map(({ href }, index) => (
+      <ProfileAttribute
+        key={index}
+        option={ProfileAttributeOptions.link}
+        attribute={href}
+        variant={ProfileAttributeVariant.PROFILE_LINK}
+      />
+    ));
+  }
 }

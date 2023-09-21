@@ -1,4 +1,3 @@
-import { IconButton, IconButtonVariant } from "../Shared/IconButton";
 import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";

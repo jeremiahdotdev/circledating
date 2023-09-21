@@ -1,11 +1,10 @@
-import { CircleLink, Prisma, UserLink, UserType } from "@prisma/client";
 import {
   CircleSchemaType,
   CreateCircleSchema,
   UpdateCircleSchema,
   UpdateImageSchema,
 } from "@/schemas/Circle";
-import { LinkSchemaType, getSecureLinks } from "@/schemas/Link";
+import { Prisma, UserType } from "@prisma/client";
 import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
 import { RequestSchemaType } from "@/schemas/Request";
 import { createTRPCRouter, publicProcedure } from "../trpc";
@@ -109,29 +108,10 @@ export const allRestrictions = {
   onlyLookingForTraditionalHouseholdRestriction: true,
 };
 
-export const secureLinks = (links: UserLink[] | CircleLink[] | undefined) => ({
-  links: getSecureLinks(links),
-});
-
 export const circleRouter = createTRPCRouter({
   create: publicProcedure
     .input(z.object({ circle: CreateCircleSchema, user: ProfileSchema }))
     .mutation(async ({ input, ctx }) => {
-      const handleLinks = input.circle.links
-        ? {
-            createMany: {
-              data: [input.circle.links].map(
-                (link) =>
-                  ({
-                    href: link,
-                    id: undefined,
-                    userId: undefined,
-                    circleId: input.circle.id,
-                  }) as LinkSchemaType
-              ),
-            },
-          }
-        : {};
       const result = await ctx.prisma.circle.create({
         data: {
           ...input.circle,
@@ -144,7 +124,6 @@ export const circleRouter = createTRPCRouter({
           },
           requests: undefined,
           reports: undefined,
-          links: handleLinks,
         },
       });
       return result;
@@ -155,6 +134,7 @@ export const circleRouter = createTRPCRouter({
       const result = await ctx.prisma.circle.update({
         data: {
           description: input.description,
+          links: input.links,
         },
         where: {
           name: input.name,
@@ -211,7 +191,6 @@ export const circleRouter = createTRPCRouter({
             },
           },
           reports: true,
-          links: true,
           _count: {
             select: { users: true },
           },
@@ -325,18 +304,15 @@ export const circleRouter = createTRPCRouter({
           },
           AND: isCompatibleWithCurrentUser(input.currentUserProfile),
         },
-        include: {
-          links: true,
-        },
       });
 
       const circles: CircleSchemaType[] = result.map((c) => {
         const circle: CircleSchemaType = {
           ...c,
           ...noRestrictions,
-          ...secureLinks(c?.links),
           users: [],
           image: c.image ?? "",
+          links: [],
         };
         return circle;
       });
@@ -351,8 +327,8 @@ export const circleRouter = createTRPCRouter({
         currentUserProfile: ProfileSchema,
       })
     )
-    .mutation(({ input, ctx }) => {
-      return ctx.prisma.userProfile.findMany({
+    .mutation(async ({ input, ctx }) => {
+      const result = ctx.prisma.userProfile.findMany({
         take: 100,
         where: {
           username: {
@@ -368,6 +344,8 @@ export const circleRouter = createTRPCRouter({
           location: true,
         },
       });
+
+      return result;
     }),
   removeUserFromCircle: publicProcedure
     .input(

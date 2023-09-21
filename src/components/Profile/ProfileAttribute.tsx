@@ -23,9 +23,11 @@ export enum ProfileAttributeVariant {
   PROFILE_LINK = "profile_link",
 }
 
+export type AttributeType = ProfileAttributeType | number | Date | Url;
+
 export type ProfileAttributeProps = {
   option: ProfileAttributeOptionType;
-  attribute?: ProfileAttributeType | number | Date | Url;
+  attribute?: AttributeType;
   weightUnit?: WeightUnit;
   isEditMode?: boolean;
   editor?: React.ReactNode;

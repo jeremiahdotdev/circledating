@@ -53,6 +53,7 @@ export const InputFormField = <Values extends FieldValues>(
           type={props.type ?? "text"}
           className={props.className}
           onChange={customOnChange}
+          defaultValue={props.defaultValue}
         />
       </FormControl>
       {fieldState.error?.message && (

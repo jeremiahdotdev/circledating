@@ -9,7 +9,9 @@ import {
   faDoorOpen,
   faEnvelope,
   faExclamation,
+  faMinus,
   faPaperPlane,
+  faPlus,
   faTrashCan,
   faUpload,
   faX,
@@ -45,6 +47,8 @@ export enum IconButtonVariant {
   EDIT = "edit",
   UPDATE = "update",
   CANCEL = "cancel",
+  PLUS = "plus",
+  MINUS = "minus",
 }
 
 export type IconButtonProps = {
@@ -73,6 +77,8 @@ export function IconButton({
   const [dialogOpenState, setDialogOpenState] = useState(false);
   const [disabledState, setDisabledState] = useState(false);
   const option = useMemo(() => {
+    const subtle =
+      "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none";
     switch (variant) {
       case IconButtonVariant.MAIL:
         return {
@@ -141,22 +147,31 @@ export function IconButton({
         return {
           label: "Edit",
           icon: faPenToSquare,
-          style:
-            "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none",
+          style: subtle,
         } as IconButtonOptions;
       case IconButtonVariant.UPDATE:
         return {
           label: "Update",
           icon: faCheckCircle,
-          style:
-            "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none",
+          style: subtle,
         } as IconButtonOptions;
       case IconButtonVariant.CANCEL:
         return {
           label: "Cancel",
           icon: faXmarkCircle,
-          style:
-            "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none",
+          style: subtle,
+        } as IconButtonOptions;
+      case IconButtonVariant.PLUS:
+        return {
+          label: "Plus",
+          icon: faPlus,
+          style: subtle,
+        } as IconButtonOptions;
+      case IconButtonVariant.MINUS:
+        return {
+          label: "Minus",
+          icon: faMinus,
+          style: subtle,
         } as IconButtonOptions;
       default: // x
         return {

@@ -57,13 +57,14 @@ export const CreateCircleSchema = z.object({
   id: Circle.id.optional(),
   name: Circle.name.optional(),
   code: Circle.code.optional(),
-  links: z.string(),
+  links: z.array(LinkSchema).optional(),
   updatedAt: Circle.updatedAt.optional(),
   createdAt: Circle.createdAt.optional(),
 });
 export const UpdateCircleSchema = z.object({
   name: Circle.name,
   description: Circle.description,
+  links: z.array(LinkSchema).optional(),
 });
 export const UpdateImageSchema = z.object({
   id: z.string(),

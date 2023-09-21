@@ -158,7 +158,7 @@ model UserProfile {
   circles             				 UserCircle[]
   interactions  	  			     UserInteraction[]    	@relation("userInteractions") 
   affections    	  			     UserInteraction[]    	@relation("userAffections") 
-  links         					 UserLink[]        
+  links         					 Json?       
 
   @@index([locationId])
 }
@@ -204,7 +204,7 @@ model Circle {
   religionRestriction                           Json?
   users                                         UserCircle[]
   selected                                      SelectedCircle[]
-  links         					            CircleLink[]   
+  links         					            Json?
   requests										CircleRequest[]     
   reports										UserReport[]     
   createdAt           							DateTime     						@default(now())
@@ -319,24 +319,6 @@ model UserConversation {
 
   @@index([userId])
   @@index([conversationId])
-}
-
-model UserLink {
-  id                  String         @id @default(uuid())
-  userId              String       
-  href                String         
-  user                UserProfile    @relation(fields: [userId], references: [userId])  
-
-  @@index([userId])    
-}
-
-model CircleLink {
-  id                  String         @id @default(uuid())
-  circleId            String       
-  href                String         
-  circle              Circle         @relation(fields: [circleId], references: [id])  
-
-  @@index([circleId])    
 }
 
 model CircleRequest {

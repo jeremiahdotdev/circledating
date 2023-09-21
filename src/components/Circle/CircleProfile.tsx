@@ -7,6 +7,7 @@ import { Form } from "../ui/form";
 import { FormButton } from "../ui/FormButton";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
+import { LinksEditorFormField } from "../Shared/LinksEditorFormField";
 import {
   ProfileAttribute,
   ProfileAttributeVariant,
@@ -83,7 +84,10 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
   const onValidData = useCallback(
     (data: UpdateCircleSchemaType) => {
       setEditMode(false);
-      if (data.description !== circleState.description) {
+      if (
+        data.description !== circleState.description ||
+        data.links !== circleState.links
+      ) {
         update.mutateAsync(data).catch(handleError);
         setCircleState({ ...circleState, ...data });
       }
@@ -213,7 +217,18 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
           attribute={circle?.createdAt}
           variant={ProfileAttributeVariant.PROFILE}
         />
-        {circle.links && <ProfileLinks links={circle.links} />}
+        <ProfileLinks
+          links={circleState.links ?? []}
+          isEditMode={editMode}
+          editor={
+            <LinksEditorFormField
+              name="links"
+              control={form.control}
+              list={circleState.links ?? []}
+              max={1}
+            />
+          }
+        />
       </ProfileAttributeList>
       {circle.description && (
         <ProfileSection

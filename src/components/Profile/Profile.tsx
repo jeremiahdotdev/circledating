@@ -11,6 +11,9 @@ import { InputFormField } from "../ui/InputFormField";
 import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
+import { LinkSchemaType } from "@/schemas/Link";
+import { LinksEditor } from "../Shared/LinksEditor";
+import { LinksEditorFormField } from "../Shared/LinksEditorFormField";
 import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
 import { LocationSelectionValues } from "@/globals/location";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
@@ -71,7 +74,8 @@ export const isDirty = (
     data.religion !== profileState.religion ||
     data.weight !== profileState.weight ||
     data.willingToRelocate !== profileState.willingToRelocate ||
-    data.politicalBeliefs !== profileState.politicalBeliefs
+    data.politicalBeliefs !== profileState.politicalBeliefs ||
+    data.links !== profileState.links
   );
 };
 
@@ -80,10 +84,8 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
   const [profileState, setProfileState] = useState(
     profile as UpdateProfileSchemaType
   );
-
   const update = api.profiles.update.useMutation();
   const updateImage = api.profiles.updateImage.useMutation();
-
   const handleUpdateImage = useCallback(
     (imageURL: string) => {
       updateImage
@@ -102,12 +104,12 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
       ...profileState,
     },
   });
-
   const onInvalidData = useCallback(handleError, []);
-
   const onValidData = useCallback(
     (data: UpdateProfileSchemaType) => {
       setEditMode(false);
+      console.log("localList", profileState.links);
+
       if (isDirty(profileState, data)) {
         update.mutateAsync(data).catch(handleError);
         setProfileState(data);
@@ -115,11 +117,9 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
     },
     [setProfileState, update, profileState]
   );
-
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
-
   const handleRoute = useCallback(
     (circleNameItem: ItemType) => {
       const route = routes.circleByCircleNameAsLabel(circleNameItem.value);
@@ -128,7 +128,6 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
     },
     [router]
   );
-
   const [editMode, setEditMode] = useState(false);
   return (
     <Form
@@ -156,22 +155,19 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
           />
         }
       />
-      {profile.links && (
-        <ProfileAttributeList>
-          <ProfileLinks
-            links={profile.links}
-            isEditMode={editMode}
-            editor={
-              <InputFormField
-                name="links"
-                control={form.control}
-                type="array"
-                className="flex w-full self-center sm:w-72"
-              />
-            }
-          />
-        </ProfileAttributeList>
-      )}
+      <ProfileAttributeList>
+        <ProfileLinks
+          links={profileState.links ?? []}
+          isEditMode={editMode}
+          editor={
+            <LinksEditorFormField
+              name="links"
+              control={form.control}
+              list={profileState.links ?? []}
+            />
+          }
+        />
+      </ProfileAttributeList>
       <ProfileSection
         heading={"About"}
         canEdit={true}
@@ -244,7 +240,6 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
               />
             }
           />
-
           <ProfileCardSubheading title={"Lifestyle"} />
           <ProfileAttribute
             option={ProfileAttributeOptions.height}

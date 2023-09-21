@@ -119,6 +119,7 @@ export const profileRouter = createTRPCRouter({
           willingToRelocate: input.willingToRelocate,
           ethnicity: input.ethnicity,
           maritalStatus: input.maritalStatus,
+          links: input.links,
           location: {
             connectOrCreate: {
               create: { ...input.location },
@@ -224,7 +225,6 @@ export const profileRouter = createTRPCRouter({
         },
         include: {
           location: true,
-          links: true,
           circles: {
             include: {
               Circle: true,
@@ -235,7 +235,6 @@ export const profileRouter = createTRPCRouter({
 
       const profile = {
         ...result,
-        links: getSecureLinks(result?.links),
         interactions: [],
         circles: result?.circles.map((c) => c.Circle),
       };
