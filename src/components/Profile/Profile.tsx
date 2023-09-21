@@ -108,7 +108,6 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
   const onValidData = useCallback(
     (data: UpdateProfileSchemaType) => {
       setEditMode(false);
-      console.log("localList", profileState.links);
 
       if (isDirty(profileState, data)) {
         update.mutateAsync(data).catch(handleError);
