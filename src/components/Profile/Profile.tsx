@@ -11,8 +11,6 @@ import { InputFormField } from "../ui/InputFormField";
 import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
-import { LinkSchemaType } from "@/schemas/Link";
-import { LinksEditor } from "../Shared/LinksEditor";
 import { LinksEditorFormField } from "../Shared/LinksEditorFormField";
 import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
 import { LocationSelectionValues } from "@/globals/location";

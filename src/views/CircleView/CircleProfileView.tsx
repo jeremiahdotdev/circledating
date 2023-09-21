@@ -2,7 +2,6 @@ import { CircleProfile } from "@/components/Circle/CircleProfile";
 import { CircleWithAggregatesSchemaType } from "@/schemas/Circle";
 import { Loading } from "@/components/Shared/Loading";
 import { api } from "@/utils/api";
-import { isUrl } from "@/schemas/Link";
 import { memo } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { useRouter } from "next/router";
@@ -24,11 +23,6 @@ export const CircleProfileView: React.FC<CircleProfileViewProps> = memo(() => {
 
   const circle = {
     ...request.data,
-    links: request.data.links
-      ? request.data.links.map((link) =>
-          isUrl(link.href) ? link : { ...link, href: `https://${link.href}` }
-        )
-      : [],
   } as CircleWithAggregatesSchemaType;
 
   // TODO: Check auth

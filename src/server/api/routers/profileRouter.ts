@@ -11,7 +11,6 @@ import {
   UserPreferencesSchemaType,
 } from "@/schemas/UserPreferences";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { getSecureLinks } from "@/schemas/Link";
 import { z } from "zod";
 
 export const handlePreferences = (preferences: UserPreferencesSchemaType) => {
@@ -119,7 +118,7 @@ export const profileRouter = createTRPCRouter({
           willingToRelocate: input.willingToRelocate,
           ethnicity: input.ethnicity,
           maritalStatus: input.maritalStatus,
-          links: input.links,
+          links: input.links ?? undefined,
           location: {
             connectOrCreate: {
               create: { ...input.location },

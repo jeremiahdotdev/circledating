@@ -4,7 +4,7 @@ import {
 } from "../Profile/ProfileAttribute";
 import { ProfileAttributeOptions } from "../Profile/ProfileAttributeOptions";
 
-import { LinkSchemaType } from "@/schemas/Link";
+import { LinkSchemaType, Url } from "@/schemas/Link";
 import React from "react";
 
 export type ProfileLinksProps = {
@@ -21,7 +21,7 @@ export function ProfileLinks({ links, isEditMode, editor }: ProfileLinksProps) {
       <ProfileAttribute
         key={index}
         option={ProfileAttributeOptions.link}
-        attribute={href}
+        attribute={href as Url}
         variant={ProfileAttributeVariant.PROFILE_LINK}
       />
     ));

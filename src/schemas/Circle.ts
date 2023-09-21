@@ -73,6 +73,7 @@ export const UpdateImageSchema = z.object({
 
 export const CircleWithAggregatesSchema = z.object({
   ...Circle,
+  links: z.array(LinkSchema).optional(),
   _count: z.object({
     users: z.number().optional(),
   }),

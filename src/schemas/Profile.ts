@@ -44,6 +44,7 @@ export const ProfilePartial = {
   religion: ReligionSchema,
   bio: z.string(),
   weightUnit: z.enum(["KG", "LBS"]),
+  links: z.array(LinkSchema).optional(),
 };
 export const ProfilePartialSchema = z.object(ProfilePartial);
 
@@ -52,7 +53,6 @@ export const Profile = {
   circles: z.array(CircleSchema).optional(),
   interactions: z.array(InteractionSchema).optional(),
   affections: z.array(InteractionSchema).optional(),
-  links: z.array(LinkSchema).optional(),
 };
 export const ProfileSchema = z.object({ ...Profile, location: LocationSchema });
 
@@ -64,7 +64,6 @@ export const CreateProfileSchema = z.object({
 export const UpdateProfileSchema = z.object({
   ...ProfilePartial,
   location: LocationSchema,
-  links: z.array(LinkSchema).optional(),
 });
 
 export const UpdateImageSchema = z.object({

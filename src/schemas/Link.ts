@@ -7,6 +7,6 @@ export function isUrl(x: unknown): x is Url {
 }
 
 export const LinkSchema = z.object({
-  href: z.custom<Url>(),
+  href: z.custom<string>(),
 });
 export type LinkSchemaType = z.infer<typeof LinkSchema>;

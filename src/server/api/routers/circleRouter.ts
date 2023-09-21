@@ -328,7 +328,7 @@ export const circleRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const result = ctx.prisma.userProfile.findMany({
+      const result = await ctx.prisma.userProfile.findMany({
         take: 100,
         where: {
           username: {
@@ -345,7 +345,10 @@ export const circleRouter = createTRPCRouter({
         },
       });
 
-      return result;
+      return result.map((r) => ({
+        ...r,
+        links: r.links?.valueOf(),
+      })) as ProfileSchemaType[];
     }),
   removeUserFromCircle: publicProcedure
     .input(
