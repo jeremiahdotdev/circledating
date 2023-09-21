@@ -9,16 +9,20 @@ import { IncomeSchema } from "./Income";
 import { InteractionSchema } from "./Interaction";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
 import { LinkSchema } from "./Link";
+import {
+  LocationSchema,
+  SelectedLocationSchema,
+} from "./SelectedLocationSchema";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
 import { ReligionSchema } from "./Religion";
-import { SelectedLocationSchema } from "./SelectedLocationSchema";
 import { YesAndNoSchema } from "./YesAndNo";
 import { z } from "zod";
 
 export const ProfilePartial = {
   userId: z.string(),
+  image: z.string().optional(),
   username: z.string().min(3).max(20),
   sex: GenderSchema,
   birthDate: z.date(),
@@ -40,6 +44,7 @@ export const ProfilePartial = {
   religion: ReligionSchema,
   bio: z.string(),
   weightUnit: z.enum(["KG", "LBS"]),
+  links: z.array(LinkSchema).optional(),
 };
 export const ProfilePartialSchema = z.object(ProfilePartial);
 
@@ -48,17 +53,30 @@ export const Profile = {
   circles: z.array(CircleSchema).optional(),
   interactions: z.array(InteractionSchema).optional(),
   affections: z.array(InteractionSchema).optional(),
-  links: z.array(LinkSchema).optional(),
 };
-export const ProfileSchema = z.object(Profile);
+export const ProfileSchema = z.object({ ...Profile, location: LocationSchema });
 
 export const CreateProfileSchema = z.object({
   ...Profile,
   userId: z.string().optional(),
 });
 
+export const UpdateProfileSchema = z.object({
+  ...ProfilePartial,
+  location: LocationSchema,
+});
+
+export const UpdateImageSchema = z.object({
+  userId: z.string(),
+  image: z.string(),
+});
+
 export type CreateProfileSchemaType = z.infer<typeof CreateProfileSchema>;
+export type UpdateProfileSchemaType = z.infer<typeof UpdateProfileSchema>;
+export type UpdateImageSchemaType = z.infer<typeof UpdateImageSchema>;
+
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
+export type ProfilePartialSchemaType = z.infer<typeof ProfilePartialSchema>;
 
 export function isProfile(x: unknown): x is ProfileSchemaType {
   return (

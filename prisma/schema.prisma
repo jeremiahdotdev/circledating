@@ -132,6 +132,7 @@ model Location {
 model UserProfile {
   userId          					 String           @id @default(uuid())
   username                           String           @unique
+  image                              String?           
   sex                                Gender
   birthDate                          DateTime
   height                             Int
@@ -157,7 +158,7 @@ model UserProfile {
   circles             				 UserCircle[]
   interactions  	  			     UserInteraction[]    	@relation("userInteractions") 
   affections    	  			     UserInteraction[]    	@relation("userAffections") 
-  links         					 UserLink[]        
+  links         					 Json?       
 
   @@index([locationId])
 }
@@ -180,6 +181,7 @@ model Circle {
   id         									String        						@id @default(uuid())
   name                                          String                              @unique
   label                                         String                              @unique
+  image                                         String?           
   description                                   String                              @db.LongText            
   isFeatured									Boolean                             @default(false)
   isPrivate 									Boolean                             @default(false)
@@ -188,7 +190,7 @@ model Circle {
   ageMinRestriction                             Int?
   maxWeightRestriction                          Int?
   sexRestriction                                Json?
-  continentRestriction                          Json?
+  countryRestriction                            Json?
   childrenRestriction                           Json?
   ethnicityRestriction                          Json?
   drinkingRestriction                           Json?
@@ -202,8 +204,9 @@ model Circle {
   religionRestriction                           Json?
   users                                         UserCircle[]
   selected                                      SelectedCircle[]
-  links         					            CircleLink[]   
+  links         					            Json?
   requests										CircleRequest[]     
+  reports										UserReport[]     
   createdAt           							DateTime     						@default(now())
   updatedAt           							DateTime?    						@updatedAt
   @@index([name])
@@ -219,6 +222,8 @@ model User {
   preferences         UserPreferences[]
   authoredMessages    UserMessage[]    		@relation("authoredMessages") 
   recievedMessages    UserMessage[]    		@relation("recievedMessages")
+  authoredReports     UserReport[]    		@relation("authoredReports") 
+  recievedReports     UserReport[]    		@relation("recievedReports")
   authoredRequests    CircleRequest[]       
   conversations       UserConversation[]         
 
@@ -278,6 +283,24 @@ model UserMessage {
   @@index([authorUsername])
   @@index([recipientUsername])
 }
+
+model UserReport {
+  id                  String       @id @default(uuid())
+  reporterUsername    String    
+  reporter            User         @relation("authoredReports", fields: [reporterUsername], references: [username],  map: "user_report_author_fk")
+  reportedUsername    String  
+  reportedUser        User         @relation("recievedReports", fields: [reportedUsername], references: [username],  map: "user_report_recipient_fk")
+  circleId            String?
+  circle              Circle?      @relation(fields: [circleId], references: [id])
+  message             String       @db.LongText
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime?    @updatedAt
+
+  @@index([circleId])
+  @@index([reporterUsername])
+  @@index([reportedUsername])
+}
+
 model Conversation {
   id                  String       		@id @default(uuid())
   users               UserConversation[] 
@@ -296,24 +319,6 @@ model UserConversation {
 
   @@index([userId])
   @@index([conversationId])
-}
-
-model UserLink {
-  id                  String         @id @default(uuid())
-  userId              String       
-  href                String         
-  user                UserProfile    @relation(fields: [userId], references: [userId])  
-
-  @@index([userId])    
-}
-
-model CircleLink {
-  id                  String         @id @default(uuid())
-  circleId            String       
-  href                String         
-  circle              Circle         @relation(fields: [circleId], references: [id])  
-
-  @@index([circleId])    
 }
 
 model CircleRequest {

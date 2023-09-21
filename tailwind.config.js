@@ -22,6 +22,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        "gender-accent": "var(--gender-accent)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

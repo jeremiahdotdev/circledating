@@ -4,7 +4,7 @@ import classNames from "classnames";
 export type AboutColumnProps = {
   heading: string;
   body: string;
-  className: string;
+  className?: string;
 };
 
 export function AboutColumn({ heading, body, className }: AboutColumnProps) {

@@ -15,7 +15,7 @@ export type DropdownSelectOption = {
 };
 
 export type DropdownProps = {
-  label: string;
+  label?: string;
   placeholder?: string;
   options: DropdownSelectOption[];
   onChange: (value: string) => void;

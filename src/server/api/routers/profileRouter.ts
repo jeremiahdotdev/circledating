@@ -2,6 +2,8 @@ import {
   CreateProfileSchema,
   ProfileSchema,
   ProfileSchemaType,
+  UpdateImageSchema,
+  UpdateProfileSchema,
   isProfile,
 } from "@/schemas/Profile";
 import {
@@ -9,7 +11,6 @@ import {
   UserPreferencesSchemaType,
 } from "@/schemas/UserPreferences";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { getSecureLinks } from "@/schemas/Link";
 import { z } from "zod";
 
 export const handlePreferences = (preferences: UserPreferencesSchemaType) => {
@@ -86,9 +87,57 @@ export const profileRouter = createTRPCRouter({
           circles: {
             connect: input.circles,
           },
+          image: "",
           links: {},
           interactions: {},
           affections: {},
+        },
+      });
+      return result;
+    }),
+  update: publicProcedure
+    .input(UpdateProfileSchema)
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.prisma.userProfile.update({
+        where: {
+          userId: input.userId,
+        },
+        data: {
+          bio: input.bio,
+          weight: input.weight,
+          height: input.height,
+          income: input.income,
+          drinking: input.drinking,
+          consumables: input.consumables,
+          children: input.children,
+          purity: input.purity,
+          religion: input.religion,
+          politicalBeliefs: input.politicalBeliefs,
+          levelOfEducation: input.levelOfEducation,
+          activity: input.activity,
+          willingToRelocate: input.willingToRelocate,
+          ethnicity: input.ethnicity,
+          maritalStatus: input.maritalStatus,
+          links: input.links ?? undefined,
+          location: {
+            connectOrCreate: {
+              create: { ...input.location },
+              where: { id: input.location.id },
+            },
+          },
+        },
+      });
+      return result;
+    }),
+  updateImage: publicProcedure
+    .input(UpdateImageSchema)
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.prisma.userProfile.update({
+        where: {
+          userId: input.userId,
+        },
+        data: {
+          image: input.image,
         },
       });
       return result;
@@ -147,6 +196,7 @@ export const profileRouter = createTRPCRouter({
         },
         include: {
           location: true,
+          circles: true,
         },
       });
       const profiles: ProfileSchemaType[] = [];
@@ -155,7 +205,7 @@ export const profileRouter = createTRPCRouter({
           ...r,
           links: [],
           interactions: [],
-          circles: [],
+          circles: r.circles.map((c) => ({ id: c.circleId })),
         };
         if (isProfile(profile)) profiles.push(profile as ProfileSchemaType);
       });
@@ -174,7 +224,6 @@ export const profileRouter = createTRPCRouter({
         },
         include: {
           location: true,
-          links: true,
           circles: {
             include: {
               Circle: true,
@@ -185,7 +234,6 @@ export const profileRouter = createTRPCRouter({
 
       const profile = {
         ...result,
-        links: getSecureLinks(result?.links),
         interactions: [],
         circles: result?.circles.map((c) => c.Circle),
       };
@@ -199,14 +247,16 @@ export const profileRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      const result = await ctx.prisma.userProfile.findUnique({
+      const result = await ctx.prisma.userProfile.findMany({
         where: {
-          username: input.username,
+          username: {
+            equals: input.username,
+          },
         },
         select: {
           userId: true,
         },
       });
-      return !result;
+      return !result.length;
     }),
 });

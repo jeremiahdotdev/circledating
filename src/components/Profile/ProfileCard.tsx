@@ -3,7 +3,7 @@ import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
-import { ProfileLocation } from "./ProfileCardLocation";
+import { ProfileLocation } from "./ProfileLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
@@ -71,16 +71,15 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
           />
         </div>
         <div className="flex h-full flex-wrap items-center justify-around border-b py-6 text-sm ring-offset-background sm:px-4">
-          <div className="flex w-3/4 items-center justify-center sm:w-1/4 ">
+          <div className="flex w-3/4 items-center justify-center pl-4 sm:w-1/4 ">
             <ProfilePicture
-              // TODO: Replace with actual picture.
-              src="https://res.cloudinary.com/dqpbm3xll/image/upload/v1694616299/samples/smile.jpg"
+              src={profile.image}
               fallback={profile.username.substring(0, 1)}
               alt={profile.username + "_profile"}
             />
           </div>
           <div className="grid h-full w-full px-6 sm:w-3/4 sm:grid-cols-32 ">
-            <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
+            <div className="flex flex-col gap-3 sm:col-span-10 sm:my-3">
               <ProfileCardSubheading title={"General"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.religion}
@@ -107,7 +106,7 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
               orientation="vertical"
               className="mx-auto hidden sm:block"
             />
-            <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
+            <div className="flex flex-col gap-3 sm:col-span-10 sm:my-3">
               <ProfileCardSubheading title={"Lifestyle"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.height}
@@ -135,7 +134,7 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
               orientation="vertical"
               className="mx-auto hidden sm:block"
             />
-            <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
+            <div className="flex flex-col gap-3 sm:col-span-10 sm:my-3">
               <ProfileAttribute
                 option={ProfileAttributeOptions.activityLevel}
                 variant={ProfileAttributeVariant.PROFILE_CARD}

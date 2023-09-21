@@ -13,6 +13,7 @@ export type DialogModalProps = {
   title?: string;
   description?: string;
   open?: boolean;
+  className?: string;
   setOpen: (value: boolean) => void;
 };
 export function DialogModal({
@@ -20,11 +21,12 @@ export function DialogModal({
   title,
   description,
   open,
+  className,
   setOpen,
 }: DialogModalProps) {
   return (
     <Dialog onOpenChange={setOpen} open={open}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className={className ?? "sm:max-w-[425px]"}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

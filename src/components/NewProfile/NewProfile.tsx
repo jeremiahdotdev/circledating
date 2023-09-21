@@ -155,6 +155,7 @@ export const NewProfile = memo(function NewProfile({
             control={form.control}
             name="weight"
             label="What is your current weight?"
+            placeholder="Input..."
             inlineLabel={selectedWeightUnit}
             labelPosition="right"
             type="number"
@@ -171,6 +172,7 @@ export const NewProfile = memo(function NewProfile({
             control={form.control}
             label="What is your ethnicity?"
             options={EthnicitySelectionValues}
+            filterOn={circle?.ethnicityRestriction}
           />
         </FormSection>
         <FormSection heading="Location">
@@ -179,6 +181,7 @@ export const NewProfile = memo(function NewProfile({
             control={form.control}
             label="What is your country of residence?"
             options={countryValues}
+            filterOn={circle?.countryRestriction}
             required={true}
           />
           <ComboBoxFormField<CreateProfileSchemaType, string>

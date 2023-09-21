@@ -16,9 +16,10 @@ import React, { useCallback, useMemo } from "react";
 
 interface DropdownFormFieldProps<Values extends FieldValues>
   extends UseControllerProps<Values> {
-  label: string;
+  label?: string;
   options: DropdownSelectOption[];
   description?: string;
+  placeholder?: string;
   type?: "text" | "number";
   filterOn?: string[];
   required?: boolean;
@@ -31,6 +32,7 @@ export const DropdownFormField = <Values extends FieldValues>({
   type = "text",
   filterOn,
   required,
+  placeholder,
   ...props
 }: DropdownFormFieldProps<Values>) => {
   const { field, fieldState } = useController(props);
@@ -39,7 +41,7 @@ export const DropdownFormField = <Values extends FieldValues>({
       if (type === "text") {
         return field.value as string;
       } else if (type === "number") {
-        return String(field.value);
+        return field.value ? String(field.value) : (field.value as string);
       }
   }, [field.value, type, options]);
 
@@ -55,11 +57,13 @@ export const DropdownFormField = <Values extends FieldValues>({
   );
 
   return (
-    <FormItem className="mb-2 flex flex-col">
-      <FormLabel>
-        {label}
-        <RequiredAsterisk required={required} />
-      </FormLabel>
+    <FormItem className="flex flex-col items-start">
+      {label && (
+        <FormLabel>
+          {label}
+          <RequiredAsterisk required={required} />
+        </FormLabel>
+      )}
       <FormControl>
         <Dropdown
           label={label}
@@ -68,6 +72,7 @@ export const DropdownFormField = <Values extends FieldValues>({
           onChange={onChange}
           filterOn={filterOn}
           value={correctedValue}
+          placeholder={placeholder}
         />
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}

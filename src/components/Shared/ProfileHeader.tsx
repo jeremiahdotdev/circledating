@@ -7,11 +7,18 @@ export type ProfileHeaderProps = {
   header: string;
   image?: string;
   canEdit?: boolean;
+  handleUpdateImage?: (image: string) => void;
 };
 
-export function ProfileHeader({ header, image, canEdit }: ProfileHeaderProps) {
+export function ProfileHeader({
+  header,
+  image,
+  canEdit,
+  handleUpdateImage,
+}: ProfileHeaderProps) {
   const [openState, setOpenState] = useState(false);
   const handleOpen = useCallback(() => setOpenState(true), []);
+
   return (
     <div className="mx-2 flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
       <div className="relative aspect-square w-3/4 flex-col justify-center sm:w-1/3">
@@ -21,9 +28,11 @@ export function ProfileHeader({ header, image, canEdit }: ProfileHeaderProps) {
           alt={header + "_profile"}
           className="text-4xl md:m-2"
         />
-        {canEdit && (
+        {canEdit && handleUpdateImage && (
           <span className="absolute bottom-0 right-0">
-            <DialogModal setOpen={setOpenState} open={openState}></DialogModal>
+            <DialogModal setOpen={setOpenState} open={openState}>
+              <AvatarUpload imageHandler={handleUpdateImage} />
+            </DialogModal>
             <IconButton
               variant={IconButtonVariant.UPLOAD}
               action={handleOpen}

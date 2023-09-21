@@ -16,7 +16,7 @@ interface InputFormFieldProps<Values extends FieldValues>
   label?: string;
   description?: string;
   placeholder?: string;
-  type?: "number" | "text" | "file";
+  type?: "number" | "text" | "array";
   className?: string;
   required?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -36,7 +36,6 @@ export const InputFormField = <Values extends FieldValues>(
       } else {
         field.onChange(e.target.value);
       }
-      if (props.onChange) props.onChange(e);
     },
     [field, props]
   );
@@ -54,6 +53,7 @@ export const InputFormField = <Values extends FieldValues>(
           type={props.type ?? "text"}
           className={props.className}
           onChange={customOnChange}
+          defaultValue={props.defaultValue}
         />
       </FormControl>
       {fieldState.error?.message && (

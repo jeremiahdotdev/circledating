@@ -8,12 +8,20 @@ import {
   faDoorClosed,
   faDoorOpen,
   faEnvelope,
+  faExclamation,
+  faMinus,
   faPaperPlane,
+  faPlus,
   faTrashCan,
   faUpload,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import { cn } from "@/lib/utils";
+import {
+  faCheckCircle,
+  faPenToSquare,
+  faXmarkCircle,
+} from "@fortawesome/free-regular-svg-icons";
 import { handleError } from "@/utils/handleError";
 import React, { useCallback, useMemo, useState } from "react";
 
@@ -35,6 +43,12 @@ export enum IconButtonVariant {
   REMOVE = "remove",
   ADD = "add",
   UPLOAD = "upload",
+  REPORT = "report",
+  EDIT = "edit",
+  UPDATE = "update",
+  CANCEL = "cancel",
+  PLUS = "plus",
+  MINUS = "minus",
 }
 
 export type IconButtonProps = {
@@ -43,9 +57,11 @@ export type IconButtonProps = {
   action?:
     | ((event: React.MouseEvent<HTMLButtonElement>) => Promise<void>)
     | ((event: React.MouseEvent<HTMLButtonElement>) => void);
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   disabled?: boolean;
   labelOverride?: string;
   confirmationRequired?: boolean;
+  className?: string;
 };
 
 export function IconButton({
@@ -54,74 +70,114 @@ export function IconButton({
   disabled,
   labelOverride,
   confirmationRequired,
+  className,
+  onClick,
   action,
 }: IconButtonProps) {
   const [dialogOpenState, setDialogOpenState] = useState(false);
   const [disabledState, setDisabledState] = useState(false);
   const option = useMemo(() => {
+    const subtle =
+      "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none";
     switch (variant) {
       case IconButtonVariant.MAIL:
         return {
           label: "They like you! Start a conversation.",
           icon: faEnvelope,
-          style: "h-16 bg-green-600",
+          style: "h-16 bg-green-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.REQUEST:
         return {
           label: "Ask to join.",
           icon: faEnvelope,
           showLabel: true,
-          style: "h-12 py-3 bg-blue-600 whitespace-nowrap",
+          style: "h-12 py-3 bg-blue-600 whitespace-nowrap shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.MESSAGE:
         return {
           label: "Message",
           icon: faPaperPlane,
-          style: "h-16 bg-purple-600",
+          style: "h-16 bg-purple-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.LIKE:
         return {
           label: "Like!",
           icon: faCheck,
-          style: "h-16 bg-green-600",
+          style: "h-16 bg-green-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.JOIN:
         return {
           label: "Join",
           showLabel: true,
           icon: faDoorClosed,
-          style: "h-12 py-3 bg-green-600",
+          style: "h-12 py-3 bg-green-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.LEAVE:
         return {
           label: "Leave",
           showLabel: true,
           icon: faDoorOpen,
-          style: "h-12 py-3 bg-red-600",
+          style: "h-12 py-3 bg-red-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.TRASH:
         return {
           label: "Block",
           icon: faTrashCan,
-          style: "h-16 bg-red-600",
+          style: "bg-red-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.ADD:
         return {
           label: "Add",
           icon: faCheck,
-          style: "h-8 p-2 bg-green-600",
+          style: "h-8 p-2 bg-green-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.UPLOAD:
         return {
           label: "Upload New Photo",
           icon: faUpload,
-          style: "h-8 p-2 bg-cyan-500",
+          style: "h-8 p-2 bg-gender-accent shadow-outter",
+        } as IconButtonOptions;
+      case IconButtonVariant.REPORT:
+        return {
+          label: "Report",
+          icon: faExclamation,
+          style: "flex self-end h-6 w-6 p-1 bg-orange-400 shadow-outter",
+        } as IconButtonOptions;
+      case IconButtonVariant.EDIT:
+        return {
+          label: "Edit",
+          icon: faPenToSquare,
+          style: subtle,
+        } as IconButtonOptions;
+      case IconButtonVariant.UPDATE:
+        return {
+          label: "Update",
+          icon: faCheckCircle,
+          style: subtle,
+        } as IconButtonOptions;
+      case IconButtonVariant.CANCEL:
+        return {
+          label: "Cancel",
+          icon: faXmarkCircle,
+          style: subtle,
+        } as IconButtonOptions;
+      case IconButtonVariant.PLUS:
+        return {
+          label: "Plus",
+          icon: faPlus,
+          style: subtle,
+        } as IconButtonOptions;
+      case IconButtonVariant.MINUS:
+        return {
+          label: "Minus",
+          icon: faMinus,
+          style: subtle,
         } as IconButtonOptions;
       default: // x
         return {
           label: "Remove",
           icon: faX,
-          style: "h-8 p-2 bg-red-600",
+          style: "h-8 p-2 bg-red-600 shadow-outter",
         } as IconButtonOptions;
     }
   }, [variant]);
@@ -137,12 +193,14 @@ export function IconButton({
           setDialogOpenState(true);
         } else {
           setDisabledState(true);
-          const result = action(event)?.then(enableButton).catch(handleError);
-          if (!result?.then) enableButton();
+          action(event)?.then(enableButton).catch(handleError);
+          enableButton();
         }
+      } else if (onClick) {
+        onClick(event);
       }
     },
-    [setDialogOpenState, action, enableButton, confirmationRequired]
+    [setDialogOpenState, action, enableButton, confirmationRequired, onClick]
   );
 
   const handleConfirm = useCallback(
@@ -171,11 +229,12 @@ export function IconButton({
         <Button
           onClick={handleClick}
           className={cn(
-            "text-white rounded-full shadow-outter",
+            "text-white rounded-full",
             option.style,
+            className,
             option.showLabel ? "" : "aspect-square"
           )}
-          type={type}
+          type={type ?? "button"}
           disabled={disabled || disabledState}
         >
           <FontAwesomeIcon className="h-full w-full" icon={option.icon} />
