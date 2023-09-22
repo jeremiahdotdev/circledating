@@ -1,14 +1,19 @@
-import { Circles } from "prisma/seeds/data";
-import { NewProfile } from "../../components/NewProfile/NewProfile";
+import { NewProfileWithCircle } from "@/components/NewProfile/NewProfileWithCircle";
+import { NewProfileWithoutCircle } from "@/components/NewProfile/NewProfileWithoutCircle";
 import { memo } from "react";
+import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
+import { useRouter } from "next/router";
 import React from "react";
 
 export type NewProfileViewProps = Record<never, never>;
 
 export const NewProfileView: React.FC<NewProfileViewProps> = memo(() => {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
-      <NewProfile circle={Circles.Religion.Christianity} />
-    </main>
+  const router = useRouter();
+  const circleCode = routerQueryAttributeToString(router.query.code);
+
+  return circleCode ? (
+    <NewProfileWithCircle circleCode={circleCode} />
+  ) : (
+    <NewProfileWithoutCircle />
   );
 });

@@ -1,7 +1,9 @@
+import { DialogModal } from "../ui/DialogModal";
 import { IconButton, IconButtonVariant } from "../Shared/IconButton";
 import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ProfileSchemaType } from "@/schemas/Profile";
-import React, { useCallback, useMemo } from "react";
+import { ReportProfileForm } from "./ReportProfileForm";
+import React, { useCallback, useMemo, useState } from "react";
 import state from "@/utils/user.store";
 
 export type ProfileActionsProps = {
@@ -9,12 +11,13 @@ export type ProfileActionsProps = {
   interact: (
     interaction: InteractionSchemaType,
     profile: ProfileSchemaType
-  ) => void;
+  ) => Promise<void>;
 };
 
 export function ProfileActions({ profile, interact }: ProfileActionsProps) {
   const isLiked = useMemo(() => {
-    return state.currentUser.affections?.find(
+    const affections = state.currentUser.affections;
+    return affections?.find(
       (i) => i.initiatedUserId === profile.userId && i.isLiked
     );
   }, [profile]);
@@ -29,22 +32,41 @@ export function ProfileActions({ profile, interact }: ProfileActionsProps) {
     },
     [profile.userId]
   );
+
+  const [openState, setOpenState] = useState(false);
+  const handleOpen = useCallback(() => setOpenState(true), []);
+
   const likeThisProfile = useCallback(() => {
-    interact(interaction(true, false), profile);
+    return interact(interaction(true, false), profile);
   }, [interaction, interact, profile]);
   const blockThisProfile = useCallback(() => {
-    interact(interaction(false, true), profile);
+    return interact(interaction(false, true), profile);
   }, [interaction, interact, profile]);
+  const reportThisProfile = useCallback(() => {
+    handleOpen();
+  }, [handleOpen]);
+
   return (
-    <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
+    <>
+      <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
+        <IconButton
+          variant={isLiked ? IconButtonVariant.MAIL : IconButtonVariant.LIKE}
+          action={likeThisProfile}
+          className={"h-16 w-16"}
+        />
+        <IconButton
+          variant={IconButtonVariant.TRASH}
+          action={blockThisProfile}
+          className={"h-16 w-16"}
+        />
+      </div>
       <IconButton
-        variant={isLiked ? IconButtonVariant.MAIL : IconButtonVariant.LIKE}
-        onClick={likeThisProfile}
+        variant={IconButtonVariant.REPORT}
+        action={reportThisProfile}
       />
-      <IconButton
-        variant={IconButtonVariant.TRASH}
-        onClick={blockThisProfile}
-      />
-    </div>
+      <DialogModal setOpen={setOpenState} open={openState}>
+        <ReportProfileForm profile={profile} onSubmit={blockThisProfile} />
+      </DialogModal>
+    </>
   );
 }

@@ -17,15 +17,20 @@ export type ProfileAttributeOptions = {
 };
 
 export enum ProfileAttributeVariant {
-  SMALL = "small",
+  PROFILE_CARD = "profile_card",
   DEFAULT = "default",
-  LARGE = "large",
+  PROFILE = "profile",
+  PROFILE_LINK = "profile_link",
 }
+
+export type AttributeType = ProfileAttributeType | number | Date | Url;
 
 export type ProfileAttributeProps = {
   option: ProfileAttributeOptionType;
-  attribute?: ProfileAttributeType | number | Date | Url;
+  attribute?: AttributeType;
   weightUnit?: WeightUnit;
+  isEditMode?: boolean;
+  editor?: React.ReactNode;
   variant?: ProfileAttributeVariant;
 };
 
@@ -33,9 +38,11 @@ export function ProfileAttribute({
   option,
   attribute,
   weightUnit,
+  isEditMode,
+  editor,
   variant = ProfileAttributeVariant.DEFAULT,
 }: ProfileAttributeProps) {
-  const labelText = useMemo(() => {
+  const label = useMemo(() => {
     if (!attribute) return option.label;
 
     if (typeof attribute === "number" && option.isHeight) {
@@ -56,7 +63,7 @@ export function ProfileAttribute({
 
     if (isUrl(attribute)) {
       return (
-        <a className="text-blue-600" href={attribute}>
+        <a className="text-gender-accent" href={attribute}>
           {attribute}
         </a>
       );
@@ -65,46 +72,60 @@ export function ProfileAttribute({
   }, [attribute, option, weightUnit]);
 
   const renderVariant = useMemo(() => {
+    if (isEditMode)
+      return (
+        <span className="mx-2 flex items-center gap-2">
+          <FontAwesomeIcon className={"aspect-square h-5"} icon={option.icon} />
+          <span className="w-full">{editor}</span>
+        </span>
+      );
     switch (variant) {
-      case ProfileAttributeVariant.SMALL:
+      case ProfileAttributeVariant.PROFILE_CARD:
         return (
-          <>
+          <span className="flex h-full w-full flex-row items-center ">
             <FontAwesomeIcon
-              className="aspect-square h-5 w-5 pl-2"
+              className="aspect-square w-7 pl-2"
               icon={option.icon}
             />
             <b className="flex sm:hidden">
               {option.label} {attribute ? " • " : ""}
             </b>
             <p className="pl-1 text-sm font-extralight text-slate-950">
-              {labelText}
+              {label}
             </p>
-          </>
+          </span>
         );
-      case ProfileAttributeVariant.LARGE:
+      case ProfileAttributeVariant.PROFILE:
         return (
-          <span className="grid h-16 w-full grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
+          <span className="grid h-16 grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <FontAwesomeIcon className={"h-6 p-2"} icon={option.icon} />
-                <b className="break-normal sm:w-full">{option.label}</b>
+              <div className="flex items-center gap-2">
+                <FontAwesomeIcon className={"h-5"} icon={option.icon} />
+                <b className="break-normal">{option.label}</b>
               </div>
-              <b className="w-fit">&nbsp;•</b>
+              <b className="w-fit text-shadow-sm ">&nbsp;•</b>
             </div>
-            <div className="pl-1 font-extralight text-slate-950">
-              {labelText}
+            <div className="pl-1 font-extralight text-slate-950 text-shadow-sm">
+              {label}
+            </div>
+          </span>
+        );
+      case ProfileAttributeVariant.PROFILE_LINK:
+        return (
+          <span className="w-full flex-col items-center justify-center border-y sm:w-fit">
+            <div className="flex w-full items-center justify-center gap-2 py-5 sm:px-6">
+              <FontAwesomeIcon className={"h-6"} icon={option.icon} />
+              <div className="pl-1 font-extralight text-gender-accent">
+                {label}
+              </div>
             </div>
           </span>
         );
       default:
         return <></>;
     }
-  }, [variant, attribute, labelText, option]);
+  }, [variant, attribute, option, label, isEditMode, editor]);
   return (
-    <span className="flex min-w-fit">
-      <FormattedTooltip content={option.label}>
-        {renderVariant}
-      </FormattedTooltip>
-    </span>
+    <FormattedTooltip content={option.label}>{renderVariant}</FormattedTooltip>
   );
 }

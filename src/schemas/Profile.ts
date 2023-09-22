@@ -9,20 +9,21 @@ import { IncomeSchema } from "./Income";
 import { InteractionSchema } from "./Interaction";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
 import { LinkSchema } from "./Link";
+import {
+  LocationSchema,
+  SelectedLocationSchema,
+} from "./SelectedLocationSchema";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
 import { ReligionSchema } from "./Religion";
-import { SelectedLocationSchema } from "./SelectedLocationSchema";
-import { UserPreferencesSchema } from "./UserPreferences";
 import { YesAndNoSchema } from "./YesAndNo";
 import { z } from "zod";
 
-export const ProfileSchema = z.object({
-  userId: z.string().optional(),
+export const ProfilePartial = {
+  userId: z.string(),
+  image: z.string().optional(),
   username: z.string().min(3).max(20),
-  // Propably this should be the other users id not their username -> this would need to be done on the backend side of things
-  usersNotToBeMatchedWith: z.string().optional(),
   sex: GenderSchema,
   birthDate: z.date(),
   height: z.number(), // Height in cm
@@ -41,20 +42,70 @@ export const ProfileSchema = z.object({
   maritalStatus: MaritalStatusesSchema,
   activity: ActivitySchema,
   religion: ReligionSchema,
-  bio: z.string().optional(),
+  bio: z.string(),
   weightUnit: z.enum(["KG", "LBS"]),
-  circles: z.array(CircleSchema).nullable().optional(),
-  interactions: z.array(InteractionSchema).nullable().optional(),
-  links: z.array(LinkSchema).nullable().optional(),
+  links: z.array(LinkSchema).optional(),
+};
+export const ProfilePartialSchema = z.object(ProfilePartial);
+
+export const Profile = {
+  ...ProfilePartial,
+  circles: z.array(CircleSchema).optional(),
+  interactions: z.array(InteractionSchema).optional(),
+  affections: z.array(InteractionSchema).optional(),
+};
+export const ProfileSchema = z.object({ ...Profile, location: LocationSchema });
+
+export const CreateProfileSchema = z.object({
+  ...Profile,
+  userId: z.string().optional(),
 });
 
-export const ReadProfileSchema = z.object({
-  username: z.string(),
+export const UpdateProfileSchema = z.object({
+  ...ProfilePartial,
+  location: LocationSchema,
 });
-export const ReadProfilesSchema = z.object({
-  currentUserProfile: ProfileSchema,
-  currentUserPreferences: UserPreferencesSchema,
+
+export const UpdateImageSchema = z.object({
+  userId: z.string(),
+  image: z.string(),
 });
+
+export type CreateProfileSchemaType = z.infer<typeof CreateProfileSchema>;
+export type UpdateProfileSchemaType = z.infer<typeof UpdateProfileSchema>;
+export type UpdateImageSchemaType = z.infer<typeof UpdateImageSchema>;
+
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
-export type ReadProfileSchemaType = z.infer<typeof ReadProfileSchema>;
-export type ReadProfilesSchemaType = z.infer<typeof ReadProfilesSchema>;
+export type ProfilePartialSchemaType = z.infer<typeof ProfilePartialSchema>;
+
+export function isProfile(x: unknown): x is ProfileSchemaType {
+  return (
+    typeof x === "object" &&
+    x != null &&
+    !!(x as ProfileSchemaType).activity &&
+    !!(x as ProfileSchemaType).bio &&
+    !!(x as ProfileSchemaType).birthDate &&
+    !!(x as ProfileSchemaType).children &&
+    !!(x as ProfileSchemaType).circles &&
+    !!(x as ProfileSchemaType).consumables &&
+    !!(x as ProfileSchemaType).drinking &&
+    !!(x as ProfileSchemaType).ethnicity &&
+    !!(x as ProfileSchemaType).height &&
+    !!(x as ProfileSchemaType).income &&
+    !!(x as ProfileSchemaType).interactions &&
+    !!(x as ProfileSchemaType).levelOfEducation &&
+    !!(x as ProfileSchemaType).links &&
+    !!(x as ProfileSchemaType).location &&
+    !!(x as ProfileSchemaType).maritalStatus &&
+    !!(x as ProfileSchemaType).onlyLookingForTraditionalHousehold &&
+    !!(x as ProfileSchemaType).politicalBeliefs &&
+    !!(x as ProfileSchemaType).purity &&
+    !!(x as ProfileSchemaType).religion &&
+    !!(x as ProfileSchemaType).sex &&
+    !!(x as ProfileSchemaType).userId &&
+    !!(x as ProfileSchemaType).username &&
+    !!(x as ProfileSchemaType).weight &&
+    !!(x as ProfileSchemaType).weightUnit &&
+    !!(x as ProfileSchemaType).willingToRelocate
+  );
+}

@@ -11,33 +11,39 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
+import { RequiredAsterisk } from "./RequiredAsterisk";
 import React, { useCallback, useMemo } from "react";
 
 interface DropdownFormFieldProps<Values extends FieldValues>
   extends UseControllerProps<Values> {
-  label: string;
+  label?: string;
   options: DropdownSelectOption[];
   description?: string;
+  placeholder?: string;
   type?: "text" | "number";
-  override?: string;
+  filterOn?: string[];
+  required?: boolean;
 }
 
 export const DropdownFormField = <Values extends FieldValues>({
   label,
   options,
   description,
-  override,
   type = "text",
+  filterOn,
+  required,
+  placeholder,
   ...props
 }: DropdownFormFieldProps<Values>) => {
   const { field, fieldState } = useController(props);
   const correctedValue = useMemo(() => {
-    if (type === "text") {
-      return field.value as string;
-    } else if (type === "number") {
-      return String(field.value);
-    }
-  }, [field.value, type]);
+    if (options)
+      if (type === "text") {
+        return field.value as string;
+      } else if (type === "number") {
+        return field.value ? String(field.value) : (field.value as string);
+      }
+  }, [field.value, type, options]);
 
   const onChange = useCallback(
     (value: string) => {
@@ -51,16 +57,22 @@ export const DropdownFormField = <Values extends FieldValues>({
   );
 
   return (
-    <FormItem className="mb-2 flex flex-col">
-      <FormLabel>{label}</FormLabel>
+    <FormItem className="flex flex-col items-start">
+      {label && (
+        <FormLabel>
+          {label}
+          <RequiredAsterisk required={required} />
+        </FormLabel>
+      )}
       <FormControl>
         <Dropdown
           label={label}
           options={options}
           {...field}
           onChange={onChange}
-          value={override ?? correctedValue}
-          override={override}
+          filterOn={filterOn}
+          value={correctedValue}
+          placeholder={placeholder}
         />
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}

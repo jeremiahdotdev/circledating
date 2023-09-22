@@ -1,4 +1,5 @@
-import { CurrentUserPreferences } from "@/components/Preferences/CurrentUserPreferences";
+import { CurrentUserCircles } from "../Preferences/CurrentUserCircles";
+import { CurrentUserPreferences } from "../Preferences/CurrentUserPreferences";
 import { NavButton } from "@/components/Nav/NavButton";
 import { NavSheetTrigger } from "@/components/Nav/NavSheetTrigger";
 import { routes } from "@/globals/routes";
@@ -11,13 +12,17 @@ export function NavButtonList() {
       <NavButton option={routes.circles()} />
       <NavButton option={routes.search()} />
       <NavButton option={routes.matches()} />
-      <NavButton option={routes.blocked()} />
       <NavButton
         option={routes.profileByUsername(state.currentUser.username)}
       />
       <NavSheetTrigger
+        option={routes.nowhere("Circles")}
+        title={"Active Circles"}
+        content={<CurrentUserCircles />}
+      />
+      <NavSheetTrigger
         option={routes.nowhere("Filters")}
-        title={"Circles & Filters"}
+        title={"Active Filters"}
         content={<CurrentUserPreferences />}
       />
     </ul>

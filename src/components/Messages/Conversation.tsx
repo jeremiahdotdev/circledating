@@ -4,6 +4,7 @@ import { ConversationSchemaType } from "@/schemas/Conversation";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ListItemPicture } from "../ui/ListItemPicture";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
+import { api } from "@/utils/api";
 import { routes } from "@/globals/routes";
 import React, { useCallback } from "react";
 import state from "@/utils/user.store";
@@ -11,7 +12,7 @@ import state from "@/utils/user.store";
 export type ConversationProps = {
   conversation: ConversationSchemaType;
   onSelect: (conversation: ConversationSchemaType) => void;
-  onAction: (conversation: ConversationSchemaType) => void;
+  onAction: (conversation: ConversationSchemaType) => Promise<void> | undefined;
   actionIsUnblock?: boolean;
 };
 export function Conversation({
@@ -37,10 +38,13 @@ export function Conversation({
     onSelect(conversation);
   }, [onSelect, conversation]);
 
+  const request = api.profiles.read.useQuery({
+    username: usernames,
+  });
   const takeAction = useCallback(
     (click: React.MouseEvent<HTMLButtonElement>) => {
       click.stopPropagation();
-      onAction(conversation);
+      return onAction(conversation);
     },
     [onAction, conversation]
   );
@@ -56,20 +60,20 @@ export function Conversation({
     >
       <div className="aspect-square h-16 w-16">
         <ListItemPicture
-          // TODO: Replace with actual picture.
-          src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
+          src={request.data?.image}
           fallback={usernames.substring(0, 1)}
           alt={usernames}
         />
       </div>
       <div className="w-full">
         <div className="flex flex-row items-center">
-          <h2 className="text-xl font-semibold">{usernames}</h2>
           <RouteOptionLink
             option={routes.profileByUsername(usernames)}
             onClick={stopPropagation}
           >
-            <i className="px-2 underline">(See profile)</i>
+            <h2 className="text-xl font-semibold hover:underline">
+              {usernames}
+            </h2>
           </RouteOptionLink>
         </div>
         <p className="text-gray-400">{messagePreview}</p>
@@ -79,7 +83,8 @@ export function Conversation({
           actionIsUnblock ? IconButtonVariant.LIKE : IconButtonVariant.TRASH
         }
         labelOverride={actionIsUnblock ? "Unblock" : "Unmatch"}
-        onClick={takeAction}
+        className={"h-12 w-12 p-3"}
+        action={takeAction}
       />
     </div>
   );

@@ -3,7 +3,7 @@ import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
-import { ProfileLocation } from "./ProfileCardLocation";
+import { ProfileLocation } from "./ProfileLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
@@ -19,7 +19,7 @@ export type ProfileCardProps = {
   interact: (
     interaction: InteractionSchemaType,
     profile: ProfileSchemaType
-  ) => void;
+  ) => Promise<void>;
 };
 
 function IsProfilePerfectMatch(profile: ProfileSchemaType) {
@@ -71,35 +71,34 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
           />
         </div>
         <div className="flex h-full flex-wrap items-center justify-around border-b py-6 text-sm ring-offset-background sm:px-4">
-          <div className="flex w-3/4 items-center justify-center sm:w-1/4 ">
+          <div className="flex w-3/4 items-center justify-center pl-4 sm:w-1/4 ">
             <ProfilePicture
-              // TODO: Replace with actual picture.
-              src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
+              src={profile.image}
               fallback={profile.username.substring(0, 1)}
               alt={profile.username + "_profile"}
             />
           </div>
           <div className="grid h-full w-full px-6 sm:w-3/4 sm:grid-cols-32 ">
-            <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
+            <div className="flex flex-col gap-3 sm:col-span-10 sm:my-3">
               <ProfileCardSubheading title={"General"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.religion}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={`${profile.religion}`}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.maritalStatus}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={`${profile.maritalStatus}`}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.politicalBeliefs}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.politicalBeliefs}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.education}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.levelOfEducation}
               />
             </div>
@@ -107,27 +106,27 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
               orientation="vertical"
               className="mx-auto hidden sm:block"
             />
-            <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
+            <div className="flex flex-col gap-3 sm:col-span-10 sm:my-3">
               <ProfileCardSubheading title={"Lifestyle"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.height}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.height}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.weight}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.weight}
                 weightUnit={profile.weightUnit}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.drinking}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.drinking}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.consumables}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.consumables}
               />
             </div>
@@ -135,26 +134,26 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
               orientation="vertical"
               className="mx-auto hidden sm:block"
             />
-            <div className="flex flex-col gap-2 sm:col-span-10 sm:my-3">
+            <div className="flex flex-col gap-3 sm:col-span-10 sm:my-3">
               <ProfileAttribute
                 option={ProfileAttributeOptions.activityLevel}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={`${profile.activity}`}
               />
               <ProfileCardSubheading title={"Family"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.purity}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.purity}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.children}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.children}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.income}
-                variant={ProfileAttributeVariant.SMALL}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.income}
               />
             </div>

@@ -8,10 +8,12 @@ export interface RouteOptionLinkProps
   children: React.ReactNode;
 }
 
-export function RouteOptionLink(props: RouteOptionLinkProps) {
-  return (
-    <Link {...props} href={props.option.href} as={props.option.as}>
-      {props.children}
-    </Link>
-  );
-}
+export const RouteOptionLink = React.forwardRef(
+  (props: RouteOptionLinkProps, ref: React.ForwardedRef<HTMLAnchorElement>) => {
+    return (
+      <Link ref={ref} {...props} href={props.option.href} as={props.option.as}>
+        {props.children}
+      </Link>
+    );
+  }
+);

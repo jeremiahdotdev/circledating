@@ -1,3 +1,51 @@
+import { ComboboxOption } from "@/components/ui/combobox";
+import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
+
+export const flattenedLocations = () => {
+  const result: string[] = [];
+  countries.forEach(({ continent, country, states }) =>
+    result.push(continent, country, ...states)
+  );
+  return result;
+};
+
+export const locations = () => {
+  const result: LocationSchemaType[] = [];
+  let count = 0;
+  countries.forEach(({ continent, country, states }) => {
+    count++;
+    result.push({
+      id: `${count}`,
+      continent: continent ?? "",
+      country: country ?? "",
+      state: "",
+    });
+    states.forEach((state) => {
+      count++;
+      result.push({
+        id: `${count}`,
+        continent: continent ?? "",
+        country: country ?? "",
+        state: state,
+      });
+    });
+  });
+  return result;
+};
+
+export const LocationSelectionValues = () => {
+  const result: ComboboxOption<LocationSchemaType>[] = [];
+  locations().forEach((location) =>
+    result.push({
+      value: location,
+      label: `${location.state ? location.state + ", " : ""}${
+        location.country
+      }`,
+    })
+  );
+  return result;
+};
+
 export const countries = [
   {
     continent: "Asia",

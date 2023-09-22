@@ -9,6 +9,7 @@ import { MessagesPane } from "../../components/Messages/MessagesPane";
 import { NewMessageForm } from "../../components/Messages/NewMessageForm";
 import { PageNotFound } from "@/components/Shared/PageNotFound";
 import { api } from "@/utils/api";
+import { handleError } from "@/utils/handleError";
 import { memo, useCallback, useState } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { routes } from "@/globals/routes";
@@ -37,7 +38,7 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
         ?.filter((user) => user.id !== state.currentUser.userId)
         ?.map((user) => user.username)
         ?.join(",");
-      router.push(routes.messagesByUsername(usernames).href).catch(console.log);
+      router.push(routes.messagesByUsername(usernames).href).catch(handleError);
     },
     [router]
   );
@@ -66,7 +67,7 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
     return <PageNotFound error={systemMessages.NO_MATCHES} />;
 
   return (
-    <main>
+    <div>
       <div className="lg:invisible lg:h-0 lg:w-0">
         <ConversationsList
           conversations={result.data}
@@ -98,6 +99,6 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
           />
         </div>
       </div>
-    </main>
+    </div>
   );
 });

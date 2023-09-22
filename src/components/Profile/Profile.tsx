@@ -1,127 +1,359 @@
+import { ActivitySelectionValues } from "@/schemas/Activity";
+import { ChildrenSelectionValues } from "@/schemas/Children";
+import { ComboBoxFormField } from "../ui/ComboboxFormField";
+import { ConsumablesSelectionValues } from "@/schemas/Consumables";
+import { DrinkingSelectionValues } from "@/schemas/Drinking";
+import { DropdownFormField } from "../ui/DropdownFormField";
+import { Form } from "../ui/form";
+import { HeightStringSelectOptions } from "@/schemas/Height";
+import { IncomeSelectionValues } from "@/schemas/Income";
+import { InputFormField } from "../ui/InputFormField";
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { ListItemCircle } from "../Circle/ListItemCircle";
+import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
+import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
+import { LinksEditorFormField } from "../Shared/LinksEditorFormField";
+import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
+import { LocationSelectionValues } from "@/globals/location";
+import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
+import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
+import { ProfileAttributeList } from "../Shared/ProfileAttributeList";
 import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
+import { ProfileDescription } from "./ProfileDescription";
+import { ProfileHeader } from "../Shared/ProfileHeader";
 import { ProfileLinks } from "../Shared/ProfileLinks";
-import { ProfileLocation } from "./ProfileCardLocation";
-import { ProfilePicture } from "./ProfilePicture";
-import { ProfileSchemaType } from "@/schemas/Profile";
+import { ProfileLocation } from "./ProfileLocation";
+import {
+  ProfileSchemaType,
+  UpdateProfileSchema,
+  UpdateProfileSchemaType,
+} from "@/schemas/Profile";
 import { ProfileSection } from "./ProfileSection";
-import React, { useMemo } from "react";
+import { PuritySelectionValues } from "@/schemas/Purity";
+import { ReligionSelectionValues } from "@/schemas/Religion";
+import { TextAreaFormField } from "../ui/TextAreaFormField";
+import { api } from "@/utils/api";
+import { handleError } from "@/utils/handleError";
+import { routes } from "@/globals/routes";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useCallback, useMemo, useState } from "react";
 import dayjs from "dayjs";
 
 export type ProfileProps = {
   profile: ProfileSchemaType;
+  canEdit?: boolean;
   interact?: (
     interaction: InteractionSchemaType,
     profile: ProfileSchemaType
-  ) => void;
+  ) => Promise<void>;
 };
 
-export function Profile({ profile, interact }: ProfileProps) {
+export const isDirty = (
+  data: ProfileSchemaType,
+  profileState: ProfileSchemaType
+) => {
+  return (
+    data.bio !== profileState.bio ||
+    data.activity !== profileState.activity ||
+    data.children !== profileState.children ||
+    data.consumables !== profileState.consumables ||
+    data.drinking !== profileState.drinking ||
+    data.ethnicity !== profileState.ethnicity ||
+    data.height !== profileState.height ||
+    data.income !== profileState.income ||
+    data.levelOfEducation !== profileState.levelOfEducation ||
+    data.location !== profileState.location ||
+    data.maritalStatus !== profileState.maritalStatus ||
+    data.purity !== profileState.purity ||
+    data.religion !== profileState.religion ||
+    data.weight !== profileState.weight ||
+    data.willingToRelocate !== profileState.willingToRelocate ||
+    data.politicalBeliefs !== profileState.politicalBeliefs ||
+    data.links !== profileState.links
+  );
+};
+
+export function Profile({ profile, canEdit, interact }: ProfileProps) {
+  const router = useRouter();
+  const [profileState, setProfileState] = useState(
+    profile as UpdateProfileSchemaType
+  );
+  const update = api.profiles.update.useMutation();
+  const updateImage = api.profiles.updateImage.useMutation();
+  const handleUpdateImage = useCallback(
+    (imageURL: string) => {
+      updateImage
+        .mutateAsync({ userId: profileState.userId, image: imageURL })
+        .then(() => {
+          setProfileState({ ...profileState, image: imageURL });
+        })
+        .catch(handleError);
+    },
+    [updateImage, profileState, setProfileState]
+  );
+
+  const form = useForm<UpdateProfileSchemaType>({
+    resolver: zodResolver(UpdateProfileSchema),
+    defaultValues: {
+      ...profileState,
+    },
+  });
+  const onInvalidData = useCallback(handleError, []);
+  const onValidData = useCallback(
+    (data: UpdateProfileSchemaType) => {
+      setEditMode(false);
+
+      if (isDirty(profileState, data)) {
+        update.mutateAsync(data).catch(handleError);
+        setProfileState(data);
+      }
+    },
+    [setProfileState, update, profileState]
+  );
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
+  const handleRoute = useCallback(
+    (circleNameItem: ItemType) => {
+      const route = routes.circleByCircleNameAsLabel(circleNameItem.value);
 
+      router.push(route.href, route.as).catch(handleError);
+    },
+    [router]
+  );
+  const [editMode, setEditMode] = useState(false);
   return (
-    <div className="mx-2 flex max-w-screen-xl flex-col items-center justify-center gap-6">
-      <div className="w-3/4 flex-1 justify-center sm:w-1/3">
-        <ProfilePicture
-          // TODO: Replace with actual picture.
-          src="https://images.unsplash.com/photo-1542596768-5d1d21f1cf98"
-          fallback={profile.username.substring(0, 1)}
-          alt={profile.username + "_profile"}
-          className="md:m-2"
-        />
-      </div>
-      <h1 className="flex w-full justify-center text-4xl sm:w-auto">
-        {profile.username} ({age})
-      </h1>
+    <Form
+      onSubmit={form.handleSubmit(onValidData, onInvalidData)}
+      form={form}
+      className="mx-auto flex w-full max-w-screen-xl flex-col items-center justify-center gap-6"
+    >
+      <ProfileHeader
+        canEdit={canEdit}
+        handleUpdateImage={handleUpdateImage}
+        image={profileState.image ?? ""}
+        header={`${profile.username} (${age})`}
+      />
       <ProfileLocation
         country={profile.location.country}
         state={profile.location.state}
         willingToRelocate={profile.willingToRelocate === "YES"}
+        isEditMode={editMode}
+        editor={
+          <ComboBoxFormField<UpdateProfileSchemaType, LocationSchemaType>
+            options={LocationSelectionValues()}
+            name="location"
+            control={form.control}
+            className="flex w-full self-center sm:w-72"
+          />
+        }
       />
-      {profile.links && <ProfileLinks links={profile.links} />}
-      <ProfileSection>
+      <ProfileAttributeList>
+        <ProfileLinks
+          links={profileState.links ?? []}
+          isEditMode={editMode}
+          editor={
+            <LinksEditorFormField
+              name="links"
+              control={form.control}
+              list={profileState.links ?? []}
+            />
+          }
+        />
+      </ProfileAttributeList>
+      <ProfileSection
+        heading="About"
+        canEdit={true}
+        editMode={editMode}
+        setEditMode={setEditMode}
+      >
+        <ProfileDescription
+          description={profileState.bio}
+          isEditMode={editMode}
+          editor={<TextAreaFormField name="bio" control={form.control} />}
+        />
+      </ProfileSection>
+      <ProfileSection
+        heading="Attributes"
+        canEdit={true}
+        editMode={editMode}
+        setEditMode={setEditMode}
+      >
         <div className="grid h-full w-full items-center justify-around md:grid-cols-2 lg:grid-cols-3">
-          <ProfileCardSubheading title={"General"} />
+          <ProfileCardSubheading title="General" />
           <ProfileAttribute
             option={ProfileAttributeOptions.religion}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={`${profile.religion}`}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="religion"
+                control={form.control}
+                options={ReligionSelectionValues}
+              />
+            }
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.maritalStatus}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={`${profile.maritalStatus}`}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="maritalStatus"
+                control={form.control}
+                options={MaritalStatusesSelectionValues}
+              />
+            }
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.politicalBeliefs}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.politicalBeliefs}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="politicalBeliefs"
+                control={form.control}
+                options={PoliticalBeliefsSelectionValues}
+              />
+            }
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.education}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.levelOfEducation}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="levelOfEducation"
+                control={form.control}
+                options={LevelOfEducationSelectionValues}
+              />
+            }
           />
-
           <ProfileCardSubheading title={"Lifestyle"} />
           <ProfileAttribute
             option={ProfileAttributeOptions.height}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.height}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="height"
+                control={form.control}
+                options={HeightStringSelectOptions}
+              />
+            }
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.weight}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.weight}
             weightUnit={profile.weightUnit}
+            isEditMode={editMode}
+            editor={
+              <InputFormField
+                control={form.control}
+                name="weight"
+                type="number"
+              />
+            }
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.drinking}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.drinking}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="drinking"
+                control={form.control}
+                options={DrinkingSelectionValues}
+              />
+            }
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.consumables}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.consumables}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="consumables"
+                control={form.control}
+                options={ConsumablesSelectionValues}
+              />
+            }
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.activityLevel}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={`${profile.activity}`}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="activity"
+                control={form.control}
+                options={ActivitySelectionValues}
+              />
+            }
           />
           <ProfileCardSubheading title={"Family"} />
           <ProfileAttribute
             option={ProfileAttributeOptions.purity}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.purity}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="purity"
+                control={form.control}
+                options={PuritySelectionValues}
+              />
+            }
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.children}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.children}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="children"
+                control={form.control}
+                options={ChildrenSelectionValues}
+              />
+            }
           />
           <ProfileAttribute
             option={ProfileAttributeOptions.income}
-            variant={ProfileAttributeVariant.LARGE}
+            variant={ProfileAttributeVariant.PROFILE}
             attribute={profile.income}
+            isEditMode={editMode}
+            editor={
+              <DropdownFormField<ProfileSchemaType>
+                name="income"
+                control={form.control}
+                options={IncomeSelectionValues}
+              />
+            }
           />
         </div>
       </ProfileSection>
-      <ProfileSection>
-        <p>{profile.bio}</p>
-      </ProfileSection>
-      <ProfileSection>
+      <ProfileSection heading="Circles">
         <div className="grid w-full sm:grid-cols-2">
-          {profile.circles?.map((circle) => (
-            <ListItemCircle key={circle.name} circle={circle} />
-          ))}
+          {profile.circles && (
+            <ItemList
+              items={profile.circles.map(ParseItem)}
+              clickAction={handleRoute}
+            />
+          )}
         </div>
       </ProfileSection>
       {interact && (
@@ -129,6 +361,6 @@ export function Profile({ profile, interact }: ProfileProps) {
           <ProfileActions profile={profile} interact={interact} />
         </ProfileSection>
       )}
-    </div>
+    </Form>
   );
 }

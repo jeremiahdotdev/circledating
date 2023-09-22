@@ -9,13 +9,22 @@ import { cn } from "@/lib/utils";
 const Slider = React.forwardRef<
   React.ElementRef<typeof SliderPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>
->(({ className, ...props }, ref) => {
+>(({ className, onValueChange, ...props }, ref) => {
   const [min, setMin] = React.useState(props.defaultValue?.[0] ?? props.min);
   const [max, setMax] = React.useState(props.defaultValue?.[1] ?? props.max);
   const setMinMax = React.useCallback((v: number[]) => {
     setMin(v[0]);
     setMax(v[1]);
   }, []);
+
+  const handleChange = React.useCallback(
+    (value: number[]) => {
+      setMinMax(value);
+      if (onValueChange) onValueChange(value);
+    },
+    [onValueChange, setMinMax]
+  );
+
   return (
     <SliderPrimitive.Root
       ref={ref}
@@ -23,7 +32,7 @@ const Slider = React.forwardRef<
         "relative flex w-full touch-none select-none items-center my-6",
         className
       )}
-      onValueChange={setMinMax}
+      onValueChange={handleChange}
       {...props}
     >
       <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">

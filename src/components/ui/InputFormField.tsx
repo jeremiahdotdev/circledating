@@ -6,8 +6,9 @@ import {
   FormMessage,
 } from "./form";
 import { Input } from "./input";
+import { RequiredAsterisk } from "./RequiredAsterisk";
 import { useController } from "react-hook-form";
-import React from "react";
+import React, { useCallback } from "react";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 interface InputFormFieldProps<Values extends FieldValues>
@@ -15,9 +16,10 @@ interface InputFormFieldProps<Values extends FieldValues>
   label?: string;
   description?: string;
   placeholder?: string;
-  type?: "number" | "text";
+  type?: "number" | "text" | "array";
   className?: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  required?: boolean;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 export const InputFormField = <Values extends FieldValues>(
@@ -25,16 +27,33 @@ export const InputFormField = <Values extends FieldValues>(
 ) => {
   const { field, fieldState } = useController(props);
 
+  const customOnChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (props.type === "text") {
+        field.onChange(e.target.value);
+      } else if (props.type === "number") {
+        field.onChange(Number(e.target.value));
+      } else {
+        field.onChange(e.target.value);
+      }
+    },
+    [field, props]
+  );
+
   return (
-    <FormItem className="flex w-full flex-col items-center ">
-      <FormLabel>{props.label}</FormLabel>
+    <FormItem className="flex w-full flex-col">
+      <FormLabel>
+        {props.label}
+        <RequiredAsterisk required={props.required} />
+      </FormLabel>
       <FormControl>
         <Input
           placeholder={props.placeholder ?? props.label}
           {...field}
           type={props.type ?? "text"}
           className={props.className}
-          onChange={props.onChange}
+          onChange={customOnChange}
+          defaultValue={props.defaultValue}
         />
       </FormControl>
       {fieldState.error?.message && (

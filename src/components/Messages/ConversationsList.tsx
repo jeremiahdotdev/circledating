@@ -3,7 +3,6 @@
 import { Conversation } from "./Conversation";
 import { ConversationSchemaType } from "@/schemas/Conversation";
 import { api } from "@/utils/api";
-import { handleError } from "@/utils/handleError";
 import React, { useCallback, useMemo, useState } from "react";
 
 export type ConversationsListProps = {
@@ -24,11 +23,12 @@ export function ConversationsList({
   const [conversationsState, setConversationsState] = useState(conversations);
   const onAction = useCallback(
     (conversation: ConversationSchemaType) => {
-      setConversationsState((oldValue) =>
-        oldValue.filter((c) => c.id !== conversation.id)
-      );
       if (conversation.id)
-        mutateAsync({ id: conversation.id }).catch(handleError);
+        return mutateAsync({ id: conversation.id }).then(() => {
+          setConversationsState((oldValue) =>
+            oldValue.filter((c) => c.id !== conversation.id)
+          );
+        });
     },
     [mutateAsync]
   );
