@@ -16,7 +16,7 @@ export type ProfileLinksProps = {
 export function ProfileLinks({ links, isEditMode, editor }: ProfileLinksProps) {
   if (isEditMode) {
     return editor;
-  } else {
+  } else if (links.length) {
     return links.map(({ href }, index) => (
       <ProfileAttribute
         key={index}

@@ -1,9 +1,13 @@
 import { LoginSchema } from "@/schemas/LoginSchema";
-import { NextAuthOptions } from "next-auth";
+import { NextAuthOptions, Session } from "next-auth";
 import { prisma } from "@/server/db";
+import { routes } from "@/globals/routes";
 import { verify } from "argon2";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+export interface SessionWithId extends Session {
+  id: string;
+}
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -36,16 +40,37 @@ export const nextAuthOptions: NextAuthOptions = {
         return {
           id: user.id,
           email: user.email,
+          name: user.username,
         };
       },
     }),
   ],
+  callbacks: {
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+      }
+
+      return token;
+    },
+    session: ({ session, token }) => {
+      if (token) {
+        (session as SessionWithId).id = token.id as string;
+      }
+
+      return session;
+    },
+  },
   jwt: {
     secret: "super-secret",
     maxAge: 15 * 24 * 30 * 60, // 15 days
   },
   pages: {
-    signIn: "/login",
-    newUser: "/sign-up",
+    signIn: routes.login().href,
+    newUser: routes.signup().href,
+  },
+  session: {
+    strategy: "jwt",
   },
 };

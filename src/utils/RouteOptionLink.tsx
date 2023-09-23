@@ -11,7 +11,13 @@ export interface RouteOptionLinkProps
 export const RouteOptionLink = React.forwardRef(
   (props: RouteOptionLinkProps, ref: React.ForwardedRef<HTMLAnchorElement>) => {
     return (
-      <Link ref={ref} {...props} href={props.option.href} as={props.option.as}>
+      <Link
+        onClick={props.option.action}
+        ref={ref}
+        {...props}
+        href={props.option.action ? "#" : props.option.href}
+        as={props.option.as}
+      >
         {props.children}
       </Link>
     );

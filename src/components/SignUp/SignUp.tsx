@@ -1,0 +1,70 @@
+import { Anchor } from "../Shared/Anchor";
+import { Form } from "@/components/ui/form";
+import { FormButton } from "@/components/ui/FormButton";
+import { InputFormField } from "@/components/ui/InputFormField";
+import { Logo } from "../Nav/Logo";
+import { RouteOptionLink } from "@/utils/RouteOptionLink";
+import { Separator } from "../ui/separator";
+import { SignupSchema, SignupSchemaType } from "@/schemas/LoginSchema";
+import { api } from "@/utils/api";
+import { routes } from "@/globals/routes";
+import { useCallback } from "react";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
+
+export function SignUp() {
+  const router = useRouter();
+  const form = useForm<SignupSchemaType>({
+    resolver: zodResolver(SignupSchema),
+  });
+
+  const { mutateAsync } = api.users.signUp.useMutation();
+
+  const onSubmit = useCallback(
+    async (data: SignupSchemaType) => {
+      const result = await mutateAsync(data);
+      if (result.status === 201) {
+        await router.push(routes.login().href);
+      }
+    },
+    [mutateAsync, router]
+  );
+
+  return (
+    <div className="max-h-fit max-w-screen-sm p-4 shadow-outter">
+      <Form
+        form={form}
+        className="flex w-full flex-col items-center justify-center gap-2"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <Logo className="py-2" />
+        <Separator />
+        <InputFormField
+          name="username"
+          type="text"
+          placeholder="Type your username..."
+          className="my-2 w-full max-w-xs"
+        />
+        <InputFormField
+          name="email"
+          type="text"
+          placeholder="Type your email..."
+          className="my-2 w-full max-w-xs"
+        />
+        <InputFormField
+          name="password"
+          type="password"
+          placeholder="Type your password..."
+          className="my-2 w-full max-w-xs"
+        />
+        <Separator />
+        <RouteOptionLink option={routes.default()}>
+          <Anchor>- Log In -</Anchor>
+        </RouteOptionLink>
+        <FormButton label="Sign Up" />
+      </Form>
+    </div>
+  );
+}

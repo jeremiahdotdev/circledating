@@ -1,6 +1,7 @@
 import { DialogModal } from "../ui/DialogModal";
 import { IconButton, IconButtonVariant } from "./IconButton";
 import { ProfilePicture } from "../Profile/ProfilePicture";
+import AvatarUpload from "../Avatar/AvatarUpload";
 import React, { useCallback, useState } from "react";
 
 export type ProfileHeaderProps = {

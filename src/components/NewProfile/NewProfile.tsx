@@ -20,9 +20,10 @@ import { FormSection } from "../ui/FormSection";
 import { GenderSelectionValues } from "@/schemas/Gender";
 import { HeightStringSelectOptions } from "@/schemas/Height";
 import { IncomeSelectionValues } from "@/schemas/Income";
-import { InputFormField } from "../ui/InputFormField";
 import { LabeledInputFormField } from "@/components/ui/LabeledInputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
+import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
+import { LocationSelectionValues, countries } from "@/globals/location";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
 import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { PuritySelectionValues } from "@/schemas/Purity";
@@ -32,10 +33,12 @@ import { WeightUnit } from "@prisma/client";
 import { WeightUnitOptions } from "@/schemas/Units";
 import { YesAndNoSelectionValues } from "@/schemas/YesAndNo";
 import { api } from "@/utils/api";
-import { countries } from "@/globals/location";
 import { handleError } from "@/utils/handleError";
-import { memo, useCallback, useMemo } from "react";
+import { memo, useCallback } from "react";
+import { routes } from "@/globals/routes";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 
@@ -47,71 +50,36 @@ export type NewProfileProps = {
 export const NewProfile = memo(function NewProfile({
   circle,
 }: NewProfileProps) {
+  const { data: session } = useSession();
+  const router = useRouter();
   const form = useForm<CreateProfileSchemaType>({
     resolver: zodResolver(CreateProfileSchema),
+
     defaultValues: {
+      username: session?.user?.name ?? "",
       weightUnit: WeightUnit.LBS,
+      location: { continent: "Earth" },
     },
   });
 
-  const search = api.profiles.isUsernameUnique.useMutation();
   const create = api.profiles.create.useMutation();
-
-  // The forms type says this is always a string, but that is the defined case for the form. If no country is selected, it's undefined.
-  const selectedCountry = form.watch("location.country") as string | undefined;
-
   const selectedWeightUnit = form.watch("weightUnit");
-  // Memoized Values
-  const countryValues = useMemo(
-    () =>
-      countries.map((country) => ({
-        value: country.country,
-        label: country.country,
-      })),
-    []
-  );
-  const stateValues = useMemo(() => {
-    if (!selectedCountry) return [];
-    const country = countries.find(
-      (country) => country.country === selectedCountry
-    );
-    if (!country) return [];
-    return country.states.map((state) => ({
-      value: state,
-      label: state,
-    }));
-  }, [selectedCountry]);
 
-  // Callbacks
-  // Todo type the function parameter
   const onInvalidData = useCallback(handleError, []);
-
   const onValidData = useCallback(
     (data: CreateProfileSchemaType) => {
-      // TODO: Handle the promise correctly here!
       if (circle) data.circles = [circle];
-      void create.mutateAsync(data);
-    },
-    [create, circle]
-  );
-
-  const searchUsername = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      search
-        .mutateAsync({ username: e.target.value })
-        .then((result) => {
-          if (result) {
-            form.clearErrors("username");
-          } else {
-            form.control.setError("username", {
-              type: "non-unique-username",
-              message: "That username is taken!",
-            });
-          }
+      data.location.continent = countries
+        .filter((c) => c.country == data.location.country)
+        .filter((c) => c.states.includes(data.location.state))?.[0].continent;
+      create
+        .mutateAsync(data)
+        .then(() => {
+          router.push(routes.dashboard().href).catch(handleError);
         })
         .catch(handleError);
     },
-    [search, form]
+    [create, circle, router]
   );
 
   return (
@@ -123,14 +91,6 @@ export const NewProfile = memo(function NewProfile({
         className="w-full sm:w-3/4"
       >
         <FormSection heading="General">
-          <InputFormField
-            control={form.control}
-            name="username"
-            label="What is your reddit username?"
-            placeholder="username"
-            onChange={searchUsername}
-            required={true}
-          />
           <DropdownFormField<CreateProfileSchemaType>
             name="sex"
             control={form.control}
@@ -176,20 +136,11 @@ export const NewProfile = memo(function NewProfile({
           />
         </FormSection>
         <FormSection heading="Location">
-          <ComboBoxFormField<CreateProfileSchemaType, string>
-            name="location.country"
+          <ComboBoxFormField<CreateProfileSchemaType, LocationSchemaType>
+            options={LocationSelectionValues()}
+            name="location"
             control={form.control}
-            label="What is your country of residence?"
-            options={countryValues}
-            filterOn={circle?.countryRestriction}
-            required={true}
-          />
-          <ComboBoxFormField<CreateProfileSchemaType, string>
-            name="location.state"
-            control={form.control}
-            label="What is your state/province of residence?"
-            options={stateValues}
-            required={true}
+            label="Where are you located?"
           />
           <ComboBoxFormField<CreateProfileSchemaType, string>
             name="willingToRelocate"

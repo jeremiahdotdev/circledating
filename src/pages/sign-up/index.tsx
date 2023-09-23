@@ -1,7 +1,7 @@
-import React from "react";
+import { SignUpView } from "@/views/SignUpView/SignUpView";
+import { defaultAuthProps } from "@/helpers/defaultAuthProps";
+import { requireNoAuth } from "@/helpers/requireNoAuth";
 
-export default function SignUp() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24"></main>
-  );
-}
+export const getServerSideProps = requireNoAuth(defaultAuthProps);
+
+export default SignUpView;

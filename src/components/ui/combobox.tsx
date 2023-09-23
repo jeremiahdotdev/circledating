@@ -80,6 +80,30 @@ export function Combobox<ComboBoxType>({
     );
   }, [filteredOptions, handleSelect, value]);
 
+  const label = useMemo(() => {
+    let result = "Select...";
+    if (placeholder) {
+      result = placeholder;
+    }
+    if (value) {
+      const valueLabel = filteredOptions.find((option) => {
+        type keyType = { id: string };
+        if (typeof option.value === "object" && option.value) {
+          return (
+            (option.value as unknown as keyType).id ===
+            (value as unknown as keyType).id
+          );
+        } else {
+          return option.value == value;
+        }
+      })?.label;
+      if (valueLabel) {
+        result = valueLabel;
+      }
+    }
+    return result;
+  }, [filteredOptions, value, placeholder]);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -89,19 +113,7 @@ export function Combobox<ComboBoxType>({
           aria-expanded={open}
           className={classNames("justify-between", className)}
         >
-          {value
-            ? filteredOptions.find((option) => {
-                type keyType = { id: string };
-                if (typeof option.value === "object" && option.value) {
-                  return (
-                    (option.value as unknown as keyType).id ===
-                    (value as unknown as keyType).id
-                  );
-                } else {
-                  return option.value == value;
-                }
-              })?.label
-            : placeholder ?? "Select..."}
+          {label}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>

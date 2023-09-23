@@ -147,7 +147,6 @@ model UserProfile {
   politicalBeliefs                   PoliticalBeliefs
   levelOfEducation                   LevelOfEducation
   purity                             Purity
-  onlyLookingForTraditionalHousehold YesNoOrUnknown
   income                             Income
   maritalStatus                      MaritalStatus
   activity                           Activity

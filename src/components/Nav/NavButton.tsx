@@ -15,7 +15,7 @@ export function NavButton({ option, className }: NavButtonProps) {
   const isActive = usePathname() === option.href;
 
   return (
-    <li>
+    <li className="list-none">
       <RouteOptionLink
         option={option}
         className={cn(

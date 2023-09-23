@@ -1,4 +1,3 @@
-"use client";
 import { RouteOption } from "@/globals/routes";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { SheetModal } from "../ui/SheetModal";

@@ -3,14 +3,14 @@ import { getServerSession } from "next-auth";
 import { nextAuthOptions } from "@/server/auth/auth";
 import { routes } from "@/globals/routes";
 
-export const requireAuth =
+export const requireNoAuth =
   (func: GetServerSideProps) => async (ctx: GetServerSidePropsContext) => {
     const session = await getServerSession(ctx.req, ctx.res, nextAuthOptions);
 
-    if (!session) {
+    if (session) {
       return {
         redirect: {
-          destination: routes.login().href,
+          destination: routes.dashboard().href, // signed-in home path
           permanent: false,
         },
       };

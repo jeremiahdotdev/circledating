@@ -87,7 +87,6 @@ export const noRestrictions = {
   levelOfEducationRestriction: [],
   politicalBeliefsRestriction: [],
   willingToRelocateRestriction: [],
-  onlyLookingForTraditionalHouseholdRestriction: [],
   customRestriction: [],
 };
 export const allRestrictions = {
@@ -105,7 +104,6 @@ export const allRestrictions = {
   levelOfEducationRestriction: true,
   politicalBeliefsRestriction: true,
   willingToRelocateRestriction: true,
-  onlyLookingForTraditionalHouseholdRestriction: true,
 };
 
 export const circleRouter = createTRPCRouter({

@@ -1,6 +1,7 @@
 import { MessagesView } from "@/views/MessagesView/MessagesView";
-import React from "react";
+import { defaultAuthProps } from "@/helpers/defaultAuthProps";
+import { requireUser } from "@/helpers/requireUser";
 
-export default function Page() {
-  return <MessagesView />;
-}
+export const getServerSideProps = requireUser(defaultAuthProps);
+
+export default MessagesView;

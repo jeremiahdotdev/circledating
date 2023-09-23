@@ -37,7 +37,6 @@ export const ProfilePartial = {
   politicalBeliefs: PoliticalBeliefsSchema,
   levelOfEducation: LevelOfEducationSchema,
   purity: PuritySchema,
-  onlyLookingForTraditionalHousehold: YesAndNoSchema,
   income: IncomeSchema,
   maritalStatus: MaritalStatusesSchema,
   activity: ActivitySchema,
@@ -97,7 +96,6 @@ export function isProfile(x: unknown): x is ProfileSchemaType {
     !!(x as ProfileSchemaType).links &&
     !!(x as ProfileSchemaType).location &&
     !!(x as ProfileSchemaType).maritalStatus &&
-    !!(x as ProfileSchemaType).onlyLookingForTraditionalHousehold &&
     !!(x as ProfileSchemaType).politicalBeliefs &&
     !!(x as ProfileSchemaType).purity &&
     !!(x as ProfileSchemaType).religion &&

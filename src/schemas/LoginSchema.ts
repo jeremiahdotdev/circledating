@@ -8,3 +8,6 @@ export const LoginSchema = z.object({
 export const SignupSchema = LoginSchema.extend({
   username: z.string().min(3).max(255),
 });
+
+export type LoginSchemaType = z.infer<typeof LoginSchema>;
+export type SignupSchemaType = z.infer<typeof SignupSchema>;
