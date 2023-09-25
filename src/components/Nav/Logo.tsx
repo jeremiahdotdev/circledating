@@ -8,7 +8,7 @@ export type LogoProps = {
 
 export function Logo({ className }: LogoProps) {
   return (
-    <div className="flex">
+    <div className="flex items-center justify-center">
       <LogoIcon />
       <span
         className={classNames(
