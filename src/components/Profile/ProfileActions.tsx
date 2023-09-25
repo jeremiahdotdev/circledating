@@ -3,8 +3,7 @@ import { IconButton, IconButtonVariant } from "../Shared/IconButton";
 import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ProfileSchemaType } from "@/schemas/Profile";
 import { ReportProfileForm } from "./ReportProfileForm";
-import React, { useCallback, useMemo, useState } from "react";
-import state from "@/utils/user.store";
+import React, { useCallback, useState } from "react";
 
 export type ProfileActionsProps = {
   profile: ProfileSchemaType;
@@ -15,16 +14,9 @@ export type ProfileActionsProps = {
 };
 
 export function ProfileActions({ profile, interact }: ProfileActionsProps) {
-  const isLiked = useMemo(() => {
-    const affections = state.currentUser.affections;
-    return affections?.find(
-      (i) => i.initiatedUserId === profile.userId && i.isLiked
-    );
-  }, [profile]);
   const interaction = useCallback(
     (isLiked: boolean, isBlocked: boolean) => {
       return {
-        initiatedUserId: state.currentUser.userId,
         affectedUserId: profile.userId,
         isLiked: isLiked,
         isBlocked: isBlocked,
@@ -50,7 +42,9 @@ export function ProfileActions({ profile, interact }: ProfileActionsProps) {
     <>
       <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
         <IconButton
-          variant={isLiked ? IconButtonVariant.MAIL : IconButtonVariant.LIKE}
+          variant={
+            profile.likesYou ? IconButtonVariant.MAIL : IconButtonVariant.LIKE
+          }
           action={likeThisProfile}
           className={"h-16 w-16"}
         />

@@ -6,18 +6,19 @@ import { api } from "@/utils/api";
 import { memo } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import React from "react";
-import state from "@/utils/user.store";
 
 export type MessagesViewProps = Record<never, never>;
 
 export const MessagesView: React.FC<MessagesViewProps> = memo(() => {
   const router = useRouter();
+  const { data: session } = useSession();
   const user = routerQueryAttributeToString(router.query.user);
   if (!user) return <PageNotFound />;
 
   const request = api.messages.read.useQuery({
-    authorUsername: state.currentUser.username,
+    authorUsername: session?.user?.name ?? "",
     recipientUsername: user,
   });
   if (!request.data) return <Loading />;

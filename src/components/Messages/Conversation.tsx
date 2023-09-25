@@ -6,8 +6,8 @@ import { ListItemPicture } from "../ui/ListItemPicture";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { api } from "@/utils/api";
 import { routes } from "@/globals/routes";
+import { useSession } from "next-auth/react";
 import React, { useCallback } from "react";
-import state from "@/utils/user.store";
 
 export type ConversationProps = {
   conversation: ConversationSchemaType;
@@ -21,8 +21,9 @@ export function Conversation({
   onSelect,
   onAction,
 }: ConversationProps) {
+  const { data: session } = useSession();
   const usernames = conversation.users
-    ?.filter((user) => user.id !== state.currentUser.userId)
+    ?.filter((user) => user.id !== session?.id)
     ?.map((user) => user.username)
     ?.join(",");
   const newestMessage = conversation.messages?.[0];

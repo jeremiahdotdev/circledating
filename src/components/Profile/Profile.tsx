@@ -26,8 +26,8 @@ import { ProfileHeader } from "../Shared/ProfileHeader";
 import { ProfileLinks } from "../Shared/ProfileLinks";
 import { ProfileLocation } from "./ProfileLocation";
 import {
+  ProfileSchema,
   ProfileSchemaType,
-  UpdateProfileSchema,
   UpdateProfileSchemaType,
 } from "@/schemas/Profile";
 import { ProfileSection } from "./ProfileSection";
@@ -79,9 +79,7 @@ export const isDirty = (
 
 export function Profile({ profile, canEdit, interact }: ProfileProps) {
   const router = useRouter();
-  const [profileState, setProfileState] = useState(
-    profile as UpdateProfileSchemaType
-  );
+  const [profileState, setProfileState] = useState(profile);
   const update = api.profiles.update.useMutation();
   const updateImage = api.profiles.updateImage.useMutation();
   const handleUpdateImage = useCallback(
@@ -96,19 +94,19 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
     [updateImage, profileState, setProfileState]
   );
 
-  const form = useForm<UpdateProfileSchemaType>({
-    resolver: zodResolver(UpdateProfileSchema),
+  const form = useForm<ProfileSchemaType>({
+    resolver: zodResolver(ProfileSchema),
     defaultValues: {
       ...profileState,
     },
   });
   const onInvalidData = useCallback(handleError, []);
   const onValidData = useCallback(
-    (data: UpdateProfileSchemaType) => {
+    (data: ProfileSchemaType) => {
       setEditMode(false);
 
       if (isDirty(profileState, data)) {
-        update.mutateAsync(data).catch(handleError);
+        update.mutateAsync(data as UpdateProfileSchemaType).catch(handleError);
         setProfileState(data);
       }
     },
@@ -139,12 +137,12 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
         header={`${profile.username} (${age})`}
       />
       <ProfileLocation
-        country={profile.location.country}
-        state={profile.location.state}
+        country={profile.location?.country}
+        state={profile.location?.state}
         willingToRelocate={profile.willingToRelocate === "YES"}
         isEditMode={editMode}
         editor={
-          <ComboBoxFormField<UpdateProfileSchemaType, LocationSchemaType>
+          <ComboBoxFormField<ProfileSchemaType, LocationSchemaType>
             options={LocationSelectionValues()}
             name="location"
             control={form.control}

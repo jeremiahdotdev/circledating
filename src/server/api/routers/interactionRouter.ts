@@ -1,29 +1,41 @@
-import { createInteractionSchema } from "@/schemas/Interaction";
+import { InteractionSchema } from "@/schemas/Interaction";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const interactionRouter = createTRPCRouter({
   create: publicProcedure
-    .input(createInteractionSchema)
+    .input(InteractionSchema)
     .mutation(async ({ input, ctx }) => {
-      await ctx.prisma.userInteraction.create({
-        data: input.interaction,
-      });
-      if (input.isMatch) {
-        const data = await ctx.prisma.conversation.create({
-          data: {
-            users: {
-              create: [
-                {
-                  userId: input.interaction.initiatedUserId,
-                },
-                {
-                  userId: input.interaction.affectedUserId,
-                },
-              ],
-            },
+      let returnValue;
+      if (ctx.session?.id) {
+        returnValue = await ctx.prisma.userInteraction.create({
+          data: { ...input, initiatedUserId: ctx.session.id },
+        });
+        const isMatch = await ctx.prisma.userInteraction.findFirst({
+          where: {
+            initiatedUserId: input.affectedUserId,
+            affectedUserId: ctx.session.id,
+            isLiked: true,
+            isBlocked: false,
           },
         });
-        return data;
+        if (isMatch) {
+          const data = await ctx.prisma.conversation.create({
+            data: {
+              users: {
+                create: [
+                  {
+                    userId: ctx.session.id,
+                  },
+                  {
+                    userId: input.affectedUserId,
+                  },
+                ],
+              },
+            },
+          });
+          returnValue = data;
+        }
       }
+      return returnValue;
     }),
 });

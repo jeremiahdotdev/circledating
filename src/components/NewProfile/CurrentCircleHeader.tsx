@@ -19,7 +19,7 @@ export function CurrentCircleHeader({ circle }: CurrentCircleHeaderProps) {
           />
         )}
       </span>
-      <span className="text-3xl">- Create a new account -</span>
+      <span className="text-3xl">- Create a New Profile -</span>
     </span>
   );
 }

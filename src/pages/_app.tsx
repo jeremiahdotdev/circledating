@@ -1,22 +1,29 @@
 import "@/globals.css";
-import { AppProps } from "next/app";
 import { Inter } from "next/font/google";
-import { Nav } from "@/components/Nav/Nav";
+import { NavView } from "@/views/NavView/NavView";
+import { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import { api } from "@/utils/api";
 import React from "react";
 import classNames from "classnames";
+import type { AppProps } from "next/app";
 
 const inter = Inter({ subsets: ["latin"] });
+interface AppPageProps {
+  session: Session;
+}
 
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps<AppPageProps>) {
   return (
-    <ThemeProvider defaultTheme="boy">
-      <Nav />
-      <main className={classNames("sm:pt-[67px]", inter.className)}>
-        <Component {...pageProps} />
-      </main>
-    </ThemeProvider>
+    <SessionProvider session={pageProps.session}>
+      <ThemeProvider defaultTheme="boy">
+        <NavView />
+        <main className={classNames("sm:pt-[67px]", inter.className)}>
+          <Component {...pageProps} />
+        </main>
+      </ThemeProvider>
+    </SessionProvider>
   );
 }
 

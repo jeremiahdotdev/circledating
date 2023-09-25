@@ -14,20 +14,22 @@ import {
   UserPreferencesSchema,
   UserPreferencesSchemaType,
 } from "@/schemas/UserPreferences";
+import { api } from "@/utils/api";
 import { countries } from "@/globals/location";
 import { handleError } from "@/utils/handleError";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useMemo } from "react";
-import state from "@/utils/user.store";
 
 export function CurrentUserPreferences() {
-  const currentUserPreferences = state.currentUserPreferences;
+  const response = api.preferences.read.useQuery().data;
+  const { mutateAsync } = api.preferences.save.useMutation();
+  const preferences = response?.preferences;
 
   const form = useForm<UserPreferencesSchemaType>({
     resolver: zodResolver(UserPreferencesSchema),
     defaultValues: {
-      sex: currentUserPreferences.sex,
+      sex: preferences?.sex,
     },
   });
 
@@ -75,10 +77,12 @@ export function CurrentUserPreferences() {
   }, [selectedCountriesState]);
 
   const onInvalidData = useCallback(handleError, []);
-  const onValidData = useCallback((data: UserPreferencesSchemaType) => {
-    console.log(data);
-    // TODO: Handle the promise correctly here!
-  }, []);
+  const onValidData = useCallback(
+    (data: UserPreferencesSchemaType) => {
+      mutateAsync(data).catch(handleError);
+    },
+    [mutateAsync]
+  );
 
   return (
     <Form
@@ -86,12 +90,12 @@ export function CurrentUserPreferences() {
       onSubmit={form.handleSubmit(onValidData, onInvalidData)}
       className="flex h-full max-h-navless w-full flex-col justify-between"
     >
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col overflow-y-scroll">
         <Preference name="Age">
           <SliderFormField
             name="ageRange"
             control={form.control}
-            defaultValue={currentUserPreferences.ageRange ?? [18, 99]}
+            defaultValue={preferences?.ageRange ?? [18, 99]}
             step={1}
             min={18}
             max={99}
@@ -103,7 +107,7 @@ export function CurrentUserPreferences() {
             name="religion"
             control={form.control}
             options={ReligionSelectionValues}
-            selected={currentUserPreferences.religion}
+            selected={preferences?.religion}
           />
         </Preference>
         <Preference name="Politcal Beliefs">
@@ -111,7 +115,7 @@ export function CurrentUserPreferences() {
             name="politicalBeliefs"
             control={form.control}
             options={PoliticalBeliefsSelectionValues}
-            selected={currentUserPreferences.politicalBeliefs}
+            selected={preferences?.politicalBeliefs}
           />
         </Preference>
         <Preference name="Alcohol">
@@ -119,7 +123,7 @@ export function CurrentUserPreferences() {
             name="drinking"
             control={form.control}
             options={DrinkingSelectionValues}
-            selected={currentUserPreferences.drinking}
+            selected={preferences?.drinking}
           />
         </Preference>
         <Preference name="Tobacco / Drugs">
@@ -127,15 +131,15 @@ export function CurrentUserPreferences() {
             name="consumables"
             control={form.control}
             options={ConsumablesSelectionValues}
-            selected={currentUserPreferences.consumables}
+            selected={preferences?.consumables}
           />
         </Preference>
-        <Preference name="income">
+        <Preference name="Income">
           <MultiSelectFormField
             name="income"
             control={form.control}
             options={IncomeSelectionValues}
-            selected={currentUserPreferences.income}
+            selected={preferences?.income}
             placeholder="Select preferred income level..."
           />
         </Preference>
@@ -144,21 +148,21 @@ export function CurrentUserPreferences() {
             name="searchContinents"
             control={form.control}
             options={continentValues}
-            selected={currentUserPreferences.searchContinents}
+            selected={preferences?.searchContinents}
             placeholder="Select continent..."
           />
           <MultiSelectFormField
             name="searchCountries"
             control={form.control}
             options={countryValues}
-            selected={currentUserPreferences.searchCountries}
+            selected={preferences?.searchCountries}
             placeholder="Select countries..."
           />
           <MultiSelectFormField
             name="searchStates"
             control={form.control}
             options={stateValues}
-            selected={currentUserPreferences.searchStates}
+            selected={preferences?.searchStates}
             placeholder="Select states/provinces..."
           />
         </Preference>

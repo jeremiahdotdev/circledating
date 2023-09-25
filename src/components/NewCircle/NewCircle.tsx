@@ -27,11 +27,10 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
-import state from "@/utils/user.store";
 
-// eslint-disable-next-line max-lines-per-function
 export const NewCircle = memo(function NewProfile() {
   const router = useRouter();
+
   const [disabledState, setDisabledState] = useState(false);
 
   const form = useForm<CreateCircleSchemaType>({
@@ -54,19 +53,18 @@ export const NewCircle = memo(function NewProfile() {
     []
   );
 
-  // Callbacks
-  // Todo type the function parameter
   const onInvalidData = useCallback(handleError, []);
 
   const onValidData = useCallback(
     (data: CreateCircleSchemaType) => {
       setDisabledState(true);
       create
-        .mutateAsync({ circle: data, user: state.currentUser })
+        .mutateAsync({ circle: data })
         .then((circle) => {
-          router
-            .push(routes.circleByCircleNameAsLabel(circle.name).href)
-            .catch(handleError);
+          if (circle?.name)
+            router
+              .push(routes.circleByCircleNameAsLabel(circle?.name).href)
+              .catch(handleError);
         })
         .catch((e) => {
           handleError(e);

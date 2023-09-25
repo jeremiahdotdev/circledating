@@ -7,4 +7,5 @@ export const systemMessages = {
   NEW_CIRCLE_DESCRIPTION: "This is the begninning of a new Circle.",
   CREATE_CIRCLE_DESCRIPTION:
     "Restrict circle members to those with the below traits. A blank answer will be treated as accepting of all values. Note: Admistrators are exempt from trait rules.",
+  NO_PROFILE: "No profile was found for this user.",
 };

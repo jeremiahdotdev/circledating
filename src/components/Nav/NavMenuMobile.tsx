@@ -1,9 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { NavButtonList } from "./NavButtonList";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import React, { useCallback, useState } from "react";
 
-export function NavMenuMobile() {
+export type NavMenuMobileProps = {
+  children: React.ReactNode;
+};
+
+export function NavMenuMobile({ children }: NavMenuMobileProps) {
   const [showButtonList, setShowButtonList] = useState(false);
   const toggleShowButtonList = useCallback(
     () => setShowButtonList((oldValue) => !oldValue),
@@ -22,9 +25,7 @@ export function NavMenuMobile() {
         <FontAwesomeIcon className="h-5 w-5" icon={faBars} />
       </button>
       {showButtonList && (
-        <div className="absolute right-0 z-50 md:hidden">
-          <NavButtonList />
-        </div>
+        <div className="absolute right-0 z-50 md:hidden">{children}</div>
       )}
     </div>
   );

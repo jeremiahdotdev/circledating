@@ -7,9 +7,9 @@ import { TextAreaFormField } from "../ui/TextAreaFormField";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useMemo } from "react";
-import state from "@/utils/user.store";
 
 export type ReportProfileFormProps = {
   profile: ProfileSchemaType;
@@ -20,11 +20,12 @@ export function ReportProfileForm({
   profile,
   onSubmit,
 }: ReportProfileFormProps) {
+  const { data: session } = useSession();
   const { mutateAsync } = api.reports.create.useMutation();
   const form = useForm<ReportSchemaType>({
     resolver: zodResolver(ReportSchema),
     defaultValues: {
-      reporterUsername: state.currentUser.username,
+      reporterUsername: session?.user?.name ?? "",
       reportedUsername: profile.username,
     },
   });
@@ -41,11 +42,7 @@ export function ReportProfileForm({
     [mutateAsync, onSubmit, form]
   );
   const relevantCircles = useMemo(() => {
-    return state.currentUser.circles
-      ?.filter(
-        (circle) => profile.circles?.map((c) => c.id).includes(circle.id)
-      )
-      .map((c) => ({ label: c.label, value: c.id }));
+    return profile?.circles?.map((c) => ({ label: c.label, value: c.id }));
   }, [profile]);
   return (
     <Form

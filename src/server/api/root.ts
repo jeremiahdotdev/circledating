@@ -3,8 +3,10 @@ import { conversationRouter } from "./routers/conversationRouter";
 import { createTRPCRouter } from "./trpc";
 import { interactionRouter } from "./routers/interactionRouter";
 import { messagesRouter } from "./routers/messagesRouter";
+import { preferencesRouter } from "./routers/preferencesRouter";
 import { profileRouter } from "./routers/profileRouter";
 import { reportRouter } from "./routers/reportRouter";
+import { userRouter } from "./routers/userRouter";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +20,8 @@ export const appRouter = createTRPCRouter({
   conversations: conversationRouter,
   circles: circleRouter,
   reports: reportRouter,
+  users: userRouter,
+  preferences: preferencesRouter,
 });
 
 // export type definition of API

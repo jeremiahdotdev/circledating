@@ -15,11 +15,11 @@ export function NavButton({ option, className }: NavButtonProps) {
   const isActive = usePathname() === option.href;
 
   return (
-    <li>
+    <li className="flex list-none">
       <RouteOptionLink
         option={option}
         className={cn(
-          "block rounded py-2 pl-3 pr-4 md:p-0",
+          "block py-2 md:p-0 text-center whitespace-nowrap",
           classNames({
             "bg-cyan-300 text-white dark:text-white md:bg-transparent md:text-cyan-300 md:dark:text-cyan-100":
               isActive,

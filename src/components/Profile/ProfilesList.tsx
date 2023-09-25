@@ -9,7 +9,6 @@ import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
 import React, { memo, useCallback, useState } from "react";
-import state from "@/utils/user.store";
 
 export type ProfileListProps = {
   profiles: ProfileSchemaType[];
@@ -28,14 +27,9 @@ export const ProfileList = memo(function ProfileList({
   );
   const interact = useCallback(
     (interaction: InteractionSchemaType, profile: ProfileSchemaType) => {
-      const isMatch = !!state.currentUser.affections?.find(
-        (i) => i.initiatedUserId === profile.userId && i.isLiked
-      );
+      const isMatch = profile.likesYou;
       destroy(profile);
-      return mutateAsync({
-        interaction: interaction,
-        isMatch: isMatch,
-      }).then((result) => {
+      return mutateAsync(interaction).then((result) => {
         if (!isMatch) return;
         const option = routes.messagesByConversationIdAsUsername(
           result?.id ?? "",

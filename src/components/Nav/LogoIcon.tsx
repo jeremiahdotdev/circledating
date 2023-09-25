@@ -1,6 +1,6 @@
 import React from "react";
 
-export function NavIcon() {
+export function LogoIcon() {
   return (
     <svg
       id="eEP3D9bWUTy1"

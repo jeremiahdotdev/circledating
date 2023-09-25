@@ -8,7 +8,7 @@ import {
   faDoorClosed,
   faDoorOpen,
   faEnvelope,
-  faExclamation,
+  faExclamationCircle,
   faMinus,
   faPaperPlane,
   faPlus,
@@ -140,8 +140,8 @@ export function IconButton({
       case IconButtonVariant.REPORT:
         return {
           label: "Report",
-          icon: faExclamation,
-          style: "flex self-end h-6 w-6 p-1 bg-orange-400 shadow-outter",
+          icon: faExclamationCircle,
+          style: subtle,
         } as IconButtonOptions;
       case IconButtonVariant.EDIT:
         return {

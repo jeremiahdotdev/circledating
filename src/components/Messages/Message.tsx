@@ -3,9 +3,9 @@
 import { Gender } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { getOppositeSex } from "@/schemas/Gender";
+import { useSession } from "next-auth/react";
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import state from "@/utils/user.store";
 
 export type MessageProps = {
   timestamp: Date;
@@ -13,6 +13,8 @@ export type MessageProps = {
   isCurrentUser: boolean;
 };
 export function Message({ timestamp, content, isCurrentUser }: MessageProps) {
+  const { data: session } = useSession();
+  const sex = session?.sex;
   return (
     <div
       className={cn(
@@ -23,9 +25,7 @@ export function Message({ timestamp, content, isCurrentUser }: MessageProps) {
       <h1
         className={cn(
           "px-12",
-          (isCurrentUser
-            ? state.currentUser.sex
-            : getOppositeSex(state.currentUser.sex)) == Gender.MALE
+          (isCurrentUser ? sex : getOppositeSex(sex)) == Gender.MALE
             ? "text-cyan-400"
             : "text-fuchsia-400"
         )}
@@ -35,9 +35,7 @@ export function Message({ timestamp, content, isCurrentUser }: MessageProps) {
       <div
         className={cn(
           "w-3/4 rounded-3xl border px-12 py-6 text-sm ring-offset-background",
-          (isCurrentUser
-            ? state.currentUser.sex
-            : getOppositeSex(state.currentUser.sex)) == Gender.MALE
+          (isCurrentUser ? session?.sex : getOppositeSex(sex)) == Gender.MALE
             ? "bg-cyan-200"
             : "bg-fuchsia-200"
         )}

@@ -1,24 +1,13 @@
 import { Loading } from "@/components/Shared/Loading";
 import { ProfileList } from "../../components/Profile/ProfilesList";
-import { ProfileSchemaType } from "@/schemas/Profile";
-import { UserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { api } from "@/utils/api";
 import { memo } from "react";
 import React from "react";
-import state from "@/utils/user.store";
 
 export type ProfilesViewProps = Record<never, never>;
 
 export const ProfilesView: React.FC<ProfilesViewProps> = memo(() => {
-  // TODO: Switch to using getServerSideProps once we integrate a real state.
-  const currentUserProfile: ProfileSchemaType = state.currentUser;
-  const currentUserPreferences: UserPreferencesSchemaType =
-    state.currentUserPreferences;
-
-  const request = api.profiles.readMany.useQuery({
-    currentUserProfile: currentUserProfile,
-    currentUserPreferences: currentUserPreferences,
-  });
+  const request = api.profiles.readProfiles.useQuery();
 
   if (!request.data) return <Loading />;
 
