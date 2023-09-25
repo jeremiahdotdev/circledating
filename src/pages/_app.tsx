@@ -9,7 +9,6 @@ import { ThemeProvider } from "next-themes";
 import { api } from "@/utils/api";
 import React from "react";
 import classNames from "classnames";
-import type { AppProps } from "next/app";
 
 const inter = Inter({ subsets: ["latin"] });
 interface AppPageProps {
