@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import * as React from "react";
 import { type VariantProps, cva } from "class-variance-authority";
+import React from "react";
 
 import { cn } from "@/lib/utils";
 
