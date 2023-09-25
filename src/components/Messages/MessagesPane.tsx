@@ -2,13 +2,14 @@
 
 import { Message } from "./Message";
 import { MessageSchemaType } from "@/schemas/Message";
+import { useSession } from "next-auth/react";
 import React from "react";
-import state from "@/utils/user.store";
 
 export type MessagesPaneProps = {
   messages?: MessageSchemaType[];
 };
 export function MessagesPane({ messages }: MessagesPaneProps) {
+  const { data: session } = useSession();
   return (
     <div className="flex h-full max-h-navless w-full flex-1 flex-col-reverse">
       {messages?.map(
@@ -18,7 +19,7 @@ export function MessagesPane({ messages }: MessagesPaneProps) {
               key={`${authorUsername}-${recipientUsername}-${index}`}
               timestamp={createdAt ?? new Date()}
               content={content}
-              isCurrentUser={authorUsername === state.currentUser.username}
+              isCurrentUser={authorUsername === session?.user?.name}
             />
           );
         }

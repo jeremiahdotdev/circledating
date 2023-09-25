@@ -1,5 +1,6 @@
 "use client";
 
+import { Gender } from "@prisma/client";
 import { MessageSchemaType } from "@/schemas/Message";
 import { MessagesPane } from "@/components/Messages/MessagesPane";
 import { NewMessageForm } from "@/components/Messages/NewMessageForm";
@@ -7,14 +8,15 @@ import { PageNotFound } from "@/components/Shared/PageNotFound";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import React, { useCallback, useState } from "react";
-import state from "@/utils/user.store";
 
 export type MessagingProps = {
   messages: MessageSchemaType[];
 };
 export function Messaging({ messages }: MessagingProps) {
   const router = useRouter();
+  const { data: session } = useSession();
   const user = routerQueryAttributeToString(router.query.user);
   const conversationId = routerQueryAttributeToString(router.query.id);
 
@@ -36,7 +38,7 @@ export function Messaging({ messages }: MessagingProps) {
         )}
       </div>
       <NewMessageForm
-        gender={state.currentUser.sex}
+        gender={session?.sex ?? Gender.MALE}
         recipientUsername={user}
         conversationId={conversationId}
         onSend={onSend}

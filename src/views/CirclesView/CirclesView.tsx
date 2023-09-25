@@ -9,7 +9,6 @@ import { memo, useCallback, useState } from "react";
 import { routes } from "@/globals/routes";
 import { useRouter } from "next/router";
 import React from "react";
-import state from "@/utils/user.store";
 
 export type CirclesViewProps = Record<never, never>;
 
@@ -23,7 +22,6 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
     (searchText: string) => {
       mutateAsync({
         circleNamePartial: searchText,
-        currentUserProfile: state.currentUser,
       })
         .then(setSearchCirclesState)
         .catch(handleError);
@@ -41,12 +39,8 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
     },
     [router]
   );
-  const requestFeatured = api.circles.readFeatured.useQuery({
-    currentUserProfile: state.currentUser,
-  });
-  const requestCurrent = api.circles.readCirclesByUser.useQuery({
-    userId: state.currentUser.userId,
-  });
+  const requestFeatured = api.circles.readFeatured.useQuery();
+  const requestCurrent = api.circles.readCurrentCircles.useQuery();
 
   if (!requestFeatured.data || !requestCurrent.data) return <Loading />;
 

@@ -7,9 +7,9 @@ import { api } from "@/utils/api";
 import { cn } from "@/lib/utils";
 import { handleError } from "@/utils/handleError";
 import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback } from "react";
-import state from "@/utils/user.store";
 
 export type NewMessageBarProps = {
   gender: Gender;
@@ -24,11 +24,13 @@ export function NewMessageForm({
   conversationId,
   onSend,
 }: NewMessageBarProps) {
+  const { data: session } = useSession();
+
   const { mutateAsync } = api.messages.create.useMutation();
   const form = useForm<MessageSchemaType>({
     resolver: zodResolver(MessageSchema),
     defaultValues: {
-      authorUsername: state.currentUser.username,
+      authorUsername: session?.user?.name ?? "",
       recipientUsername: "<USER>",
       conversationId: "<ID>",
     },

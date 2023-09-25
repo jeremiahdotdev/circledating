@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 import { routes } from "@/globals/routes";
 import React, { useMemo } from "react";
 import dayjs from "dayjs";
-import state from "@/utils/user.store";
 
 export type ProfileCardProps = {
   profile: ProfileSchemaType;
@@ -22,53 +21,37 @@ export type ProfileCardProps = {
   ) => Promise<void>;
 };
 
-function IsProfilePerfectMatch(profile: ProfileSchemaType) {
-  if (profile.religion !== state.currentUser.religion) return false;
-  if (profile.drinking !== state.currentUser.drinking) return false;
-  if (profile.activity !== state.currentUser.activity) return false;
-  if (profile.children !== state.currentUser.children) return false;
-  if (profile.income !== state.currentUser.income) return false;
-  if (profile.maritalStatus !== state.currentUser.maritalStatus) return false;
-  if (profile.purity !== state.currentUser.purity) return false;
-  if (profile.politicalBeliefs !== state.currentUser.politicalBeliefs)
-    return false;
-
-  return true;
-}
-
 export function ProfileCard({ profile, interact }: ProfileCardProps) {
-  const isProfilePerfectMatch = useMemo(() => {
-    return IsProfilePerfectMatch(profile);
-  }, [profile]);
-
   const age = useMemo(() => {
     return dayjs().diff(profile.birthDate, "year");
   }, [profile.birthDate]);
 
   return (
-    <div>
+    <div className="flex w-full flex-col items-center">
       <em className="bg-gradient-to-r from-cyan-400 to-fuchsia-300 bg-clip-text font-extrabold text-transparent">
-        {isProfilePerfectMatch && "Perfect Match"} &nbsp;
+        {profile.isPerfectMatch && "Perfect Match"} &nbsp;
       </em>
       <div
         className={cn(
           "flex h-full max-w-3xl flex-col rounded-md shadow-outter-soft bg-background p-3 ",
-          isProfilePerfectMatch
+          profile.isPerfectMatch
             ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100"
             : ""
         )}
       >
-        <div className="mx-6 flex h-full max-w-full flex-wrap items-center justify-center text-sm ring-offset-background sm:justify-between sm:pt-6 ">
+        <div className="flex h-full w-full max-w-full flex-wrap items-center justify-center px-6 text-sm ring-offset-background sm:justify-between sm:pt-6 ">
           <RouteOptionLink option={routes.profileByUsername(profile.username)}>
             <h1 className="flex w-full justify-center text-lg sm:w-auto">
               {profile.username} ({age})
             </h1>
           </RouteOptionLink>
-          <ProfileLocation
-            country={profile.location.country}
-            state={profile.location.state}
-            willingToRelocate={profile.willingToRelocate === "YES"}
-          />
+          <span className="flex justify-end">
+            <ProfileLocation
+              country={profile.location?.country}
+              state={profile.location?.state}
+              willingToRelocate={profile.willingToRelocate === "YES"}
+            />
+          </span>
         </div>
         <div className="flex h-full flex-wrap items-center justify-around border-b py-6 text-sm ring-offset-background sm:px-4">
           <div className="flex w-3/4 items-center justify-center pl-4 sm:w-1/4 ">

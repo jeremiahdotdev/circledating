@@ -3,6 +3,7 @@ import {
   ReadConversationsSchemaType,
 } from "@/schemas/Conversation";
 import { ConversationsList } from "../../components/Messages/ConversationsList";
+import { Gender } from "@prisma/client";
 import { Loading } from "@/components/Shared/Loading";
 import { MessageSchemaType } from "@/schemas/Message";
 import { MessagesPane } from "../../components/Messages/MessagesPane";
@@ -15,13 +16,14 @@ import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToStri
 import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import React from "react";
-import state from "@/utils/user.store";
 
 export type ConversationsViewProps = Record<never, never>;
 
 export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
   const router = useRouter();
+  const { data: session } = useSession();
   const actionIsUnblock = !!routerQueryAttributeToString(router.query.blocked);
   const [conversationState, setConversationState] = useState(
     {} as ConversationSchemaType
@@ -35,12 +37,12 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
   const handleRoute = useCallback(
     (conversation: ConversationSchemaType) => {
       const usernames = conversation.users
-        ?.filter((user) => user.id !== state.currentUser.userId)
+        ?.filter((user) => user.id !== session?.id)
         ?.map((user) => user.username)
         ?.join(",");
       router.push(routes.messagesByUsername(usernames).href).catch(handleError);
     },
-    [router]
+    [router, session]
   );
 
   const onSend = useCallback(
@@ -55,7 +57,7 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
   );
 
   const options: ReadConversationsSchemaType = {
-    userId: state.currentUser.userId,
+    userId: session?.id ?? "",
   };
 
   const result = actionIsUnblock
@@ -88,7 +90,7 @@ export const ConversationsView: React.FC<ConversationsViewProps> = memo(() => {
             <MessagesPane messages={conversationState.messages} />
           </div>
           <NewMessageForm
-            gender={state.currentUser.sex}
+            gender={session?.sex ?? Gender.MALE}
             recipientUsername={
               conversationState?.users?.find(
                 (user) => user.id != options.userId

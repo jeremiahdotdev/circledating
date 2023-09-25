@@ -9,7 +9,7 @@ import React from "react";
 export type ProfileLocationProps = {
   willingToRelocate: boolean;
   state?: string;
-  country: string;
+  country?: string;
   isEditMode?: boolean;
   editor?: React.ReactNode;
 };

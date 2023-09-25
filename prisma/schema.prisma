@@ -218,7 +218,7 @@ model User {
   createdAt           DateTime     			@default(now())
   updatedAt           DateTime?    			@updatedAt
   username			  String       			@unique
-  preferences         UserPreferences[]
+  preferences         UserPreferences?
   authoredMessages    UserMessage[]    		@relation("authoredMessages") 
   recievedMessages    UserMessage[]    		@relation("recievedMessages")
   authoredReports     UserReport[]    		@relation("authoredReports") 
@@ -235,7 +235,21 @@ model UserPreferences {
   minAge              Int
   maxAge              Int
   sex                 Gender?
-  circles             SelectedCircle[]
+  selectedCircles     SelectedCircle[]
+  searchContinents    Json?
+  searchCountries     Json?
+  searchStates        Json?
+  children			  Json?
+  ethnicity           Json?
+  drinking            Json?
+  consumables         Json?
+  politicalBeliefs    Json?
+  levelOfEducation    Json?
+  purity              Json?
+  income              Json?
+  maritalStatus       Json?
+  activity            Json?
+  religion            Json?
   createdAt           DateTime     @default(now())
   updatedAt           DateTime?    @updatedAt
 

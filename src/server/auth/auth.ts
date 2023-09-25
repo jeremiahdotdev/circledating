@@ -1,12 +1,16 @@
+import { Gender } from "@prisma/client";
 import { LoginSchema } from "@/schemas/LoginSchema";
-import { NextAuthOptions, Session } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import { prisma } from "@/server/db";
 import { routes } from "@/globals/routes";
 import { verify } from "argon2";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export interface SessionWithId extends Session {
-  id: string;
+declare module "next-auth" {
+  export interface Session {
+    id: string;
+    sex: Gender;
+  }
 }
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
@@ -25,6 +29,13 @@ export const nextAuthOptions: NextAuthOptions = {
 
         const user = await prisma.user.findFirst({
           where: { email: creds.email },
+          include: {
+            profile: {
+              select: {
+                sex: true,
+              },
+            },
+          },
         });
 
         if (!user) {
@@ -41,6 +52,7 @@ export const nextAuthOptions: NextAuthOptions = {
           id: user.id,
           email: user.email,
           name: user.username,
+          sex: user?.profile?.sex,
         };
       },
     }),
@@ -52,11 +64,12 @@ export const nextAuthOptions: NextAuthOptions = {
         token.email = user.email;
       }
 
-      return token;
+      return { ...token, ...user };
     },
     session: ({ session, token }) => {
       if (token) {
-        (session as SessionWithId).id = token.id as string;
+        session.id = token.id as string;
+        session.sex = token.sex as Gender;
       }
 
       return session;

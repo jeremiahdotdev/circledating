@@ -1,53 +1,76 @@
 import {
   CreateProfileSchema,
-  ProfileSchema,
   ProfileSchemaType,
   UpdateImageSchema,
   UpdateProfileSchema,
   isProfile,
 } from "@/schemas/Profile";
-import {
-  UserPreferencesSchema,
-  UserPreferencesSchemaType,
-} from "@/schemas/UserPreferences";
+import { UserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { getCurrentUserFromContext } from "@/helpers/getCurrentUserFromContext";
 import { z } from "zod";
 
-export const handlePreferences = (preferences: UserPreferencesSchemaType) => {
+export const handlePreferences = (preferences?: UserPreferencesSchemaType) => {
+  if (!preferences) return [{}];
   const filters = [];
-  if (preferences.consumables.length)
+  if (preferences.selectedCircles)
+    filters.push({
+      circles: {
+        some: {
+          circleId: {
+            in: preferences?.selectedCircles?.map((circle) => circle.id ?? "0"),
+          },
+        },
+      },
+    });
+  if (preferences.sex)
+    filters.push({
+      sex: preferences.sex,
+    });
+  if (preferences.ageRange)
+    filters.push({
+      birthDate: {
+        gte: new Date(
+          Date.now() - preferences.ageRange[1] * 1000 * 60 * 60 * 24 * 365
+        ),
+        lte: new Date(
+          Date.now() - preferences.ageRange[0] * 1000 * 60 * 60 * 24 * 365
+        ),
+      },
+    });
+  if (preferences?.consumables?.length)
     filters.push({
       consumables: {
         in: preferences.consumables,
       },
     });
-  if (preferences.drinking.length)
+  if (preferences?.drinking?.length)
     filters.push({
       drinking: {
         in: preferences.drinking,
       },
     });
-  if (preferences.politicalBeliefs.length)
+  if (preferences?.politicalBeliefs?.length)
     filters.push({
       politicalBeliefs: {
         in: preferences.politicalBeliefs,
       },
     });
-  if (preferences.religion.length)
+  if (preferences.religion?.length)
     filters.push({
       religion: {
         in: preferences.religion,
       },
     });
-  if (preferences.searchContinents.length)
+  if (preferences?.searchContinents?.length)
     filters.push({
       location: {
         continent: {
-          in: preferences.searchContinents,
+          in: preferences?.searchContinents,
         },
       },
     });
-  if (preferences.searchCountries.length)
+  if (preferences?.searchCountries?.length)
     filters.push({
       location: {
         country: {
@@ -55,7 +78,7 @@ export const handlePreferences = (preferences: UserPreferencesSchemaType) => {
         },
       },
     });
-  if (preferences.searchStates.length)
+  if (preferences?.searchStates?.length)
     filters.push({
       location: {
         state: {
@@ -63,13 +86,29 @@ export const handlePreferences = (preferences: UserPreferencesSchemaType) => {
         },
       },
     });
-  if (preferences.income.length)
+  if (preferences?.income?.length)
     filters.push({
       income: {
         in: preferences.income,
       },
     });
   return filters;
+};
+
+export const IsProfilePerfectMatch = (
+  currentUser: ProfileSchemaType,
+  profile: ProfileSchemaType
+) => {
+  if (profile.religion !== currentUser.religion) return false;
+  if (profile.drinking !== currentUser.drinking) return false;
+  if (profile.activity !== currentUser.activity) return false;
+  if (profile.children !== currentUser.children) return false;
+  if (profile.income !== currentUser.income) return false;
+  if (profile.maritalStatus !== currentUser.maritalStatus) return false;
+  if (profile.purity !== currentUser.purity) return false;
+  if (profile.politicalBeliefs !== currentUser.politicalBeliefs) return false;
+
+  return true;
 };
 
 export const profileRouter = createTRPCRouter({
@@ -142,75 +181,45 @@ export const profileRouter = createTRPCRouter({
       });
       return result;
     }),
-  readMany: publicProcedure
-    .input(
-      z.object({
-        currentUserProfile: ProfileSchema,
-        currentUserPreferences: UserPreferencesSchema,
-      })
-    )
-    .query(async ({ input, ctx }) => {
-      const result = await ctx.prisma.userProfile.findMany({
-        where: {
-          // General filters - Never return the same user/same sex, and check age.
-          NOT: {
-            userId: input.currentUserProfile.userId,
-          },
-          sex: input.currentUserPreferences.sex,
-          birthDate: {
-            gte: new Date(
-              Date.now() -
-                input.currentUserPreferences.ageRange[1] *
-                  1000 *
-                  60 *
-                  60 *
-                  24 *
-                  365
-            ),
-            lte: new Date(
-              Date.now() -
-                input.currentUserPreferences.ageRange[0] *
-                  1000 *
-                  60 *
-                  60 *
-                  24 *
-                  365
-            ),
-          },
-          // Optional filters - If supplied, check against filter.
-          AND: handlePreferences(input.currentUserPreferences),
-          affections: {
-            none: {
-              initiatedUserId: input.currentUserProfile.userId,
-            },
-          },
-          circles: {
-            some: {
-              circleId: {
-                in: input.currentUserPreferences?.selectedCircles?.map(
-                  (circle) => circle.id ?? "0"
-                ),
-              },
-            },
+  readProfiles: publicProcedure.query(async ({ ctx }) => {
+    const { profile, preferences } = await getCurrentUserFromContext(ctx);
+    if (!profile) return [];
+    const result = await ctx.prisma.userProfile.findMany({
+      where: {
+        AND: handlePreferences(preferences),
+        affections: {
+          none: {
+            initiatedUserId: profile.userId,
           },
         },
-        include: {
-          location: true,
-          circles: true,
-        },
-      });
-      const profiles: ProfileSchemaType[] = [];
-      result.forEach((r) => {
-        const profile = {
-          ...r,
-          links: [],
-          interactions: [],
-          circles: r.circles.map((c) => ({ id: c.circleId })),
-        };
-        if (isProfile(profile)) profiles.push(profile as ProfileSchemaType);
-      });
-      return profiles;
-    }),
+        NOT: { sex: profile.sex },
+      },
+      include: {
+        location: true,
+        circles: true,
+      },
+    });
+    const profiles: ProfileSchemaType[] = [];
+    result.forEach((r) => {
+      const itemAsProfile = {
+        ...r,
+        links: [],
+        interactions: [],
+        circles: r.circles.map((c) => ({ id: c.circleId })),
+      };
+      if (isProfile(itemAsProfile)) {
+        itemAsProfile.isPerfectMatch = IsProfilePerfectMatch(
+          profile,
+          itemAsProfile
+        );
+        itemAsProfile.likesYou = !!profile.affections?.filter(
+          (a) => a.initiatedUserId == itemAsProfile.userId
+        ).length;
+        profiles.push(itemAsProfile as ProfileSchemaType);
+      }
+    });
+    return profiles;
+  }),
   read: publicProcedure
     .input(
       z.object({

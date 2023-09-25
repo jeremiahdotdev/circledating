@@ -29,7 +29,6 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useState } from "react";
-import state from "@/utils/user.store";
 
 export type CircleProfileProps = {
   circle: CircleWithAggregatesSchemaType;
@@ -41,8 +40,10 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
 
   const update = api.circles.update.useMutation();
   const report = api.reports.readAllByCircle.useMutation();
-  const leave = api.circles.removeUserFromCircle.useMutation();
-  const join = api.circles.addUserToCircle.useMutation();
+  const leave = api.circles.removeSelfFromCircle.useMutation();
+  const kick = api.circles.removeUserFromCircle.useMutation();
+  const join = api.circles.addSelfToCircle.useMutation();
+  const add = api.circles.addUserToCircle.useMutation();
   const request = api.circles.requestToJoinCircle.useMutation();
   const remove = api.circles.denyRequestToJoinCircle.useMutation();
   const search = api.circles.searchCircleForUser.useMutation();
@@ -98,56 +99,59 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
   const isMember = circleState?.users?.length;
   const isPrivate = circleState?.isPrivate;
 
-  const circlePayload = useCallback(
-    (userId: string) => ({
-      circleId: circleState.id,
-      userId: userId,
-      currentUserProfile: state.currentUser,
-    }),
-    [circleState]
-  );
-
   const handleJoinOrLeaveOrRequest = useCallback(async () => {
     const service = !isMember ? (isPrivate ? request : join) : leave;
 
-    await service.mutateAsync(circlePayload(state.currentUser.userId));
+    await service.mutateAsync({ circleId: circleState.id });
     setCircleState({
       ...circleState,
       users: isMember
         ? null
         : [{ userId: "", userTitle: "PLEB", circleId: "" }],
     });
-  }, [circleState, leave, join, request, isPrivate, isMember, circlePayload]);
+  }, [circleState, leave, join, request, isPrivate, isMember]);
 
   const handleKick = useCallback(
     async (userIdItem: ItemType) => {
-      await leave.mutateAsync(circlePayload(userIdItem.value));
+      await kick.mutateAsync({
+        circleId: circleState.id,
+        userId: userIdItem.value,
+      });
       setSearchProfileState([
         ...searchProfileState.filter((i) => i.userId !== userIdItem.value),
       ]);
     },
-    [leave, circlePayload, setSearchProfileState, searchProfileState]
+    [kick, setSearchProfileState, searchProfileState, circleState]
   );
 
   const handleDeny = useCallback(
     async (userIdItem: ItemType) => {
-      await remove.mutateAsync(circlePayload(userIdItem.value));
+      await remove.mutateAsync({
+        circleId: circleState.id,
+        userId: userIdItem.value,
+      });
       setRequestingProfileState([
         ...requestingProfileState.filter((i) => i.userId !== userIdItem.value),
       ]);
     },
-    [remove, circlePayload, setRequestingProfileState, requestingProfileState]
+    [remove, circleState, setRequestingProfileState, requestingProfileState]
   );
 
   const handleAccept = useCallback(
     async (userIdItem: ItemType) => {
-      await join.mutateAsync(circlePayload(userIdItem.value));
-      await remove.mutateAsync(circlePayload(userIdItem.value));
+      await add.mutateAsync({
+        circleId: circleState.id,
+        userId: userIdItem.value,
+      });
+      await remove.mutateAsync({
+        circleId: circleState.id,
+        userId: userIdItem.value,
+      });
       setSearchProfileState([
         ...searchProfileState.filter((i) => i.userId !== userIdItem.value),
       ]);
     },
-    [join, remove, circlePayload, setSearchProfileState, searchProfileState]
+    [add, remove, circleState, setSearchProfileState, searchProfileState]
   );
 
   const handleSearch = useCallback(
@@ -157,7 +161,6 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
           .mutateAsync({
             circleId: circle.id,
             usernamePartial: searchText,
-            currentUserProfile: state.currentUser,
           })
           .then(setSearchProfileState)
           .catch(handleError);

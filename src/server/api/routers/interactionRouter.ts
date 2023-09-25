@@ -1,23 +1,34 @@
-import { createInteractionSchema } from "@/schemas/Interaction";
+import { InteractionSchema } from "@/schemas/Interaction";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { systemMessages } from "@/globals/systemMessages";
+import { trpcResult } from "@/utils/trpcResult";
 
 export const interactionRouter = createTRPCRouter({
   create: publicProcedure
-    .input(createInteractionSchema)
+    .input(InteractionSchema)
     .mutation(async ({ input, ctx }) => {
+      if (!ctx.session?.id) return trpcResult(systemMessages.NO_PROFILE);
       await ctx.prisma.userInteraction.create({
-        data: input.interaction,
+        data: { ...input, initiatedUserId: ctx.session.id },
       });
-      if (input.isMatch) {
+      const isMatch = await ctx.prisma.userInteraction.findFirst({
+        where: {
+          initiatedUserId: input.affectedUserId,
+          affectedUserId: ctx.session.id,
+          isLiked: true,
+          isBlocked: false,
+        },
+      });
+      if (isMatch) {
         const data = await ctx.prisma.conversation.create({
           data: {
             users: {
               create: [
                 {
-                  userId: input.interaction.initiatedUserId,
+                  userId: ctx.session.id,
                 },
                 {
-                  userId: input.interaction.affectedUserId,
+                  userId: input.affectedUserId,
                 },
               ],
             },
