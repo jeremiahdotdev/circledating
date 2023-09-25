@@ -1,6 +1,6 @@
 "use client";
 
-import { About } from "@/views/About/About";
+import { About } from "@/components/About/About";
 import { Login } from "@/components/Login/Login";
 import React, { memo } from "react";
 
