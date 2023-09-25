@@ -52,4 +52,7 @@ export const routes = {
   uploadAvatar: (filename: string) => ({
     href: `/api/avatar/upload?filename=${filename}`,
   }),
+  termsAndConditions: () => ({ href: "/terms-and-conditions" }),
+  privacyPolicy: () => ({ href: "/privacy-policy" }),
+  help: () => ({ href: "/help" }),
 };
