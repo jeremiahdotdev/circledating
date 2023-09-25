@@ -8,9 +8,14 @@ export type LogoProps = {
 
 export function Logo({ className }: LogoProps) {
   return (
-    <div className={classNames("flex", className)}>
+    <div className="flex">
       <LogoIcon />
-      <span className="hidden whitespace-nowrap px-2 text-2xl font-semibold dark:text-white sm:flex">
+      <span
+        className={classNames(
+          "whitespace-nowrap px-2 text-2xl font-semibold dark:text-white",
+          className
+        )}
+      >
         CircleDating
       </span>
     </div>
