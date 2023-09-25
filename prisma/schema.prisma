@@ -214,7 +214,7 @@ model User {
   id                  String       			@id @default(uuid())
   email               String       			@unique
   password            String
-  profile             UserProfile  			@relation("userProfile", fields: [username], references: [username],  map: "user_profile_fk")
+  profile             UserProfile?			@relation("userProfile", fields: [username], references: [username],  map: "user_profile_fk")
   createdAt           DateTime     			@default(now())
   updatedAt           DateTime?    			@updatedAt
   username			  String       			@unique
