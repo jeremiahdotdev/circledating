@@ -27,7 +27,7 @@ export function Nav({ isAuthed, isActiveUser }: NavProps) {
           option={routes.default()}
           className="flex items-center justify-start"
         >
-          <Logo />
+          <Logo className="hidden sm:flex" />
         </RouteOptionLink>
         <div className="flex items-center justify-center md:hidden">
           <NavActivePageHeader />
