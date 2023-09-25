@@ -53,8 +53,6 @@ export const NewCircle = memo(function NewProfile() {
     []
   );
 
-  // Callbacks
-  // Todo type the function parameter
   const onInvalidData = useCallback(handleError, []);
 
   const onValidData = useCallback(
@@ -63,9 +61,10 @@ export const NewCircle = memo(function NewProfile() {
       create
         .mutateAsync({ circle: data })
         .then((circle) => {
-          router
-            .push(routes.circleByCircleNameAsLabel(circle.name).href)
-            .catch(handleError);
+          if (circle?.name)
+            router
+              .push(routes.circleByCircleNameAsLabel(circle?.name).href)
+              .catch(handleError);
         })
         .catch((e) => {
           handleError(e);

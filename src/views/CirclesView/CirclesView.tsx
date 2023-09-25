@@ -39,34 +39,31 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
     },
     [router]
   );
-  const requestFeatured = api.circles.readFeatured.useQuery();
-  const requestCurrent = api.circles.readCurrentCircles.useQuery();
+  const featured = api.circles.readFeatured.useQuery().data;
+  const current = api.circles.readCurrentCircles.useQuery().data;
 
-  if (!requestFeatured.data || !requestCurrent.data) return <Loading />;
-
-  const featuredCircles = requestFeatured.data;
-  const currentCircles = requestCurrent.data;
+  if (!featured || !current) return <Loading />;
 
   return (
     <div className="flex w-full justify-center">
       <div className="flex w-full flex-col items-center justify-between gap-16 px-2 py-12 sm:w-3/4">
-        {currentCircles.length && (
+        {current.length && (
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Your Circles</h2>
             <div className="max-h-96 w-full">
               <ItemList
-                items={currentCircles.map(ParseItem)}
+                items={current.map(ParseItem)}
                 clickAction={handleRoute}
               />
             </div>
           </div>
         )}
-        {featuredCircles.length && (
+        {featured.length && (
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Suggested for you</h2>
             <div className="max-h-96 w-full">
               <ItemList
-                items={featuredCircles.map(ParseItem)}
+                items={featured.map(ParseItem)}
                 clickAction={handleRoute}
               />
             </div>

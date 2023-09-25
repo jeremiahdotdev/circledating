@@ -9,7 +9,6 @@ import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
 import React, { memo, useCallback, useState } from "react";
-import state from "@/utils/user.store";
 
 export type ProfileListProps = {
   profiles: ProfileSchemaType[];

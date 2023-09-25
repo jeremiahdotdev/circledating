@@ -77,10 +77,12 @@ export function CurrentUserPreferences() {
   }, [selectedCountriesState]);
 
   const onInvalidData = useCallback(handleError, []);
-  const onValidData = useCallback((data: UserPreferencesSchemaType) => {
-    console.log(data);
-    // TODO: Handle the promise correctly here!
-  }, []);
+  const onValidData = useCallback(
+    (data: UserPreferencesSchemaType) => {
+      mutateAsync(data).catch(handleError);
+    },
+    [mutateAsync]
+  );
 
   return (
     <Form
@@ -88,7 +90,7 @@ export function CurrentUserPreferences() {
       onSubmit={form.handleSubmit(onValidData, onInvalidData)}
       className="flex h-full max-h-navless w-full flex-col justify-between"
     >
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col overflow-y-scroll">
         <Preference name="Age">
           <SliderFormField
             name="ageRange"
@@ -132,7 +134,7 @@ export function CurrentUserPreferences() {
             selected={preferences?.consumables}
           />
         </Preference>
-        <Preference name="income">
+        <Preference name="Income">
           <MultiSelectFormField
             name="income"
             control={form.control}

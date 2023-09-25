@@ -5,13 +5,11 @@ import {
   UpdateImageSchema,
 } from "@/schemas/Circle";
 import { Prisma, UserType } from "@prisma/client";
-import { ProfileSchema, ProfileSchemaType } from "@/schemas/Profile";
+import { ProfileSchemaType } from "@/schemas/Profile";
 import { RequestSchemaType } from "@/schemas/Request";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { getCurrentUserFromContext } from "@/helpers/getCurrentUserFromContext";
 import { parseAsIdentifier } from "@/utils/parseAsIdentifier";
-import { systemMessages } from "@/globals/systemMessages";
-import { trpcResult } from "@/utils/trpcResult";
 import { z } from "zod";
 
 export const isCompatibleWithCurrentUser = (
@@ -111,24 +109,26 @@ export const allRestrictions = {
 
 export const circleRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.object({ circle: CreateCircleSchema, user: ProfileSchema }))
+    .input(z.object({ circle: CreateCircleSchema }))
     .mutation(async ({ input, ctx }) => {
-      if (!ctx.session?.user) return trpcResult(systemMessages.NO_PROFILE);
-      const result = await ctx.prisma.circle.create({
-        data: {
-          ...input.circle,
-          name: parseAsIdentifier(input.circle.label),
-          users: {
-            create: {
-              userId: ctx.session.id,
-              circleTitle: UserType.CIRCLE_OWNER,
+      let returnValue;
+      if (ctx.session?.user) {
+        returnValue = await ctx.prisma.circle.create({
+          data: {
+            ...input.circle,
+            name: parseAsIdentifier(input.circle.label),
+            users: {
+              create: {
+                userId: ctx.session.id,
+                circleTitle: UserType.CIRCLE_OWNER,
+              },
             },
+            requests: undefined,
+            reports: undefined,
           },
-          requests: undefined,
-          reports: undefined,
-        },
-      });
-      return result;
+        });
+      }
+      return returnValue;
     }),
   update: publicProcedure
     .input(UpdateCircleSchema)
@@ -228,34 +228,35 @@ export const circleRouter = createTRPCRouter({
       return circle;
     }),
   readFeatured: publicProcedure.query(async ({ ctx }) => {
+    let returnValue;
     const { profile } = await getCurrentUserFromContext(ctx);
-    if (!profile) return trpcResult(systemMessages.NO_PROFILE);
-    const result = await ctx.prisma.circle.findMany({
-      take: 5,
-      where: {
-        isPrivate: false,
-        isFeatured: true,
-        AND: isCompatibleWithCurrentUser(profile),
-        users: {
-          none: {
-            userId: profile.userId,
+    if (profile) {
+      const result = await ctx.prisma.circle.findMany({
+        take: 5,
+        where: {
+          isPrivate: false,
+          isFeatured: true,
+          AND: isCompatibleWithCurrentUser(profile),
+          users: {
+            none: {
+              userId: profile.userId,
+            },
           },
         },
-      },
-    });
+      });
 
-    const circles: CircleSchemaType[] = result.map((c) => {
-      const circle: CircleSchemaType = {
-        ...c,
-        ...noRestrictions,
-        links: [],
-        users: [],
-        image: c.image ?? "",
-      };
-      return circle;
-    });
-
-    return circles;
+      returnValue = result.map((c) => {
+        const circle: CircleSchemaType = {
+          ...c,
+          ...noRestrictions,
+          links: [],
+          users: [],
+          image: c.image ?? "",
+        };
+        return circle;
+      });
+    }
+    return returnValue;
   }),
   readCurrentCircles: publicProcedure.query(async ({ ctx }) => {
     const result = await ctx.prisma.circle.findMany({
@@ -288,29 +289,30 @@ export const circleRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
+      let circles: CircleSchemaType[] = [];
       const { profile } = await getCurrentUserFromContext(ctx);
-      if (!profile) return systemMessages.NO_PROFILE;
-      const result = await ctx.prisma.circle.findMany({
-        take: 10,
-        where: {
-          name: {
-            contains: input.circleNamePartial,
+      if (profile) {
+        const result = await ctx.prisma.circle.findMany({
+          take: 10,
+          where: {
+            name: {
+              contains: input.circleNamePartial,
+            },
+            AND: isCompatibleWithCurrentUser(profile),
           },
-          AND: isCompatibleWithCurrentUser(profile),
-        },
-      });
+        });
 
-      const circles: CircleSchemaType[] = result.map((c) => {
-        const circle: CircleSchemaType = {
-          ...c,
-          ...noRestrictions,
-          users: [],
-          image: c.image ?? "",
-          links: [],
-        };
-        return circle;
-      });
-
+        circles = result.map((c) => {
+          const circle: CircleSchemaType = {
+            ...c,
+            ...noRestrictions,
+            users: [],
+            image: c.image ?? "",
+            links: [],
+          };
+          return circle;
+        });
+      }
       return circles;
     }),
   searchCircleForUser: publicProcedure

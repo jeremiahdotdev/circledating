@@ -63,7 +63,7 @@ export const preferencesRouter = createTRPCRouter({
   }),
   save: publicProcedure
     .input(UserPreferencesSchema)
-    .query(async ({ input, ctx }) => {
+    .mutation(async ({ input, ctx }) => {
       const data = {
         ...input,
         minAge: input.ageRange[0],

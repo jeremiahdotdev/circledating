@@ -27,13 +27,13 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
   }, [profile.birthDate]);
 
   return (
-    <div className="flex w-full flex-col items-center">
+    <div className="flex w-full max-w-[700px] flex-col items-center">
       <em className="bg-gradient-to-r from-cyan-400 to-fuchsia-300 bg-clip-text font-extrabold text-transparent">
         {profile.isPerfectMatch && "Perfect Match"} &nbsp;
       </em>
       <div
         className={cn(
-          "flex h-full max-w-3xl flex-col rounded-md shadow-outter-soft bg-background p-3 ",
+          "flex w-full h-full flex-col rounded-md shadow-outter-soft bg-background p-3 ",
           profile.isPerfectMatch
             ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100"
             : ""

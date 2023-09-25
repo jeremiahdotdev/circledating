@@ -24,11 +24,11 @@ export function CurrentUserCircles() {
 
   const renderedCircles = useMemo(() => {
     const currentUserCircles = response?.circles ?? [];
+    const currentUserSelectedCircles =
+      response?.preferences?.selectedCircles ?? [];
     return currentUserCircles.map((circle) => ({
       value: circle.name,
-      checked: response?.preferences?.selectedCircles
-        .map((c) => c.circleId)
-        .includes(circle.id),
+      checked: currentUserSelectedCircles.map((c) => c.id).includes(circle.id),
       label: (
         <ListItem
           item={ParseItem(circle as CircleSchemaType)}

@@ -77,8 +77,7 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
-        "church-field":
-          "url('https://as1.ftcdn.net/v2/jpg/00/19/94/92/1000_F_19949237_n27l4aWK6acJGLCK0HAQ4XRpqy7QN7a0.jpg')",
+        "church-sample": "url('/church-sample.jpeg')",
       },
       minHeight: {
         navless: "calc(100vh - 67px)",
