@@ -2,15 +2,21 @@ import React from "react";
 
 export function Summary() {
   return (
-    <div className="space-y-6 p-20 leading-relaxed">
+    <div className="mx-10 space-y-6 p-12 leading-relaxed">
       <h2 className="font-semibold italic">
         What makes Circle Dating different?
       </h2>
       <p>
         Circle Dating is a relationship service that connects singles based on
         shared communities -- shared Circles. These Circles can be based around
-        a church, school, religious denomination, political affiliation,
-        academic or social club, location, and more.
+        a church, school, organization, location, and more.
+      </p>
+      <h2 className="font-semibold italic">
+        Is my organization on Circle Dating?
+      </h2>
+      <p>
+        You can use our search feature to look for your organization&apos;s
+        Circle. If it doesn&apos;t exist, you can you can create it.
       </p>
       <h2 className="font-semibold italic">
         Is Circle Dating a Christian dating service?

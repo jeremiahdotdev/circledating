@@ -4,7 +4,7 @@ import classNames from "classnames";
 export type AboutColumnProps = {
   heading: string;
   body: string;
-  className?: string;
+  className: string;
 };
 
 export function AboutColumn({ heading, body, className }: AboutColumnProps) {
@@ -12,10 +12,10 @@ export function AboutColumn({ heading, body, className }: AboutColumnProps) {
     <div
       className={classNames(
         className,
-        "flex flex-1 flex-col items-center p-8 text-center"
+        "flex gap-4 flex-1 flex-col items-center p-10 text-center"
       )}
     >
-      <h2 className="p-4 font-semibold">{heading}</h2>
+      <h2 className="font-semibold">{heading}</h2>
       <p className="mx-3 leading-loose">{body}</p>
     </div>
   );
