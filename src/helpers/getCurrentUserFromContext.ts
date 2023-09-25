@@ -33,11 +33,12 @@ export const getCurrentUserFromContext = async (ctx: {
       },
     });
     if (currentUser) {
-      user.profile = {
-        ...currentUser.profile,
-        links: currentUser.profile.links as LinkSchemaType[],
-        image: currentUser.profile.image ?? "",
-      };
+      if (currentUser.profile)
+        user.profile = {
+          ...currentUser.profile,
+          links: currentUser.profile.links as LinkSchemaType[],
+          image: currentUser.profile.image ?? "",
+        };
 
       if (currentUser.preferences)
         user.preferences = {

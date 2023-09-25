@@ -58,7 +58,7 @@ export const preferencesRouter = createTRPCRouter({
           result?.preferences?.maxAge ?? 98,
         ],
       },
-      circles: result?.profile.circles.map((c) => c.Circle),
+      circles: result?.profile?.circles.map((c) => c.Circle),
     };
   }),
   save: publicProcedure
