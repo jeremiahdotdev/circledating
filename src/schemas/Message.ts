@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const MessageSchema = z.object({
+export const MutateMessageSchema = z.object({
   id: z.string().optional(),
   conversationId: z.string().nullable(),
   authorUsername: z.string(),
@@ -10,16 +10,12 @@ export const MessageSchema = z.object({
   updatedAt: z.date().nullable().optional(),
 });
 
-export const ReadMessagesSchema = z.object({
-  authorUsername: z.string(),
-  recipientUsername: z.string(),
-});
-
 export const MessageUserSchema = z.object({
   id: z.string(),
   username: z.string(),
 });
-export const MessageResultSchema = z.object({
+
+export const ReadMessageSchema = z.object({
   id: z.string().optional(),
   conversationId: z.string(),
   author: MessageUserSchema,
@@ -29,20 +25,12 @@ export const MessageResultSchema = z.object({
   updatedAt: z.date().optional(),
 });
 
-export type MessageSchemaType = z.infer<typeof MessageSchema>;
-export type ReadMessagesSchemaType = z.infer<typeof ReadMessagesSchema>;
-export type MessageUserSchemaType = z.infer<typeof MessageUserSchema>;
-export type MessageResultSchemaType = z.infer<typeof MessageResultSchema>;
+export const AccessMessagesSchema = z.object({
+  authorUsername: z.string(),
+  recipientUsername: z.string(),
+});
 
-export const MessageParser = (res: MessageResultSchemaType) =>
-  ({
-    id: res.id,
-    conversationId: res.conversationId,
-    content: res.content,
-    createdAt: res.createdAt,
-    updatedAt: res.updatedAt,
-    authorUserId: res.author.id,
-    recipientUserId: res.recipient.id,
-    authorUsername: res.author.username,
-    recipientUsername: res.recipient.username,
-  }) as MessageSchemaType;
+export type ReadMessageSchemaType = z.infer<typeof ReadMessageSchema>;
+export type AccessMessagesSchemaType = z.infer<typeof AccessMessagesSchema>;
+export type MessageUserSchemaType = z.infer<typeof MessageUserSchema>;
+export type MutateMessageSchemaType = z.infer<typeof MutateMessageSchema>;

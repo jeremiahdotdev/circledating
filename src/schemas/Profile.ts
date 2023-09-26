@@ -1,6 +1,5 @@
 import { ActivitySchema } from "./Activity";
 import { ChildrenSchema } from "./Children";
-import { CircleSchema } from "./Circle";
 import { ConsumablesSchema } from "./Consumables";
 import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
@@ -14,6 +13,7 @@ import {
   SelectedLocationSchema,
 } from "./SelectedLocationSchema";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
+import { MutateCircleSchema } from "./Circle";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
 import { ReligionSchema } from "./Religion";
@@ -26,8 +26,8 @@ export const ProfilePartial = {
   username: z.string().min(3).max(20),
   sex: GenderSchema,
   birthDate: z.date(),
-  height: z.number(), // Height in cm
-  weight: z.number(), // Weight in kg
+  height: z.number().optional(), // Height in cm
+  weight: z.number().optional(), // Weight in kg
   location: SelectedLocationSchema,
   willingToRelocate: YesAndNoSchema,
   children: ChildrenSchema,
@@ -49,23 +49,19 @@ export const ProfilePartialSchema = z.object(ProfilePartial);
 
 export const Profile = {
   ...ProfilePartial,
-  circles: z.array(CircleSchema).optional(),
+  circles: z.array(MutateCircleSchema).optional(),
   interactions: z.array(InteractionSchema).optional(),
   affections: z.array(InteractionSchema).optional(),
   location: LocationSchema.optional(),
   isPerfectMatch: z.boolean().optional(),
   likesYou: z.boolean().optional(),
 };
+
 export const ProfileSchema = z.object(Profile);
 
-export const CreateProfileSchema = z.object({
+export const MutateProfileSchema = z.object({
   ...Profile,
   userId: z.string().optional(),
-  location: LocationSchema,
-});
-
-export const UpdateProfileSchema = z.object({
-  ...ProfilePartial,
   location: LocationSchema,
 });
 
@@ -74,8 +70,7 @@ export const UpdateImageSchema = z.object({
   image: z.string(),
 });
 
-export type CreateProfileSchemaType = z.infer<typeof CreateProfileSchema>;
-export type UpdateProfileSchemaType = z.infer<typeof UpdateProfileSchema>;
+export type MutateProfileSchemaType = z.infer<typeof MutateProfileSchema>;
 export type UpdateImageSchemaType = z.infer<typeof UpdateImageSchema>;
 
 export type ProfileSchemaType = z.infer<typeof ProfileSchema>;

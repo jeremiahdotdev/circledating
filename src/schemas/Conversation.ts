@@ -14,10 +14,6 @@ export const ConversationSchema = z.object({
   updatedAt: z.date().optional(),
 });
 
-export const ReadConversationsSchema = z.object({
-  userId: z.string(),
-});
-
 export const ConversationResultSchema = z.object({
   id: z.string(),
   users: z.array(
@@ -34,9 +30,6 @@ export const ConversationResultSchema = z.object({
 export type ConversationSchemaType = z.infer<typeof ConversationSchema>;
 export type ConversationResultSchemaType = z.infer<
   typeof ConversationResultSchema
->;
-export type ReadConversationsSchemaType = z.infer<
-  typeof ReadConversationsSchema
 >;
 
 export const ConversationParser = (res: ConversationResultSchemaType) =>

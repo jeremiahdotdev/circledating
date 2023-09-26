@@ -7,6 +7,7 @@ export const UserSchema = z.object({
   // TODO: enforce uuid
   id: z.string(),
   email: z.string().email(),
+  isAdmin: z.boolean(),
   profile: ProfileSchema,
   preferences: UserPreferencesSchema,
   interactions: z.array(InteractionSchema).nullable(),

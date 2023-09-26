@@ -1,8 +1,8 @@
-import { CircleSchema } from "./Circle";
 import { ConsumablesSchema } from "./Consumables";
 import { DrinkingSchema } from "./Drinking";
 import { GenderSchema } from "./Gender";
 import { IncomeSchema } from "./Income";
+import { MutateCircleSchema } from "./Circle";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { ReligionSchema } from "./Religion";
 import { SelectedLocation } from "./SelectedLocationSchema";
@@ -12,7 +12,7 @@ export const UserPreferencesSchema = z.object({
   userId: z.string(),
   ageRange: z.array(z.number()),
   sex: GenderSchema.nullable(),
-  selectedCircles: z.array(CircleSchema).nullable(),
+  selectedCircles: z.array(MutateCircleSchema).nullable(),
   searchContinents: z.array(SelectedLocation).nullable(),
   searchCountries: z.array(SelectedLocation).nullable(),
   searchStates: z.array(SelectedLocation).nullable(),

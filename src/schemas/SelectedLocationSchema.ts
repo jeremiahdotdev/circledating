@@ -2,7 +2,7 @@ import { flattenedLocations } from "@/globals/location";
 import { z } from "zod";
 
 export const SelectedLocationPartial = {
-  state: z.string(),
+  state: z.string().optional(),
   continent: z.string(),
   country: z.string(),
 };
