@@ -1,9 +1,9 @@
 import { GetServerSidePropsContext } from "next";
-import { Layout, LayoutUser } from "../Layout";
 import { NewCircleView } from "@/views/NewCircleView/NewCircleView";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
+import Layout, { LayoutUser } from "../Layout";
 import React from "react";
 
 type ServerProps = {

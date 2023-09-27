@@ -1,7 +1,6 @@
 import { ConversationsView } from "@/views/ConversationView/ConversationsView";
 import { Gender } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
-import { Layout, LayoutUser } from "../Layout";
 import { PageNotFound } from "@/components/Shared/PageNotFound";
 import { ReadConversationSchemaType } from "@/schemas/Conversation";
 import { appRouter } from "@/server/api/root";
@@ -9,6 +8,7 @@ import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
+import Layout, { LayoutUser } from "../Layout";
 import React from "react";
 
 type ServerProps = {

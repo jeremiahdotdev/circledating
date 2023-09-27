@@ -7,7 +7,7 @@ import classNames from "classnames";
 const inter = Inter({ subsets: ["latin"] });
 
 export type LayoutProps = {
-  user: LayoutUser;
+  user?: LayoutUser;
   children: React.ReactNode[] | React.ReactNode;
 };
 export type LayoutUser = {
@@ -22,7 +22,7 @@ export default function Layout({
 }: LayoutProps): React.ReactElement {
   return (
     <>
-      <Nav isAuthed={user.isAuthed} isActive={user.isActive} />
+      <Nav isAuthed={user?.isAuthed} isActive={user?.isActive} />
       <main className={classNames("sm:pt-[67px] pb-8", inter.className)}>
         {children}
       </main>

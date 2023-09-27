@@ -1,10 +1,10 @@
 import { CirclesView } from "@/views/CirclesView/CirclesView";
 import { GetServerSidePropsContext } from "next";
-import { Layout, LayoutUser } from "../Layout";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
+import Layout, { LayoutUser } from "../Layout";
 import React from "react";
 
 export type CirclesServerProps = {

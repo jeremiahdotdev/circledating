@@ -1,9 +1,9 @@
 import { GetServerSidePropsContext } from "next";
-import { Layout, LayoutUser } from "../Layout";
 import { LoginView } from "@/views/LoginView/LoginView";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireNoAuth } from "@/helpers/requireNoAuth";
+import Layout, { LayoutUser } from "../Layout";
 import React from "react";
 
 type ServerProps = {
