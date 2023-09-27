@@ -9,7 +9,6 @@ import {
   faDoorOpen,
   faEnvelope,
   faExclamation,
-  faExclamationCircle,
   faMinus,
   faPaperPlane,
   faPlus,
