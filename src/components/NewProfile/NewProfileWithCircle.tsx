@@ -1,4 +1,3 @@
-import { CircleSchemaType } from "@/schemas/Circle";
 import { NewProfile } from "./NewProfile";
 import { api } from "@/utils/api";
 import Animation from "public/animation";
@@ -16,11 +15,9 @@ export function NewProfileWithCircle({
     () => setShowNewProfileState(true),
     []
   );
-  const requestCircle = api.circles.readByCode.useQuery({
-    code: circleCode,
-  });
+  const requestCircle = api.circles.readByCode.useQuery(circleCode);
 
-  const circle = requestCircle.data as CircleSchemaType;
+  const circle = requestCircle.data;
 
   setTimeout(toggleNewProfileState, 5000);
   if (!circle || !showNewProfileState) return <Animation />;

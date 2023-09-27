@@ -1,6 +1,6 @@
-import { ConversationParser } from "@/schemas/Conversation";
+import { ParseConversation } from "@/schemas/Conversation";
 import { Prisma } from "@prisma/client";
-import { PrismaParameter } from "../types";
+import { PrismaContext, PrismaParameter } from "../types";
 
 // Helpers
 export const messagesDescending = {
@@ -22,12 +22,12 @@ export const messagesUsers = {
 // Scripts
 export const conversationScripts = {
   query: {
-    read: async ({ input, ctx }: PrismaParameter<string>) => {
+    read: async ({ ctx }: PrismaContext) => {
       const data = await ctx.prisma.conversation.findMany({
         where: {
           users: {
             some: {
-              userId: input,
+              userId: ctx.session?.id,
             },
           },
           deletedAt: null,
@@ -39,14 +39,14 @@ export const conversationScripts = {
         },
       });
 
-      return { success: true, data: data.map(ConversationParser) };
+      return data.map(ParseConversation);
     },
-    readDeleted: async ({ input, ctx }: PrismaParameter<string>) => {
+    readDeleted: async ({ ctx }: PrismaContext) => {
       const data = await ctx.prisma.conversation.findMany({
         where: {
           users: {
             some: {
-              userId: input,
+              userId: ctx.session?.id,
             },
           },
           deletedAt: { not: null },
@@ -58,7 +58,7 @@ export const conversationScripts = {
         },
       });
 
-      return data.map(ConversationParser);
+      return data.map(ParseConversation);
     },
   },
   mutate: {

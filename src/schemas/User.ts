@@ -1,14 +1,13 @@
 import { InteractionSchema } from "./Interaction";
-import { ProfileSchema } from "./Profile";
+import { ReadProfileSchema } from "./Profile";
 import { UserPreferencesSchema } from "./UserPreferences";
 import { z } from "zod";
 
 export const UserSchema = z.object({
-  // TODO: enforce uuid
-  id: z.string(),
+  id: z.string().uuid(),
   email: z.string().email(),
   isAdmin: z.boolean(),
-  profile: ProfileSchema,
+  profile: ReadProfileSchema,
   preferences: UserPreferencesSchema,
   interactions: z.array(InteractionSchema).nullable(),
   affections: z.array(InteractionSchema).nullable(),

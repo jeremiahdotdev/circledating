@@ -2,19 +2,19 @@ import {
   CircleUserSchemaType,
   CircleUserSearchSchemaType,
   MutateCircleSchemaType,
+  ParseCircle,
   ReadCircleSchemaType,
   UpdateImageSchemaType,
 } from "@/schemas/Circle";
+import { ParseProfile, ReadProfileSchemaType } from "@/schemas/Profile";
 import { Prisma, UserType } from "@prisma/client";
 import { PrismaContext, PrismaParameter } from "../types";
-import { ProfileSchemaType } from "@/schemas/Profile";
-import { RequestSchemaType } from "@/schemas/Request";
 import { getCurrentUserFromContext } from "@/helpers/getCurrentUserFromContext";
 import { parseAsIdentifier } from "@/utils/parseAsIdentifier";
 
 // Helpers
 export const isCompatibleWithCurrentUser = (
-  currentUserProfile: ProfileSchemaType
+  currentUserProfile: ReadProfileSchemaType
 ) => [
   {
     OR: [
@@ -110,7 +110,7 @@ export const allRestrictions = {
 // Scripts
 export const circleScripts = {
   query: {
-    readById: async ({ input, ctx }: PrismaParameter<string>) => {
+    readByName: async ({ input, ctx }: PrismaParameter<string>) => {
       const result = await ctx.prisma.circle.findUnique({
         where: {
           name: input,
@@ -145,15 +145,7 @@ export const circleScripts = {
         },
       });
 
-      const circle = {
-        ...result,
-        requests: result?.requests?.map((r) => ({
-          ...r,
-          username: r.author.username,
-        })) as RequestSchemaType[],
-      };
-
-      return circle;
+      return ParseCircle(result);
     },
     readByCode: async ({ input, ctx }: PrismaParameter<string>) => {
       const result = await ctx.prisma.circle.findUnique({
@@ -161,7 +153,7 @@ export const circleScripts = {
           code: input,
         },
       });
-      return result;
+      return ParseCircle(result);
     },
     readFeatured: async ({ ctx }: PrismaContext) => {
       let returnValue;
@@ -223,7 +215,7 @@ export const circleScripts = {
       return circles;
     },
     searchMany: async ({ input, ctx }: PrismaParameter<string>) => {
-      let circles: CircleSchemaType[] = [];
+      const circles: ReadCircleSchemaType[] = [];
       const { profile } = await getCurrentUserFromContext(ctx);
       if (profile) {
         const result = await ctx.prisma.circle.findMany({
@@ -236,15 +228,9 @@ export const circleScripts = {
           },
         });
 
-        circles = result.map((c) => {
-          const circle: CircleSchemaType = {
-            ...c,
-            ...noRestrictions,
-            users: [],
-            image: c.image ?? "",
-            links: [],
-          };
-          return circle;
+        result.map((c) => {
+          const circle = ParseCircle(c);
+          if (circle) circles.push(circle);
         });
       }
       return circles;
@@ -270,10 +256,12 @@ export const circleScripts = {
         },
       });
 
-      return result.map((r) => ({
-        ...r,
-        links: r.links?.valueOf(),
-      })) as ProfileSchemaType[];
+      const profiles: ReadProfileSchemaType[] = [];
+      result.map((r) => {
+        const profile = ParseProfile({ ...r, circles: undefined });
+        if (profile) profiles.push(profile);
+      });
+      return profiles;
     },
     isCircleNameUnique: async ({ input, ctx }: PrismaParameter<string>) => {
       const result = await ctx.prisma.circle.findMany({

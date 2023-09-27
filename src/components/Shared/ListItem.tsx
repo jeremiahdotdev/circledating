@@ -47,7 +47,6 @@ export function ListItem({
         {!hidePicture && (
           <div className="flex items-center justify-between">
             <ListItemPicture
-              // TODO: Replace with actual picture.
               fallback={item.fallback ?? item.label.substring(0, 1)}
               alt={item.label}
             />

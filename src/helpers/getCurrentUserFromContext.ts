@@ -1,4 +1,3 @@
-import { CircleSchemaType } from "@/schemas/Circle";
 import {
   Consumables,
   Drinking,
@@ -9,8 +8,8 @@ import {
   Religion,
 } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
-import { LinkSchemaType } from "@/schemas/Link";
-import { ProfileSchemaType } from "@/schemas/Profile";
+import { ParseCircle, ReadCircleSchemaType } from "@/schemas/Circle";
+import { ParseProfile, ReadProfileSchemaType } from "@/schemas/Profile";
 import { Session } from "next-auth";
 import { UserPreferencesSchemaType } from "@/schemas/UserPreferences";
 
@@ -19,7 +18,7 @@ export const getCurrentUserFromContext = async (ctx: {
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
 }) => {
   const user: {
-    profile?: ProfileSchemaType;
+    profile?: ReadProfileSchemaType;
     preferences?: UserPreferencesSchemaType;
   } = {};
   if (ctx.session?.user?.name) {
@@ -34,13 +33,18 @@ export const getCurrentUserFromContext = async (ctx: {
     });
     if (currentUser) {
       if (currentUser.profile)
-        user.profile = {
+        user.profile = ParseProfile({
           ...currentUser.profile,
-          links: currentUser.profile.links as LinkSchemaType[],
-          image: currentUser.profile.image ?? "",
-        };
+          circles: undefined,
+          location: undefined,
+        });
 
-      if (currentUser.preferences)
+      if (currentUser.preferences) {
+        const circles: ReadCircleSchemaType[] = [];
+        currentUser.preferences.selectedCircles.map((c) => {
+          const circle = ParseCircle(c.Circle);
+          if (circle) circles.push(circle);
+        });
         user.preferences = {
           ...currentUser.preferences,
           drinking: currentUser.preferences.drinking as Drinking[],
@@ -53,14 +57,13 @@ export const getCurrentUserFromContext = async (ctx: {
             .searchContinents as string[],
           searchCountries: currentUser.preferences.searchCountries as string[],
           searchStates: currentUser.preferences.searchStates as string[],
-          selectedCircles: currentUser.preferences.selectedCircles.map(
-            (c) => c.Circle as CircleSchemaType
-          ),
+          selectedCircles: circles,
           ageRange: [
             currentUser.preferences.minAge,
             currentUser.preferences.maxAge,
           ],
         };
+      }
     }
   }
   return user;

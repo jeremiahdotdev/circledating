@@ -1,15 +1,14 @@
 import { flattenedLocations } from "@/globals/location";
 import { z } from "zod";
 
-export const SelectedLocationPartial = {
-  state: z.string().optional(),
+export const SelectedLocationSchema = z.object({
+  state: z.string().optional().nullable(),
   continent: z.string(),
   country: z.string(),
-};
+});
 
-export const SelectedLocationSchema = z.object(SelectedLocationPartial);
 export const LocationSchema = z.object({
-  ...SelectedLocationPartial,
+  ...SelectedLocationSchema.shape,
   id: z.string(),
 });
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { ConversationSchemaType } from "@/schemas/Conversation";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ListItemPicture } from "../ui/ListItemPicture";
+import { ReadConversationSchemaType } from "@/schemas/Conversation";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { api } from "@/utils/api";
 import { routes } from "@/globals/routes";
@@ -10,9 +10,11 @@ import { useSession } from "next-auth/react";
 import React, { useCallback } from "react";
 
 export type ConversationProps = {
-  conversation: ConversationSchemaType;
-  onSelect: (conversation: ConversationSchemaType) => void;
-  onAction: (conversation: ConversationSchemaType) => Promise<void> | undefined;
+  conversation: ReadConversationSchemaType;
+  onSelect: (conversation: ReadConversationSchemaType) => void;
+  onAction: (
+    conversation: ReadConversationSchemaType
+  ) => Promise<void> | undefined;
   actionIsUnblock?: boolean;
 };
 export function Conversation({
@@ -23,7 +25,7 @@ export function Conversation({
 }: ConversationProps) {
   const { data: session } = useSession();
   const usernames = conversation.users
-    ?.filter((user) => user.id !== session?.id)
+    ?.filter((user) => user.userId !== session?.id)
     ?.map((user) => user.username)
     ?.join(",");
   const newestMessage = conversation.messages?.[0];
@@ -39,9 +41,8 @@ export function Conversation({
     onSelect(conversation);
   }, [onSelect, conversation]);
 
-  const request = api.profiles.read.useQuery({
-    username: usernames,
-  });
+  const request = api.profiles.read.useQuery(usernames);
+
   const takeAction = useCallback(
     (click: React.MouseEvent<HTMLButtonElement>) => {
       click.stopPropagation();

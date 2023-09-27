@@ -8,7 +8,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 
 export type MessageProps = {
-  timestamp: Date;
+  timestamp: string;
   content: string;
   isCurrentUser: boolean;
 };
@@ -30,7 +30,7 @@ export function Message({ timestamp, content, isCurrentUser }: MessageProps) {
             : "text-fuchsia-400"
         )}
       >
-        {timestamp.toLocaleString()}
+        {timestamp}
       </h1>
       <div
         className={cn(

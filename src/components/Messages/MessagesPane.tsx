@@ -1,12 +1,12 @@
 "use client";
 
 import { Message } from "./Message";
-import { MessageSchemaType } from "@/schemas/Message";
+import { ReadMessageSchemaType } from "@/schemas/Message";
 import { useSession } from "next-auth/react";
 import React from "react";
 
 export type MessagesPaneProps = {
-  messages?: MessageSchemaType[];
+  messages?: ReadMessageSchemaType[];
 };
 export function MessagesPane({ messages }: MessagesPaneProps) {
   const { data: session } = useSession();
@@ -17,7 +17,7 @@ export function MessagesPane({ messages }: MessagesPaneProps) {
           return (
             <Message
               key={`${authorUsername}-${recipientUsername}-${index}`}
-              timestamp={createdAt ?? new Date()}
+              timestamp={createdAt}
               content={content}
               isCurrentUser={authorUsername === session?.user?.name}
             />

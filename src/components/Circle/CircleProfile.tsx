@@ -1,13 +1,13 @@
-import {
-  CircleWithAggregatesSchemaType,
-  UpdateCircleSchema,
-  UpdateCircleSchemaType,
-} from "@/schemas/Circle";
 import { Form } from "../ui/form";
 import { FormButton } from "../ui/FormButton";
 import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import { LinksEditorFormField } from "../Shared/LinksEditorFormField";
+import {
+  MutateCircleSchema,
+  MutateCircleSchemaType,
+  ReadCircleSchemaType,
+} from "@/schemas/Circle";
 import {
   ProfileAttribute,
   ProfileAttributeVariant,
@@ -17,8 +17,8 @@ import { ProfileAttributeOptions } from "../Profile/ProfileAttributeOptions";
 import { ProfileDescription } from "../Profile/ProfileDescription";
 import { ProfileHeader } from "../Shared/ProfileHeader";
 import { ProfileLinks } from "../Shared/ProfileLinks";
-import { ProfileSchemaType } from "@/schemas/Profile";
 import { ProfileSection } from "../Profile/ProfileSection";
+import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { ReportAggregatesSchemaType } from "@/schemas/Report";
 import { SearchForm } from "./SearchForm";
 import { TextAreaFormField } from "../ui/TextAreaFormField";
@@ -31,7 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useState } from "react";
 
 export type CircleProfileProps = {
-  circle: CircleWithAggregatesSchemaType;
+  circle: ReadCircleSchemaType;
   canEdit?: boolean;
 };
 
@@ -49,10 +49,10 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
   const search = api.circles.searchCircleForUser.useMutation();
   const updateImage = api.circles.updateImage.useMutation();
 
-  const [circleState, setCircleState] = useState(circle);
+  const [circleState, setCircleState] = useState({ ...circle });
 
   const [searchProfileState, setSearchProfileState] = useState(
-    [] as ProfileSchemaType[]
+    [] as ReadProfileSchemaType[]
   );
   const [requestingProfileState, setRequestingProfileState] = useState(
     circle.requests ?? []
@@ -74,23 +74,30 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
     [updateImage, circleState, setCircleState]
   );
 
-  const form = useForm<UpdateCircleSchemaType>({
-    resolver: zodResolver(UpdateCircleSchema),
+  const form = useForm<MutateCircleSchemaType>({
+    resolver: zodResolver(MutateCircleSchema),
     defaultValues: {
       ...circleState,
+      updatedAt: undefined,
+      createdAt: undefined,
     },
   });
 
   const onInvalidData = useCallback(handleError, []);
   const onValidData = useCallback(
-    (data: UpdateCircleSchemaType) => {
+    (data: MutateCircleSchemaType) => {
       setEditMode(false);
       if (
         data.description !== circleState.description ||
         data.links !== circleState.links
       ) {
         update.mutateAsync(data).catch(handleError);
-        setCircleState({ ...circleState, ...data });
+        setCircleState({
+          ...circleState,
+          ...data,
+          updatedAt: undefined,
+          createdAt: undefined,
+        });
       }
     },
     [setCircleState, update, circleState]
@@ -102,7 +109,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
   const handleJoinOrLeaveOrRequest = useCallback(async () => {
     const service = !isMember ? (isPrivate ? request : join) : leave;
 
-    await service.mutateAsync({ circleId: circleState.id });
+    await service.mutateAsync(circleState.id);
     setCircleState({
       ...circleState,
       users: isMember
@@ -179,7 +186,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
 
   const handleLoadReports = useCallback(() => {
     report
-      .mutateAsync({ circleId: circle.id })
+      .mutateAsync(circle.id)
       .then((response) =>
         setReportedProfilesState(response as ReportAggregatesSchemaType[])
       )

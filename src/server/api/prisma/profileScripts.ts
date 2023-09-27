@@ -1,7 +1,7 @@
 import {
   MutateProfileSchemaType,
-  ProfileSchemaType,
-  isProfile,
+  ParseProfile,
+  ReadProfileSchemaType,
 } from "@/schemas/Profile";
 import { PrismaContext, PrismaParameter } from "../types";
 import { UpdateImageSchemaType } from "@/schemas/Profile";
@@ -94,8 +94,8 @@ export const handlePreferences = (preferences?: UserPreferencesSchemaType) => {
 };
 
 export const IsProfilePerfectMatch = (
-  currentUser: ProfileSchemaType,
-  profile: ProfileSchemaType
+  currentUser: ReadProfileSchemaType,
+  profile: ReadProfileSchemaType
 ) => {
   if (profile.religion !== currentUser.religion) return false;
   if (profile.drinking !== currentUser.drinking) return false;
@@ -126,29 +126,14 @@ export const profileScripts = {
         },
         include: {
           location: true,
-          circles: true,
+          circles: {
+            select: {
+              Circle: true,
+            },
+          },
         },
       });
-      const profiles: ProfileSchemaType[] = [];
-      result.forEach((r) => {
-        const itemAsProfile = {
-          ...r,
-          links: [],
-          interactions: [],
-          circles: r.circles.map((c) => ({ id: c.circleId })),
-        };
-        if (isProfile(itemAsProfile)) {
-          itemAsProfile.isPerfectMatch = IsProfilePerfectMatch(
-            profile,
-            itemAsProfile
-          );
-          itemAsProfile.likesYou = !!profile.affections?.filter(
-            (a) => a.initiatedUserId == itemAsProfile.userId
-          ).length;
-          profiles.push(itemAsProfile as ProfileSchemaType);
-        }
-      });
-      return profiles;
+      return result.map(ParseProfile);
     },
     read: async ({ input, ctx }: PrismaParameter<string>) => {
       const result = await ctx.prisma.userProfile.findUnique({
@@ -165,13 +150,27 @@ export const profileScripts = {
         },
       });
 
-      const profile = {
-        ...result,
-        interactions: [],
-        circles: result?.circles.map((c) => c.Circle),
-      };
-
-      return profile as ProfileSchemaType;
+      return ParseProfile(result);
+    },
+    readCurrent: async ({ ctx }: PrismaContext) => {
+      const result = await ctx.prisma.user.findUnique({
+        where: {
+          id: ctx.session?.id,
+        },
+        select: {
+          profile: {
+            include: {
+              location: true,
+              circles: {
+                include: {
+                  Circle: true,
+                },
+              },
+            },
+          },
+        },
+      });
+      return ParseProfile(result?.profile);
     },
     isUsernameUnique: async ({ input, ctx }: PrismaParameter<string>) => {
       const result = await ctx.prisma.userProfile.findMany({
@@ -195,6 +194,7 @@ export const profileScripts = {
       const result = await ctx.prisma.userProfile.create({
         data: {
           ...input,
+          userId: ctx.session?.id,
           location: {
             connectOrCreate: {
               create: { ...input.location },
@@ -202,7 +202,7 @@ export const profileScripts = {
             },
           },
           circles: {
-            connect: input.circles,
+            connect: input?.circles,
           },
           image: "",
           links: {},

@@ -1,15 +1,15 @@
 import { DialogModal } from "../ui/DialogModal";
 import { IconButton, IconButtonVariant } from "../Shared/IconButton";
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { ProfileSchemaType } from "@/schemas/Profile";
+import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { ReportProfileForm } from "./ReportProfileForm";
 import React, { useCallback, useState } from "react";
 
 export type ProfileActionsProps = {
-  profile: ProfileSchemaType;
+  profile: ReadProfileSchemaType;
   interact: (
     interaction: InteractionSchemaType,
-    profile: ProfileSchemaType
+    profile: ReadProfileSchemaType
   ) => Promise<void>;
 };
 

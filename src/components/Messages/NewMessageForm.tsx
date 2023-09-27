@@ -1,7 +1,10 @@
 import { Form } from "@/components/ui/form";
 import { Gender } from ".prisma/client";
 import { IconButton, IconButtonVariant } from "../Shared/IconButton";
-import { MessageSchema, MessageSchemaType } from "@/schemas/Message";
+import {
+  MutateMessageSchema,
+  MutateMessageSchemaType,
+} from "@/schemas/Message";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
 import { api } from "@/utils/api";
 import { cn } from "@/lib/utils";
@@ -15,7 +18,7 @@ export type NewMessageBarProps = {
   gender: Gender;
   recipientUsername?: string;
   conversationId?: string;
-  onSend: (message: MessageSchemaType) => void;
+  onSend: (message: MutateMessageSchemaType) => void;
 };
 
 export function NewMessageForm({
@@ -27,8 +30,8 @@ export function NewMessageForm({
   const { data: session } = useSession();
 
   const { mutateAsync } = api.messages.create.useMutation();
-  const form = useForm<MessageSchemaType>({
-    resolver: zodResolver(MessageSchema),
+  const form = useForm<MutateMessageSchemaType>({
+    resolver: zodResolver(MutateMessageSchema),
     defaultValues: {
       authorUsername: session?.user?.name ?? "",
       recipientUsername: "<USER>",
@@ -37,7 +40,7 @@ export function NewMessageForm({
   });
   const onInvalidData = useCallback(handleError, []);
   const onValidData = useCallback(
-    (data: MessageSchemaType) => {
+    (data: MutateMessageSchemaType) => {
       data.recipientUsername = recipientUsername ?? "";
       data.conversationId = conversationId ?? "";
       mutateAsync(data)

@@ -12,7 +12,6 @@ import {
   Prisma,
   Purity,
   Religion,
-  YesNoOrUnknown,
 } from "@prisma/client";
 import { ActivitySchema } from "./Activity";
 import { ChildrenSchema } from "./Children";
@@ -49,7 +48,7 @@ export const Circle = {
   ageMaxRestriction: z.number().optional().nullable(),
   ageMinRestriction: z.number().optional().nullable(),
   maxWeightRestriction: z.number().optional().nullable(),
-  sexRestriction: z.array(GenderSchema).optional().nullable(),
+  sexRestriction: z.array(GenderSchema).optional(),
   countryRestriction: z.array(z.string()).optional(),
   childrenRestriction: z.array(ChildrenSchema).optional(),
   ethnicityRestriction: z.array(EthnicitySchema).optional(),
@@ -75,6 +74,11 @@ export const ReadCircleSchema = z.object({
   ...Circle,
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
+  _count: z
+    .object({
+      users: z.number().optional(),
+    })
+    .optional(),
 });
 
 export const MutateCircleSchema = z.object({
@@ -86,14 +90,6 @@ export const MutateCircleSchema = z.object({
 export const UpdateImageSchema = z.object({
   id: z.string(),
   image: z.string(),
-});
-
-export const CircleWithAggregatesSchema = z.object({
-  ...Circle,
-  links: z.array(LinkSchema).optional(),
-  _count: z.object({
-    users: z.number().optional(),
-  }),
 });
 
 export const CircleUserSearchSchema = z.object({
@@ -150,7 +146,10 @@ function parseArray<T>(value: JsonValue): T[] {
   });
   return result as T[];
 }
-export function ParseCircle(circle: PrismaCircleType): ReadCircleSchemaType {
+export function ParseCircle(
+  circle: PrismaCircleType | undefined | null
+): ReadCircleSchemaType | undefined {
+  if (!circle) return undefined;
   return {
     ...circle,
     id: circle.id ?? "",

@@ -9,9 +9,9 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { z } from "zod";
 
 export const circleRouter = createTRPCRouter({
-  readById: publicProcedure
+  readByName: publicProcedure
     .input(z.string())
-    .query(circleScripts.query.readById),
+    .query(circleScripts.query.readByName),
   readFeatured: publicProcedure.query(circleScripts.query.readFeatured),
   readCurrent: publicProcedure.query(circleScripts.query.readCurrent),
   readByCode: publicProcedure
@@ -19,13 +19,13 @@ export const circleRouter = createTRPCRouter({
     .query(circleScripts.query.readByCode),
   isCircleNameUnique: publicProcedure
     .input(z.string())
-    .query(circleScripts.query.isCircleNameUnique),
+    .mutation(circleScripts.query.isCircleNameUnique),
   searchMany: publicProcedure
     .input(z.string())
     .mutation(circleScripts.query.searchMany),
   searchCircleForUser: publicProcedure
     .input(CircleUserSearchSchema)
-    .query(circleScripts.query.searchCircleForUser),
+    .mutation(circleScripts.query.searchCircleForUser),
   create: publicProcedure
     .input(MutateCircleSchema)
     .mutation(circleScripts.mutate.create),

@@ -1,7 +1,7 @@
-import { MessageSchema } from "./Message";
+import { ParseMessage, PrismaMessage, ReadMessageSchema } from "./Message";
 import { z } from "zod";
 
-export const ConversationSchema = z.object({
+export const MutateConversationSchema = z.object({
   id: z.string().optional(),
   users: z.array(
     z.object({
@@ -9,35 +9,47 @@ export const ConversationSchema = z.object({
       username: z.string(),
     })
   ),
-  messages: z.array(MessageSchema),
+  messages: z.array(ReadMessageSchema),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });
 
-export const ConversationResultSchema = z.object({
+export const ReadConversationSchema = z.object({
   id: z.string(),
   users: z.array(
     z.object({
       userId: z.string(),
-      user: z.object({
-        username: z.string(),
-      }),
+      username: z.string(),
     })
   ),
-  messages: z.array(MessageSchema),
+  messages: z.array(ReadMessageSchema),
 });
 
-export type ConversationSchemaType = z.infer<typeof ConversationSchema>;
-export type ConversationResultSchemaType = z.infer<
-  typeof ConversationResultSchema
+export type ReadConversationSchemaType = z.infer<typeof ReadConversationSchema>;
+export type MutateConversationSchemaType = z.infer<
+  typeof MutateConversationSchema
 >;
 
-export const ConversationParser = (res: ConversationResultSchemaType) =>
-  ({
-    id: res.id,
-    users: res.users.map((user) => ({
-      id: user.userId,
-      username: user.user.username,
+export type PrismaConversationType = {
+  id: string;
+  users: {
+    userId: string;
+    user: {
+      username: string;
+    };
+  }[];
+  messages: PrismaMessage[];
+};
+
+export function ParseConversation(
+  conversation: PrismaConversationType
+): ReadConversationSchemaType {
+  return {
+    ...conversation,
+    users: conversation.users.map((u) => ({
+      userId: u.userId,
+      username: u.user.username,
     })),
-    messages: res.messages,
-  }) as ConversationSchemaType;
+    messages: conversation.messages.map(ParseMessage),
+  };
+}

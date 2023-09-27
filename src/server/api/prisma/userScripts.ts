@@ -1,27 +1,26 @@
-import { PrismaParameter } from "../types";
+import { PrismaContext, PrismaParameter } from "../types";
 import { SignupSchemaType } from "@/schemas/LoginSchema";
 import { TRPCError } from "@trpc/server";
 import { hash } from "argon2";
 
 export const userScripts = {
   query: {
-    readProfileByUserEmail: async ({ input, ctx }: PrismaParameter<string>) => {
+    isActive: async ({ ctx }: PrismaContext) => {
       const result = await ctx.prisma.user.findUnique({
         where: {
-          email: input,
+          id: ctx.session?.id,
         },
-        include: {
-          profile: true,
+        select: {
+          isAdmin: true,
+          profile: {
+            select: {
+              userId: true,
+            },
+          },
         },
       });
 
-      const profile = result?.profile;
-
-      if (profile) {
-        return { profile: profile, hasProfile: true };
-      } else {
-        return { hasProfile: false };
-      }
+      return { isActive: !!result?.profile, isAdmin: result?.isAdmin };
     },
   },
   mutate: {

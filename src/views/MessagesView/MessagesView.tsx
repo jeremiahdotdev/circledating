@@ -1,5 +1,4 @@
 import { Loading } from "@/components/Shared/Loading";
-import { MessageSchemaType } from "@/schemas/Message";
 import { Messaging } from "../../components/Messages/Messaging";
 import { PageNotFound } from "@/components/Shared/PageNotFound";
 import { api } from "@/utils/api";
@@ -23,7 +22,7 @@ export const MessagesView: React.FC<MessagesViewProps> = memo(() => {
   });
   if (!request.data) return <Loading />;
 
-  const messages: MessageSchemaType[] = request.data;
+  const messages = request.data;
 
   return <Messaging messages={messages} />;
 });

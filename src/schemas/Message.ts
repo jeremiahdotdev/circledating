@@ -18,11 +18,11 @@ export const MessageUserSchema = z.object({
 export const ReadMessageSchema = z.object({
   id: z.string().optional(),
   conversationId: z.string(),
-  author: MessageUserSchema,
-  recipient: MessageUserSchema,
+  authorUsername: z.string(),
+  recipientUsername: z.string(),
   content: z.string().min(1).max(2000),
-  createdAt: z.date(),
-  updatedAt: z.date().optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
 export const AccessMessagesSchema = z.object({
@@ -34,3 +34,23 @@ export type ReadMessageSchemaType = z.infer<typeof ReadMessageSchema>;
 export type AccessMessagesSchemaType = z.infer<typeof AccessMessagesSchema>;
 export type MessageUserSchemaType = z.infer<typeof MessageUserSchema>;
 export type MutateMessageSchemaType = z.infer<typeof MutateMessageSchema>;
+
+export type PrismaMessage = {
+  id: string;
+  conversationId: string | null;
+  authorUsername: string;
+  recipientUsername: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date | null;
+};
+
+export function ParseMessage(message: PrismaMessage): ReadMessageSchemaType {
+  return {
+    ...message,
+    conversationId: message.conversationId ?? "",
+    createdAt: message.createdAt.toLocaleString(),
+    updatedAt:
+      message.updatedAt?.toLocaleString() ?? message.createdAt.toLocaleString(),
+  };
+}
