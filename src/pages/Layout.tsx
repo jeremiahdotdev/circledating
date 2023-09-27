@@ -16,7 +16,10 @@ export type LayoutUser = {
   isAdmin: boolean;
 };
 
-export function Layout({ user, children }: LayoutProps): React.ReactElement {
+export default function Layout({
+  user,
+  children,
+}: LayoutProps): React.ReactElement {
   return (
     <>
       <Nav isAuthed={user.isAuthed} isActive={user.isActive} />
