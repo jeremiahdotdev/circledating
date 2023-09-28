@@ -95,7 +95,7 @@ export function CurrentUserPreferences({
       onSubmit={form.handleSubmit(onValidData, onInvalidData)}
       className="flex h-full max-h-navless w-full flex-col justify-between"
     >
-      <div className="flex w-full flex-col overflow-y-scroll">
+      <div className="flex h-full w-full flex-col overflow-y-scroll">
         <Preference name="Age">
           <SliderFormField
             name="ageRange"

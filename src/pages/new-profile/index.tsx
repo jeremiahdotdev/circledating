@@ -1,6 +1,5 @@
 import { GetServerSidePropsContext } from "next";
 import { NewProfileView } from "@/views/NewProfileView/NewProfileView";
-import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireNoUser } from "@/helpers/requireNoUser";
 import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
@@ -13,14 +12,11 @@ type ServerProps = LayoutNavProps & {
 export const getServerSideProps = requireNoUser(
   async (_ctx: GetServerSidePropsContext) => {
     const { ctx } = await getPrismaContext(_ctx);
-    const caller = appRouter.createCaller(ctx);
-    const { isActive } = await caller.users.isActive();
 
     return {
       props: {
         user: {
           isAuthed: !!ctx.session,
-          isActive: isActive,
         },
       } as ServerProps,
     };

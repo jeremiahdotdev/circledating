@@ -6,7 +6,7 @@ export type HelpProps = Record<never, never>;
 
 export const HelpView: React.FC<HelpProps> = memo(() => {
   return (
-    <main className="min-h-window flex flex-col items-center justify-center p-2">
+    <main className="flex min-h-window flex-col items-center justify-center p-2">
       <ContactForm />
     </main>
   );
