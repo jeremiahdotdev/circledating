@@ -1,4 +1,4 @@
-import { Anchor } from "../Shared/Anchor";
+import { Anchor, AnchorVariant } from "../Shared/Anchor";
 import { Form } from "@/components/ui/form";
 import { FormButton } from "@/components/ui/FormButton";
 import { InputFormField } from "@/components/ui/InputFormField";
@@ -8,6 +8,7 @@ import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { Separator } from "../ui/separator";
 import { routes } from "@/globals/routes";
 import { signIn } from "next-auth/react";
+import { systemMessages } from "@/globals/systemMessages";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,9 +45,11 @@ export function Login() {
           className="my-2 w-full max-w-xs"
         />
         <Separator />
-        <RouteOptionLink option={routes.signup()}>
-          <Anchor>- Sign Up -</Anchor>
-        </RouteOptionLink>
+        <Anchor
+          variant={AnchorVariant.AUTH}
+          message={systemMessages.SIGN_UP}
+          option={routes.signup()}
+        />
         <FormButton label="Login" />
       </Form>
     </div>

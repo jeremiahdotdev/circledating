@@ -1,4 +1,4 @@
-import { Anchor } from "../Shared/Anchor";
+import { Anchor, AnchorVariant } from "../Shared/Anchor";
 import { Form } from "@/components/ui/form";
 import { FormButton } from "@/components/ui/FormButton";
 import { InputFormField } from "@/components/ui/InputFormField";
@@ -8,6 +8,7 @@ import { Separator } from "../ui/separator";
 import { SignupSchema, SignupSchemaType } from "@/schemas/LoginSchema";
 import { api } from "@/utils/api";
 import { routes } from "@/globals/routes";
+import { systemMessages } from "@/globals/systemMessages";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
@@ -60,9 +61,11 @@ export function SignUp() {
           className="my-2 w-full max-w-xs"
         />
         <Separator />
-        <RouteOptionLink option={routes.default()}>
-          <Anchor>- Log In -</Anchor>
-        </RouteOptionLink>
+        <Anchor
+          variant={AnchorVariant.AUTH}
+          message={systemMessages.LOGIN}
+          option={routes.login()}
+        />
         <FormButton label="Sign Up" />
       </Form>
     </div>

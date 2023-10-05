@@ -1,34 +1,63 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import React, { useMemo } from "react";
+import { CheckboxListItem } from "./CheckboxListItem";
+import {
+  FieldValues,
+  UseControllerProps,
+  useController,
+} from "react-hook-form";
+import { FormItem, FormMessage } from "./form";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
+import React, { useCallback, useMemo } from "react";
 
 export type CheckboxProps = {
   label: React.ReactNode;
-  value?: string;
+  value?: ReadCircleSchemaType;
   checked?: boolean;
 };
-export type CheckboxListProps = {
+interface CheckboxListProps<Values extends FieldValues>
+  extends UseControllerProps<Values> {
   options: CheckboxProps[];
-};
+}
 
-export function CheckboxList({ options }: CheckboxListProps) {
+export const CheckboxList = <Values extends FieldValues>({
+  options,
+  ...props
+}: CheckboxListProps<Values>) => {
+  const { field, fieldState } = useController({ ...props });
+
+  const customOnChange = useCallback(
+    (isChecked: boolean, checkBoxName: string) => {
+      const fieldValueAsList = Array.isArray(field.value) ? field.value : [];
+      const result = isChecked
+        ? [...fieldValueAsList, checkBoxName]
+        : fieldValueAsList.filter((value: string) => value != checkBoxName);
+      field.onChange(
+        options
+          .map((o) => o.value)
+          .filter((v) => result.map((r) => r == v?.name))
+      );
+    },
+    [field, options]
+  );
+
   const renderedOptions = useMemo(() => {
     return options.map(({ label, value, checked }) => (
-      <div key={value} className="flex flex-1 items-center">
-        <Checkbox
-          className="h-5 w-5 rounded-full border-y"
-          id={value}
-          defaultChecked={checked}
-        />
-        <label
-          htmlFor={value}
-          className="w-full text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          {label}
-        </label>
-      </div>
+      <CheckboxListItem
+        key={value?.name}
+        name={value?.name ?? ""}
+        label={label}
+        isChecked={!!checked}
+        onChange={customOnChange}
+      />
     ));
-  }, [options]);
-  return <div className="flex flex-col">{renderedOptions}</div>;
-}
+  }, [options, customOnChange]);
+  return (
+    <FormItem className="mb-2 flex flex-col">
+      {renderedOptions}
+      {fieldState.error?.message && (
+        <FormMessage>{fieldState.error?.message}</FormMessage>
+      )}
+    </FormItem>
+  );
+};

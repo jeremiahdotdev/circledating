@@ -3,10 +3,10 @@ import { NewProfileView } from "@/views/NewProfileView/NewProfileView";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireNoUser } from "@/helpers/requireNoUser";
-import Layout, { LayoutUser } from "../Layout";
+import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
 import React from "react";
 
-type ServerProps = {
+type ServerProps = LayoutNavProps & {
   user: LayoutUser;
 };
 
@@ -27,9 +27,9 @@ export const getServerSideProps = requireNoUser(
   }
 );
 
-export default function Page({ user }: ServerProps) {
+export default function Page({ user, preferences, circles }: ServerProps) {
   return (
-    <Layout user={user}>
+    <Layout user={user} circles={circles} preferences={preferences}>
       <NewProfileView />
     </Layout>
   );

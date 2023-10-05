@@ -6,9 +6,9 @@ import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
 import { ProfileLocation } from "./ProfileLocation";
 import { ProfilePicture } from "./ProfilePicture";
 import { ReadProfileSchemaType } from "@/schemas/Profile";
-import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { Separator } from "../ui/separator";
 import { cn } from "@/lib/utils";
+import { getSystemMessage } from "@/globals/systemMessages";
 import { routes } from "@/globals/routes";
 import React from "react";
 
@@ -22,24 +22,33 @@ export type ProfileCardProps = {
 
 export function ProfileCard({ profile, interact }: ProfileCardProps) {
   return (
-    <div className="flex w-full max-w-[700px] flex-col items-center sm:min-w-[700px]">
+    <div className="flex w-full flex-col sm:h-[650px] sm:w-[700px]">
       <em className="bg-gradient-to-r from-cyan-400 to-fuchsia-300 bg-clip-text font-extrabold text-transparent">
         {profile.isPerfectMatch && "Perfect Match"} &nbsp;
       </em>
       <div
         className={cn(
-          "flex w-full h-full flex-col rounded-md shadow-outter-soft bg-background p-3 ",
+          "flex w-full h-full flex-col rounded-md shadow-outter-soft bg-background p-8 ",
           profile.isPerfectMatch
             ? "bg-gradient-to-r from-cyan-100 to-fuchsia-100"
             : ""
         )}
       >
+<<<<<<< Updated upstream
         <div className="flex h-full w-full max-w-full flex-wrap items-center justify-center px-6 text-sm ring-offset-background sm:justify-between sm:pt-6 ">
           <RouteOptionLink option={routes.profileByUsername(profile.username)}>
             <h1 className="flex w-full justify-center text-lg sm:w-auto">
               {profile.username} ({profile.age})
             </h1>
           </RouteOptionLink>
+=======
+        <div className="flex w-full max-w-full flex-wrap items-center justify-center text-sm ring-offset-background sm:justify-between">
+          <Anchor
+            variant={AnchorVariant.PROFILE}
+            message={getSystemMessage(`${profile.username} (${profile.age})`)}
+            option={routes.profileByUsername(profile.username)}
+          />
+>>>>>>> Stashed changes
           <span className="flex justify-end">
             <ProfileLocation
               country={profile.location?.country}
@@ -48,16 +57,16 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
             />
           </span>
         </div>
-        <div className="flex h-full flex-wrap items-center justify-around border-b py-6 text-sm ring-offset-background sm:px-4">
-          <div className="flex w-3/4 items-center justify-center pl-4 sm:w-1/4 ">
+        <div className="flex h-full flex-wrap items-center justify-around border-b py-6 text-sm ring-offset-background">
+          <div className="flex w-3/4 items-center justify-center sm:w-1/4 ">
             <ProfilePicture
               src={profile.image}
               fallback={profile.username.substring(0, 1)}
               alt={profile.username + "_profile"}
             />
           </div>
-          <div className="grid h-full w-full px-6 sm:w-3/4 sm:grid-cols-32 ">
-            <div className="flex flex-col gap-3 sm:col-span-10 sm:my-3">
+          <div className="grid h-full w-full sm:w-3/4 sm:grid-cols-32 ">
+            <div className="flex flex-col items-center sm:col-span-10 sm:my-3">
               <ProfileCardSubheading title={"General"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.religion}
@@ -84,7 +93,7 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
               orientation="vertical"
               className="mx-auto hidden sm:block"
             />
-            <div className="flex flex-col gap-3 sm:col-span-10 sm:my-3">
+            <div className="flex flex-col sm:col-span-10 sm:my-3">
               <ProfileCardSubheading title={"Lifestyle"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.height}
@@ -112,7 +121,7 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
               orientation="vertical"
               className="mx-auto hidden sm:block"
             />
-            <div className="flex flex-col gap-3 sm:col-span-10 sm:my-3">
+            <div className="flex flex-col sm:col-span-10 sm:my-3">
               <ProfileAttribute
                 option={ProfileAttributeOptions.activityLevel}
                 variant={ProfileAttributeVariant.PROFILE_CARD}
@@ -137,8 +146,9 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
             </div>
           </div>
         </div>
-        <div className="mx-6 flex max-w-full items-center py-6 text-sm ring-offset-background sm:p-6">
+        <div className="relative h-full max-h-[400px] overflow-y-hidden pt-6 text-sm sm:max-h-[200px]">
           {profile.bio}
+          <div className="absolute top-0 h-full w-full bg-gradient-to-b from-white/0 from-80% to-white"></div>
         </div>
         {interact && <ProfileActions profile={profile} interact={interact} />}
       </div>

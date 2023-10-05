@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { CirclesServerProps } from "@/pages/circles";
 import { ItemList, ItemType, ParseItem } from "@/components/Shared/ItemList";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { SearchForm } from "../../components/Circle/SearchForm";
@@ -10,10 +9,14 @@ import { routes } from "@/globals/routes";
 import { useRouter } from "next/router";
 import React from "react";
 
+export type CirclesViewProps = {
+  featured: ReadCircleSchemaType[];
+  current: ReadCircleSchemaType[];
+};
 export const CirclesView = memo(function CirclesView({
   featured,
   current,
-}: CirclesServerProps) {
+}: CirclesViewProps) {
   const router = useRouter();
   const { mutateAsync } = api.circles.searchMany.useMutation();
   const [searchCirclesState, setSearchCirclesState] = useState<

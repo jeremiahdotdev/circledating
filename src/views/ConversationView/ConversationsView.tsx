@@ -65,7 +65,7 @@ export const ConversationsView = memo(function ConversationsView({
   );
 
   return (
-    <div>
+    <>
       <div className="lg:invisible lg:h-0 lg:w-0">
         <ConversationsList
           conversations={conversations}
@@ -73,7 +73,11 @@ export const ConversationsView = memo(function ConversationsView({
           actionIsUnblock={actionIsUnblock}
         />
       </div>
+<<<<<<< Updated upstream
       <div className="invisible flex h-0 w-0 lg:visible lg:min-h-navless lg:w-full">
+=======
+      <div className="invisible flex h-0 w-0 lg:visible lg:min-h-window lg:w-full">
+>>>>>>> Stashed changes
         <div className="md:w-1/4 ">
           <ConversationsList
             conversations={conversations}
@@ -96,6 +100,6 @@ export const ConversationsView = memo(function ConversationsView({
           />
         </div>
       </div>
-    </div>
+    </>
   );
 });

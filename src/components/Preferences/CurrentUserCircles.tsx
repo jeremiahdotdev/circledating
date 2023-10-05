@@ -1,18 +1,31 @@
-import { Button } from "../ui/button";
 import { CheckboxList } from "../ui/CheckboxList";
+import { Form } from "../ui/form";
+import { FormButton } from "../ui/FormButton";
 import { ItemType, ParseItem } from "../Shared/ItemList";
 import { ListItem } from "../Shared/ListItem";
+import {
+  MutateUserPreferencesSchema,
+  MutateUserPreferencesSchemaType,
+} from "@/schemas/UserPreferences";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
 import { routes } from "@/globals/routes";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useMemo } from "react";
 
-export function CurrentUserCircles() {
+export type CurrentUserCirclesProps = {
+  circles?: ReadCircleSchemaType[];
+  selectedCircles?: ReadCircleSchemaType[];
+};
+export function CurrentUserCircles({
+  circles,
+  selectedCircles,
+}: CurrentUserCirclesProps) {
+  console.log(selectedCircles);
   const router = useRouter();
-
-  const response = api.preferences.read.useQuery().data;
-
   const handleRoute = useCallback(
     (circleNameItem: ItemType) => {
       const route = routes.circleByCircleNameAsLabel(circleNameItem.value);
@@ -22,14 +35,9 @@ export function CurrentUserCircles() {
   );
 
   const renderedCircles = useMemo(() => {
-    const currentUserCircles = response?.circles ?? [];
-    const currentUserSelectedCircles =
-      response?.preferences?.selectedCircles ?? [];
-    return currentUserCircles.map((circle) => ({
-      value: circle?.name,
-      checked: currentUserSelectedCircles
-        .map((c) => c?.id)
-        .includes(circle?.id ?? ""),
+    return circles?.map((circle) => ({
+      value: circle,
+      checked: selectedCircles?.map((c) => c?.id)?.includes(circle?.id ?? ""),
       label: circle && (
         <ListItem
           item={ParseItem(circle)}
@@ -38,15 +46,39 @@ export function CurrentUserCircles() {
         />
       ),
     }));
-  }, [handleRoute, response]);
+  }, [handleRoute, circles, selectedCircles]);
+
+  const form = useForm<MutateUserPreferencesSchemaType>({
+    resolver: zodResolver(MutateUserPreferencesSchema),
+    defaultValues: {
+      userId: "<RESOLVED-ON-SERVER>",
+    },
+  });
+
+  const { mutateAsync } = api.preferences.save.useMutation();
+
+  const onInvalidData = useCallback(handleError, []);
+  const onValidData = useCallback(
+    (data: MutateUserPreferencesSchemaType) => {
+      mutateAsync(data).catch(handleError);
+    },
+    [mutateAsync]
+  );
+
   return (
     <div className="flex h-full max-h-navless w-full flex-col">
-      <form className="flex h-full flex-col justify-between">
-        {response?.circles && <CheckboxList options={renderedCircles} />}
-        <Button type="submit" className="bg-purple-600">
-          Save
-        </Button>
-      </form>
+      <Form
+        form={form}
+        onSubmit={form.handleSubmit(onValidData, onInvalidData)}
+        className="flex h-full max-h-navless w-full flex-col justify-between"
+      >
+        <CheckboxList
+          control={form.control}
+          name="selectedCircles"
+          options={renderedCircles ?? []}
+        />
+        <FormButton label="Save" />
+      </Form>
     </div>
   );
 }

@@ -1,3 +1,18 @@
+export type SystemMessageType = {
+  message: string;
+  tooltip?: string;
+};
+
+export function getSystemMessage(
+  message: string,
+  tooltip?: string
+): SystemMessageType {
+  return {
+    message: message,
+    tooltip: tooltip,
+  };
+}
+
 export const systemMessages = {
   NO_MATCHES: "Nothing to show yet...",
   NO_PROFILES: "Nothing to show yet...",
@@ -8,4 +23,6 @@ export const systemMessages = {
   CREATE_CIRCLE_DESCRIPTION:
     "Restrict circle members to those with the below traits. A blank answer will be treated as accepting of all values. Note: Admistrators are exempt from trait rules.",
   NO_PROFILE: "No profile was found for this user.",
+  SIGN_UP: { message: "- Sign Up -", tooltip: "Go to sign up page" },
+  LOGIN: { message: "- Login -", tooltip: "Go to login page" },
 };

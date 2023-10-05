@@ -6,9 +6,10 @@ import {
   PoliticalBeliefs,
   Religion,
 } from "@prisma/client";
+import { MutateUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { ParseCircle } from "@/schemas/Circle";
 import { PrismaContext, PrismaParameter } from "../types";
-import { UserPreferencesSchemaType } from "@/schemas/UserPreferences";
+import { getOppositeSex } from "@/schemas/Gender";
 
 export const preferencesScripts = {
   query: {
@@ -29,6 +30,7 @@ export const preferencesScripts = {
           },
           profile: {
             select: {
+              userId: true,
               circles: {
                 select: {
                   Circle: true,
@@ -38,7 +40,7 @@ export const preferencesScripts = {
           },
         },
       });
-
+      console.log(result?.preferences?.selectedCircles);
       return {
         preferences: {
           sex: result?.preferences?.sex as Gender,
@@ -67,12 +69,13 @@ export const preferencesScripts = {
     save: async ({
       input,
       ctx,
-    }: PrismaParameter<UserPreferencesSchemaType>) => {
+    }: PrismaParameter<MutateUserPreferencesSchemaType>) => {
+      const [minAge, maxAge] = input.ageRange ?? [18, 99];
       const data = {
-        ...input,
-        minAge: input.ageRange[0],
-        maxAge: input.ageRange[1],
-        sex: input.sex as Gender,
+        userId: ctx.session?.id ?? "",
+        minAge: minAge,
+        maxAge: maxAge,
+        sex: getOppositeSex(ctx.session?.sex),
         drinking: input.drinking as Drinking[],
         consumables: input.consumables as Consumables[],
         politicalBeliefs: input.politicalBeliefs as PoliticalBeliefs[],
@@ -81,6 +84,23 @@ export const preferencesScripts = {
         searchContinents: input.searchContinents as string[],
         searchCountries: input.searchCountries as string[],
         searchStates: input.searchStates as string[],
+      };
+      const result = await ctx.prisma.userPreferences.upsert({
+        where: {
+          userId: ctx.session?.id,
+        },
+        create: data,
+        update: data,
+      });
+
+      return result;
+    },
+    saveCircles: async ({
+      input,
+      ctx,
+    }: PrismaParameter<MutateUserPreferencesSchemaType>) => {
+      const data = {
+        userId: ctx.session?.id ?? "",
         selectedCircles: {
           connect: input.selectedCircles?.map((c) => ({
             id: c.id,
@@ -91,7 +111,7 @@ export const preferencesScripts = {
         where: {
           userId: ctx.session?.id,
         },
-        create: data,
+        create: { ...data, minAge: 18, maxAge: 99 },
         update: data,
       });
 

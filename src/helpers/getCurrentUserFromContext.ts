@@ -10,8 +10,8 @@ import {
 import { DefaultArgs } from "@prisma/client/runtime/library";
 import { ParseCircle, ReadCircleSchemaType } from "@/schemas/Circle";
 import { ParseProfile, ReadProfileSchemaType } from "@/schemas/Profile";
+import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { Session } from "next-auth";
-import { UserPreferencesSchemaType } from "@/schemas/UserPreferences";
 
 export const getCurrentUserFromContext = async (ctx: {
   session: Session | null;
@@ -19,7 +19,7 @@ export const getCurrentUserFromContext = async (ctx: {
 }) => {
   const user: {
     profile?: ReadProfileSchemaType;
-    preferences?: UserPreferencesSchemaType;
+    preferences?: ReadUserPreferencesSchemaType;
   } = {};
   if (ctx.session?.user?.name) {
     const currentUser = await ctx.prisma.user.findUnique({
