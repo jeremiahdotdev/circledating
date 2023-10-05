@@ -2,28 +2,11 @@ import { Gender } from "@prisma/client";
 import { PrismaContext, PrismaParameter } from "../types";
 import { SignupSchemaType } from "@/schemas/LoginSchema";
 import { TRPCError } from "@trpc/server";
+import { handleError } from "@/utils/handleError";
 import { hash } from "argon2";
 
 export const userScripts = {
   query: {
-<<<<<<< Updated upstream
-    isActive: async ({ ctx }: PrismaContext) => {
-      const result = await ctx.prisma.user.findUnique({
-        where: {
-          id: ctx.session?.id,
-        },
-        select: {
-          isAdmin: true,
-          profile: {
-            select: {
-              userId: true,
-            },
-          },
-        },
-      });
-
-      return { isActive: !!result?.profile, isAdmin: result?.isAdmin };
-=======
     stats: async ({ ctx }: PrismaContext) => {
       let isActive = false;
       let isAdmin = false;
@@ -61,7 +44,6 @@ export const userScripts = {
         isAdmin: isAdmin,
         isMale: isMale,
       };
->>>>>>> Stashed changes
     },
   },
   mutate: {

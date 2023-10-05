@@ -34,21 +34,12 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
             : ""
         )}
       >
-<<<<<<< Updated upstream
-        <div className="flex h-full w-full max-w-full flex-wrap items-center justify-center px-6 text-sm ring-offset-background sm:justify-between sm:pt-6 ">
-          <RouteOptionLink option={routes.profileByUsername(profile.username)}>
-            <h1 className="flex w-full justify-center text-lg sm:w-auto">
-              {profile.username} ({profile.age})
-            </h1>
-          </RouteOptionLink>
-=======
         <div className="flex w-full max-w-full flex-wrap items-center justify-center text-sm ring-offset-background sm:justify-between">
           <Anchor
             variant={AnchorVariant.PROFILE}
             message={getSystemMessage(`${profile.username} (${profile.age})`)}
             option={routes.profileByUsername(profile.username)}
           />
->>>>>>> Stashed changes
           <span className="flex justify-end">
             <ProfileLocation
               country={profile.location?.country}

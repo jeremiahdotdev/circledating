@@ -4,12 +4,8 @@ import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
-<<<<<<< Updated upstream
-import Layout, { LayoutUser } from "../Layout";
-=======
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
->>>>>>> Stashed changes
 import React from "react";
 
 type ServerProps = LayoutNavProps & {
@@ -21,10 +17,6 @@ export const getServerSideProps = requireUser(
   async (_ctx: GetServerSidePropsContext) => {
     const { ctx } = await getPrismaContext(_ctx);
     const caller = appRouter.createCaller(ctx);
-<<<<<<< Updated upstream
-    const { isActive } = await caller.users.isActive();
-    const profile = await caller.profiles.readCurrent();
-=======
 
     const [{ isActive, username }, { preferences, circles }, profile] =
       await Promise.all([
@@ -32,7 +24,6 @@ export const getServerSideProps = requireUser(
         caller.preferences.read(),
         caller.profiles.read(routerQueryAttributeToString(_ctx.query.user)),
       ]);
->>>>>>> Stashed changes
 
     return {
       props: {

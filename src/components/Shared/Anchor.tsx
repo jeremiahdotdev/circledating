@@ -1,16 +1,3 @@
-<<<<<<< Updated upstream
-import React from "react";
-
-export type AnchorProps = {
-  children: React.ReactNode;
-};
-
-export function Anchor({ children }: AnchorProps) {
-  return (
-    <span className="text-sm text-gray-400 hover:text-gray-600">
-      {children}
-    </span>
-=======
 import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
 import { RouteOption } from "@/globals/routes";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
@@ -59,6 +46,5 @@ export function Anchor({ message, variant, option }: AnchorProps) {
     <FormattedTooltip content={message.tooltip}>{renderLink}</FormattedTooltip>
   ) : (
     renderLink
->>>>>>> Stashed changes
   );
 }

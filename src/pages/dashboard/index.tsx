@@ -36,13 +36,8 @@ export default function Page({ user, preferences, circles }: ServerProps) {
   const { data } = useSession();
 
   return (
-<<<<<<< Updated upstream
-    <Layout user={user}>
-      <div className="min-h-screen">
-=======
     <Layout user={user} circles={circles} preferences={preferences}>
       <div className="min-h-window">
->>>>>>> Stashed changes
         <div className="">
           <div className="max-w-lg">
             <h1 className="text-center text-5xl font-bold leading-snug text-gray-400">

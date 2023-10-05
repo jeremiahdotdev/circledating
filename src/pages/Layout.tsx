@@ -31,10 +31,6 @@ export default function Layout({
 }: LayoutProps & LayoutNavProps): React.ReactElement {
   return (
     <>
-<<<<<<< Updated upstream
-      <Nav isAuthed={user?.isAuthed} isActive={user?.isActive} />
-      <main className={classNames("sm:pt-[67px] pb-8", inter.className)}>
-=======
       <Nav
         isAuthed={user?.isAuthed}
         isActive={user?.isActive}
@@ -43,7 +39,6 @@ export default function Layout({
         circles={circles}
       />
       <main className={classNames("sm:pt-[67px] ", inter.className)}>
->>>>>>> Stashed changes
         {children}
       </main>
       <Footer />

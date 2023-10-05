@@ -89,6 +89,7 @@ module.exports = {
         messaging: "calc(100vh - 97px)",
         "messaging-navless": "calc(100vh - 67px - 97px)",
         navless: "calc(100vh - 67px)",
+        window: "calc(100vh - 67px - 45px)",
       },
       boxShadow: {
         outter: "0 1px 3px 0px rgba(0, 0, 0, 0.6)",
