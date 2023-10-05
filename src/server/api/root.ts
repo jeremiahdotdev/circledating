@@ -1,6 +1,7 @@
 import { circleRouter } from "./routers/circleRouter";
 import { conversationRouter } from "./routers/conversationRouter";
 import { createTRPCRouter } from "./trpc";
+import { emailRouter } from "./routers/emailRouter";
 import { interactionRouter } from "./routers/interactionRouter";
 import { messagesRouter } from "./routers/messagesRouter";
 import { preferencesRouter } from "./routers/preferencesRouter";
@@ -22,6 +23,7 @@ export const appRouter = createTRPCRouter({
   reports: reportRouter,
   users: userRouter,
   preferences: preferencesRouter,
+  email: emailRouter,
 });
 
 // export type definition of API

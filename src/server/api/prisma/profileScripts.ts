@@ -4,11 +4,13 @@ import {
   ReadProfileSchemaType,
 } from "@/schemas/Profile";
 import { PrismaContext, PrismaParameter } from "../types";
+import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { UpdateImageSchemaType } from "@/schemas/Profile";
-import { UserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { getCurrentUserFromContext } from "@/helpers/getCurrentUserFromContext";
 
-export const handlePreferences = (preferences?: UserPreferencesSchemaType) => {
+export const handlePreferences = (
+  preferences?: ReadUserPreferencesSchemaType
+) => {
   if (!preferences) return [{}];
   const filters = [];
   if (preferences.selectedCircles)

@@ -13,5 +13,9 @@ export const CircleView = memo(function CircleView({
   circle,
   isAdmin,
 }: CircleViewProps) {
-  return <CircleProfile circle={circle} canEdit={isAdmin} />;
+  return (
+    <main className="p-2">
+      <CircleProfile circle={circle} canEdit={isAdmin} />
+    </main>
+  );
 });

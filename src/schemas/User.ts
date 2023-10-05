@@ -1,6 +1,6 @@
 import { InteractionSchema } from "./Interaction";
 import { ReadProfileSchema } from "./Profile";
-import { UserPreferencesSchema } from "./UserPreferences";
+import { ReadUserPreferencesSchema } from "./UserPreferences";
 import { z } from "zod";
 
 export const UserSchema = z.object({
@@ -8,7 +8,7 @@ export const UserSchema = z.object({
   email: z.string().email(),
   isAdmin: z.boolean(),
   profile: ReadProfileSchema,
-  preferences: UserPreferencesSchema,
+  preferences: ReadUserPreferencesSchema,
   interactions: z.array(InteractionSchema).nullable(),
   affections: z.array(InteractionSchema).nullable(),
   createdAt: z.date().optional(),

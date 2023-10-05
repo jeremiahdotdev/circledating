@@ -5,10 +5,10 @@ import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
-import Layout, { LayoutUser } from "../Layout";
+import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
 import React from "react";
 
-type ServerProps = {
+type ServerProps = LayoutNavProps & {
   user: LayoutUser;
   circle: ReadCircleSchemaType;
 };
@@ -17,27 +17,39 @@ export const getServerSideProps = requireUser(
   async (_ctx: GetServerSidePropsContext) => {
     const { ctx } = await getPrismaContext(_ctx);
     const caller = appRouter.createCaller(ctx);
-    const { isActive, isAdmin } = await caller.users.isActive();
-    const circle = await caller.circles.readByName(
-      routerQueryAttributeToString(_ctx.query.name)
-    );
+
+    const [{ isActive, username }, { preferences, circles }, circle] =
+      await Promise.all([
+        caller.users.stats(),
+        caller.preferences.read(),
+        caller.circles.readByName(
+          routerQueryAttributeToString(_ctx.query.circle)
+        ),
+      ]);
 
     return {
       props: {
         user: {
           isAuthed: !!ctx.session,
           isActive: isActive,
-          isAdmin: isAdmin,
+          username: username,
         },
+        preferences: preferences,
+        circles: circles,
         circle: circle,
       } as ServerProps,
     };
   }
 );
 
-export default function Page({ circle, user }: ServerProps) {
+export default function Page({
+  circle,
+  user,
+  preferences,
+  circles,
+}: ServerProps) {
   return (
-    <Layout user={user}>
+    <Layout user={user} circles={circles} preferences={preferences}>
       <CircleView isAdmin={user.isAdmin} circle={circle} />
     </Layout>
   );

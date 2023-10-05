@@ -1,6 +1,7 @@
 import { Gender } from "@prisma/client";
 import { LoginSchema } from "@/schemas/LoginSchema";
 import { NextAuthOptions } from "next-auth";
+import { UserSchemaType } from "@/schemas/User";
 import { prisma } from "@/server/db";
 import { routes } from "@/globals/routes";
 import { verify } from "argon2";
@@ -64,6 +65,7 @@ export const nextAuthOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.sex = (user as UserSchemaType).profile.sex;
       }
 
       return { ...token, ...user };

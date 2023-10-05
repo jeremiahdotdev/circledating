@@ -89,3 +89,7 @@
 .rdp-vhidden {
   @apply hidden;
 }
+
+* {
+  text-decoration-skip-ink: none;
+}
