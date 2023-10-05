@@ -1,14 +1,14 @@
 "use client";
 
 import { Conversation } from "./Conversation";
-import { ConversationSchemaType } from "@/schemas/Conversation";
+import { ReadConversationSchemaType } from "@/schemas/Conversation";
 import { api } from "@/utils/api";
 import React, { useCallback, useMemo, useState } from "react";
 
 export type ConversationsListProps = {
-  conversations: ConversationSchemaType[];
+  conversations: ReadConversationSchemaType[];
   actionIsUnblock?: boolean;
-  onSelect: (conversation: ConversationSchemaType) => void;
+  onSelect: (conversation: ReadConversationSchemaType) => void;
 };
 export function ConversationsList({
   conversations,
@@ -22,9 +22,9 @@ export function ConversationsList({
 
   const [conversationsState, setConversationsState] = useState(conversations);
   const onAction = useCallback(
-    (conversation: ConversationSchemaType) => {
+    (conversation: ReadConversationSchemaType) => {
       if (conversation.id)
-        return mutateAsync({ id: conversation.id }).then(() => {
+        return mutateAsync(conversation.id).then(() => {
           setConversationsState((oldValue) =>
             oldValue.filter((c) => c.id !== conversation.id)
           );

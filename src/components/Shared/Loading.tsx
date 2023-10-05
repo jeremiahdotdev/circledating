@@ -1,7 +1,9 @@
 "use client";
 import React from "react";
 
-export function Loading() {
+export type LoadingViewProps = Record<never, never>;
+
+export const Loading: React.FC<LoadingViewProps> = () => {
   return (
     <div className="flex h-navless w-full items-center justify-center self-center">
       <svg
@@ -36,4 +38,4 @@ export function Loading() {
       <span className="sr-only">Loading...</span>
     </div>
   );
-}
+};

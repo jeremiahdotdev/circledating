@@ -125,7 +125,7 @@ model Location {
   id          String        @id @default(uuid())
   continent   String
   country     String
-  state       String
+  state       String?
   UserProfile UserProfile[]
 }
 
@@ -135,8 +135,8 @@ model UserProfile {
   image                              String?           
   sex                                Gender
   birthDate                          DateTime
-  height                             Int
-  weight                             Float
+  height                             Int?
+  weight                             Float?
   locationId                         String
   location                           Location         @relation(fields: [locationId], references: [id])
   willingToRelocate                  YesNoOrUnknown
@@ -218,6 +218,7 @@ model User {
   createdAt           DateTime     			@default(now())
   updatedAt           DateTime?    			@updatedAt
   username			  String       			@unique
+  isAdmin			  Boolean       	    @default(false)
   preferences         UserPreferences?
   authoredMessages    UserMessage[]    		@relation("authoredMessages") 
   recievedMessages    UserMessage[]    		@relation("recievedMessages")
@@ -225,7 +226,6 @@ model User {
   recievedReports     UserReport[]    		@relation("recievedReports")
   authoredRequests    CircleRequest[]       
   conversations       UserConversation[]         
-
   @@index([username])
 }
 

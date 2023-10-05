@@ -9,17 +9,17 @@ import React, { useMemo } from "react";
 
 export type NavProps = {
   isAuthed?: boolean;
-  isActiveUser?: boolean;
+  isActive?: boolean;
 };
 
-export function Nav({ isAuthed, isActiveUser }: NavProps) {
+export function Nav({ isAuthed, isActive }: NavProps) {
   const renderButtonList = useMemo(() => {
-    if (isActiveUser) {
+    if (isActive) {
       return <NavButtonList />;
     } else {
       return <NavButton option={routes.logout()} />;
     }
-  }, [isActiveUser]);
+  }, [isActive]);
   return (
     <nav className="z-50 flex w-full border-gray-200 bg-white shadow-md dark:bg-gray-900 sm:fixed">
       <div className="mx-auto grid w-full max-w-screen-2xl grid-cols-3 p-4 md:grid-cols-2 ">

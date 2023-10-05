@@ -5,29 +5,24 @@ import { ProfileAttributeOptions } from "./ProfileAttributeOptions";
 import { ProfileCardSubheading } from "@/components/ui/ProfileCardSubheading";
 import { ProfileLocation } from "./ProfileLocation";
 import { ProfilePicture } from "./ProfilePicture";
-import { ProfileSchemaType } from "@/schemas/Profile";
+import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { Separator } from "../ui/separator";
 import { cn } from "@/lib/utils";
 import { routes } from "@/globals/routes";
-import React, { useMemo } from "react";
-import dayjs from "dayjs";
+import React from "react";
 
 export type ProfileCardProps = {
-  profile: ProfileSchemaType;
+  profile: ReadProfileSchemaType;
   interact: (
     interaction: InteractionSchemaType,
-    profile: ProfileSchemaType
+    profile: ReadProfileSchemaType
   ) => Promise<void>;
 };
 
 export function ProfileCard({ profile, interact }: ProfileCardProps) {
-  const age = useMemo(() => {
-    return dayjs().diff(profile.birthDate, "year");
-  }, [profile.birthDate]);
-
   return (
-    <div className="flex w-full max-w-[700px] flex-col items-center">
+    <div className="flex w-full max-w-[700px] flex-col items-center sm:min-w-[700px]">
       <em className="bg-gradient-to-r from-cyan-400 to-fuchsia-300 bg-clip-text font-extrabold text-transparent">
         {profile.isPerfectMatch && "Perfect Match"} &nbsp;
       </em>
@@ -42,7 +37,7 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
         <div className="flex h-full w-full max-w-full flex-wrap items-center justify-center px-6 text-sm ring-offset-background sm:justify-between sm:pt-6 ">
           <RouteOptionLink option={routes.profileByUsername(profile.username)}>
             <h1 className="flex w-full justify-center text-lg sm:w-auto">
-              {profile.username} ({age})
+              {profile.username} ({profile.age})
             </h1>
           </RouteOptionLink>
           <span className="flex justify-end">

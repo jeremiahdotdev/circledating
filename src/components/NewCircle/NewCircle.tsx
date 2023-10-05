@@ -1,7 +1,6 @@
 import { ActivitySelectionValues } from "@/schemas/Activity";
 import { ChildrenSelectionValues } from "@/schemas/Children";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
-import { CreateCircleSchema, CreateCircleSchemaType } from "@/schemas/Circle";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { EthnicitySelectionValues } from "@/schemas/Ethnicity";
 import { Form } from "../ui/form";
@@ -12,6 +11,7 @@ import { InputFormField } from "../ui/InputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
 import { MultiSelectFormField } from "../ui/MultiSelectFormField";
+import { MutateCircleSchema, MutateCircleSchemaType } from "@/schemas/Circle";
 import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { PuritySelectionValues } from "@/schemas/Purity";
 import { RadioButtonFormField } from "../ui/RadioButtonFormField";
@@ -33,8 +33,8 @@ export const NewCircle = memo(function NewProfile() {
 
   const [disabledState, setDisabledState] = useState(false);
 
-  const form = useForm<CreateCircleSchemaType>({
-    resolver: zodResolver(CreateCircleSchema),
+  const form = useForm<MutateCircleSchemaType>({
+    resolver: zodResolver(MutateCircleSchema),
     defaultValues: {
       isFeatured: false,
       isPrivate: false,
@@ -56,10 +56,10 @@ export const NewCircle = memo(function NewProfile() {
   const onInvalidData = useCallback(handleError, []);
 
   const onValidData = useCallback(
-    (data: CreateCircleSchemaType) => {
+    (data: MutateCircleSchemaType) => {
       setDisabledState(true);
       create
-        .mutateAsync({ circle: data })
+        .mutateAsync(data)
         .then((circle) => {
           if (circle?.name)
             router
@@ -77,7 +77,7 @@ export const NewCircle = memo(function NewProfile() {
   const searchCircleName = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       search
-        .mutateAsync({ label: e.target.value })
+        .mutateAsync(e.target.value)
         .then((result) => {
           if (result) {
             form.clearErrors("name");

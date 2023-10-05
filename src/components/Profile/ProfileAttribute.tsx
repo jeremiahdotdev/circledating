@@ -1,13 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
 import { ProfileAttributeOptionType } from "./ProfileAttributeOptions";
-import {
-  ProfileAttributeType,
-  formatProfileAttribute,
-} from "@/utils/formatProfileAttribute";
-import { Url, isUrl } from "@/schemas/Link";
 import { WeightUnit } from "@prisma/client";
+import { formatProfileAttribute } from "@/utils/formatProfileAttribute";
 import { heightValueMap } from "@/schemas/Height";
+import { isUrl } from "@/schemas/Link";
 import React, { useMemo } from "react";
 
 export type ProfileAttributeOptions = {
@@ -23,7 +20,7 @@ export enum ProfileAttributeVariant {
   PROFILE_LINK = "profile_link",
 }
 
-export type AttributeType = ProfileAttributeType | number | Date | Url;
+export type AttributeType = string | number | Date | null;
 
 export type ProfileAttributeProps = {
   option: ProfileAttributeOptionType;

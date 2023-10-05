@@ -1,7 +1,7 @@
 import { DropdownFormField } from "../ui/DropdownFormField";
 import { Form } from "../ui/form";
 import { FormButton } from "../ui/FormButton";
-import { ProfileSchemaType } from "@/schemas/Profile";
+import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { ReportSchema, ReportSchemaType } from "@/schemas/Report";
 import { TextAreaFormField } from "../ui/TextAreaFormField";
 import { api } from "@/utils/api";
@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useMemo } from "react";
 
 export type ReportProfileFormProps = {
-  profile: ProfileSchemaType;
+  profile: ReadProfileSchemaType;
   onSubmit: (report: ReportSchemaType) => Promise<void>;
 };
 

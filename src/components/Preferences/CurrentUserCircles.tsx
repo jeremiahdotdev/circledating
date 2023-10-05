@@ -1,6 +1,5 @@
 import { Button } from "../ui/button";
 import { CheckboxList } from "../ui/CheckboxList";
-import { CircleSchemaType } from "@/schemas/Circle";
 import { ItemType, ParseItem } from "../Shared/ItemList";
 import { ListItem } from "../Shared/ListItem";
 import { api } from "@/utils/api";
@@ -27,11 +26,13 @@ export function CurrentUserCircles() {
     const currentUserSelectedCircles =
       response?.preferences?.selectedCircles ?? [];
     return currentUserCircles.map((circle) => ({
-      value: circle.name,
-      checked: currentUserSelectedCircles.map((c) => c.id).includes(circle.id),
-      label: (
+      value: circle?.name,
+      checked: currentUserSelectedCircles
+        .map((c) => c?.id)
+        .includes(circle?.id ?? ""),
+      label: circle && (
         <ListItem
-          item={ParseItem(circle as CircleSchemaType)}
+          item={ParseItem(circle)}
           hidePicture={true}
           clickAction={handleRoute}
         />

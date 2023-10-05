@@ -8,7 +8,7 @@ import {
   faDoorClosed,
   faDoorOpen,
   faEnvelope,
-  faExclamationCircle,
+  faExclamation,
   faMinus,
   faPaperPlane,
   faPlus,
@@ -79,6 +79,8 @@ export function IconButton({
   const option = useMemo(() => {
     const subtle =
       "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none";
+    const subtleInverted =
+      "flex self-end h-5 w-5 p-1 text-gender-accent border-gender-accent bg-transparent border hover:bg-transparent shadow-none";
     switch (variant) {
       case IconButtonVariant.MAIL:
         return {
@@ -140,8 +142,8 @@ export function IconButton({
       case IconButtonVariant.REPORT:
         return {
           label: "Report",
-          icon: faExclamationCircle,
-          style: subtle,
+          icon: faExclamation,
+          style: subtleInverted,
         } as IconButtonOptions;
       case IconButtonVariant.EDIT:
         return {

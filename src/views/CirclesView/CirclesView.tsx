@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { CircleSchemaType } from "@/schemas/Circle";
+import { CirclesServerProps } from "@/pages/circles";
 import { ItemList, ItemType, ParseItem } from "@/components/Shared/ItemList";
-import { Loading } from "@/components/Shared/Loading";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { SearchForm } from "../../components/Circle/SearchForm";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
@@ -10,21 +10,18 @@ import { routes } from "@/globals/routes";
 import { useRouter } from "next/router";
 import React from "react";
 
-export type CirclesViewProps = Record<never, never>;
-
-export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
+export const CirclesView = memo(function CirclesView({
+  featured,
+  current,
+}: CirclesServerProps) {
   const router = useRouter();
   const { mutateAsync } = api.circles.searchMany.useMutation();
-  const [searchCirclesState, setSearchCirclesState] = useState(
-    [] as CircleSchemaType[]
-  );
+  const [searchCirclesState, setSearchCirclesState] = useState<
+    ReadCircleSchemaType[]
+  >([]);
   const handleSearch = useCallback(
     (searchText: string) => {
-      mutateAsync({
-        circleNamePartial: searchText,
-      })
-        .then(setSearchCirclesState)
-        .catch(handleError);
+      mutateAsync(searchText).then(setSearchCirclesState).catch(handleError);
     },
     [mutateAsync]
   );
@@ -39,11 +36,6 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
     },
     [router]
   );
-  const featured = api.circles.readFeatured.useQuery().data;
-  const current = api.circles.readCurrentCircles.useQuery().data;
-
-  if (!featured || !current) return <Loading />;
-
   return (
     <div className="flex w-full justify-center">
       <div className="flex w-full flex-col items-center justify-between gap-16 px-2 py-12 sm:w-3/4">

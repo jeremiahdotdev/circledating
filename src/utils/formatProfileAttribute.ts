@@ -12,18 +12,7 @@ import {
   YesNoOrUnknown,
 } from "@prisma/client";
 
-export type ProfileAttributeType =
-  | Religion
-  | MaritalStatus
-  | PoliticalBeliefs
-  | YesNoOrUnknown
-  | Activity
-  | Drinking
-  | Consumables
-  | LevelOfEducation
-  | Purity
-  | Children
-  | Income;
+export type ProfileAttributeType = string;
 
 export const formatProfileAttribute = (attribute: ProfileAttributeType) => {
   switch (attribute) {
