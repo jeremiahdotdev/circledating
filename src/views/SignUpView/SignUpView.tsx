@@ -6,7 +6,7 @@ export type SignUpViewProps = Record<never, never>;
 
 export const SignUpView: React.FC<SignUpViewProps> = memo(() => {
   return (
-    <div className="min-h-window flex max-h-navless w-full flex-col items-center justify-center bg-church-sample bg-cover">
+    <div className="flex max-h-navless min-h-window w-full flex-col items-center justify-center bg-church-sample bg-cover">
       <SignUp />
     </div>
   );

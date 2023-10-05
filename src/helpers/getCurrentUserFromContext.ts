@@ -12,6 +12,7 @@ import { ParseCircle, ReadCircleSchemaType } from "@/schemas/Circle";
 import { ParseProfile, ReadProfileSchemaType } from "@/schemas/Profile";
 import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { Session } from "next-auth";
+import { getOppositeSex } from "@/schemas/Gender";
 
 export const getCurrentUserFromContext = async (ctx: {
   session: Session | null;
@@ -47,6 +48,7 @@ export const getCurrentUserFromContext = async (ctx: {
         });
         user.preferences = {
           ...currentUser.preferences,
+          sex: getOppositeSex(currentUser.profile?.sex),
           drinking: currentUser.preferences.drinking as Drinking[],
           consumables: currentUser.preferences.consumables as Consumables[],
           politicalBeliefs: currentUser.preferences

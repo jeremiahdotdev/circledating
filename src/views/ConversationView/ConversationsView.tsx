@@ -73,7 +73,7 @@ export const ConversationsView = memo(function ConversationsView({
           actionIsUnblock={actionIsUnblock}
         />
       </div>
-      <div className="lg:min-h-window invisible flex h-0 w-0 lg:visible lg:w-full">
+      <div className="invisible flex h-0 w-0 lg:visible lg:min-h-window lg:w-full">
         <div className="md:w-1/4 ">
           <ConversationsList
             conversations={conversations}

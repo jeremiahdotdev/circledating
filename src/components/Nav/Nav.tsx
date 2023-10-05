@@ -1,7 +1,7 @@
 import { Logo } from "./Logo";
 import { NavActivePageHeader } from "./NavActivePageHeader";
 import { NavButton } from "./NavButton";
-import { NavButtonList, SheetData } from "./NavButtonList";
+import { NavButtonList } from "./NavButtonList";
 import { NavMenuMobile } from "./NavMenuMobile";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
@@ -13,8 +13,8 @@ export type NavProps = {
   isAuthed?: boolean;
   isActive?: boolean;
   username: string;
-  circles: ReadCircleSchemaType[];
-  preferences: ReadUserPreferencesSchemaType;
+  circles?: ReadCircleSchemaType[];
+  preferences?: ReadUserPreferencesSchemaType;
 };
 
 export function Nav({
@@ -25,7 +25,7 @@ export function Nav({
   preferences,
 }: NavProps) {
   const renderButtonList = useMemo(() => {
-    if (isActive) {
+    if (isActive && username && preferences && circles) {
       return (
         <NavButtonList
           preferences={preferences}

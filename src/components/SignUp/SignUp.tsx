@@ -3,7 +3,6 @@ import { Form } from "@/components/ui/form";
 import { FormButton } from "@/components/ui/FormButton";
 import { InputFormField } from "@/components/ui/InputFormField";
 import { Logo } from "../Nav/Logo";
-import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { Separator } from "../ui/separator";
 import { SignupSchema, SignupSchemaType } from "@/schemas/LoginSchema";
 import { api } from "@/utils/api";

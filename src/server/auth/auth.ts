@@ -65,7 +65,7 @@ export const nextAuthOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.sex = (user as UserSchemaType).sex;
+        token.sex = (user as UserSchemaType).profile.sex;
       }
 
       return { ...token, ...user };
