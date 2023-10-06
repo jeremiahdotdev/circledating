@@ -65,7 +65,7 @@ export const nextAuthOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.sex = (user as UserSchemaType).profile.sex;
+        token.sex = (user as UserSchemaType).profile?.sex;
       }
 
       return { ...token, ...user };
@@ -76,7 +76,6 @@ export const nextAuthOptions: NextAuthOptions = {
         session.sex = token.sex as Gender;
         session.isAdmin = token.isAdmin as boolean;
       }
-
       return session;
     },
   },

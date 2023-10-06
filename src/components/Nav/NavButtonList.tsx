@@ -9,8 +9,8 @@ import React from "react";
 
 export type NavButtonListProps = {
   username: string;
-  preferences: ReadUserPreferencesSchemaType;
-  circles: ReadCircleSchemaType[];
+  preferences?: ReadUserPreferencesSchemaType;
+  circles?: ReadCircleSchemaType[];
 };
 
 export function NavButtonList({

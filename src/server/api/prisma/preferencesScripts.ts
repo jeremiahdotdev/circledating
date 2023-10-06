@@ -1,12 +1,14 @@
 import {
   Consumables,
   Drinking,
-  Gender,
   Income,
   PoliticalBeliefs,
   Religion,
 } from "@prisma/client";
-import { MutateUserPreferencesSchemaType } from "@/schemas/UserPreferences";
+import {
+  MutateUserPreferencesSchemaType,
+  ParsePreferences,
+} from "@/schemas/UserPreferences";
 import { ParseCircle } from "@/schemas/Circle";
 import { PrismaContext, PrismaParameter } from "../types";
 import { getOppositeSex } from "@/schemas/Gender";
@@ -14,6 +16,7 @@ import { getOppositeSex } from "@/schemas/Gender";
 export const preferencesScripts = {
   query: {
     read: async ({ ctx }: PrismaContext) => {
+      if (!ctx.session?.id) return { preferences: null, circles: null };
       const result = await ctx.prisma.user.findUnique({
         where: {
           id: ctx.session?.id,
@@ -40,27 +43,9 @@ export const preferencesScripts = {
           },
         },
       });
-      console.log(result?.preferences?.selectedCircles);
+
       return {
-        preferences: {
-          sex: result?.preferences?.sex as Gender,
-          drinking: result?.preferences?.drinking as Drinking[],
-          consumables: result?.preferences?.consumables as Consumables[],
-          politicalBeliefs: result?.preferences
-            ?.politicalBeliefs as PoliticalBeliefs[],
-          income: result?.preferences?.income as Income[],
-          religion: result?.preferences?.religion as Religion[],
-          searchContinents: result?.preferences?.searchContinents as string[],
-          searchCountries: result?.preferences?.searchCountries as string[],
-          searchStates: result?.preferences?.searchStates as string[],
-          selectedCircles: result?.preferences?.selectedCircles.map((c) =>
-            ParseCircle(c.Circle)
-          ),
-          ageRange: [
-            result?.preferences?.minAge ?? 18,
-            result?.preferences?.maxAge ?? 98,
-          ],
-        },
+        preferences: ParsePreferences(result?.preferences),
         circles: result?.profile?.circles.map((c) => ParseCircle(c.Circle)),
       };
     },

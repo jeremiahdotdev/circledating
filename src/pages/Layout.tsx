@@ -10,8 +10,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export type LayoutNavProps = {
   user?: LayoutUser;
-  preferences?: ReadUserPreferencesSchemaType;
-  circles?: ReadCircleSchemaType[];
+  preferences?: ReadUserPreferencesSchemaType | undefined;
+  circles?: ReadCircleSchemaType[] | undefined;
 };
 export type LayoutProps = {
   children: React.ReactNode[] | React.ReactNode;

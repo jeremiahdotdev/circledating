@@ -3,6 +3,7 @@ import {
   CircleUserSearchSchemaType,
   MutateCircleSchemaType,
   ParseCircle,
+  ParseCircles,
   ReadCircleSchemaType,
   UpdateImageSchemaType,
 } from "@/schemas/Circle";
@@ -73,6 +74,7 @@ export const isCompatibleWithCurrentUser = (
     ],
   },
 ];
+
 export const noRestrictions = {
   religionRestriction: [],
   sexRestriction: [],
@@ -159,7 +161,7 @@ export const circleScripts = {
       let returnValue;
       const { profile } = await getCurrentUserFromContext(ctx);
       if (profile) {
-        const result = await ctx.prisma.circle.findMany({
+        const circles = await ctx.prisma.circle.findMany({
           take: 5,
           where: {
             isPrivate: false,
@@ -173,46 +175,25 @@ export const circleScripts = {
           },
         });
 
-        returnValue = result.map((c) => {
-          const circle: ReadCircleSchemaType = {
-            ...c,
-            ...noRestrictions,
-            links: [],
-            users: [],
-            image: c.image ?? "",
-            createdAt: c.createdAt.toLocaleDateString(),
-            updatedAt: c.updatedAt?.toLocaleDateString() ?? "",
-          };
-          return circle;
-        });
+        returnValue = ParseCircles(circles);
       }
       return returnValue;
     },
     readCurrent: async ({ ctx }: PrismaContext) => {
-      const result = await ctx.prisma.circle.findMany({
+      const circles = await ctx.prisma.userCircle.findMany({
         where: {
-          users: {
-            some: {
-              userId: ctx.session?.id,
-            },
-          },
+          userId: ctx.session?.id,
+        },
+        select: {
+          Circle: true,
         },
       });
 
-      const circles: ReadCircleSchemaType[] = result.map((c) => {
-        const circle: ReadCircleSchemaType = {
-          ...c,
-          ...noRestrictions,
-          links: [],
-          users: [],
-          image: c.image ?? "",
-          createdAt: c.createdAt.toLocaleDateString(),
-          updatedAt: c.updatedAt?.toLocaleDateString() ?? "",
-        };
-        return circle;
-      });
+      const result: ReadCircleSchemaType[] = ParseCircles(
+        circles.map((c) => c.Circle)
+      );
 
-      return circles;
+      return result;
     },
     searchMany: async ({ input, ctx }: PrismaParameter<string>) => {
       const circles: ReadCircleSchemaType[] = [];

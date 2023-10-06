@@ -25,7 +25,7 @@ export function Nav({
   preferences,
 }: NavProps) {
   const renderButtonList = useMemo(() => {
-    if (isActive && username && preferences && circles) {
+    if (isActive) {
       return (
         <NavButtonList
           preferences={preferences}
