@@ -23,7 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback, useMemo } from "react";
 
 export type CurrentUserPreferencesProps = {
-  preferences: ReadUserPreferencesSchemaType;
+  preferences?: ReadUserPreferencesSchemaType;
 };
 export function CurrentUserPreferences({
   preferences,

@@ -1,7 +1,6 @@
 import {
   Consumables,
   Drinking,
-  Gender,
   Income,
   PoliticalBeliefs,
   Religion,
