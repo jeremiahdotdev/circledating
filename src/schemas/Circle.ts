@@ -21,7 +21,6 @@ import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
 import { IncomeSchema } from "./Income";
-import { JsonValue } from "@prisma/client/runtime/library";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
 import { LinkSchema, LinkSchemaType } from "./Link";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
@@ -31,6 +30,7 @@ import { ReligionSchema } from "./Religion";
 import { ReportSchema } from "./Report";
 import { RequestSchema } from "./Request";
 import { UserCircleSchema } from "./UserCircle";
+import { parseArray } from "@/helpers/parseArray";
 import { z } from "zod";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -138,14 +138,6 @@ export type PrismaCircleType = {
   updatedAt: Date | null;
 };
 
-function parseArray<T>(value: JsonValue): T[] {
-  if (!Array.isArray(value)) return [] as T[];
-  const result: string[] = [];
-  value.forEach((el) => {
-    if (el && typeof el === "string") result.push(el);
-  });
-  return result as T[];
-}
 export function ParseCircle(
   circle: PrismaCircleType | undefined | null
 ): ReadCircleSchemaType | undefined {
@@ -182,4 +174,17 @@ export function ParseCircle(
       "",
     createdAt: circle.createdAt?.toLocaleDateString() ?? "",
   };
+}
+
+export function ParseCircles(
+  circles: PrismaCircleType[] | undefined | null
+): ReadCircleSchemaType[] {
+  const result: ReadCircleSchemaType[] = [];
+  if (circles) {
+    circles.forEach((circle) => {
+      const parsedValue = ParseCircle(circle);
+      if (parsedValue) result.push(parsedValue);
+    });
+  }
+  return result;
 }

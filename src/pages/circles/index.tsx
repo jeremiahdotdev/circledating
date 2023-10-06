@@ -17,6 +17,8 @@ export const getServerSideProps = requireUser(
     const { ctx } = await getPrismaContext(_ctx);
     const caller = appRouter.createCaller(ctx);
 
+    const x = new Date();
+
     const [
       { isActive, username },
       { preferences, circles },
@@ -29,7 +31,14 @@ export const getServerSideProps = requireUser(
       caller.circles.readCurrent(),
     ]);
 
-    console.log(preferences);
+    console.log(x);
+    const y = new Date();
+    console.log(y);
+
+    console.log(
+      1000 * (y.getSeconds() - x.getSeconds()) +
+        (y.getMilliseconds() - x.getMilliseconds())
+    );
 
     return {
       props: {
