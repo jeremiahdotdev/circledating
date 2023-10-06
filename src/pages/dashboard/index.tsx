@@ -18,6 +18,11 @@ export const getServerSideProps = requireUser(
     const [{ isActive, username }, { preferences, circles }] =
       await Promise.all([caller.users.stats(), caller.preferences.read()]);
 
+    console.log({
+      isAuthed: !!ctx.session,
+      isActive: isActive,
+      username: username,
+    });
     return {
       props: {
         user: {

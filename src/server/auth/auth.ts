@@ -76,7 +76,6 @@ export const nextAuthOptions: NextAuthOptions = {
         session.sex = token.sex as Gender;
         session.isAdmin = token.isAdmin as boolean;
       }
-
       return session;
     },
   },

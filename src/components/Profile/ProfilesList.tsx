@@ -43,7 +43,7 @@ export const ProfileList = memo(function ProfileList({
     [destroy, mutateAsync, router]
   );
 
-  if (profiles.length === 0)
+  if (!profiles || profiles.length === 0)
     return <PageNotFound error={systemMessages.NO_PROFILES} />;
 
   return (

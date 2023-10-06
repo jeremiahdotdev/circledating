@@ -78,8 +78,8 @@ export type PrismaPreferencesType = {
 
 export function ParsePreferences(
   preferences: PrismaPreferencesType | undefined | null
-): ReadUserPreferencesSchemaType | undefined {
-  if (!preferences) return undefined;
+): ReadUserPreferencesSchemaType | null {
+  if (!preferences) return null;
   const circles: ReadCircleSchemaType[] = [];
   preferences?.selectedCircles?.forEach((c) => {
     const circle = ParseCircle(c.Circle);

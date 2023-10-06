@@ -22,9 +22,10 @@ export const getCurrentUserFromContext = async (ctx: {
     profile?: ReadProfileSchemaType;
     preferences?: ReadUserPreferencesSchemaType;
   } = {};
+
   if (ctx.session?.user?.name) {
     const currentUser = await ctx.prisma.user.findUnique({
-      where: { username: ctx.session.user.name },
+      where: { id: ctx.session.id },
       select: {
         profile: true,
         preferences: {

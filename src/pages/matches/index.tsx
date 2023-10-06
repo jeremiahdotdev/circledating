@@ -63,7 +63,7 @@ export default function Page({
 }: ServerProps) {
   return (
     <Layout user={user} circles={circles} preferences={preferences}>
-      {!conversations?.length ? (
+      {!conversations?.length && user ? (
         <ConversationsView
           conversations={conversations}
           userId={user.userId}
