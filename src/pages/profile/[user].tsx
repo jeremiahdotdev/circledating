@@ -5,10 +5,10 @@ import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
-import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
+import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutNavProps & {
+type ServerProps = LayoutProps & {
   user: LayoutUser;
   profile: ReadProfileSchemaType;
 };
@@ -27,27 +27,22 @@ export const getServerSideProps = requireUser(
 
     return {
       props: {
-        user: {
+        nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
           username: username,
+          preferences: preferences,
+          circles: circles,
         },
-        preferences: preferences,
-        circles: circles,
         profile: profile,
       } as ServerProps,
     };
   }
 );
 
-export default function Page({
-  user,
-  preferences,
-  circles,
-  profile,
-}: ServerProps) {
+export default function Page({ nav, profile }: ServerProps) {
   return (
-    <Layout user={user} circles={circles} preferences={preferences}>
+    <Layout nav={nav}>
       <ProfileView profile={profile} />
     </Layout>
   );

@@ -5,11 +5,10 @@ import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
-import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
+import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutNavProps & {
-  user: LayoutUser;
+type ServerProps = LayoutProps & {
   circle: ReadCircleSchemaType;
 };
 
@@ -29,28 +28,23 @@ export const getServerSideProps = requireUser(
 
     return {
       props: {
-        user: {
+        nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
           username: username,
+          preferences: preferences,
+          circles: circles,
         },
-        preferences: preferences,
-        circles: circles,
         circle: circle,
       } as ServerProps,
     };
   }
 );
 
-export default function Page({
-  circle,
-  user,
-  preferences,
-  circles,
-}: ServerProps) {
+export default function Page({ circle, nav }: ServerProps) {
   return (
-    <Layout user={user} circles={circles} preferences={preferences}>
-      <CircleView isAdmin={user.isAdmin} circle={circle} />
+    <Layout nav={nav}>
+      <CircleView isAdmin={nav?.isAdmin} circle={circle} />
     </Layout>
   );
 }

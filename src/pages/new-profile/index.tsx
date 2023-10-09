@@ -2,12 +2,10 @@ import { GetServerSidePropsContext } from "next";
 import { NewProfileView } from "@/views/NewProfileView/NewProfileView";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireNoUser } from "@/helpers/requireNoUser";
-import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
+import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutNavProps & {
-  user: LayoutUser;
-};
+type ServerProps = LayoutProps;
 
 export const getServerSideProps = requireNoUser(
   async (_ctx: GetServerSidePropsContext) => {
@@ -15,7 +13,7 @@ export const getServerSideProps = requireNoUser(
 
     return {
       props: {
-        user: {
+        nav: {
           isAuthed: !!ctx.session,
         },
       } as ServerProps,
@@ -23,9 +21,9 @@ export const getServerSideProps = requireNoUser(
   }
 );
 
-export default function Page({ user, preferences, circles }: ServerProps) {
+export default function Page({ nav }: ServerProps) {
   return (
-    <Layout user={user} circles={circles} preferences={preferences}>
+    <Layout nav={nav}>
       <NewProfileView />
     </Layout>
   );

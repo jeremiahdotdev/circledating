@@ -8,11 +8,11 @@ import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
-import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
+import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutNavProps & {
-  user: LayoutUser & { userSex: Gender; userId: string };
+type ServerProps = LayoutProps & {
+  user: { userSex: Gender; userId: string };
   conversations: ReadConversationSchemaType[];
   actionIsUnblock: boolean;
 };
@@ -39,15 +39,17 @@ export const getServerSideProps = requireUser(
 
     return {
       props: {
-        user: {
+        nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
+          username: username,
+          preferences: preferences,
+          circles: circles,
+        },
+        user: {
           userSex: isMale ? Gender.MALE : Gender.FEMALE,
           userId: userId,
-          username: username,
         },
-        preferences: preferences,
-        circles: circles,
         conversations: conversations,
         actionIsUnblock: actionIsUnblock,
       } as ServerProps,
@@ -55,14 +57,13 @@ export const getServerSideProps = requireUser(
   }
 );
 export default function Page({
+  nav,
   user,
-  preferences,
-  circles,
   conversations,
   actionIsUnblock,
 }: ServerProps) {
   return (
-    <Layout user={user} circles={circles} preferences={preferences}>
+    <Layout nav={nav}>
       {!conversations?.length && user ? (
         <ConversationsView
           conversations={conversations}

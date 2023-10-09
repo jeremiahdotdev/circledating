@@ -4,12 +4,10 @@ import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { routes } from "@/globals/routes";
 import { useSession } from "next-auth/react";
-import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
+import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutNavProps & {
-  user: LayoutUser;
-};
+type ServerProps = LayoutProps;
 
 export const getServerSideProps = requireUser(
   async (_ctx: GetServerSidePropsContext) => {
@@ -25,23 +23,23 @@ export const getServerSideProps = requireUser(
     });
     return {
       props: {
-        user: {
+        nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
           username: username,
+          preferences: preferences,
+          circles: circles,
         },
-        preferences: preferences,
-        circles: circles,
       } as ServerProps,
     };
   }
 );
 
-export default function Page({ user, preferences, circles }: ServerProps) {
+export default function Page({ nav }: ServerProps) {
   const { data } = useSession();
 
   return (
-    <Layout user={user} circles={circles} preferences={preferences}>
+    <Layout nav={nav}>
       <div className="min-h-window">
         <div className="">
           <div className="max-w-lg">

@@ -232,14 +232,15 @@ export const circleScripts = {
             },
           },
         },
-        include: {
-          location: true,
-        },
       });
 
       const profiles: ReadProfileSchemaType[] = [];
       result.map((r) => {
-        const profile = ParseProfile({ ...r, circles: undefined });
+        const profile = ParseProfile({
+          ...r,
+          circles: undefined,
+          location: undefined,
+        });
         if (profile) profiles.push(profile);
       });
       return profiles;

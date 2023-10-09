@@ -4,10 +4,10 @@ import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
-import Layout, { LayoutNavProps } from "../Layout";
+import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-export type CirclesServerProps = LayoutNavProps & {
+export type CirclesServerProps = LayoutProps & {
   featured: ReadCircleSchemaType[];
   current: ReadCircleSchemaType[];
 };
@@ -42,13 +42,13 @@ export const getServerSideProps = requireUser(
 
     return {
       props: {
-        user: {
+        nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
           username: username,
+          preferences: preferences,
+          circles: circles,
         },
-        preferences: preferences,
-        circles: circles,
         featured: featured ?? [],
         current: current ?? [],
       } as CirclesServerProps,
@@ -56,15 +56,9 @@ export const getServerSideProps = requireUser(
   }
 );
 
-export default function Page({
-  user,
-  preferences,
-  circles,
-  featured,
-  current,
-}: CirclesServerProps) {
+export default function Page({ nav, featured, current }: CirclesServerProps) {
   return (
-    <Layout user={user} preferences={preferences} circles={circles}>
+    <Layout nav={nav}>
       <CirclesView featured={featured} current={current} />
     </Layout>
   );
