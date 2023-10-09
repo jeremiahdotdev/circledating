@@ -1,13 +1,13 @@
 "use client";
 
 import { Gender } from "@prisma/client";
+import { Infographic } from "@/components/Shared/Infographic";
 import { MessagesPane } from "@/components/Messages/MessagesPane";
 import {
   MutateMessageSchemaType,
   ReadMessageSchemaType,
 } from "@/schemas/Message";
 import { NewMessageForm } from "@/components/Messages/NewMessageForm";
-import { PageNotFound } from "@/components/Shared/PageNotFound";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
@@ -46,7 +46,7 @@ export function Messaging({ messages }: MessagingProps) {
         {messagesState.length ? (
           <MessagesPane messages={messagesState} />
         ) : (
-          <PageNotFound error={systemMessages.INITIAL_MESSAGE} />
+          <Infographic message={systemMessages.INITIAL_MESSAGE} />
         )}
       </div>
       <NewMessageForm

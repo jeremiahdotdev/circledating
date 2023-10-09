@@ -24,7 +24,6 @@ export function CurrentUserCircles({
   circles,
   selectedCircles,
 }: CurrentUserCirclesProps) {
-  console.log(selectedCircles);
   const router = useRouter();
   const handleRoute = useCallback(
     (circleNameItem: ItemType) => {

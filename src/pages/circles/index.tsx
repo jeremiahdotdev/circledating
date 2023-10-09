@@ -16,11 +16,8 @@ export const getServerSideProps = requireUser(
   async (_ctx: GetServerSidePropsContext) => {
     const { ctx } = await getPrismaContext(_ctx);
     const caller = appRouter.createCaller(ctx);
-
-    const x = new Date();
-
     const [
-      { isActive, username },
+      { isActive, username, notifications },
       { preferences, circles },
       featured,
       current,
@@ -30,21 +27,12 @@ export const getServerSideProps = requireUser(
       caller.circles.readFeatured(),
       caller.circles.readCurrent(),
     ]);
-
-    console.log(x);
-    const y = new Date();
-    console.log(y);
-
-    console.log(
-      1000 * (y.getSeconds() - x.getSeconds()) +
-        (y.getMilliseconds() - x.getMilliseconds())
-    );
-
     return {
       props: {
         nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
+          notifications: notifications,
           username: username,
           preferences: preferences,
           circles: circles,

@@ -1,7 +1,7 @@
 import { ConversationsView } from "@/views/ConversationView/ConversationsView";
 import { Gender } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
-import { PageNotFound } from "@/components/Shared/PageNotFound";
+import { Infographic } from "@/components/Shared/Infographic";
 import { ReadConversationSchemaType } from "@/schemas/Conversation";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
@@ -28,7 +28,7 @@ export const getServerSideProps = requireUser(
       : caller.conversations.read;
 
     const [
-      { userId, isActive, isMale, username },
+      { userId, isActive, isMale, username, notifications },
       { preferences, circles },
       conversations,
     ] = await Promise.all([
@@ -42,6 +42,7 @@ export const getServerSideProps = requireUser(
         nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
+          notifications: notifications,
           username: username,
           preferences: preferences,
           circles: circles,
@@ -64,7 +65,7 @@ export default function Page({
 }: ServerProps) {
   return (
     <Layout nav={nav}>
-      {!conversations?.length && user ? (
+      {conversations?.length && user ? (
         <ConversationsView
           conversations={conversations}
           userId={user.userId}
@@ -72,7 +73,7 @@ export default function Page({
           actionIsUnblock={actionIsUnblock}
         />
       ) : (
-        <PageNotFound error={systemMessages.NO_MATCHES} />
+        <Infographic message={systemMessages.NO_MATCHES} />
       )}
     </Layout>
   );

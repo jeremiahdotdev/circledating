@@ -281,16 +281,17 @@ model UserInteraction {
 }
 
 model UserMessage {
-  id                  String       @id @default(uuid())
+  id                  String        @id @default(uuid())
   conversationId      String?       @default(uuid())
   conversation        Conversation? @relation(fields: [conversationId], references: [id])
   authorUsername      String    
-  author              User         @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
+  author              User          @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
   recipientUsername   String  
-  recipient           User         @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
-  content             String       @db.LongText
-  createdAt           DateTime     @default(now())
-  updatedAt           DateTime?    @updatedAt
+  recipient           User          @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
+  content             String        @db.LongText
+  isRead			  Boolean	    @default(false)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime?     @updatedAt
 
   @@index([conversationId])
   @@index([authorUsername])

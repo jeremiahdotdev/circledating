@@ -9,7 +9,7 @@ import classNames from "classnames";
 const inter = Inter({ subsets: ["latin"] });
 
 export type LayoutProps = {
-  nav: NavProps;
+  nav?: NavProps;
   children: React.ReactNode[] | React.ReactNode;
 };
 export type NavProps = {
@@ -17,6 +17,7 @@ export type NavProps = {
   isAuthed: boolean;
   isAdmin: boolean;
   username: string;
+  notifications?: number;
   preferences?: ReadUserPreferencesSchemaType | undefined;
   circles?: ReadCircleSchemaType[] | undefined;
 };
@@ -33,8 +34,9 @@ export default function Layout({
         username={nav?.username ?? ""}
         preferences={nav?.preferences}
         circles={nav?.circles}
+        notifications={nav?.notifications}
       />
-      <main className={classNames("sm:pt-[67px] p-2", inter.className)}>
+      <main className={classNames("sm:pt-[67px]", inter.className)}>
         {children}
       </main>
       <Footer />

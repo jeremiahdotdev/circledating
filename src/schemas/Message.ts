@@ -21,6 +21,7 @@ export const ReadMessageSchema = z.object({
   authorUsername: z.string(),
   recipientUsername: z.string(),
   content: z.string().min(1).max(2000),
+  isRead: z.boolean(),
   createdAt: z.string(),
   updatedAt: z.string(),
 });

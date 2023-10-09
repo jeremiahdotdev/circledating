@@ -1,71 +1,53 @@
 import { GetServerSidePropsContext } from "next";
+import { Infographic } from "@/components/Shared/Infographic";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { routes } from "@/globals/routes";
+import { systemMessages } from "@/globals/systemMessages";
 import { useSession } from "next-auth/react";
 import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps;
+type ServerProps = LayoutProps & { isNew: boolean };
 
 export const getServerSideProps = requireUser(
   async (_ctx: GetServerSidePropsContext) => {
     const { ctx } = await getPrismaContext(_ctx);
     const caller = appRouter.createCaller(ctx);
-    const [{ isActive, username }, { preferences, circles }] =
-      await Promise.all([caller.users.stats(), caller.preferences.read()]);
+    const [
+      { isNew, isActive, username, notifications },
+      { preferences, circles },
+    ] = await Promise.all([caller.users.stats(), caller.preferences.read()]);
 
-    console.log({
-      isAuthed: !!ctx.session,
-      isActive: isActive,
-      username: username,
-    });
     return {
       props: {
         nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
+          notifications: notifications,
           username: username,
           preferences: preferences,
           circles: circles,
         },
+        isNew: isNew,
       } as ServerProps,
     };
   }
 );
 
-export default function Page({ nav }: ServerProps) {
-  const { data } = useSession();
-
+export default function Page({ nav, isNew }: ServerProps) {
   return (
     <Layout nav={nav}>
-      <div className="min-h-window">
-        <div className="">
-          <div className="max-w-lg">
-            <h1 className="text-center text-5xl font-bold leading-snug text-gray-400">
-              You are logged in!
-            </h1>
-            <p className="my-4 text-center leading-loose">
-              You are allowed to visit this page because you have a session,
-              otherwise you would be redirected to the login page.
-            </p>
-            <div className="my-4 rounded-lg bg-gray-700 p-4">
-              <pre>
-                <code>{JSON.stringify(data, null, 2)}</code>
-              </pre>
-            </div>
-            <div className="text-center">
-              <button
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                onClick={routes.logout().action}
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>{" "}
+      <Infographic
+        message={
+          isNew
+            ? systemMessages.GETTING_STARTED
+            : systemMessages.DATING_HINTS[
+                Math.floor(Math.random() * systemMessages.DATING_HINTS.length)
+              ]
+        }
+      />
     </Layout>
   );
 }

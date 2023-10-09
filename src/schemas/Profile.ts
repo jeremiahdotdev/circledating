@@ -145,6 +145,11 @@ export type PrismaProfileType = {
         Circle: PrismaCircleType | undefined;
       }[]
     | undefined;
+  interactions:
+    | {
+        affectedUserId: string;
+      }[]
+    | undefined;
 } & {
   userId: string;
   username: string;
@@ -183,11 +188,30 @@ export function ParseProfile(
     }
   });
   return {
-    ...profile,
+    userId: profile.userId,
+    username: profile.username,
+    sex: profile.sex,
+    bio: profile.bio,
+    height: profile.height,
+    weight: profile.weight,
+    weightUnit: profile.weightUnit,
+    willingToRelocate: profile.willingToRelocate,
+    children: profile.children,
+    drinking: profile.drinking,
+    ethnicity: profile.ethnicity,
+    consumables: profile.consumables,
+    politicalBeliefs: profile.politicalBeliefs,
+    levelOfEducation: profile.levelOfEducation,
+    purity: profile.purity,
+    income: profile.income,
+    maritalStatus: profile.maritalStatus,
+    activity: profile.activity,
+    religion: profile.religion,
     image: profile.image ?? "",
     age: dayjs().diff(profile.birthDate, "year"),
     links: parseArray<LinkSchemaType>(profile.links),
     circles: circles,
     birthDate: null,
+    likesYou: !!profile.interactions?.length,
   };
 }

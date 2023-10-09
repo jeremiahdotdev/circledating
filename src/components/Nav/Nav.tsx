@@ -15,6 +15,7 @@ export type NavProps = {
   username: string;
   circles?: ReadCircleSchemaType[];
   preferences?: ReadUserPreferencesSchemaType;
+  notifications?: number;
 };
 
 export function Nav({
@@ -23,6 +24,7 @@ export function Nav({
   username,
   circles,
   preferences,
+  notifications,
 }: NavProps) {
   const renderButtonList = useMemo(() => {
     if (isActive) {
@@ -31,12 +33,13 @@ export function Nav({
           preferences={preferences}
           circles={circles}
           username={username}
+          notifications={notifications}
         />
       );
     } else {
       return <NavButton option={routes.logout()} />;
     }
-  }, [isActive, circles, preferences, username]);
+  }, [isActive, circles, preferences, username, notifications]);
   return (
     <nav className="z-50 flex h-header w-full border-gray-200 bg-white shadow-md dark:bg-gray-900 sm:fixed">
       <div className="mx-auto grid w-full max-w-screen-2xl grid-cols-3 p-4 md:grid-cols-2 ">

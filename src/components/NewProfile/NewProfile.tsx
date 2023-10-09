@@ -82,7 +82,7 @@ export const NewProfile = memo(function NewProfile({
   );
 
   return (
-    <div className="flex w-full flex-col items-center justify-center py-4">
+    <div className="flex w-full flex-col items-center justify-center p-4">
       <CurrentCircleHeader circle={circle} />
       <Form
         form={form}

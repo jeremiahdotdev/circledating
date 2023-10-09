@@ -1,6 +1,6 @@
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { Infographic } from "../Shared/Infographic";
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { PageNotFound } from "../Shared/PageNotFound";
 import { ProfileCard } from "./ProfileCard";
 import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { api } from "@/utils/api";
@@ -44,7 +44,7 @@ export const ProfileList = memo(function ProfileList({
   );
 
   if (!profiles || profiles.length === 0)
-    return <PageNotFound error={systemMessages.NO_PROFILES} />;
+    return <Infographic message={systemMessages.NO_PROFILES} />;
 
   return (
     <TransitionGroup

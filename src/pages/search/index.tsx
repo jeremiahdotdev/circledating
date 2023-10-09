@@ -3,7 +3,7 @@ import { ProfilesView } from "@/views/ProfilesView/ProfilesView";
 import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
-import { requireAuth } from "@/helpers/requireAuth";
+import { requireUser } from "@/helpers/requireUser";
 import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
@@ -11,23 +11,27 @@ type ServerProps = LayoutProps & {
   profiles: ReadProfileSchemaType[];
 };
 
-export const getServerSideProps = requireAuth(
+export const getServerSideProps = requireUser(
   async (_ctx: GetServerSidePropsContext) => {
     const { ctx } = await getPrismaContext(_ctx);
     const caller = appRouter.createCaller(ctx);
 
-    const [{ isActive, username }, { preferences, circles }, profiles] =
-      await Promise.all([
-        caller.users.stats(),
-        caller.preferences.read(),
-        caller.profiles.readProfiles(),
-      ]);
+    const [
+      { isActive, username, notifications },
+      { preferences, circles },
+      profiles,
+    ] = await Promise.all([
+      caller.users.stats(),
+      caller.preferences.read(),
+      caller.profiles.readProfiles(),
+    ]);
 
     return {
       props: {
         nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
+          notifications: notifications,
           username: username,
           preferences: preferences,
           circles: circles,

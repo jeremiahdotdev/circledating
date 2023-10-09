@@ -18,18 +18,22 @@ export const getServerSideProps = requireUser(
     const { ctx } = await getPrismaContext(_ctx);
     const caller = appRouter.createCaller(ctx);
 
-    const [{ isActive, username }, { preferences, circles }, profile] =
-      await Promise.all([
-        caller.users.stats(),
-        caller.preferences.read(),
-        caller.profiles.read(routerQueryAttributeToString(_ctx.query.user)),
-      ]);
+    const [
+      { isActive, username, notifications },
+      { preferences, circles },
+      profile,
+    ] = await Promise.all([
+      caller.users.stats(),
+      caller.preferences.read(),
+      caller.profiles.read(routerQueryAttributeToString(_ctx.query.user)),
+    ]);
 
     return {
       props: {
         nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
+          notifications: notifications,
           username: username,
           preferences: preferences,
           circles: circles,

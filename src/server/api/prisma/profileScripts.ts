@@ -133,8 +133,18 @@ export const profileScripts = {
               Circle: true,
             },
           },
+          interactions: {
+            select: {
+              affectedUserId: true,
+            },
+            where: {
+              affectedUserId: profile.userId,
+              isLiked: true,
+            },
+          },
         },
       });
+
       return result.map(ParseProfile);
     },
     read: async ({ input, ctx }: PrismaParameter<string>) => {

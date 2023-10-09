@@ -22,6 +22,18 @@ export const messagesUsers = {
 // Scripts
 export const conversationScripts = {
   query: {
+    getNotifications: async ({ ctx }: PrismaContext) => {
+      // Native Prisma does not support aggregates with "DISTINCT"
+      const response = await ctx.prisma.$queryRaw<{
+        count: number;
+      }>(Prisma.sql`
+		SELECT
+			COUNT(DISTINCT "conversationId") as "count"
+		FROM "UserMessage"
+		WHERE "recipientUsername" == ${ctx.session?.user?.name}
+	`);
+      return response.count ?? 0;
+    },
     read: async ({ ctx }: PrismaContext) => {
       const data = await ctx.prisma.conversation.findMany({
         where: {
@@ -62,6 +74,16 @@ export const conversationScripts = {
     },
   },
   mutate: {
+    markAllAsRead: async ({ input, ctx }: PrismaParameter<string>) => {
+      return await ctx.prisma.userMessage.updateMany({
+        data: {
+          isRead: true,
+        },
+        where: {
+          conversationId: input,
+        },
+      });
+    },
     softDelete: async ({ input, ctx }: PrismaParameter<string>) => {
       return await ctx.prisma.conversation.update({
         data: {
