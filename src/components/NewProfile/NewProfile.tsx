@@ -68,10 +68,9 @@ export const NewProfile = memo(function NewProfile({
   const onValidData = useCallback(
     (data: MutateProfileSchemaType) => {
       if (circle) data.circles = [circle];
-      data.location.continent = countries
-        .filter((c) => c.country == data.location.country)
-        .filter((c) => c.states.includes(data.location.state ?? ""))?.[0]
-        .continent;
+      data.location.continent = countries.filter(
+        (c) => c.country == data.location.country
+      )?.[0].continent;
       create
         .mutateAsync(data)
         .then(() => {
