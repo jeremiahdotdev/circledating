@@ -45,7 +45,7 @@ export const userScripts = {
         userId = result?.profile?.userId ?? "";
         username = result.username ?? "";
         notifications = new Set(result.recievedMessages).size;
-        isNew = true;
+        isNew = dayjs(result.createdAt) > dayjs().subtract(1, "day");
       } catch (error: unknown) {
         handleError(error);
       }

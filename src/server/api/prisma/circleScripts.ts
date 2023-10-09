@@ -240,6 +240,7 @@ export const circleScripts = {
           ...r,
           circles: undefined,
           location: undefined,
+          interactions: undefined,
         });
         if (profile) profiles.push(profile);
       });

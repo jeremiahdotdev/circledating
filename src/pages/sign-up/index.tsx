@@ -19,7 +19,6 @@ export const getServerSideProps = requireNoAuth(
         nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
-          notifications: notifications,
         },
       } as ServerProps,
     };

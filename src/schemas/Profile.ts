@@ -145,7 +145,7 @@ export type PrismaProfileType = {
         Circle: PrismaCircleType | undefined;
       }[]
     | undefined;
-  interactions:
+  interactions?:
     | {
         affectedUserId: string;
       }[]

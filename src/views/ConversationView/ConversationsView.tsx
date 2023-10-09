@@ -54,6 +54,7 @@ export const ConversationsView = memo(function ConversationsView({
                 conversationId: message.conversationId ?? "",
                 createdAt: message.createdAt?.toLocaleString() ?? "",
                 updatedAt: message.createdAt?.toLocaleString() ?? "",
+                isRead: true,
               },
               ...conversationState.messages,
             ]

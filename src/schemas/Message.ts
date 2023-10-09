@@ -53,5 +53,6 @@ export function ParseMessage(message: PrismaMessage): ReadMessageSchemaType {
     createdAt: message.createdAt.toLocaleString(),
     updatedAt:
       message.updatedAt?.toLocaleString() ?? message.createdAt.toLocaleString(),
+    isRead: true,
   };
 }

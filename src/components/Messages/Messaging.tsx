@@ -33,6 +33,7 @@ export function Messaging({ messages }: MessagingProps) {
             conversationId: message.conversationId ?? "",
             createdAt: message.createdAt?.toLocaleDateString() ?? "",
             updatedAt: message.createdAt?.toLocaleDateString() ?? "",
+            isRead: true,
           },
           ...messagesState,
         ]);

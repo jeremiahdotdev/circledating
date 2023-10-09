@@ -39,6 +39,7 @@ export const getCurrentUserFromContext = async (ctx: {
           ...currentUser.profile,
           circles: undefined,
           location: undefined,
+          interactions: undefined,
         });
 
       if (currentUser.preferences) {

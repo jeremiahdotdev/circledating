@@ -48,7 +48,7 @@ export const getServerSideProps = requireUser(
 export default function Page({ circle, nav }: ServerProps) {
   return (
     <Layout nav={nav}>
-      <CircleView isAdmin={nav?.isAdmin} circle={circle} />
+      <CircleView isAdmin={!!nav?.isAdmin} circle={circle} />
     </Layout>
   );
 }

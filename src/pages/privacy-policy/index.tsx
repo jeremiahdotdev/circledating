@@ -21,6 +21,7 @@ export const getServerSideProps = async (_ctx: GetServerSidePropsContext) => {
         username: username,
         preferences: preferences,
         circles: circles,
+        notifications: notifications,
       },
     } as ServerProps,
   };

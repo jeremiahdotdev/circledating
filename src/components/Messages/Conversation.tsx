@@ -7,7 +7,6 @@ import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
 import { routes } from "@/globals/routes";
-import { useSession } from "next-auth/react";
 import React, { useCallback } from "react";
 import classNames from "classnames";
 

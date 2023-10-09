@@ -9,7 +9,6 @@ import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
 type ServerProps = LayoutProps & {
-  user: LayoutUser;
   profile: ReadProfileSchemaType;
 };
 

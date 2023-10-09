@@ -3,9 +3,7 @@ import { Infographic } from "@/components/Shared/Infographic";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
-import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
-import { useSession } from "next-auth/react";
 import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 

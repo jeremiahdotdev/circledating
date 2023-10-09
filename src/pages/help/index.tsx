@@ -10,8 +10,10 @@ type ServerProps = LayoutProps;
 export const getServerSideProps = async (_ctx: GetServerSidePropsContext) => {
   const { ctx } = await getPrismaContext(_ctx);
   const caller = appRouter.createCaller(ctx);
-  const [{ isActive, username, notifications }, { preferences, circles }] =
-    await Promise.all([caller.users.stats(), caller.preferences.read()]);
+  const [{ isActive, username }, { preferences, circles }] = await Promise.all([
+    caller.users.stats(),
+    caller.preferences.read(),
+  ]);
 
   return {
     props: {
