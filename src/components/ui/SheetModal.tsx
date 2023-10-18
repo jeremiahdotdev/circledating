@@ -28,8 +28,8 @@ export function SheetModal({
   return (
     <Sheet>
       <SheetTrigger asChild>{trigger}</SheetTrigger>
-      <SheetContent className="max-h-screen">
-        <SheetHeader>
+      <SheetContent className="max-h-screen p-0">
+        <SheetHeader className="px-4 pt-4">
           <SheetTitle>{title}</SheetTitle>
           <SheetDescription>{description} </SheetDescription>
         </SheetHeader>

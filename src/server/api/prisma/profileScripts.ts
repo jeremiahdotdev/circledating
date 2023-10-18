@@ -11,9 +11,8 @@ import { getCurrentUserFromContext } from "@/helpers/getCurrentUserFromContext";
 export const handlePreferences = (
   preferences?: ReadUserPreferencesSchemaType
 ) => {
-  if (!preferences) return [{}];
   const filters = [];
-  if (preferences.selectedCircles)
+  if (preferences?.selectedCircles?.length) {
     filters.push({
       circles: {
         some: {
@@ -23,6 +22,9 @@ export const handlePreferences = (
         },
       },
     });
+  } else {
+    return [];
+  }
   if (preferences.sex)
     filters.push({
       sex: preferences.sex,
@@ -116,9 +118,11 @@ export const profileScripts = {
     readProfiles: async ({ ctx }: PrismaContext) => {
       const { profile, preferences } = await getCurrentUserFromContext(ctx);
       if (!profile) return [];
+      const preferenceFilters = handlePreferences(preferences);
+      if (!preferenceFilters.length) return [];
       const result = await ctx.prisma.userProfile.findMany({
         where: {
-          AND: handlePreferences(preferences),
+          AND: preferenceFilters,
           affections: {
             none: {
               initiatedUserId: profile.userId,

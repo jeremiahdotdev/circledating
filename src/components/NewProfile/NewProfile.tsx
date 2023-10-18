@@ -206,7 +206,6 @@ export const NewProfile = memo(function NewProfile({
             label="What is your stance on purity?"
             options={PuritySelectionValues}
             filterOn={circle?.purityRestriction}
-            required={true}
           />
         </FormSection>
         <FormSection heading="About You">

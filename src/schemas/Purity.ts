@@ -21,8 +21,4 @@ export const PuritySelectionValues: ComboboxOption<Purity>[] = [
     label: "Non-virgin; Not waiting until marriage.",
     value: Purity.NOT_VIRGIN_NOT_WAITING,
   },
-  {
-    label: "I'd rather not say.",
-    value: Purity.PURITY_UNKNOWN,
-  },
 ];

@@ -3,6 +3,7 @@ import { ComboboxOption } from "../ui/combobox";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { Form } from "../ui/form";
+import { FormButton } from "../ui/FormButton";
 import { IncomeSelectionValues } from "@/schemas/Income";
 import { MultiSelectFormField } from "../ui/MultiSelectFormField";
 import {
@@ -93,9 +94,9 @@ export function CurrentUserPreferences({
     <Form
       form={form}
       onSubmit={form.handleSubmit(onValidData, onInvalidData)}
-      className="flex h-full max-h-navless w-full flex-col justify-between"
+      className="flex h-full max-h-navless w-full flex-col justify-between pt-4 shadow-inner"
     >
-      <div className="flex h-full w-full flex-col overflow-y-scroll">
+      <div className="flex h-full w-full flex-col overflow-y-scroll px-4">
         <Preference name="Age">
           <SliderFormField
             name="ageRange"
@@ -172,9 +173,7 @@ export function CurrentUserPreferences({
           />
         </Preference>
       </div>
-      <Button type="submit" className="w-full bg-purple-600">
-        Save
-      </Button>
+      <FormButton label="Save" className="m-4 mb-0" />
     </Form>
   );
 }

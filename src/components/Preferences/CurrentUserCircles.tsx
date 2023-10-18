@@ -1,6 +1,7 @@
 import { CheckboxList } from "../ui/CheckboxList";
 import { Form } from "../ui/form";
 import { FormButton } from "../ui/FormButton";
+import { Infographic } from "../Shared/Infographic";
 import { ItemType, ParseItem } from "../Shared/ItemList";
 import { ListItem } from "../Shared/ListItem";
 import {
@@ -11,6 +12,7 @@ import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
 import { routes } from "@/globals/routes";
+import { systemMessages } from "@/globals/systemMessages";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -69,14 +71,21 @@ export function CurrentUserCircles({
       <Form
         form={form}
         onSubmit={form.handleSubmit(onValidData, onInvalidData)}
-        className="flex h-full max-h-navless w-full flex-col justify-between"
+        className="flex h-full max-h-navless w-full flex-col justify-between pt-4 shadow-inner"
       >
-        <CheckboxList
-          control={form.control}
-          name="selectedCircles"
-          options={renderedCircles ?? []}
-        />
-        <FormButton label="Save" />
+        {renderedCircles && renderedCircles.length ? (
+          <CheckboxList
+            control={form.control}
+            name="selectedCircles"
+            options={renderedCircles}
+          />
+        ) : (
+          <Infographic
+            bubbleless={true}
+            message={systemMessages.GETTING_STARTED}
+          />
+        )}
+        <FormButton label="Save" className="mx-4" />
       </Form>
     </div>
   );

@@ -134,8 +134,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
         header={`${profile.username} (${profile.age})`}
       />
       <ProfileLocation
-        country={profile.location?.country}
-        state={profile.location?.state}
+        location={profile.location}
         willingToRelocate={profile.willingToRelocate === "YES"}
         isEditMode={editMode}
         editor={
@@ -341,16 +340,16 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
           />
         </div>
       </ProfileSection>
-      <ProfileSection heading="Circles">
-        <div className="grid w-full sm:grid-cols-2">
-          {profile.circles && (
+      {!!profile.circles?.length && (
+        <ProfileSection heading="Circles">
+          <div className="grid w-full sm:grid-cols-2">
             <ItemList
               items={profile.circles.map(ParseItem)}
               clickAction={handleRoute}
             />
-          )}
-        </div>
-      </ProfileSection>
+          </div>
+        </ProfileSection>
+      )}
       {interact && (
         <ProfileSection>
           <ProfileActions profile={profile} interact={interact} />

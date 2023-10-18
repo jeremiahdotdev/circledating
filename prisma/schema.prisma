@@ -70,7 +70,6 @@ enum Purity {
   NOT_VIRGIN_WAITING
   VIRGIN_NOT_WAITING
   NOT_VIRGIN_NOT_WAITING
-  PURITY_UNKNOWN
 }
 
 enum Income {
@@ -146,7 +145,7 @@ model UserProfile {
   consumables                        Consumables
   politicalBeliefs                   PoliticalBeliefs
   levelOfEducation                   LevelOfEducation
-  purity                             Purity
+  purity                             Purity?
   income                             Income
   maritalStatus                      MaritalStatus
   activity                           Activity
