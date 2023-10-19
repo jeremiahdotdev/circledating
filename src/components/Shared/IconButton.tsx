@@ -12,6 +12,7 @@ import {
   faMinus,
   faPaperPlane,
   faPlus,
+  faSave,
   faTrashCan,
   faUpload,
   faX,
@@ -49,6 +50,7 @@ export enum IconButtonVariant {
   CANCEL = "cancel",
   PLUS = "plus",
   MINUS = "minus",
+  SAVE = "save",
 }
 
 export type IconButtonProps = {
@@ -62,6 +64,7 @@ export type IconButtonProps = {
   labelOverride?: string;
   confirmationRequired?: boolean;
   className?: string;
+  hover?: boolean;
 };
 
 export function IconButton({
@@ -69,6 +72,7 @@ export function IconButton({
   type,
   disabled,
   labelOverride,
+  hover,
   confirmationRequired,
   className,
   onClick,
@@ -99,6 +103,12 @@ export function IconButton({
         return {
           label: "Message",
           icon: faPaperPlane,
+          style: "h-16 bg-purple-600 shadow-outter",
+        } as IconButtonOptions;
+      case IconButtonVariant.SAVE:
+        return {
+          label: "Save",
+          icon: faSave,
           style: "h-16 bg-purple-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.LIKE:
@@ -234,7 +244,8 @@ export function IconButton({
             "text-white rounded-full",
             option.style,
             className,
-            option.showLabel ? "" : "aspect-square"
+            option.showLabel ? "" : "aspect-square",
+            hover ? "absolute left-5 bottom-5" : ""
           )}
           type={type ?? "button"}
           disabled={disabled || disabledState}

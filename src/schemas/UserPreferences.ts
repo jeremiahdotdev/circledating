@@ -11,12 +11,6 @@ import { ConsumablesSchema } from "./Consumables";
 import { DrinkingSchema } from "./Drinking";
 import { GenderSchema } from "./Gender";
 import { IncomeSchema } from "./Income";
-import {
-  ParseCircle,
-  PrismaCircleType,
-  ReadCircleSchema,
-  ReadCircleSchemaType,
-} from "./Circle";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { ReligionSchema } from "./Religion";
 import { SelectedLocation } from "./SelectedLocationSchema";
@@ -27,7 +21,6 @@ export const ReadUserPreferencesSchema = z.object({
   userId: z.string(),
   ageRange: z.array(z.number()).optional(),
   sex: GenderSchema,
-  selectedCircles: z.array(ReadCircleSchema).optional(),
   searchContinents: z.array(SelectedLocation).nullable().optional(),
   searchCountries: z.array(SelectedLocation).nullable().optional(),
   searchStates: z.array(SelectedLocation).nullable().optional(),
@@ -73,20 +66,12 @@ export type PrismaPreferencesType = {
   religion: Prisma.JsonValue;
   createdAt: Date;
   updatedAt: Date | null;
-  selectedCircles: { Circle: PrismaCircleType }[];
 };
 
 export function ParsePreferences(
   preferences: PrismaPreferencesType | undefined | null
 ): ReadUserPreferencesSchemaType | null {
   if (!preferences) return null;
-  const circles: ReadCircleSchemaType[] = [];
-  preferences?.selectedCircles?.forEach((c) => {
-    const circle = ParseCircle(c.Circle);
-    if (circle) {
-      circles.push(circle);
-    }
-  });
   return {
     userId: preferences.userId,
     searchCountries: parseArray<string>(preferences.searchCountries),
@@ -107,6 +92,5 @@ export function ParsePreferences(
       preferences.politicalBeliefs
     ),
     sex: preferences.sex ?? Gender.MALE,
-    selectedCircles: circles,
   };
 }

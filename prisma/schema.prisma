@@ -168,6 +168,7 @@ model UserCircle {
   Circle      Circle        @relation(fields: [circleId], references: [id])
   userId      String 
   User        UserProfile   @relation(fields: [userId], references: [userId])
+  isSelected  Boolean		@default(true)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime?     @updatedAt
 
@@ -201,7 +202,6 @@ model Circle {
   activityRestriction                           Json?
   religionRestriction                           Json?
   users                                         UserCircle[]
-  selected                                      SelectedCircle[]
   links         					            Json?
   requests										CircleRequest[]     
   reports										UserReport[]     
@@ -234,7 +234,6 @@ model UserPreferences {
   minAge              Int
   maxAge              Int
   sex                 Gender?
-  selectedCircles     SelectedCircle[]
   searchContinents    Json?
   searchCountries     Json?
   searchStates        Json?
@@ -253,17 +252,6 @@ model UserPreferences {
   updatedAt           DateTime?    @updatedAt
 
   @@index([userId])
-}
-
-model SelectedCircle {
-  id         String            @id @default(uuid())
-  circleId   String
-  Circle     Circle            @relation(fields: [circleId], references: [id])
-  userId     String 
-  User       UserPreferences   @relation(fields: [userId], references: [userId])
-
-  @@index([userId])
-  @@index([circleId])
 }
 
 model UserInteraction {

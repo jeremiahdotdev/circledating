@@ -36,7 +36,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
-export const Circle = {
+export const CircleSchema = z.object({
   id: z.string(),
   label: z.string().min(3).max(20),
   name: z.string().min(3).max(20),
@@ -68,10 +68,10 @@ export const Circle = {
   reports: z.array(ReportSchema).optional().nullable(),
   updatedAt: z.date().optional(),
   createdAt: z.date().optional(),
-};
+});
 
 export const ReadCircleSchema = z.object({
-  ...Circle,
+  ...CircleSchema.shape,
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
   _count: z
@@ -79,11 +79,13 @@ export const ReadCircleSchema = z.object({
       users: z.number().optional(),
     })
     .optional(),
+  // UserCircle
+  isSelected: UserCircleSchema.shape.isSelected.optional(),
 });
 
 export const MutateCircleSchema = z.object({
-  ...Circle,
-  id: Circle.id.optional(),
+  ...CircleSchema.shape,
+  id: CircleSchema.shape.id.optional(),
   links: z.array(LinkSchema).optional(),
 });
 
@@ -102,11 +104,17 @@ export const CircleUserSchema = z.object({
   userId: z.string(),
 });
 
+export const SelectedCirclesSchema = z.object({
+  circles: z.array(ReadCircleSchema),
+  selectedCircles: z.array(z.string()),
+});
+
 export type ReadCircleSchemaType = z.infer<typeof ReadCircleSchema>;
 export type MutateCircleSchemaType = z.infer<typeof MutateCircleSchema>;
 export type UpdateImageSchemaType = z.infer<typeof UpdateImageSchema>;
 export type CircleUserSearchSchemaType = z.infer<typeof CircleUserSearchSchema>;
 export type CircleUserSchemaType = z.infer<typeof CircleUserSchema>;
+export type SelectedCirclesSchemaType = z.infer<typeof SelectedCirclesSchema>;
 
 export type PrismaCircleType = {
   id: string;
@@ -139,7 +147,8 @@ export type PrismaCircleType = {
 };
 
 export function ParseCircle(
-  circle: PrismaCircleType | undefined | null
+  circle: PrismaCircleType | undefined | null,
+  isSelected = false
 ): ReadCircleSchemaType | undefined {
   if (!circle) return undefined;
   return {
@@ -173,6 +182,7 @@ export function ParseCircle(
       circle.createdAt?.toLocaleDateString() ??
       "",
     createdAt: circle.createdAt?.toLocaleDateString() ?? "",
+    isSelected: isSelected,
   };
 }
 

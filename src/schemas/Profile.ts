@@ -147,6 +147,7 @@ export type PrismaProfileType = {
   circles:
     | {
         Circle: PrismaCircleType | undefined;
+        isSelected?: boolean;
       }[]
     | undefined;
   interactions?:
@@ -186,7 +187,7 @@ export function ParseProfile(
   if (!profile) return undefined;
   const circles: ReadCircleSchemaType[] = [];
   profile?.circles?.forEach((c) => {
-    const circle = ParseCircle(c.Circle);
+    const circle = ParseCircle(c.Circle, c.isSelected);
     if (circle) {
       circles.push(circle);
     }
@@ -219,4 +220,15 @@ export function ParseProfile(
     likesYou: !!profile.interactions?.length,
     location: profile.location,
   };
+}
+
+export function ParseProfiles(
+  profiles: PrismaProfileType[]
+): ReadProfileSchemaType[] {
+  const result: ReadProfileSchemaType[] = [];
+  profiles.forEach((el) => {
+    const profile = ParseProfile(el);
+    if (profile) result.push(profile);
+  });
+  return result;
 }

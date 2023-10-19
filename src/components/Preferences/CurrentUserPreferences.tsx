@@ -1,9 +1,8 @@
-import { Button } from "../ui/button";
 import { ComboboxOption } from "../ui/combobox";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { Form } from "../ui/form";
-import { FormButton } from "../ui/FormButton";
+import { IconButton, IconButtonVariant } from "../Shared/IconButton";
 import { IncomeSelectionValues } from "@/schemas/Income";
 import { MultiSelectFormField } from "../ui/MultiSelectFormField";
 import {
@@ -25,9 +24,11 @@ import React, { useCallback, useMemo } from "react";
 
 export type CurrentUserPreferencesProps = {
   preferences?: ReadUserPreferencesSchemaType;
+  setClosed: () => void;
 };
 export function CurrentUserPreferences({
   preferences,
+  setClosed,
 }: CurrentUserPreferencesProps) {
   const { mutateAsync } = api.preferences.save.useMutation();
 
@@ -94,9 +95,9 @@ export function CurrentUserPreferences({
     <Form
       form={form}
       onSubmit={form.handleSubmit(onValidData, onInvalidData)}
-      className="flex h-full max-h-navless w-full flex-col justify-between pt-4 shadow-inner"
+      className="mt-4 flex h-full max-h-navless w-full flex-col justify-between  shadow-inner"
     >
-      <div className="flex h-full w-full flex-col overflow-y-scroll px-4">
+      <div className="flex h-full w-full flex-col overflow-y-scroll px-4 pb-20">
         <Preference name="Age">
           <SliderFormField
             name="ageRange"
@@ -173,7 +174,12 @@ export function CurrentUserPreferences({
           />
         </Preference>
       </div>
-      <FormButton label="Save" className="m-4 mb-0" />
+      <IconButton
+        variant={IconButtonVariant.SAVE}
+        hover={true}
+        type="submit"
+        onClick={setClosed}
+      />
     </Form>
   );
 }

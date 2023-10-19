@@ -19,11 +19,11 @@ export const getServerSideProps = requireUser(
     const [
       { isActive, username, notifications },
       { preferences, circles },
-      profiles,
+      // profiles,
     ] = await Promise.all([
       caller.users.stats(),
       caller.preferences.read(),
-      caller.profiles.readProfiles(),
+      // caller.profiles.readProfiles(),
     ]);
 
     return {
@@ -36,7 +36,7 @@ export const getServerSideProps = requireUser(
           preferences: preferences,
           circles: circles,
         },
-        profiles: profiles,
+        // profiles: profiles,
       } as ServerProps,
     };
   }

@@ -7,12 +7,11 @@ import {
   useController,
 } from "react-hook-form";
 import { FormItem, FormMessage } from "./form";
-import { ReadCircleSchemaType } from "@/schemas/Circle";
 import React, { useCallback, useMemo } from "react";
 
 export type CheckboxProps = {
   label: React.ReactNode;
-  value?: ReadCircleSchemaType;
+  value?: string;
   checked?: boolean;
 };
 interface CheckboxListProps<Values extends FieldValues>
@@ -28,24 +27,23 @@ export const CheckboxList = <Values extends FieldValues>({
 
   const customOnChange = useCallback(
     (isChecked: boolean, checkBoxName: string) => {
-      const fieldValueAsList = Array.isArray(field.value) ? field.value : [];
-      const result = isChecked
-        ? [...fieldValueAsList, checkBoxName]
-        : fieldValueAsList.filter((value: string) => value != checkBoxName);
-      field.onChange(
-        options
-          .map((o) => o.value)
-          .filter((v) => result.map((r) => r == v?.name))
-      );
+      const fieldValueAsList = Array.isArray(field.value)
+        ? field.value
+        : [field.value];
+      if (isChecked) {
+        field.onChange([...fieldValueAsList, checkBoxName]);
+      } else {
+        field.onChange(fieldValueAsList.filter((v) => v !== checkBoxName));
+      }
     },
-    [field, options]
+    [field]
   );
 
   const renderedOptions = useMemo(() => {
     return options.map(({ label, value, checked }) => (
       <CheckboxListItem
-        key={value?.name}
-        name={value?.name ?? ""}
+        key={value}
+        name={value ?? ""}
         label={label}
         isChecked={!!checked}
         onChange={customOnChange}
@@ -53,7 +51,7 @@ export const CheckboxList = <Values extends FieldValues>({
     ));
   }, [options, customOnChange]);
   return (
-    <FormItem className="mb-2 flex flex-col">
+    <FormItem className="flex flex-col pb-20">
       {renderedOptions}
       {fieldState.error?.message && (
         <FormMessage>{fieldState.error?.message}</FormMessage>
