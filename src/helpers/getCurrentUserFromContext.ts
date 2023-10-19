@@ -8,11 +8,7 @@ import {
   Religion,
 } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
-import {
-  ParseCircle,
-  ParseCircles,
-  ReadCircleSchemaType,
-} from "@/schemas/Circle";
+
 import { ParseProfile, ReadProfileSchemaType } from "@/schemas/Profile";
 import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { Session } from "next-auth";

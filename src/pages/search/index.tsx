@@ -16,15 +16,8 @@ export const getServerSideProps = requireUser(
     const { ctx } = await getPrismaContext(_ctx);
     const caller = appRouter.createCaller(ctx);
 
-    const [
-      { isActive, username, notifications },
-      { preferences, circles },
-      // profiles,
-    ] = await Promise.all([
-      caller.users.stats(),
-      caller.preferences.read(),
-      // caller.profiles.readProfiles(),
-    ]);
+    const [{ isActive, username, notifications }, { preferences, circles }] =
+      await Promise.all([caller.users.stats(), caller.preferences.read()]);
 
     return {
       props: {
@@ -36,16 +29,15 @@ export const getServerSideProps = requireUser(
           preferences: preferences,
           circles: circles,
         },
-        // profiles: profiles,
       } as ServerProps,
     };
   }
 );
 
-export default function Page({ nav, profiles }: ServerProps) {
+export default function Page({ nav }: ServerProps) {
   return (
     <Layout nav={nav}>
-      <ProfilesView profiles={profiles} />
+      <ProfilesView />
     </Layout>
   );
 }

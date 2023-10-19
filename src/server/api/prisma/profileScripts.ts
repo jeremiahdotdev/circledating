@@ -15,7 +15,6 @@ export const handlePreferences = (
   circles?: ReadCircleSchemaType[]
 ) => {
   const filters = [];
-  console.log(circles);
   if (preferences && circles?.some((circle) => circle.isSelected)) {
     filters.push({
       circles: {
