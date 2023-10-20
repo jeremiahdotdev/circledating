@@ -66,7 +66,7 @@ export function Conversation({
           alt={usernames}
         />
       </div>
-      <div className={classNames("w-full", isRead ? "" : "font-bold")}>
+      <div className={classNames("w-full", { "font-bold": isRead })}>
         <div className="flex flex-row items-center">
           <RouteOptionLink
             option={routes.profileByUsername(usernames)}
