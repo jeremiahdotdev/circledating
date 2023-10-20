@@ -30,7 +30,7 @@ export const messagesScripts = {
       ctx,
     }: PrismaParameter<MutateMessageSchemaType>) => {
       return ctx.prisma.userMessage.create({
-        data: input,
+        data: { ...input, isRead: true },
       });
     },
   },

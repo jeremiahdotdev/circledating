@@ -1,28 +1,35 @@
 import {
   MutateProfileSchemaType,
   ParseProfile,
+  ParseProfiles,
   ReadProfileSchemaType,
 } from "@/schemas/Profile";
 import { PrismaContext, PrismaParameter } from "../types";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { UpdateImageSchemaType } from "@/schemas/Profile";
 import { getCurrentUserFromContext } from "@/helpers/getCurrentUserFromContext";
 
 export const handlePreferences = (
-  preferences?: ReadUserPreferencesSchemaType
+  preferences?: ReadUserPreferencesSchemaType,
+  circles?: ReadCircleSchemaType[]
 ) => {
-  if (!preferences) return [{}];
   const filters = [];
-  if (preferences.selectedCircles)
+  if (preferences && circles?.some((circle) => circle.isSelected)) {
     filters.push({
       circles: {
         some: {
           circleId: {
-            in: preferences?.selectedCircles?.map((circle) => circle.id ?? "0"),
+            in: circles
+              .filter((circle) => !!circle.isSelected)
+              .map((circle) => circle.id ?? "0"),
           },
         },
       },
     });
+  } else {
+    return [];
+  }
   if (preferences.sex)
     filters.push({
       sex: preferences.sex,
@@ -116,9 +123,11 @@ export const profileScripts = {
     readProfiles: async ({ ctx }: PrismaContext) => {
       const { profile, preferences } = await getCurrentUserFromContext(ctx);
       if (!profile) return [];
+      const preferenceFilters = handlePreferences(preferences, profile.circles);
+      if (!preferenceFilters.length) return [];
       const result = await ctx.prisma.userProfile.findMany({
         where: {
-          AND: handlePreferences(preferences),
+          AND: preferenceFilters,
           affections: {
             none: {
               initiatedUserId: profile.userId,
@@ -133,9 +142,57 @@ export const profileScripts = {
               Circle: true,
             },
           },
+          interactions: {
+            select: {
+              affectedUserId: true,
+            },
+            where: {
+              affectedUserId: profile.userId,
+              isLiked: true,
+            },
+          },
         },
+        take: 10,
       });
-      return result.map(ParseProfile);
+
+      return ParseProfiles(result);
+    },
+    readProfilesByNumber: async ({ input, ctx }: PrismaParameter<number>) => {
+      const { profile, preferences } = await getCurrentUserFromContext(ctx);
+      if (!profile) return [];
+      const preferenceFilters = handlePreferences(preferences, profile.circles);
+      if (!preferenceFilters.length) return [];
+      const result = await ctx.prisma.userProfile.findMany({
+        where: {
+          AND: preferenceFilters,
+          affections: {
+            none: {
+              initiatedUserId: profile.userId,
+            },
+          },
+          NOT: { sex: profile.sex },
+        },
+        include: {
+          location: true,
+          circles: {
+            select: {
+              Circle: true,
+            },
+          },
+          interactions: {
+            select: {
+              affectedUserId: true,
+            },
+            where: {
+              affectedUserId: profile.userId,
+              isLiked: true,
+            },
+          },
+        },
+        take: input,
+      });
+
+      return ParseProfiles(result);
     },
     read: async ({ input, ctx }: PrismaParameter<string>) => {
       const result = await ctx.prisma.userProfile.findUnique({

@@ -8,37 +8,35 @@ import classNames from "classnames";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export type LayoutNavProps = {
-  user?: LayoutUser;
-  preferences?: ReadUserPreferencesSchemaType | undefined;
-  circles?: ReadCircleSchemaType[] | undefined;
-};
 export type LayoutProps = {
+  nav?: NavProps;
   children: React.ReactNode[] | React.ReactNode;
 };
-export type LayoutUser = {
+export type NavProps = {
   isActive: boolean;
   isAuthed: boolean;
   isAdmin: boolean;
   username: string;
+  notifications?: number;
+  preferences?: ReadUserPreferencesSchemaType | undefined;
+  circles?: ReadCircleSchemaType[] | undefined;
 };
 
 export default function Layout({
-  user,
-  preferences,
-  circles,
+  nav,
   children,
-}: LayoutProps & LayoutNavProps): React.ReactElement {
+}: LayoutProps): React.ReactElement {
   return (
     <>
       <Nav
-        isAuthed={user?.isAuthed}
-        isActive={user?.isActive}
-        username={user?.username ?? ""}
-        preferences={preferences}
-        circles={circles}
+        isAuthed={nav?.isAuthed}
+        isActive={nav?.isActive}
+        username={nav?.username ?? ""}
+        preferences={nav?.preferences}
+        circles={nav?.circles}
+        notifications={nav?.notifications}
       />
-      <main className={classNames("sm:pt-[67px] ", inter.className)}>
+      <main className={classNames("sm:pt-[67px]", inter.className)}>
         {children}
       </main>
       <Footer />

@@ -8,7 +8,6 @@ import {
   Religion,
 } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
-import { ParseCircle, ReadCircleSchemaType } from "@/schemas/Circle";
 import { ParseProfile, ReadProfileSchemaType } from "@/schemas/Profile";
 import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { Session } from "next-auth";
@@ -22,31 +21,34 @@ export const getCurrentUserFromContext = async (ctx: {
     profile?: ReadProfileSchemaType;
     preferences?: ReadUserPreferencesSchemaType;
   } = {};
-
   if (ctx.session?.user?.name) {
     const currentUser = await ctx.prisma.user.findUnique({
       where: { id: ctx.session.id },
       select: {
-        profile: true,
-        preferences: {
-          include: { selectedCircles: { select: { Circle: true } } },
+        profile: {
+          include: {
+            circles: {
+              select: {
+                isSelected: true,
+                Circle: true,
+              },
+            },
+          },
         },
+        preferences: true,
       },
     });
+
     if (currentUser) {
-      if (currentUser.profile)
+      if (currentUser.profile) {
         user.profile = ParseProfile({
           ...currentUser.profile,
-          circles: undefined,
           location: undefined,
+          interactions: undefined,
         });
+      }
 
       if (currentUser.preferences) {
-        const circles: ReadCircleSchemaType[] = [];
-        currentUser.preferences.selectedCircles.map((c) => {
-          const circle = ParseCircle(c.Circle);
-          if (circle) circles.push(circle);
-        });
         user.preferences = {
           ...currentUser.preferences,
           sex: getOppositeSex(currentUser.profile?.sex),
@@ -60,7 +62,6 @@ export const getCurrentUserFromContext = async (ctx: {
             .searchContinents as string[],
           searchCountries: currentUser.preferences.searchCountries as string[],
           searchStates: currentUser.preferences.searchStates as string[],
-          selectedCircles: circles,
           ageRange: [
             currentUser.preferences.minAge,
             currentUser.preferences.maxAge,

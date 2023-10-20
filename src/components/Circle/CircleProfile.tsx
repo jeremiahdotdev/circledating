@@ -114,7 +114,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
       ...circleState,
       users: isMember
         ? null
-        : [{ userId: "", userTitle: "PLEB", circleId: "" }],
+        : [{ userId: "", userTitle: "PLEB", circleId: "", isSelected: true }],
     });
   }, [circleState, leave, join, request, isPrivate, isMember]);
 

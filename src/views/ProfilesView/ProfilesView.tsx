@@ -7,8 +7,6 @@ export type ProfilesViewProps = {
   profiles: ReadProfileSchemaType[];
 };
 
-export const ProfilesView = memo(function ProfilesView({
-  profiles,
-}: ProfilesViewProps) {
-  return <ProfileList profiles={profiles} />;
+export const ProfilesView = memo(function ProfilesView() {
+  return <ProfileList />;
 });

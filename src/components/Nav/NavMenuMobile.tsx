@@ -13,7 +13,7 @@ export function NavMenuMobile({ children }: NavMenuMobileProps) {
     []
   );
   return (
-    <div>
+    <div onBlur={toggleShowButtonList}>
       <button
         onClick={toggleShowButtonList}
         type="button"

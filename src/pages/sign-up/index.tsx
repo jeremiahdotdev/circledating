@@ -3,12 +3,10 @@ import { SignUpView } from "@/views/SignUpView/SignUpView";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireNoAuth } from "@/helpers/requireNoAuth";
-import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
+import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutNavProps & {
-  user: LayoutUser;
-};
+type ServerProps = LayoutProps;
 
 export const getServerSideProps = requireNoAuth(
   async (_ctx: GetServerSidePropsContext) => {
@@ -18,7 +16,7 @@ export const getServerSideProps = requireNoAuth(
 
     return {
       props: {
-        user: {
+        nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
         },
@@ -27,9 +25,9 @@ export const getServerSideProps = requireNoAuth(
   }
 );
 
-export default function Page({ user, preferences, circles }: ServerProps) {
+export default function Page({ nav }: ServerProps) {
   return (
-    <Layout user={user} circles={circles} preferences={preferences}>
+    <Layout nav={nav}>
       <SignUpView />
     </Layout>
   );

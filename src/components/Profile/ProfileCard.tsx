@@ -43,8 +43,7 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
           />
           <span className="flex justify-end">
             <ProfileLocation
-              country={profile.location?.country}
-              state={profile.location?.state}
+              location={profile.location}
               willingToRelocate={profile.willingToRelocate === "YES"}
             />
           </span>
@@ -58,7 +57,7 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
             />
           </div>
           <div className="grid h-full w-full sm:w-3/4 sm:grid-cols-32 ">
-            <div className="flex flex-col items-center sm:col-span-10 sm:my-3">
+            <div className="flex flex-col gap-4 self-center sm:col-span-10 sm:my-3">
               <ProfileCardSubheading title={"General"} />
               <ProfileAttribute
                 option={ProfileAttributeOptions.religion}
@@ -76,27 +75,21 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
                 attribute={profile.politicalBeliefs}
               />
               <ProfileAttribute
-                option={ProfileAttributeOptions.education}
+                option={ProfileAttributeOptions.height}
                 variant={ProfileAttributeVariant.PROFILE_CARD}
-                attribute={profile.levelOfEducation}
+                attribute={profile.height}
               />
             </div>
             <Separator
               orientation="vertical"
               className="mx-auto hidden sm:block"
             />
-            <div className="flex flex-col sm:col-span-10 sm:my-3">
+            <div className="flex flex-col gap-4 self-center sm:col-span-10 sm:my-3">
               <ProfileCardSubheading title={"Lifestyle"} />
               <ProfileAttribute
-                option={ProfileAttributeOptions.height}
+                option={ProfileAttributeOptions.activityLevel}
                 variant={ProfileAttributeVariant.PROFILE_CARD}
-                attribute={profile.height}
-              />
-              <ProfileAttribute
-                option={ProfileAttributeOptions.weight}
-                variant={ProfileAttributeVariant.PROFILE_CARD}
-                attribute={profile.weight}
-                weightUnit={profile.weightUnit}
+                attribute={`${profile.activity}`}
               />
               <ProfileAttribute
                 option={ProfileAttributeOptions.drinking}
@@ -108,18 +101,29 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
                 variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.consumables}
               />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.weight}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
+                attribute={profile.weight}
+                weightUnit={profile.weightUnit}
+              />
             </div>
             <Separator
               orientation="vertical"
               className="mx-auto hidden sm:block"
             />
-            <div className="flex flex-col sm:col-span-10 sm:my-3">
+            <div className="flex flex-col gap-4 self-center sm:col-span-10 sm:my-3">
+              <ProfileCardSubheading title={"Personal"} />
               <ProfileAttribute
-                option={ProfileAttributeOptions.activityLevel}
+                option={ProfileAttributeOptions.education}
                 variant={ProfileAttributeVariant.PROFILE_CARD}
-                attribute={`${profile.activity}`}
+                attribute={profile.levelOfEducation}
               />
-              <ProfileCardSubheading title={"Family"} />
+              <ProfileAttribute
+                option={ProfileAttributeOptions.income}
+                variant={ProfileAttributeVariant.PROFILE_CARD}
+                attribute={profile.income}
+              />
               <ProfileAttribute
                 option={ProfileAttributeOptions.purity}
                 variant={ProfileAttributeVariant.PROFILE_CARD}
@@ -129,11 +133,6 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
                 option={ProfileAttributeOptions.children}
                 variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.children}
-              />
-              <ProfileAttribute
-                option={ProfileAttributeOptions.income}
-                variant={ProfileAttributeVariant.PROFILE_CARD}
-                attribute={profile.income}
               />
             </div>
           </div>

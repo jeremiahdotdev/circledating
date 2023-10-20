@@ -76,6 +76,7 @@ export const ReadProfileSchema = z.object({
   ...ProfilePartialSchema.shape,
   height: z.number().optional().nullable(), // Height in cm
   weight: z.number().optional().nullable(), // Weight in kg
+  purity: ProfilePartialSchema.shape.purity.optional().nullable(),
   location: LocationSchema.optional().nullable(),
   isPerfectMatch: z.boolean().optional(),
   likesYou: z.boolean().optional(),
@@ -85,6 +86,9 @@ export const ReadProfileSchema = z.object({
 
 export const MutateProfileSchema = z.object({
   ...ProfilePartialSchema.shape,
+  weight: ProfilePartialSchema.shape.weight.optional(),
+  height: ProfilePartialSchema.shape.weight.optional(),
+  purity: ProfilePartialSchema.shape.purity.optional(),
   userId: z.string().optional(),
   location: LocationSchema,
   birthDate: z.date(),
@@ -143,6 +147,12 @@ export type PrismaProfileType = {
   circles:
     | {
         Circle: PrismaCircleType | undefined;
+        isSelected?: boolean;
+      }[]
+    | undefined;
+  interactions?:
+    | {
+        affectedUserId: string;
       }[]
     | undefined;
 } & {
@@ -161,7 +171,7 @@ export type PrismaProfileType = {
   consumables: Consumables;
   politicalBeliefs: PoliticalBeliefs;
   levelOfEducation: LevelOfEducation;
-  purity: Purity;
+  purity?: Purity | null;
   income: Income;
   maritalStatus: MaritalStatus;
   activity: Activity;
@@ -177,17 +187,48 @@ export function ParseProfile(
   if (!profile) return undefined;
   const circles: ReadCircleSchemaType[] = [];
   profile?.circles?.forEach((c) => {
-    const circle = ParseCircle(c.Circle);
+    const circle = ParseCircle(c.Circle, c.isSelected);
     if (circle) {
       circles.push(circle);
     }
   });
   return {
-    ...profile,
+    userId: profile.userId,
+    username: profile.username,
+    sex: profile.sex,
+    bio: profile.bio,
+    height: profile.height,
+    weight: profile.weight,
+    weightUnit: profile.weightUnit,
+    willingToRelocate: profile.willingToRelocate,
+    children: profile.children,
+    drinking: profile.drinking,
+    ethnicity: profile.ethnicity,
+    consumables: profile.consumables,
+    politicalBeliefs: profile.politicalBeliefs,
+    levelOfEducation: profile.levelOfEducation,
+    purity: profile.purity,
+    income: profile.income,
+    maritalStatus: profile.maritalStatus,
+    activity: profile.activity,
+    religion: profile.religion,
     image: profile.image ?? "",
     age: dayjs().diff(profile.birthDate, "year"),
     links: parseArray<LinkSchemaType>(profile.links),
     circles: circles,
     birthDate: null,
+    likesYou: !!profile.interactions?.length,
+    location: profile.location,
   };
+}
+
+export function ParseProfiles(
+  profiles: PrismaProfileType[]
+): ReadProfileSchemaType[] {
+  const result: ReadProfileSchemaType[] = [];
+  profiles.forEach((el) => {
+    const profile = ParseProfile(el);
+    if (profile) result.push(profile);
+  });
+  return result;
 }

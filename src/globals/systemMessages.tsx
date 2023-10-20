@@ -1,3 +1,7 @@
+import { RouteOptionLink } from "@/utils/RouteOptionLink";
+import { routes } from "./routes";
+import React from "react";
+
 export type SystemMessageType = {
   message: string;
   tooltip?: string;
@@ -14,8 +18,26 @@ export function getSystemMessage(
 }
 
 export const systemMessages = {
-  NO_MATCHES: "Nothing to show yet...",
+  GETTING_STARTED: (
+    <p>
+      Welcome! To get started,&nbsp;
+      <RouteOptionLink
+        option={routes.circles()}
+        className="underline hover:text-purple-600"
+      >
+        add a circle
+      </RouteOptionLink>
+      &nbsp;and then&nbsp;
+      <RouteOptionLink
+        option={routes.search()}
+        className="underline hover:text-purple-600"
+      >
+        start searching!
+      </RouteOptionLink>
+    </p>
+  ),
   NO_PROFILES: "Nothing to show yet...",
+  NO_MATCHES: "Nothing to show yet...",
   INITIAL_MESSAGE: "You matched! Go ahead and send a message!",
   CONFIRM_ACTION_TITLE: "Are you sure?",
   CONFIRM_ACTION_DESCRIPTION: "This action cannot be undone.",
@@ -25,4 +47,5 @@ export const systemMessages = {
   NO_PROFILE: "No profile was found for this user.",
   SIGN_UP: { message: "- Sign Up -", tooltip: "Go to sign up page" },
   LOGIN: { message: "- Login -", tooltip: "Go to login page" },
+  DATING_HINTS: ["Real talk: Coffee or tea?"],
 };

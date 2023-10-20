@@ -68,10 +68,9 @@ export const NewProfile = memo(function NewProfile({
   const onValidData = useCallback(
     (data: MutateProfileSchemaType) => {
       if (circle) data.circles = [circle];
-      data.location.continent = countries
-        .filter((c) => c.country == data.location.country)
-        .filter((c) => c.states.includes(data.location.state ?? ""))?.[0]
-        .continent;
+      data.location.continent = countries.filter(
+        (c) => c.country == data.location.country
+      )?.[0].continent;
       create
         .mutateAsync(data)
         .then(() => {
@@ -83,7 +82,7 @@ export const NewProfile = memo(function NewProfile({
   );
 
   return (
-    <div className="flex w-full flex-col items-center justify-center py-4">
+    <div className="flex w-full flex-col items-center justify-center p-4">
       <CurrentCircleHeader circle={circle} />
       <Form
         form={form}
@@ -207,7 +206,6 @@ export const NewProfile = memo(function NewProfile({
             label="What is your stance on purity?"
             options={PuritySelectionValues}
             filterOn={circle?.purityRestriction}
-            required={true}
           />
         </FormSection>
         <FormSection heading="About You">

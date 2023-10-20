@@ -94,7 +94,7 @@ export const NewCircle = memo(function NewProfile() {
   );
 
   return (
-    <div className="flex w-full flex-col items-center justify-center py-4">
+    <div className="flex w-full flex-col items-center justify-center p-4">
       <span className="text-4xl">Create a new circle</span>
       <Form
         form={form}

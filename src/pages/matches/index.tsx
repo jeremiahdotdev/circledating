@@ -1,18 +1,18 @@
 import { ConversationsView } from "@/views/ConversationView/ConversationsView";
 import { Gender } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
-import { PageNotFound } from "@/components/Shared/PageNotFound";
+import { Infographic } from "@/components/Shared/Infographic";
 import { ReadConversationSchemaType } from "@/schemas/Conversation";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
-import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
+import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutNavProps & {
-  user: LayoutUser & { userSex: Gender; userId: string };
+type ServerProps = LayoutProps & {
+  user: { userSex: Gender; userId: string };
   conversations: ReadConversationSchemaType[];
   actionIsUnblock: boolean;
 };
@@ -28,7 +28,7 @@ export const getServerSideProps = requireUser(
       : caller.conversations.read;
 
     const [
-      { userId, isActive, isMale, username },
+      { userId, isActive, isMale, username, notifications },
       { preferences, circles },
       conversations,
     ] = await Promise.all([
@@ -39,15 +39,18 @@ export const getServerSideProps = requireUser(
 
     return {
       props: {
-        user: {
+        nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
+          notifications: notifications,
+          username: username,
+          preferences: preferences,
+          circles: circles,
+        },
+        user: {
           userSex: isMale ? Gender.MALE : Gender.FEMALE,
           userId: userId,
-          username: username,
         },
-        preferences: preferences,
-        circles: circles,
         conversations: conversations,
         actionIsUnblock: actionIsUnblock,
       } as ServerProps,
@@ -55,15 +58,14 @@ export const getServerSideProps = requireUser(
   }
 );
 export default function Page({
+  nav,
   user,
-  preferences,
-  circles,
   conversations,
   actionIsUnblock,
 }: ServerProps) {
   return (
-    <Layout user={user} circles={circles} preferences={preferences}>
-      {!conversations?.length && user ? (
+    <Layout nav={nav}>
+      {conversations?.length && user ? (
         <ConversationsView
           conversations={conversations}
           userId={user.userId}
@@ -71,7 +73,7 @@ export default function Page({
           actionIsUnblock={actionIsUnblock}
         />
       ) : (
-        <PageNotFound error={systemMessages.NO_MATCHES} />
+        <Infographic message={systemMessages.NO_MATCHES} />
       )}
     </Layout>
   );

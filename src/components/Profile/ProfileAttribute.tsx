@@ -40,7 +40,7 @@ export function ProfileAttribute({
   variant = ProfileAttributeVariant.DEFAULT,
 }: ProfileAttributeProps) {
   const label = useMemo(() => {
-    if (!attribute) return option.label;
+    if (!attribute) return;
 
     if (typeof attribute === "number" && option.isHeight) {
       return heightValueMap[attribute];
@@ -79,33 +79,37 @@ export function ProfileAttribute({
     switch (variant) {
       case ProfileAttributeVariant.PROFILE_CARD:
         return (
-          <span className="flex h-full w-full flex-row items-center ">
-            <FontAwesomeIcon
-              className="aspect-square w-7 pl-2"
-              icon={option.icon}
-            />
-            <b className="flex sm:hidden">
-              {option.label} {attribute ? " • " : ""}
-            </b>
-            <p className="pl-1 text-sm font-extralight text-slate-950">
-              {label}
-            </p>
-          </span>
+          !!label && (
+            <span className="flex h-full w-full flex-row items-center ">
+              <FontAwesomeIcon
+                className="aspect-square w-7 pl-2"
+                icon={option.icon}
+              />
+              <b className="flex sm:hidden">
+                {option.label} {attribute ? " • " : ""}
+              </b>
+              <p className="pl-1 text-sm font-extralight text-slate-950">
+                {label}
+              </p>
+            </span>
+          )
         );
       case ProfileAttributeVariant.PROFILE:
         return (
-          <span className="grid h-16 grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <FontAwesomeIcon className={"h-5"} icon={option.icon} />
-                <b className="break-normal">{option.label}</b>
+          !!label && (
+            <span className="grid h-16 grid-cols-2 items-center justify-center gap-1 border-y py-2 sm:mx-4 sm:p-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <FontAwesomeIcon className={"h-5"} icon={option.icon} />
+                  <b className="break-normal">{option.label}</b>
+                </div>
+                <b className="w-fit text-shadow-sm ">&nbsp;•</b>
               </div>
-              <b className="w-fit text-shadow-sm ">&nbsp;•</b>
-            </div>
-            <div className="pl-1 font-extralight text-slate-950 text-shadow-sm">
-              {label}
-            </div>
-          </span>
+              <div className="pl-1 font-extralight text-slate-950 text-shadow-sm">
+                {label}
+              </div>
+            </span>
+          )
         );
       case ProfileAttributeVariant.PROFILE_LINK:
         return (

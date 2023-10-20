@@ -14,6 +14,9 @@ export const profileRouter = createTRPCRouter({
     .input(UpdateImageSchema)
     .mutation(profileScripts.mutate.updateImage),
   readProfiles: publicProcedure.query(profileScripts.query.readProfiles),
+  readProfilesByNumber: publicProcedure
+    .input(z.number())
+    .mutation(profileScripts.query.readProfilesByNumber),
   read: publicProcedure.input(z.string()).query(profileScripts.query.read),
   readCurrent: publicProcedure.query(profileScripts.query.readCurrent),
   isUsernameUnique: publicProcedure

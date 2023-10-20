@@ -9,7 +9,7 @@ import {
   MutateUserPreferencesSchemaType,
   ParsePreferences,
 } from "@/schemas/UserPreferences";
-import { ParseCircle } from "@/schemas/Circle";
+import { ParseCircle, SelectedCirclesSchemaType } from "@/schemas/Circle";
 import { PrismaContext, PrismaParameter } from "../types";
 import { getOppositeSex } from "@/schemas/Gender";
 
@@ -22,20 +22,13 @@ export const preferencesScripts = {
           id: ctx.session?.id,
         },
         select: {
-          preferences: {
-            include: {
-              selectedCircles: {
-                select: {
-                  Circle: true,
-                },
-              },
-            },
-          },
+          preferences: true,
           profile: {
             select: {
               userId: true,
               circles: {
                 select: {
+                  isSelected: true,
                   Circle: true,
                 },
               },
@@ -46,7 +39,9 @@ export const preferencesScripts = {
 
       return {
         preferences: ParsePreferences(result?.preferences),
-        circles: result?.profile?.circles.map((c) => ParseCircle(c.Circle)),
+        circles: result?.profile?.circles.map((c) =>
+          ParseCircle(c.Circle, c.isSelected)
+        ),
       };
     },
   },
@@ -83,24 +78,21 @@ export const preferencesScripts = {
     saveCircles: async ({
       input,
       ctx,
-    }: PrismaParameter<MutateUserPreferencesSchemaType>) => {
-      const data = {
-        userId: ctx.session?.id ?? "",
-        selectedCircles: {
-          connect: input.selectedCircles?.map((c) => ({
-            id: c.id,
-          })),
-        },
-      };
-      const result = await ctx.prisma.userPreferences.upsert({
-        where: {
-          userId: ctx.session?.id,
-        },
-        create: { ...data, minAge: 18, maxAge: 99 },
-        update: data,
-      });
-
-      return result;
+    }: PrismaParameter<SelectedCirclesSchemaType>) => {
+      const transaction = await ctx.prisma.$transaction(
+        input.circles.map((circle) =>
+          ctx.prisma.userCircle.updateMany({
+            where: {
+              userId: ctx.session?.id,
+              circleId: circle.id,
+            },
+            data: {
+              isSelected: input.selectedCircles.includes(circle.name),
+            },
+          })
+        )
+      );
+      return transaction;
     },
   },
 };

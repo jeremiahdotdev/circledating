@@ -1,16 +1,18 @@
 import { CheckboxList } from "../ui/CheckboxList";
 import { Form } from "../ui/form";
-import { FormButton } from "../ui/FormButton";
+import { IconButton, IconButtonVariant } from "../Shared/IconButton";
+import { Infographic } from "../Shared/Infographic";
 import { ItemType, ParseItem } from "../Shared/ItemList";
 import { ListItem } from "../Shared/ListItem";
 import {
-  MutateUserPreferencesSchema,
-  MutateUserPreferencesSchemaType,
-} from "@/schemas/UserPreferences";
-import { ReadCircleSchemaType } from "@/schemas/Circle";
+  ReadCircleSchemaType,
+  SelectedCirclesSchema,
+  SelectedCirclesSchemaType,
+} from "@/schemas/Circle";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
 import { routes } from "@/globals/routes";
+import { systemMessages } from "@/globals/systemMessages";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,13 +20,12 @@ import React, { useCallback, useMemo } from "react";
 
 export type CurrentUserCirclesProps = {
   circles?: ReadCircleSchemaType[];
-  selectedCircles?: ReadCircleSchemaType[];
+  setClosed: () => void;
 };
 export function CurrentUserCircles({
   circles,
-  selectedCircles,
+  setClosed,
 }: CurrentUserCirclesProps) {
-  console.log(selectedCircles);
   const router = useRouter();
   const handleRoute = useCallback(
     (circleNameItem: ItemType) => {
@@ -36,8 +37,8 @@ export function CurrentUserCircles({
 
   const renderedCircles = useMemo(() => {
     return circles?.map((circle) => ({
-      value: circle,
-      checked: selectedCircles?.map((c) => c?.id)?.includes(circle?.id ?? ""),
+      value: circle.name,
+      checked: circle.isSelected,
       label: circle && (
         <ListItem
           item={ParseItem(circle)}
@@ -46,20 +47,21 @@ export function CurrentUserCircles({
         />
       ),
     }));
-  }, [handleRoute, circles, selectedCircles]);
+  }, [handleRoute, circles]);
 
-  const form = useForm<MutateUserPreferencesSchemaType>({
-    resolver: zodResolver(MutateUserPreferencesSchema),
+  const form = useForm<SelectedCirclesSchemaType>({
+    resolver: zodResolver(SelectedCirclesSchema),
     defaultValues: {
-      userId: "<RESOLVED-ON-SERVER>",
+      circles: circles,
+      selectedCircles: [],
     },
   });
 
-  const { mutateAsync } = api.preferences.save.useMutation();
+  const { mutateAsync } = api.preferences.saveCircles.useMutation();
 
   const onInvalidData = useCallback(handleError, []);
   const onValidData = useCallback(
-    (data: MutateUserPreferencesSchemaType) => {
+    (data: SelectedCirclesSchemaType) => {
       mutateAsync(data).catch(handleError);
     },
     [mutateAsync]
@@ -70,14 +72,26 @@ export function CurrentUserCircles({
       <Form
         form={form}
         onSubmit={form.handleSubmit(onValidData, onInvalidData)}
-        className="flex h-full max-h-navless w-full flex-col justify-between"
+        className="mt-4 flex h-full max-h-navless w-full flex-col justify-between px-4 shadow-inner"
       >
-        <CheckboxList
-          control={form.control}
-          name="selectedCircles"
-          options={renderedCircles ?? []}
+        {renderedCircles && renderedCircles.length ? (
+          <CheckboxList
+            control={form.control}
+            name="selectedCircles"
+            options={renderedCircles}
+          />
+        ) : (
+          <Infographic
+            bubbleless={true}
+            message={systemMessages.GETTING_STARTED}
+          />
+        )}
+        <IconButton
+          variant={IconButtonVariant.SAVE}
+          hover={true}
+          type="submit"
+          onClick={setClosed}
         />
-        <FormButton label="Save" />
       </Form>
     </div>
   );

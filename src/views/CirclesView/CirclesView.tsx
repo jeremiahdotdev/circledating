@@ -42,7 +42,7 @@ export const CirclesView = memo(function CirclesView({
   return (
     <div className="flex w-full justify-center">
       <div className="flex w-full flex-col items-center justify-between gap-16 px-2 py-12 sm:w-3/4">
-        {current?.length ? (
+        {!!current?.length && (
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Your Circles</h2>
             <div className="max-h-96 w-full">
@@ -52,10 +52,8 @@ export const CirclesView = memo(function CirclesView({
               />
             </div>
           </div>
-        ) : (
-          <></>
         )}
-        {featured?.length ? (
+        {!!featured?.length && (
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Suggested for you</h2>
             <div className="max-h-96 w-full">
@@ -65,8 +63,6 @@ export const CirclesView = memo(function CirclesView({
               />
             </div>
           </div>
-        ) : (
-          <></>
         )}
         <div className="flex w-full flex-col gap-4">
           <h2 className="w-full text-start text-xl">Find a Circle</h2>

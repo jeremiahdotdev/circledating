@@ -4,6 +4,7 @@ import { SignupSchemaType } from "@/schemas/LoginSchema";
 import { TRPCError } from "@trpc/server";
 import { handleError } from "@/utils/handleError";
 import { hash } from "argon2";
+import dayjs from "dayjs";
 
 export const userScripts = {
   query: {
@@ -11,8 +12,10 @@ export const userScripts = {
       let isActive = false;
       let isAdmin = false;
       let isMale = false;
+      let isNew = false;
       let userId = "";
       let username = "";
+      let notifications = 0;
       try {
         const result = await ctx.prisma.user.findUniqueOrThrow({
           where: {
@@ -21,10 +24,17 @@ export const userScripts = {
           select: {
             isAdmin: true,
             username: true,
+            createdAt: true,
             profile: {
               select: {
                 userId: true,
                 sex: true,
+              },
+            },
+            recievedMessages: {
+              select: { conversationId: true },
+              where: {
+                isRead: false,
               },
             },
           },
@@ -34,6 +44,8 @@ export const userScripts = {
         isMale = result?.profile?.sex == Gender.MALE;
         userId = result?.profile?.userId ?? "";
         username = result.username ?? "";
+        notifications = new Set(result.recievedMessages).size;
+        isNew = dayjs(result.createdAt) > dayjs().subtract(1, "day");
       } catch (error: unknown) {
         handleError(error);
       }
@@ -43,6 +55,8 @@ export const userScripts = {
         isActive: isActive,
         isAdmin: isAdmin,
         isMale: isMale,
+        isNew: isNew,
+        notifications: notifications,
       };
     },
   },

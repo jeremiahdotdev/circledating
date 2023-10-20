@@ -3,37 +3,36 @@ import { NewCircleView } from "@/views/NewCircleView/NewCircleView";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
-import Layout, { LayoutNavProps, LayoutUser } from "../Layout";
+import Layout, { LayoutProps } from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutNavProps & {
-  user: LayoutUser;
-};
+type ServerProps = LayoutProps;
 
 export const getServerSideProps = requireUser(
   async (_ctx: GetServerSidePropsContext) => {
     const { ctx } = await getPrismaContext(_ctx);
     const caller = appRouter.createCaller(ctx);
-    const [{ isActive, username }, { preferences, circles }] =
+    const [{ isActive, username, notifications }, { preferences, circles }] =
       await Promise.all([caller.users.stats(), caller.preferences.read()]);
 
     return {
       props: {
-        user: {
+        nav: {
           isAuthed: !!ctx.session,
           isActive: isActive,
+          notifications: notifications,
           username: username,
+          preferences: preferences,
+          circles: circles,
         },
-        preferences: preferences,
-        circles: circles,
       } as ServerProps,
     };
   }
 );
 
-export default function Page({ user, preferences, circles }: ServerProps) {
+export default function Page({ nav }: ServerProps) {
   return (
-    <Layout user={user} circles={circles} preferences={preferences}>
+    <Layout nav={nav}>
       <NewCircleView />
     </Layout>
   );
