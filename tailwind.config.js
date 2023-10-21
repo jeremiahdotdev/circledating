@@ -85,6 +85,11 @@ module.exports = {
         "banner-2": "url('/banners/2.jpeg')",
         "banner-3": "url('/banners/3.jpeg')",
         "banner-4": "url('/banners/4.jpeg')",
+        "banner-5": "url('/banners/5.jpeg')",
+        "banner-6": "url('/banners/6.jpeg')",
+        "banner-7": "url('/banners/7.jpeg')",
+        "banner-8": "url('/banners/8.jpeg')",
+        "banner-9": "url('/banners/9.jpeg')",
       },
       minHeight: {
         navless: "calc(100vh - 67px)",
