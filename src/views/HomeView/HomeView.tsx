@@ -1,10 +1,8 @@
 "use client";
-
 import { About } from "@/components/About/About";
 import { Login } from "@/components/Login/Login";
 import { SlideShow } from "@/components/Shared/SlideShow";
 import { banners } from "@/globals/banners";
-import { shuffle } from "@/helpers/shuffle";
 import React, { memo } from "react";
 
 export type HomeViewProps = Record<never, never>;

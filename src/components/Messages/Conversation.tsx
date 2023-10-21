@@ -7,6 +7,7 @@ import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
 import { routes } from "@/globals/routes";
+import { useSession } from "next-auth/react";
 import React, { useCallback } from "react";
 import classNames from "classnames";
 
@@ -24,8 +25,10 @@ export function Conversation({
   onSelect,
   onAction,
 }: ConversationProps) {
+  const username = useSession().data?.user?.name;
   const { mutateAsync } = api.conversations.markAllAsRead.useMutation();
-  const usernames = conversation.users.map((u) => u.username).join(" & ");
+  const usernames =
+    conversation.users.find((u) => u.username !== username)?.username ?? "";
   const newestMessage = conversation.messages?.[0];
   const messagePreview = newestMessage
     ? `${newestMessage?.authorUsername}: ${
