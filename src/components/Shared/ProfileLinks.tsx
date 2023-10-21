@@ -1,10 +1,9 @@
+import { LinkSchemaType, Url } from "@/schemas/Link";
 import {
   ProfileAttribute,
   ProfileAttributeVariant,
 } from "../Profile/ProfileAttribute";
 import { ProfileAttributeOptions } from "../Profile/ProfileAttributeOptions";
-
-import { LinkSchemaType, Url } from "@/schemas/Link";
 import React from "react";
 
 export type ProfileLinksProps = {

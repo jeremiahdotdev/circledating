@@ -21,6 +21,9 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        display: ["Tahoma"],
+      },
       colors: {
         "gender-accent": "var(--gender-accent)",
         border: "hsl(var(--border))",
@@ -77,7 +80,16 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage: {
-        "church-sample": "url('/church-sample.jpeg')",
+        "banner-0": "url('/banners/0.jpeg')",
+        "banner-1": "url('/banners/1.jpeg')",
+        "banner-2": "url('/banners/2.jpeg')",
+        "banner-3": "url('/banners/3.jpeg')",
+        "banner-4": "url('/banners/4.jpeg')",
+        "banner-5": "url('/banners/5.jpeg')",
+        "banner-6": "url('/banners/6.jpeg')",
+        "banner-7": "url('/banners/7.jpeg')",
+        "banner-8": "url('/banners/8.jpeg')",
+        "banner-9": "url('/banners/9.jpeg')",
       },
       minHeight: {
         navless: "calc(100vh - 67px)",
@@ -97,11 +109,13 @@ module.exports = {
       },
       boxShadow: {
         outter: "0 1px 3px 0px rgba(0, 0, 0, 0.6)",
+        "t-outter": "0px -8px 6px -4px rgba(0, 0, 0, 0.1)",
         "outter-xl": "0 1px 3px 1px rgba(0, 0, 0, 0.6)",
         "outter-soft": "0px 1px 8px 0px rgba(0, 0, 0, 0.3)",
         "inner-xl": "inset 0 1px 3px 0px rgba(0, 0, 0, 0.6)",
       },
       textShadow: {
+        xs: "1px 1px 2px rgba(0, 0, 0, 0.1)",
         sm: "1px 1px 2px rgba(0, 0, 0, 0.3)",
         DEFAULT: "2px 2px 4px rgba(0, 0, 0, 0.4)",
         lg: "4px 4px 8px rgba(0, 0, 0, 0.5)",

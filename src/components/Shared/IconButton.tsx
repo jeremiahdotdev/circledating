@@ -17,7 +17,6 @@ import {
   faUpload,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
-import { cn } from "@/lib/utils";
 import {
   faCheckCircle,
   faPenToSquare,
@@ -25,6 +24,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { handleError } from "@/utils/handleError";
 import React, { useCallback, useMemo, useState } from "react";
+import classNames from "classnames";
 
 export type IconButtonOptions = {
   icon: IconDefinition;
@@ -240,12 +240,12 @@ export function IconButton({
       <FormattedTooltip content={labelOverride ?? option.label}>
         <Button
           onClick={handleClick}
-          className={cn(
+          className={classNames(
             "text-white rounded-full",
             option.style,
             className,
-            option.showLabel ? "" : "aspect-square",
-            hover ? "absolute left-5 bottom-5" : ""
+            { "aspect-square": !option.showLabel },
+            { "absolute right-5 bottom-5": hover }
           )}
           type={type ?? "button"}
           disabled={disabled || disabledState}
