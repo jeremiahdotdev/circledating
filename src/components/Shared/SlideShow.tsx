@@ -16,7 +16,7 @@ export function SlideShow({ images, children }: SlideShowProps) {
     <div
       className={classNames(
         images[next],
-        "flex h-navless w-screen items-end justify-end bg-cover"
+        "flex h-navless w-full items-end justify-end bg-cover"
       )}
     >
       {children}
