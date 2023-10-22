@@ -203,6 +203,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
         handleUpdateImage={handleUpdateImage}
         image={circleState.image ?? ""}
         header={circle.label}
+        url={routes.shareCircle(circle.code)}
       />
       <IconButton
         variant={

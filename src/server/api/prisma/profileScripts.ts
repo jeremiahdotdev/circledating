@@ -137,11 +137,6 @@ export const profileScripts = {
         },
         include: {
           location: true,
-          circles: {
-            select: {
-              Circle: true,
-            },
-          },
           interactions: {
             select: {
               affectedUserId: true,
@@ -149,6 +144,16 @@ export const profileScripts = {
             where: {
               affectedUserId: profile.userId,
               isLiked: true,
+            },
+          },
+          user: {
+            select: {
+              circles: {
+                select: {
+                  isSelected: true,
+                  circle: true,
+                },
+              },
             },
           },
         },
@@ -174,9 +179,13 @@ export const profileScripts = {
         },
         include: {
           location: true,
-          circles: {
+          user: {
             select: {
-              Circle: true,
+              circles: {
+                select: {
+                  circle: true,
+                },
+              },
             },
           },
           interactions: {
@@ -201,9 +210,14 @@ export const profileScripts = {
         },
         include: {
           location: true,
-          circles: {
-            include: {
-              Circle: true,
+          user: {
+            select: {
+              circles: {
+                select: {
+                  isSelected: true,
+                  circle: true,
+                },
+              },
             },
           },
         },
@@ -212,24 +226,25 @@ export const profileScripts = {
       return ParseProfile(result);
     },
     readCurrent: async ({ ctx }: PrismaContext) => {
-      const result = await ctx.prisma.user.findUnique({
+      const result = await ctx.prisma.userProfile.findUnique({
         where: {
-          id: ctx.session?.id,
+          userId: ctx.session?.id,
         },
-        select: {
-          profile: {
-            include: {
-              location: true,
+        include: {
+          location: true,
+          user: {
+            select: {
               circles: {
-                include: {
-                  Circle: true,
+                select: {
+                  isSelected: true,
+                  circle: true,
                 },
               },
             },
           },
         },
       });
-      return ParseProfile(result?.profile);
+      return ParseProfile(result);
     },
     isUsernameUnique: async ({ input, ctx }: PrismaParameter<string>) => {
       const result = await ctx.prisma.userProfile.findMany({
@@ -253,16 +268,10 @@ export const profileScripts = {
       const result = await ctx.prisma.userProfile.create({
         data: {
           ...input,
+          locationId: input.location.id,
+          location: undefined,
           userId: ctx.session?.id,
-          location: {
-            connectOrCreate: {
-              create: { ...input.location },
-              where: { id: input.location.id },
-            },
-          },
-          circles: {
-            connect: input?.circles,
-          },
+          username: input.username ?? "",
           image: "",
           links: {},
           interactions: {},

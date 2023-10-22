@@ -132,6 +132,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
         handleUpdateImage={handleUpdateImage}
         image={profileState?.image ?? ""}
         header={`${profile.username} (${profile.age})`}
+        url={routes.shareProfile(profile.username)}
       />
       <ProfileLocation
         location={profile.location}

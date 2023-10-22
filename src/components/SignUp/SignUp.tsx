@@ -1,8 +1,10 @@
 import { Anchor, AnchorVariant } from "../Shared/Anchor";
+import { CurrentCircleHeader } from "./CurrentCircleHeader";
 import { Form } from "@/components/ui/form";
 import { FormButton } from "@/components/ui/FormButton";
 import { InputFormField } from "@/components/ui/InputFormField";
 import { Logo } from "../Nav/Logo";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { Separator } from "../ui/separator";
 import { SignupSchema, SignupSchemaType } from "@/schemas/LoginSchema";
 import { api } from "@/utils/api";
@@ -14,7 +16,10 @@ import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 
-export function SignUp() {
+export type SignUpProps = {
+  circle?: ReadCircleSchemaType;
+};
+export function SignUp({ circle }: SignUpProps) {
   const router = useRouter();
   const form = useForm<SignupSchemaType>({
     resolver: zodResolver(SignupSchema),
@@ -39,7 +44,11 @@ export function SignUp() {
         className="flex w-full flex-col items-center justify-center gap-2"
         onSubmit={form.handleSubmit(onSubmit)}
       >
-        <Logo className="py-2" />
+        {circle ? (
+          <CurrentCircleHeader circle={circle} />
+        ) : (
+          <Logo className="py-2" />
+        )}
         <Separator />
         <InputFormField
           name="username"

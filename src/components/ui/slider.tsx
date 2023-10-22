@@ -42,7 +42,7 @@ const Slider = React.forwardRef<
         <div className="-my-6 mx-1 flex justify-center">{min}</div>
       </SliderPrimitive.Thumb>
       <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border-2 border-primary bg-background ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
-        <div className="-my-6 mx-1 flex justify-center">{max}</div>
+        <div className="mx-1 my-4 flex justify-center">{max}</div>
       </SliderPrimitive.Thumb>
     </SliderPrimitive.Root>
   );

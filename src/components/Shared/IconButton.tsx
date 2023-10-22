@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ConfirmAction } from "../ui/ConfirmAction";
+import { DialogModal } from "../ui/DialogModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
 import {
@@ -12,6 +13,7 @@ import {
   faMinus,
   faPaperPlane,
   faPlus,
+  faQrcode,
   faSave,
   faTrashCan,
   faUpload,
@@ -51,6 +53,7 @@ export enum IconButtonVariant {
   PLUS = "plus",
   MINUS = "minus",
   SAVE = "save",
+  SHARE = "share",
 }
 
 export type IconButtonProps = {
@@ -65,6 +68,7 @@ export type IconButtonProps = {
   confirmationRequired?: boolean;
   className?: string;
   hover?: boolean;
+  dialogContent?: React.ReactNode;
 };
 
 export function IconButton({
@@ -75,9 +79,11 @@ export function IconButton({
   hover,
   confirmationRequired,
   className,
+  dialogContent,
   onClick,
   action,
 }: IconButtonProps) {
+  const [dialogContentState, setDialogContentState] = useState(false);
   const [dialogOpenState, setDialogOpenState] = useState(false);
   const [disabledState, setDisabledState] = useState(false);
   const option = useMemo(() => {
@@ -185,6 +191,12 @@ export function IconButton({
           icon: faMinus,
           style: subtle,
         } as IconButtonOptions;
+      case IconButtonVariant.SHARE:
+        return {
+          label: "Share",
+          icon: faQrcode,
+          style: "h-8 p-2 bg-gender-accent shadow-outter",
+        } as IconButtonOptions;
       default: // x
         return {
           label: "Remove",
@@ -199,7 +211,9 @@ export function IconButton({
   }, []);
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (action) {
+      if (dialogContent) {
+        setDialogContentState(true);
+      } else if (action) {
         event.stopPropagation();
         if (confirmationRequired) {
           setDialogOpenState(true);
@@ -212,7 +226,7 @@ export function IconButton({
         onClick(event);
       }
     },
-    [setDialogOpenState, action, enableButton, confirmationRequired, onClick]
+    [dialogContent, action, onClick, confirmationRequired, enableButton]
   );
 
   const handleConfirm = useCallback(
@@ -257,6 +271,9 @@ export function IconButton({
           )}
         </Button>
       </FormattedTooltip>
+      <DialogModal setOpen={setDialogContentState} open={dialogContentState}>
+        {dialogContent}
+      </DialogModal>
       <ConfirmAction
         open={dialogOpenState}
         actionConfirm={handleConfirm}

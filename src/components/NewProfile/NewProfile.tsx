@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ChildrenSelectionValues } from "@/schemas/Children";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
-import { CurrentCircleHeader } from "./CurrentCircleHeader";
+import { CurrentCircleHeader } from "../SignUp/CurrentCircleHeader";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { DropdownFormField } from "@/components/ui/DropdownFormField";

@@ -1,19 +1,19 @@
-import { NewProfileWithCircle } from "@/components/NewProfile/NewProfileWithCircle";
-import { NewProfileWithoutCircle } from "@/components/NewProfile/NewProfileWithoutCircle";
-import { memo } from "react";
-import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
-import { useRouter } from "next/router";
+import { NewProfile } from "@/components/NewProfile/NewProfile";
+import { memo, useCallback, useState } from "react";
+import Animation from "public/animation";
 import React from "react";
 
 export type NewProfileViewProps = Record<never, never>;
 
 export const NewProfileView: React.FC<NewProfileViewProps> = memo(() => {
-  const router = useRouter();
-  const circleCode = routerQueryAttributeToString(router.query.code);
-
-  return circleCode ? (
-    <NewProfileWithCircle circleCode={circleCode} />
-  ) : (
-    <NewProfileWithoutCircle />
+  const [showNewProfileState, setShowNewProfileState] = useState(false);
+  const toggleNewProfileState = useCallback(
+    () => setShowNewProfileState(true),
+    []
   );
+
+  setTimeout(toggleNewProfileState, 5000);
+  if (!showNewProfileState) return <Animation />;
+
+  return <NewProfile />;
 });
