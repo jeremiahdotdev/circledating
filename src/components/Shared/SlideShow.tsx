@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useState } from "react";
 import classNames from "classnames";
 
@@ -15,10 +16,12 @@ export function SlideShow({ images, children }: SlideShowProps) {
   return (
     <div
       className={classNames(
-        images[next],
-        "flex h-navless w-full items-end justify-end bg-cover"
+        "relative h-navless w-full items-end justify-end bg-cover"
       )}
     >
+      <div className="absolute -z-50 h-screen w-full">
+        <Image objectFit="cover" alt="" src={images[next]} fill={true} />
+      </div>
       {children}
     </div>
   );
