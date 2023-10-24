@@ -20,7 +20,18 @@ export function SlideShow({ images, children }: SlideShowProps) {
       )}
     >
       <div className="absolute -z-50 h-screen w-full">
-        <Image objectFit="cover" alt="" src={images[next]} fill={true} />
+        <Image
+          alt=""
+          src={images[next]}
+          placeholder="blur"
+          quality={100}
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+          }}
+          priority
+        />
       </div>
       {children}
     </div>
