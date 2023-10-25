@@ -48,4 +48,5 @@ export const systemMessages = {
   SIGN_UP: { message: "- Sign Up -", tooltip: "Go to sign up page" },
   LOGIN: { message: "- Login -", tooltip: "Go to login page" },
   DATING_HINTS: ["Real talk: Coffee or tea?"],
+  CIRCLE_BUSINESS_CARD: "Sign up now to date within this circle.",
 };

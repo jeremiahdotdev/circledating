@@ -20,8 +20,12 @@ export function NavButtonList({
   username,
   notifications,
 }: NavButtonListProps) {
-  const [openState, setOpenState] = useState(false);
-  const setClosed = useCallback(() => setOpenState(false), []);
+  const [filtersState, setFiltersState] = useState(false);
+  const [circlesState, setCirclesState] = useState(false);
+  const setClosed = useCallback(() => {
+    setFiltersState(false);
+    setCirclesState(false);
+  }, []);
   return (
     <ul className="mt-4 flex w-full flex-col items-center justify-center rounded-lg border border-gray-100 bg-gray-50 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900">
       <NavButton option={routes.circles()} />
@@ -31,16 +35,16 @@ export function NavButtonList({
       <NavSheet
         option={routes.nowhere("Circles")}
         title={"Active Circles"}
-        open={openState}
-        setOpen={setOpenState}
+        open={filtersState}
+        setOpen={setFiltersState}
       >
         <CurrentUserCircles circles={circles} setClosed={setClosed} />
       </NavSheet>
       <NavSheet
         option={routes.nowhere("Filters")}
         title={"Active Filters"}
-        open={openState}
-        setOpen={setOpenState}
+        open={circlesState}
+        setOpen={setCirclesState}
       >
         <CurrentUserPreferences
           preferences={preferences}

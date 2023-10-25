@@ -120,7 +120,7 @@ export const circleScripts = {
         include: {
           users: {
             where: {
-              userId: ctx.session?.id,
+              userId: ctx.session?.id ?? "",
             },
             select: {
               userId: true,

@@ -24,6 +24,7 @@ export function SlideShow({ images, children }: SlideShowProps) {
           alt=""
           src={images[next]}
           placeholder="blur"
+          blurDataURL="/banners/0.jpeg"
           quality={100}
           fill
           sizes="100vw"

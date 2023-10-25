@@ -1,7 +1,6 @@
 import { IconButton, IconButtonVariant } from "./IconButton";
 import { ProfilePicture } from "../Profile/ProfilePicture";
 import AvatarUpload from "../Avatar/AvatarUpload";
-import ProfileQR from "../Profile/ProfileQR";
 import React from "react";
 
 export type ProfileHeaderProps = {
@@ -10,13 +9,14 @@ export type ProfileHeaderProps = {
   image?: string;
   canEdit?: boolean;
   handleUpdateImage?: (image: string) => void;
+  qr?: React.ReactNode;
 };
 
 export function ProfileHeader({
   header,
   image,
   canEdit,
-  url,
+  qr,
   handleUpdateImage,
 }: ProfileHeaderProps) {
   return (
@@ -36,12 +36,9 @@ export function ProfileHeader({
             />
           </span>
         )}
-        {!!url && (
+        {!!qr && (
           <span className="absolute bottom-0 left-0">
-            <IconButton
-              variant={IconButtonVariant.SHARE}
-              dialogContent={<ProfileQR url={url} />}
-            />
+            <IconButton variant={IconButtonVariant.SHARE} dialogContent={qr} />
           </span>
         )}
       </div>

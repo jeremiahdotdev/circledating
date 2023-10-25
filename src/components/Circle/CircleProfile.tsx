@@ -28,6 +28,7 @@ import { routes } from "@/globals/routes";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
+import CircleQR from "../Profile/CircleQR";
 import React, { useCallback, useState } from "react";
 
 export type CircleProfileProps = {
@@ -203,7 +204,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
         handleUpdateImage={handleUpdateImage}
         image={circleState.image ?? ""}
         header={circle.label}
-        url={routes.shareCircle(circle.code)}
+        qr={<CircleQR circle={circle} />}
       />
       <IconButton
         variant={

@@ -4,6 +4,28 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  headers() {
+    return [
+      {
+        source: "/:path",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+        ],
+      },
+      {
+        source: "/frame/",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "*",
+          },
+        ],
+      },
+    ];
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.svg$/,
