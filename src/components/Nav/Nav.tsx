@@ -41,7 +41,7 @@ export function Nav({
     }
   }, [isActive, circles, preferences, username, notifications]);
   return (
-    <nav className="z-50 flex h-header w-full border-gray-200 bg-white shadow-md dark:bg-gray-900 sm:fixed">
+    <nav className="z-50 flex h-header w-full border-gray-200 bg-popover shadow-xl dark:text-white sm:fixed">
       <div className="mx-auto grid w-full max-w-screen-2xl grid-cols-3 p-4 md:grid-cols-2 ">
         <RouteOptionLink
           option={routes.default()}

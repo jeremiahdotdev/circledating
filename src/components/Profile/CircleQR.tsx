@@ -1,4 +1,6 @@
+import { Logo } from "../Nav/Logo";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
+import { Separator } from "../ui/separator";
 import { routes } from "@/globals/routes";
 import { systemMessages } from "@/globals/systemMessages";
 import { useQRCode } from "next-qrcode";
@@ -30,8 +32,11 @@ export default function CircleQR({ circle }: CircleQRProps) {
           />
         </div>
         <div className="flex w-3/5 flex-col items-center pl-4">
-          <h3 className="text-xl">{circle.label}</h3>
-          <p className="font-light">{systemMessages.CIRCLE_BUSINESS_CARD}</p>
+          <Logo className="pb-2 pt-4" />
+          <Separator />
+          <p className="p-1 pl-2 font-light">
+            {systemMessages.CIRCLE_BUSINESS_CARD(circle.label)}
+          </p>
         </div>
       </div>
       <a className="text-purple-600 underline" href={link}>

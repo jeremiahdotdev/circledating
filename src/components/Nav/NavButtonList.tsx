@@ -27,7 +27,7 @@ export function NavButtonList({
     setCirclesState(false);
   }, []);
   return (
-    <ul className="mt-4 flex w-full flex-col items-center justify-center rounded-lg border border-gray-100 bg-gray-50 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900">
+    <ul className="mt-4 flex w-full flex-col items-center justify-center rounded-lg border border-gray-100 bg-background font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:p-0">
       <NavButton option={routes.circles()} />
       <NavButton option={routes.search()} />
       <NavButton option={routes.matches()} bubble={notifications} />

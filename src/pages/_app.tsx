@@ -13,7 +13,7 @@ interface AppPageProps {
 function _App({ Component, pageProps }: AppProps<AppPageProps>) {
   return (
     <SessionProvider session={pageProps.session}>
-      <ThemeProvider defaultTheme="boy">
+      <ThemeProvider>
         <Component {...pageProps} />
       </ThemeProvider>
     </SessionProvider>

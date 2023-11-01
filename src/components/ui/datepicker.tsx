@@ -9,17 +9,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import classNames from "classnames";
 import dayjs from "dayjs";
 
 export type DatePickerProps = {
   label: string;
   onChange: (date: Date) => void;
   value: Date | undefined;
+  className?: string;
 };
 
-export function DatePicker({ onChange: realOnChange, value }: DatePickerProps) {
+export function DatePicker({
+  onChange: realOnChange,
+  value,
+  className,
+}: DatePickerProps) {
   const onChange = React.useCallback(
     (day: Date | undefined) => {
       if (day) {
@@ -36,16 +41,18 @@ export function DatePicker({ onChange: realOnChange, value }: DatePickerProps) {
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
-          className={cn(
+          className={classNames(
             "justify-start text-left font-normal",
             !value && "text-muted-foreground"
           )}
         >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, "PPP") : <span>Select...</span>}
+          <CalendarIcon className={classNames(className, "mr-2 h-4 w-4")} />
+          <span className={className}>
+            {value ? format(value, "PPP") : "Select..."}
+          </span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start" className=" w-auto p-0">
+      <PopoverContent align="start" className="w-auto p-0">
         <Calendar
           mode="single"
           captionLayout="dropdown-buttons"

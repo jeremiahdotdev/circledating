@@ -1,17 +1,18 @@
-import { ComboboxOption } from "@/components/ui/combobox";
+import { ButtonRowOptionType } from "@/components/ui/ButtonRowFormField";
 import { Gender } from "@prisma/client";
+import { IconButtonVariant } from "@/components/Shared/IconButton";
 import { z } from "zod";
 
 export const GenderSchema = z.nativeEnum(Gender);
 
-export const GenderSelectionValues: ComboboxOption<Gender>[] = [
+export const GenderSelectionValues: ButtonRowOptionType[] = [
   {
-    label: "Male",
-    value: Gender.MALE,
+    value: "boy",
+    variant: IconButtonVariant.MALE,
   },
   {
-    label: "Female",
-    value: Gender.FEMALE,
+    value: "girl",
+    variant: IconButtonVariant.FEMALE,
   },
 ];
 

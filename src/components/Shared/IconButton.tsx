@@ -10,13 +10,18 @@ import {
   faDoorOpen,
   faEnvelope,
   faExclamation,
+  faMars,
   faMinus,
+  faMoon,
   faPaperPlane,
   faPlus,
   faQrcode,
   faSave,
+  faSun,
   faTrashCan,
   faUpload,
+  faVenus,
+  faWeightHanging,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -54,6 +59,12 @@ export enum IconButtonVariant {
   MINUS = "minus",
   SAVE = "save",
   SHARE = "share",
+  MALE = "boy",
+  FEMALE = "girl",
+  LIGHT = "light",
+  DARK = "dark",
+  KG = "kg",
+  LBS = "lbs",
 }
 
 export type IconButtonProps = {
@@ -69,6 +80,9 @@ export type IconButtonProps = {
   className?: string;
   hover?: boolean;
   dialogContent?: React.ReactNode;
+  value?: string;
+  setValue?: (value: string | undefined) => void;
+  activeOverride?: boolean;
 };
 
 export function IconButton({
@@ -82,10 +96,17 @@ export function IconButton({
   dialogContent,
   onClick,
   action,
+  value,
+  setValue,
+  activeOverride,
 }: IconButtonProps) {
+  const [activeState, setActiveState] = useState(false);
+  const isActive =
+    !activeOverride || (activeOverride === undefined && activeState);
   const [dialogContentState, setDialogContentState] = useState(false);
   const [dialogOpenState, setDialogOpenState] = useState(false);
   const [disabledState, setDisabledState] = useState(false);
+
   const option = useMemo(() => {
     const subtle =
       "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none";
@@ -197,6 +218,72 @@ export function IconButton({
           icon: faQrcode,
           style: "h-8 p-2 bg-gender-accent shadow-outter",
         } as IconButtonOptions;
+      case IconButtonVariant.MALE:
+        return {
+          label: "Male",
+          icon: faMars,
+          style: classNames(
+            "h-20 w-20 text-boy-accent bg-background border-4 border-boy-accent p-6",
+            {
+              "bg-boy-accent text-white": isActive,
+            }
+          ),
+        } as IconButtonOptions;
+      case IconButtonVariant.FEMALE:
+        return {
+          label: "Female",
+          icon: faVenus,
+          style: classNames(
+            "h-20 w-20 text-girl-accent bg-background border-4 border-girl-accent p-6",
+            {
+              "bg-girl-accent text-white": isActive,
+            }
+          ),
+        } as IconButtonOptions;
+      case IconButtonVariant.LIGHT:
+        return {
+          label: "Light Mode",
+          icon: faSun,
+          style: classNames(
+            "h-20 w-20 text-yellow-400 bg-background border-4 border-yellow-400 p-6 shadow-outter",
+            {
+              "bg-yellow-400 border-yellow-400 text-white": isActive,
+            }
+          ),
+        } as IconButtonOptions;
+      case IconButtonVariant.DARK:
+        return {
+          label: "Dark Mode",
+          icon: faMoon,
+          style: classNames(
+            "h-20 w-20 text-purple-700 bg-background border-4 border-purple-700 p-6 shadow-outter",
+            {
+              "bg-purple-900 border-purple-900 text-white": isActive,
+            }
+          ),
+        } as IconButtonOptions;
+      case IconButtonVariant.KG:
+        return {
+          label: "KG",
+          icon: faWeightHanging,
+          style: classNames(
+            "h-20 w-20 text-red-700 bg-background border-4 border-gray-900 p-6 shadow-outter",
+            {
+              "bg-gray-900 border-gray-900 text-white": isActive,
+            }
+          ),
+        } as IconButtonOptions;
+      case IconButtonVariant.LBS:
+        return {
+          label: "LBS",
+          icon: faWeightHanging,
+          style: classNames(
+            "h-20 w-20 text-blue-700 bg-background border-4 border-gray-900 p-6 shadow-outter",
+            {
+              "bg-gray-900 border-gray-900 text-white": isActive,
+            }
+          ),
+        } as IconButtonOptions;
       default: // x
         return {
           label: "Remove",
@@ -204,13 +291,16 @@ export function IconButton({
           style: "h-8 p-2 bg-red-600 shadow-outter",
         } as IconButtonOptions;
     }
-  }, [variant]);
+  }, [variant, isActive]);
 
   const enableButton = useCallback(() => {
     setDisabledState(false);
   }, []);
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      setActiveState((oldValue) => !oldValue);
+      if (setValue) setValue(value);
+
       if (dialogContent) {
         setDialogContentState(true);
       } else if (action) {
@@ -226,7 +316,15 @@ export function IconButton({
         onClick(event);
       }
     },
-    [dialogContent, action, onClick, confirmationRequired, enableButton]
+    [
+      value,
+      setValue,
+      dialogContent,
+      action,
+      onClick,
+      confirmationRequired,
+      enableButton,
+    ]
   );
 
   const handleConfirm = useCallback(

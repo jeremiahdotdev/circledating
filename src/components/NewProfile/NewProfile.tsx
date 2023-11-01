@@ -1,22 +1,22 @@
 "use client";
-
 import { ActivitySelectionValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
+import { ButtonRowFormField } from "../ui/ButtonRowFormField";
 import { ChildrenSelectionValues } from "@/schemas/Children";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
-import { CurrentCircleHeader } from "../SignUp/CurrentCircleHeader";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { DropdownFormField } from "@/components/ui/DropdownFormField";
 import { EthnicitySelectionValues } from "@/schemas/Ethnicity";
-import { Form } from "@/components/ui/form";
+import { Form, FormLabel } from "@/components/ui/form";
 import { FormSection } from "../ui/FormSection";
 import { GenderSelectionValues } from "@/schemas/Gender";
 import { HeightStringSelectOptions } from "@/schemas/Height";
 import { IncomeSelectionValues } from "@/schemas/Income";
-import { LabeledInputFormField } from "@/components/ui/LabeledInputFormField";
+import { InputFormField } from "../ui/InputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
+import { LightSelectionValues, formatTheme } from "@/schemas/Themes";
 import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
 import { LocationSelectionValues, countries } from "@/globals/location";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
@@ -39,7 +39,9 @@ import { routes } from "@/globals/routes";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 import { zodResolver } from "@hookform/resolvers/zod";
+import ButtonRow from "../ui/button-row";
 import React from "react";
 
 export type NewProfileProps = {
@@ -62,7 +64,6 @@ export const NewProfile = memo(function NewProfile({
   });
 
   const create = api.profiles.create.useMutation();
-  const selectedWeightUnit = form.watch("weightUnit");
 
   const onInvalidData = useCallback(handleError, []);
   const onValidData = useCallback(
@@ -81,21 +82,47 @@ export const NewProfile = memo(function NewProfile({
     [create, circle, router]
   );
 
+  const { theme, setTheme } = useTheme();
+
+  const handleSelectGenderTheme = useCallback(
+    (value: string | undefined) => {
+      setTheme(formatTheme(theme, undefined, value));
+    },
+    [setTheme, theme]
+  );
+  const handleSelectDarkTheme = useCallback(
+    (value: string | undefined) => {
+      setTheme(formatTheme(theme, value, undefined));
+    },
+    [setTheme, theme]
+  );
+  const handleUnselect = useCallback(() => {
+    setTheme(formatTheme(theme, undefined, undefined));
+  }, [setTheme, theme]);
+
   return (
     <div className="flex w-full flex-col items-center justify-center p-4">
-      <CurrentCircleHeader circle={circle} />
       <Form
         form={form}
         onSubmit={form.handleSubmit(onValidData, onInvalidData)}
         className="w-full sm:w-3/4"
       >
         <FormSection heading="General">
-          <DropdownFormField<MutateProfileSchemaType>
+          <FormLabel>First things first -- Day or night?</FormLabel>
+          <ButtonRow
+            options={LightSelectionValues}
+            onSelect={handleSelectDarkTheme}
+            onUnselect={handleUnselect}
+          />
+          <ButtonRowFormField
             name="sex"
-            control={form.control}
             label="What is your sex?"
-            options={GenderSelectionValues}
+            description="Note: CircleDating is only oriented towards heterosexual relationships."
             required={true}
+            control={form.control}
+            options={GenderSelectionValues}
+            onSelect={handleSelectGenderTheme}
+            onUnselect={handleUnselect}
           />
           <DatepickerFormField
             control={form.control}
@@ -104,19 +131,21 @@ export const NewProfile = memo(function NewProfile({
             description="This is only used to calculate your age."
             required={true}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="weightUnit"
-            control={form.control}
             label="Which unit do you use?"
+            description="Note: CircleDating is only oriented towards heterosexual relationships."
+            required={true}
+            control={form.control}
             options={WeightUnitOptions}
+            onSelect={handleSelectGenderTheme}
+            onUnselect={handleUnselect}
           />
-          <LabeledInputFormField
+          <InputFormField
             control={form.control}
             name="weight"
             label="What is your current weight?"
             placeholder="Input..."
-            inlineLabel={selectedWeightUnit}
-            labelPosition="right"
             type="number"
           />
           <DropdownFormField<MutateProfileSchemaType>

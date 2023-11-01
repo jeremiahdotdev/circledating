@@ -1,3 +1,4 @@
+"use client";
 import { NewProfile } from "@/components/NewProfile/NewProfile";
 import { memo, useCallback, useState } from "react";
 import Animation from "public/animation";
