@@ -1,6 +1,7 @@
 import { Form } from "../ui/form";
 import { FormButton } from "../ui/FormButton";
-import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
+import { IconButton } from "@/components/Shared/IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import { LinksEditorFormField } from "../Shared/LinksEditorFormField";
 import {

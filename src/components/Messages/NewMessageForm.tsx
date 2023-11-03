@@ -1,6 +1,7 @@
 import { Form } from "@/components/ui/form";
 import { Gender } from ".prisma/client";
-import { IconButton, IconButtonVariant } from "../Shared/IconButton";
+import { IconButton } from "../Shared/IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import {
   MutateMessageSchema,
   MutateMessageSchemaType,

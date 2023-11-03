@@ -1,8 +1,9 @@
-import { IconButton, IconButtonVariant } from "../Shared/IconButton";
+import { IconButtonOption } from "@/schemas/Button";
+import { IconToggleButton } from "../Shared/IconToggleButton";
 import React, { useCallback, useMemo, useState } from "react";
 
 export type ButtonRowOptionType = {
-  variant: IconButtonVariant;
+  variant: IconButtonOption;
   value: string;
 };
 
@@ -34,7 +35,7 @@ export default function ButtonRow({
   const renderedOptions = useMemo(
     () =>
       options.map((o) => (
-        <IconButton
+        <IconToggleButton
           key={o.value}
           value={o.value}
           variant={o.variant}
@@ -44,5 +45,9 @@ export default function ButtonRow({
       )),
     [options, handleChange, valueState]
   );
-  return <div className="flex justify-around">{renderedOptions}</div>;
+  return (
+    <div className="flex w-full max-w-screen-sm justify-around">
+      {renderedOptions}
+    </div>
+  );
 }

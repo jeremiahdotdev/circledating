@@ -1,11 +1,11 @@
 import { ButtonRowOptionType } from "@/components/ui/ButtonRowFormField";
 import { Gender } from "@prisma/client";
-import { IconButtonVariant } from "@/components/Shared/IconButton";
+import { IconButtonVariant } from "./Button";
 import { z } from "zod";
 
 export const GenderSchema = z.nativeEnum(Gender);
 
-export const GenderSelectionValues: ButtonRowOptionType[] = [
+export const GenderSelectionButtonOptions: ButtonRowOptionType[] = [
   {
     value: "boy",
     variant: IconButtonVariant.MALE,

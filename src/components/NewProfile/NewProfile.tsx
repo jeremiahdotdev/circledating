@@ -1,5 +1,6 @@
 "use client";
 import { ActivitySelectionValues } from "@/schemas/Activity";
+import { BodyShapeButtonValues } from "@/schemas/BodyShape";
 import { Button } from "@/components/ui/button";
 import { ButtonRowFormField } from "../ui/ButtonRowFormField";
 import { ChildrenSelectionValues } from "@/schemas/Children";
@@ -11,15 +12,17 @@ import { DropdownFormField } from "@/components/ui/DropdownFormField";
 import { EthnicitySelectionValues } from "@/schemas/Ethnicity";
 import { Form, FormLabel } from "@/components/ui/form";
 import { FormSection } from "../ui/FormSection";
-import { GenderSelectionValues } from "@/schemas/Gender";
+import { GenderSelectionButtonOptions } from "@/schemas/Gender";
 import { HeightStringSelectOptions } from "@/schemas/Height";
 import { IncomeSelectionValues } from "@/schemas/Income";
-import { InputFormField } from "../ui/InputFormField";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
 import { LightSelectionValues, formatTheme } from "@/schemas/Themes";
-import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
+import {
+  LocationSchemaType,
+  WillingToRelocateButtonOptions,
+} from "@/schemas/SelectedLocationSchema";
 import { LocationSelectionValues, countries } from "@/globals/location";
-import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
+import { MaritalStatusesButtonOptions } from "@/schemas/MaritalStatuses";
 import {
   MutateProfileSchema,
   MutateProfileSchemaType,
@@ -30,8 +33,7 @@ import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { ReligionSelectionValues } from "@/schemas/Religion";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
 import { WeightUnit } from "@prisma/client";
-import { WeightUnitOptions } from "@/schemas/Units";
-import { YesAndNoSelectionValues } from "@/schemas/YesAndNo";
+import { WeightUnitButtonOptions } from "@/schemas/Units";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
 import { memo, useCallback } from "react";
@@ -120,7 +122,7 @@ export const NewProfile = memo(function NewProfile({
             description="Note: CircleDating is only oriented towards heterosexual relationships."
             required={true}
             control={form.control}
-            options={GenderSelectionValues}
+            options={GenderSelectionButtonOptions}
             onSelect={handleSelectGenderTheme}
             onUnselect={handleUnselect}
           />
@@ -134,19 +136,15 @@ export const NewProfile = memo(function NewProfile({
           <ButtonRowFormField
             name="weightUnit"
             label="Which unit do you use?"
-            description="Note: CircleDating is only oriented towards heterosexual relationships."
             required={true}
             control={form.control}
-            options={WeightUnitOptions}
-            onSelect={handleSelectGenderTheme}
-            onUnselect={handleUnselect}
+            options={WeightUnitButtonOptions}
           />
-          <InputFormField
-            control={form.control}
+          <ButtonRowFormField
             name="weight"
-            label="What is your current weight?"
-            placeholder="Input..."
-            type="number"
+            label="What is your weight?"
+            control={form.control}
+            options={BodyShapeButtonValues}
           />
           <DropdownFormField<MutateProfileSchemaType>
             name="height"
@@ -170,12 +168,11 @@ export const NewProfile = memo(function NewProfile({
             control={form.control}
             label="Where are you located?"
           />
-          <ComboBoxFormField<MutateProfileSchemaType, string>
+          <ButtonRowFormField
             name="willingToRelocate"
-            control={form.control}
             label="Are you willing to relocate?"
-            options={YesAndNoSelectionValues}
-            required={true}
+            control={form.control}
+            options={WillingToRelocateButtonOptions}
           />
         </FormSection>
         <FormSection heading="Family">
@@ -187,12 +184,11 @@ export const NewProfile = memo(function NewProfile({
             filterOn={circle?.childrenRestriction}
             required={true}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="maritalStatus"
             control={form.control}
             label="Have you ever been married?"
-            options={MaritalStatusesSelectionValues}
-            filterOn={circle?.maritalStatusRestriction}
+            options={MaritalStatusesButtonOptions}
             required={true}
           />
           <DropdownFormField<MutateProfileSchemaType>

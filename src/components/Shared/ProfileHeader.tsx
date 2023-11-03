@@ -1,4 +1,5 @@
-import { IconButton, IconButtonVariant } from "./IconButton";
+import { IconButton } from "./IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { ProfilePicture } from "../Profile/ProfilePicture";
 import AvatarUpload from "../Avatar/AvatarUpload";
 import React from "react";

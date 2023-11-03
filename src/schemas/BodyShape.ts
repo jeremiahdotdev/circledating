@@ -1,10 +1,31 @@
+import { ButtonRowOptionType } from "@/components/ui/button-row";
+import { IconButtonVariant } from "./Button";
 import { z } from "zod";
 
 export enum BodyShape {
-  OBESE = "obese",
-  A_FEW_EXTRA_POUNDS = "a_few_extra_pounds",
+  HEAVY = "heavy",
+  EXTRA = "extra",
   FIT = "fit",
-  ATHLETIC = "athletic",
+  THIN = "body",
 }
 
 export const BodyFormSchema = z.nativeEnum(BodyShape);
+
+export const BodyShapeButtonValues: ButtonRowOptionType[] = [
+  {
+    variant: IconButtonVariant.BODY_THIN,
+    value: BodyShape.THIN,
+  },
+  {
+    variant: IconButtonVariant.BODY_FIT,
+    value: BodyShape.FIT,
+  },
+  {
+    variant: IconButtonVariant.BODY_EXTRA,
+    value: BodyShape.EXTRA,
+  },
+  {
+    variant: IconButtonVariant.BODY_HEAVY,
+    value: BodyShape.HEAVY,
+  },
+];

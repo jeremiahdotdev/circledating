@@ -12,7 +12,7 @@ export function AboutSection({ heading, body, className }: AboutSectionProps) {
     <div
       className={classNames(
         className,
-        "relative aspect-square rounded-lg border bg-white p-8 shadow flex-1 "
+        "relative aspect-square rounded-lg border p-8 shadow flex-1 bg-popover"
       )}
     >
       <div className="absolute -inset-2 -z-50 rounded-lg bg-cyan-100 opacity-75 blur" />

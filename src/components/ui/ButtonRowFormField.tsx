@@ -10,13 +10,13 @@ import {
   FormLabel,
   FormMessage,
 } from "./form";
-import { IconButtonVariant } from "../Shared/IconButton";
+import { IconButtonOption } from "@/schemas/Button";
 import { RequiredAsterisk } from "./RequiredAsterisk";
 import ButtonRow, { ButtonRowProps } from "./button-row";
 import React, { useCallback } from "react";
 
 export type ButtonRowOptionType = {
-  variant: IconButtonVariant;
+  variant: IconButtonOption;
   value: string;
 };
 
@@ -50,9 +50,9 @@ export const ButtonRowFormField = <Values extends FieldValues>(
   );
 
   return (
-    <FormItem className="mb-2 flex w-full flex-col">
+    <FormItem className="mb-2 flex w-full flex-col items-center justify-center">
       {props.label && (
-        <FormLabel>
+        <FormLabel className="pb-2 text-xl">
           {props.label}
           <RequiredAsterisk required={props.required} />
         </FormLabel>

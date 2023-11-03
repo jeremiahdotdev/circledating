@@ -1,3 +1,6 @@
+import { ButtonRowOptionType } from "@/components/ui/button-row";
+import { IconButtonVariant } from "./Button";
+import { YesNoOrUnknown } from "@prisma/client";
 import { flattenedLocations } from "@/globals/location";
 import { z } from "zod";
 
@@ -19,3 +22,8 @@ export const SelectedLocation = z
 export type SelectedLocationSchemaType = z.infer<typeof SelectedLocationSchema>;
 export type LocationSchemaType = z.infer<typeof LocationSchema>;
 export type SelectedLocationType = z.infer<typeof SelectedLocation>;
+
+export const WillingToRelocateButtonOptions: ButtonRowOptionType[] = [
+  { value: YesNoOrUnknown.YES, variant: IconButtonVariant.PLANE },
+  { value: YesNoOrUnknown.NO, variant: IconButtonVariant.PLANE_SLASH },
+];

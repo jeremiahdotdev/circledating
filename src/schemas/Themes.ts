@@ -1,7 +1,6 @@
 "use client";
 import { ButtonRowOptionType } from "@/components/ui/ButtonRowFormField";
-import { IconButtonVariant } from "@/components/Shared/IconButton";
-import { useTheme } from "next-themes";
+import { IconButtonVariant } from "./Button";
 
 export enum Themes {
   LIGHT = "light",

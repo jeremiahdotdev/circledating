@@ -1,4 +1,5 @@
-import { IconButton, IconButtonVariant } from "../Shared/IconButton";
+import { IconButton } from "../Shared/IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import React, { useCallback } from "react";
 
 export type ProfileSectionProps = {
@@ -21,7 +22,7 @@ export function ProfileSection({
   }, [setEditMode]);
   return (
     <div className="relative w-full">
-      <div className="flex h-full w-full flex-col items-center gap-6 rounded-md bg-background p-6 shadow-outter-soft">
+      <div className="flex h-full w-full flex-col items-center gap-6 rounded-md bg-card p-6 shadow-outter-soft">
         {canEdit && (
           <span className="absolute right-3 top-3">
             <div className="flex">
