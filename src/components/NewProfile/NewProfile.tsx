@@ -3,13 +3,8 @@
 import { ActivitySelectionValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
 import { ChildrenSelectionValues } from "@/schemas/Children";
-import { CircleSchemaType } from "@/schemas/Circle";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
-import {
-  CreateProfileSchema,
-  CreateProfileSchemaType,
-} from "@/schemas/Profile";
 import { CurrentCircleHeader } from "./CurrentCircleHeader";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
@@ -25,8 +20,13 @@ import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
 import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
 import { LocationSelectionValues, countries } from "@/globals/location";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
+import {
+  MutateProfileSchema,
+  MutateProfileSchemaType,
+} from "@/schemas/Profile";
 import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { PuritySelectionValues } from "@/schemas/Purity";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { ReligionSelectionValues } from "@/schemas/Religion";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
 import { WeightUnit } from "@prisma/client";
@@ -43,17 +43,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 
 export type NewProfileProps = {
-  circle?: CircleSchemaType;
+  circle?: ReadCircleSchemaType;
 };
 
-// eslint-disable-next-line max-lines-per-function
 export const NewProfile = memo(function NewProfile({
   circle,
 }: NewProfileProps) {
   const { data: session } = useSession();
   const router = useRouter();
-  const form = useForm<CreateProfileSchemaType>({
-    resolver: zodResolver(CreateProfileSchema),
+  const form = useForm<MutateProfileSchemaType>({
+    resolver: zodResolver(MutateProfileSchema),
 
     defaultValues: {
       username: session?.user?.name ?? "",
@@ -67,11 +66,11 @@ export const NewProfile = memo(function NewProfile({
 
   const onInvalidData = useCallback(handleError, []);
   const onValidData = useCallback(
-    (data: CreateProfileSchemaType) => {
+    (data: MutateProfileSchemaType) => {
       if (circle) data.circles = [circle];
-      data.location.continent = countries
-        .filter((c) => c.country == data.location.country)
-        .filter((c) => c.states.includes(data.location.state))?.[0].continent;
+      data.location.continent = countries.filter(
+        (c) => c.country == data.location.country
+      )?.[0].continent;
       create
         .mutateAsync(data)
         .then(() => {
@@ -83,7 +82,7 @@ export const NewProfile = memo(function NewProfile({
   );
 
   return (
-    <div className="flex w-full flex-col items-center justify-center py-4">
+    <div className="flex w-full flex-col items-center justify-center p-4">
       <CurrentCircleHeader circle={circle} />
       <Form
         form={form}
@@ -91,7 +90,7 @@ export const NewProfile = memo(function NewProfile({
         className="w-full sm:w-3/4"
       >
         <FormSection heading="General">
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="sex"
             control={form.control}
             label="What is your sex?"
@@ -105,7 +104,7 @@ export const NewProfile = memo(function NewProfile({
             description="This is only used to calculate your age."
             required={true}
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="weightUnit"
             control={form.control}
             label="Which unit do you use?"
@@ -120,14 +119,14 @@ export const NewProfile = memo(function NewProfile({
             labelPosition="right"
             type="number"
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="height"
             control={form.control}
             label="What is your height?"
             options={HeightStringSelectOptions}
             type="number"
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="ethnicity"
             control={form.control}
             label="What is your ethnicity?"
@@ -136,13 +135,13 @@ export const NewProfile = memo(function NewProfile({
           />
         </FormSection>
         <FormSection heading="Location">
-          <ComboBoxFormField<CreateProfileSchemaType, LocationSchemaType>
+          <ComboBoxFormField<MutateProfileSchemaType, LocationSchemaType>
             options={LocationSelectionValues()}
             name="location"
             control={form.control}
             label="Where are you located?"
           />
-          <ComboBoxFormField<CreateProfileSchemaType, string>
+          <ComboBoxFormField<MutateProfileSchemaType, string>
             name="willingToRelocate"
             control={form.control}
             label="Are you willing to relocate?"
@@ -151,7 +150,7 @@ export const NewProfile = memo(function NewProfile({
           />
         </FormSection>
         <FormSection heading="Family">
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="children"
             control={form.control}
             label="Do you have/want kids?"
@@ -159,7 +158,7 @@ export const NewProfile = memo(function NewProfile({
             filterOn={circle?.childrenRestriction}
             required={true}
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="maritalStatus"
             control={form.control}
             label="Have you ever been married?"
@@ -167,7 +166,7 @@ export const NewProfile = memo(function NewProfile({
             filterOn={circle?.maritalStatusRestriction}
             required={true}
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="income"
             control={form.control}
             label="What type of houshold are you looking for?"
@@ -177,7 +176,7 @@ export const NewProfile = memo(function NewProfile({
           />
         </FormSection>
         <FormSection heading="Lifestyle">
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="consumables"
             control={form.control}
             label="Do you consume any of the following?"
@@ -185,7 +184,7 @@ export const NewProfile = memo(function NewProfile({
             filterOn={circle?.consumablesRestriction}
             required={true}
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="drinking"
             control={form.control}
             label="How often do you drink?"
@@ -193,7 +192,7 @@ export const NewProfile = memo(function NewProfile({
             filterOn={circle?.drinkingRestriction}
             required={true}
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="activity"
             control={form.control}
             label="How often do you excercise?"
@@ -201,17 +200,16 @@ export const NewProfile = memo(function NewProfile({
             filterOn={circle?.activityRestriction}
             required={true}
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="purity"
             control={form.control}
             label="What is your stance on purity?"
             options={PuritySelectionValues}
             filterOn={circle?.purityRestriction}
-            required={true}
           />
         </FormSection>
         <FormSection heading="About You">
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             control={form.control}
             name="religion"
             label="What is your religion?"
@@ -219,7 +217,7 @@ export const NewProfile = memo(function NewProfile({
             filterOn={circle?.religionRestriction}
             required={true}
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="politicalBeliefs"
             control={form.control}
             label="What is your political stance?"
@@ -227,7 +225,7 @@ export const NewProfile = memo(function NewProfile({
             filterOn={circle?.politicalBeliefsRestriction}
             required={true}
           />
-          <DropdownFormField<CreateProfileSchemaType>
+          <DropdownFormField<MutateProfileSchemaType>
             name="levelOfEducation"
             control={form.control}
             label="What is the highest level of education to have obtained?"

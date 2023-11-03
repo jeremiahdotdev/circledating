@@ -1,6 +1,6 @@
-import { CircleSchemaType } from "@/schemas/Circle";
 import { ListItem } from "@/components/Shared/ListItem";
-import { ProfileSchemaType } from "@/schemas/Profile";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
+import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { ReportAggregatesSchemaType } from "@/schemas/Report";
 import { RequestSchemaType } from "@/schemas/Request";
 import { memo } from "react";
@@ -42,21 +42,21 @@ export const ItemList = memo(
 );
 
 export type ParseItemTypes =
-  | ProfileSchemaType
-  | CircleSchemaType
+  | ReadProfileSchemaType
+  | ReadCircleSchemaType
   | RequestSchemaType
   | ReportAggregatesSchemaType;
 
-export function isCircle(x: ParseItemTypes): x is CircleSchemaType {
+export function isCircle(x: ParseItemTypes): x is ReadCircleSchemaType {
   return (
-    !!(x as CircleSchemaType)?.name &&
-    typeof (x as CircleSchemaType).name === "string"
+    !!(x as ReadCircleSchemaType)?.name &&
+    typeof (x as ReadCircleSchemaType).name === "string"
   );
 }
-export function isProfile(x: ParseItemTypes): x is ProfileSchemaType {
+export function isProfile(x: ParseItemTypes): x is ReadProfileSchemaType {
   return (
-    !!(x as ProfileSchemaType)?.username &&
-    typeof (x as ProfileSchemaType).username === "string"
+    !!(x as ReadProfileSchemaType)?.username &&
+    typeof (x as ReadProfileSchemaType).username === "string"
   );
 }
 export function isReportAggregate(

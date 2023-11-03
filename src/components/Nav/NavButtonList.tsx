@@ -1,30 +1,52 @@
 import { CurrentUserCircles } from "../Preferences/CurrentUserCircles";
 import { CurrentUserPreferences } from "../Preferences/CurrentUserPreferences";
 import { NavButton } from "@/components/Nav/NavButton";
-import { NavSheetTrigger } from "@/components/Nav/NavSheetTrigger";
+import { NavSheet } from "../ui/NavSheet";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
+import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { routes } from "@/globals/routes";
-import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useCallback, useState } from "react";
 
-export function NavButtonList() {
-  const { data: session } = useSession();
-  const currentUser = session?.user?.name ?? "";
+export type NavButtonListProps = {
+  username: string;
+  preferences?: ReadUserPreferencesSchemaType;
+  circles?: ReadCircleSchemaType[];
+  notifications?: number;
+};
+
+export function NavButtonList({
+  preferences,
+  circles,
+  username,
+  notifications,
+}: NavButtonListProps) {
+  const [openState, setOpenState] = useState(false);
+  const setClosed = useCallback(() => setOpenState(false), []);
   return (
-    <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900">
+    <ul className="mt-4 flex w-full flex-col items-center justify-center rounded-lg border border-gray-100 bg-gray-50 font-medium dark:border-gray-700 dark:bg-gray-800 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 md:dark:bg-gray-900">
       <NavButton option={routes.circles()} />
       <NavButton option={routes.search()} />
-      <NavButton option={routes.matches()} />
-      <NavButton option={routes.profileByUsername(currentUser)} />
-      <NavSheetTrigger
+      <NavButton option={routes.matches()} bubble={notifications} />
+      <NavButton option={routes.profileByUsername(username)} />
+      <NavSheet
         option={routes.nowhere("Circles")}
         title={"Active Circles"}
-        content={<CurrentUserCircles />}
-      />
-      <NavSheetTrigger
+        open={openState}
+        setOpen={setOpenState}
+      >
+        <CurrentUserCircles circles={circles} setClosed={setClosed} />
+      </NavSheet>
+      <NavSheet
         option={routes.nowhere("Filters")}
         title={"Active Filters"}
-        content={<CurrentUserPreferences />}
-      />
+        open={openState}
+        setOpen={setOpenState}
+      >
+        <CurrentUserPreferences
+          preferences={preferences}
+          setClosed={setClosed}
+        />
+      </NavSheet>
       <NavButton option={routes.logout()} />
     </ul>
   );

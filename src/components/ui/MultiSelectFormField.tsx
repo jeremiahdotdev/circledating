@@ -12,7 +12,6 @@ import {
 } from "./form";
 import { MultiSelect, MultiSelectOption } from "./multi-select";
 import { ProfileAttributeType } from "@/utils/formatProfileAttribute";
-import { SelectedLocationType } from "@/schemas/SelectedLocationSchema";
 import React, { useCallback } from "react";
 
 interface MultiSelectFormFieldProps<Values extends FieldValues>
@@ -36,7 +35,7 @@ export const MultiSelectFormField = <Values extends FieldValues>({
   const { field, fieldState } = useController(props);
 
   const onChange = useCallback(
-    (value: ProfileAttributeType[] | SelectedLocationType[]) => {
+    (value: ProfileAttributeType[]) => {
       field.onChange(value);
     },
     [field]

@@ -3,25 +3,45 @@ import { NavActivePageHeader } from "./NavActivePageHeader";
 import { NavButton } from "./NavButton";
 import { NavButtonList } from "./NavButtonList";
 import { NavMenuMobile } from "./NavMenuMobile";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
+import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";
 import { routes } from "@/globals/routes";
 import React, { useMemo } from "react";
 
 export type NavProps = {
   isAuthed?: boolean;
-  isActiveUser?: boolean;
+  isActive?: boolean;
+  username: string;
+  circles?: ReadCircleSchemaType[];
+  preferences?: ReadUserPreferencesSchemaType;
+  notifications?: number;
 };
 
-export function Nav({ isAuthed, isActiveUser }: NavProps) {
+export function Nav({
+  isAuthed,
+  isActive,
+  username,
+  circles,
+  preferences,
+  notifications,
+}: NavProps) {
   const renderButtonList = useMemo(() => {
-    if (isActiveUser) {
-      return <NavButtonList />;
+    if (isActive) {
+      return (
+        <NavButtonList
+          preferences={preferences}
+          circles={circles}
+          username={username}
+          notifications={notifications}
+        />
+      );
     } else {
       return <NavButton option={routes.logout()} />;
     }
-  }, [isActiveUser]);
+  }, [isActive, circles, preferences, username, notifications]);
   return (
-    <nav className="z-50 flex w-full border-gray-200 bg-white shadow-md dark:bg-gray-900 sm:fixed">
+    <nav className="z-50 flex h-header w-full border-gray-200 bg-white shadow-md dark:bg-gray-900 sm:fixed">
       <div className="mx-auto grid w-full max-w-screen-2xl grid-cols-3 p-4 md:grid-cols-2 ">
         <RouteOptionLink
           option={routes.default()}

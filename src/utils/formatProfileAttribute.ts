@@ -12,18 +12,7 @@ import {
   YesNoOrUnknown,
 } from "@prisma/client";
 
-export type ProfileAttributeType =
-  | Religion
-  | MaritalStatus
-  | PoliticalBeliefs
-  | YesNoOrUnknown
-  | Activity
-  | Drinking
-  | Consumables
-  | LevelOfEducation
-  | Purity
-  | Children
-  | Income;
+export type ProfileAttributeType = string;
 
 export const formatProfileAttribute = (attribute: ProfileAttributeType) => {
   switch (attribute) {
@@ -131,8 +120,6 @@ export const formatProfileAttribute = (attribute: ProfileAttributeType) => {
       return "Virgin, Waiting";
     case Purity.VIRGIN_NOT_WAITING:
       return "Virgin, Not Waiting";
-    case Purity.PURITY_UNKNOWN:
-      return "Unknown";
     // Children
     case Children.HAS_AND_DOES_NOT_WANT:
       return "Has; Doesn't want More";

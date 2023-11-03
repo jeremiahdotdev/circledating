@@ -1,6 +1,22 @@
+import {
+  Activity,
+  Children,
+  Consumables,
+  Drinking,
+  Ethnicity,
+  Gender,
+  Income,
+  LevelOfEducation,
+  MaritalStatus,
+  PoliticalBeliefs,
+  Prisma,
+  Purity,
+  Religion,
+  WeightUnit,
+  YesNoOrUnknown,
+} from "@prisma/client";
 import { ActivitySchema } from "./Activity";
 import { ChildrenSchema } from "./Children";
-import { CircleSchema } from "./Circle";
 import { ConsumablesSchema } from "./Consumables";
 import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
@@ -8,26 +24,33 @@ import { GenderSchema } from "./Gender";
 import { IncomeSchema } from "./Income";
 import { InteractionSchema } from "./Interaction";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
-import { LinkSchema } from "./Link";
+import { LinkSchema, LinkSchemaType } from "./Link";
 import {
   LocationSchema,
   SelectedLocationSchema,
 } from "./SelectedLocationSchema";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
+import {
+  ParseCircle,
+  PrismaCircleType,
+  ReadCircleSchema,
+  ReadCircleSchemaType,
+} from "./Circle";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
 import { ReligionSchema } from "./Religion";
 import { YesAndNoSchema } from "./YesAndNo";
+import { parseArray } from "@/helpers/parseArray";
 import { z } from "zod";
+import dayjs from "dayjs";
 
-export const ProfilePartial = {
+export const ProfilePartialSchema = z.object({
   userId: z.string(),
   image: z.string().optional(),
   username: z.string().min(3).max(20),
   sex: GenderSchema,
-  birthDate: z.date(),
-  height: z.number(), // Height in cm
-  weight: z.number(), // Weight in kg
+  height: z.number().optional(), // Height in cm
+  weight: z.number().optional(), // Weight in kg
   location: SelectedLocationSchema,
   willingToRelocate: YesAndNoSchema,
   children: ChildrenSchema,
@@ -44,29 +67,31 @@ export const ProfilePartial = {
   bio: z.string(),
   weightUnit: z.enum(["KG", "LBS"]),
   links: z.array(LinkSchema).optional().nullable(),
-};
-export const ProfilePartialSchema = z.object(ProfilePartial);
-
-export const Profile = {
-  ...ProfilePartial,
-  circles: z.array(CircleSchema).optional(),
-  interactions: z.array(InteractionSchema).optional(),
-  affections: z.array(InteractionSchema).optional(),
-  location: LocationSchema.optional(),
-  isPerfectMatch: z.boolean().optional(),
-  likesYou: z.boolean().optional(),
-};
-export const ProfileSchema = z.object(Profile);
-
-export const CreateProfileSchema = z.object({
-  ...Profile,
-  userId: z.string().optional(),
-  location: LocationSchema,
+  circles: z.array(ReadCircleSchema).optional(),
+  interactions: z.array(InteractionSchema).optional().nullable(),
+  affections: z.array(InteractionSchema).optional().nullable(),
 });
 
-export const UpdateProfileSchema = z.object({
-  ...ProfilePartial,
+export const ReadProfileSchema = z.object({
+  ...ProfilePartialSchema.shape,
+  height: z.number().optional().nullable(), // Height in cm
+  weight: z.number().optional().nullable(), // Weight in kg
+  purity: ProfilePartialSchema.shape.purity.optional().nullable(),
+  location: LocationSchema.optional().nullable(),
+  isPerfectMatch: z.boolean().optional(),
+  likesYou: z.boolean().optional(),
+  age: z.number(),
+  birthDate: z.date().nullable(),
+});
+
+export const MutateProfileSchema = z.object({
+  ...ProfilePartialSchema.shape,
+  weight: ProfilePartialSchema.shape.weight.optional(),
+  height: ProfilePartialSchema.shape.weight.optional(),
+  purity: ProfilePartialSchema.shape.purity.optional(),
+  userId: z.string().optional(),
   location: LocationSchema,
+  birthDate: z.date(),
 });
 
 export const UpdateImageSchema = z.object({
@@ -74,40 +99,136 @@ export const UpdateImageSchema = z.object({
   image: z.string(),
 });
 
-export type CreateProfileSchemaType = z.infer<typeof CreateProfileSchema>;
-export type UpdateProfileSchemaType = z.infer<typeof UpdateProfileSchema>;
+export type MutateProfileSchemaType = z.infer<typeof MutateProfileSchema>;
 export type UpdateImageSchemaType = z.infer<typeof UpdateImageSchema>;
 
-export type ProfileSchemaType = z.infer<typeof ProfileSchema>;
+export type ReadProfileSchemaType = z.infer<typeof ReadProfileSchema>;
 export type ProfilePartialSchemaType = z.infer<typeof ProfilePartialSchema>;
 
-export function isProfile(x: unknown): x is ProfileSchemaType {
+export function isProfile(x: unknown): x is ReadProfileSchemaType {
   return (
     typeof x === "object" &&
     x != null &&
-    !!(x as ProfileSchemaType).activity &&
-    !!(x as ProfileSchemaType).bio &&
-    !!(x as ProfileSchemaType).birthDate &&
-    !!(x as ProfileSchemaType).children &&
-    !!(x as ProfileSchemaType).circles &&
-    !!(x as ProfileSchemaType).consumables &&
-    !!(x as ProfileSchemaType).drinking &&
-    !!(x as ProfileSchemaType).ethnicity &&
-    !!(x as ProfileSchemaType).height &&
-    !!(x as ProfileSchemaType).income &&
-    !!(x as ProfileSchemaType).interactions &&
-    !!(x as ProfileSchemaType).levelOfEducation &&
-    !!(x as ProfileSchemaType).links &&
-    !!(x as ProfileSchemaType).location &&
-    !!(x as ProfileSchemaType).maritalStatus &&
-    !!(x as ProfileSchemaType).politicalBeliefs &&
-    !!(x as ProfileSchemaType).purity &&
-    !!(x as ProfileSchemaType).religion &&
-    !!(x as ProfileSchemaType).sex &&
-    !!(x as ProfileSchemaType).userId &&
-    !!(x as ProfileSchemaType).username &&
-    !!(x as ProfileSchemaType).weight &&
-    !!(x as ProfileSchemaType).weightUnit &&
-    !!(x as ProfileSchemaType).willingToRelocate
+    !!(x as ReadProfileSchemaType).activity &&
+    !!(x as ReadProfileSchemaType).bio &&
+    !!(x as ReadProfileSchemaType).children &&
+    !!(x as ReadProfileSchemaType).circles &&
+    !!(x as ReadProfileSchemaType).consumables &&
+    !!(x as ReadProfileSchemaType).drinking &&
+    !!(x as ReadProfileSchemaType).ethnicity &&
+    !!(x as ReadProfileSchemaType).height &&
+    !!(x as ReadProfileSchemaType).income &&
+    !!(x as ReadProfileSchemaType).interactions &&
+    !!(x as ReadProfileSchemaType).levelOfEducation &&
+    !!(x as ReadProfileSchemaType).links &&
+    !!(x as ReadProfileSchemaType).location &&
+    !!(x as ReadProfileSchemaType).maritalStatus &&
+    !!(x as ReadProfileSchemaType).politicalBeliefs &&
+    !!(x as ReadProfileSchemaType).purity &&
+    !!(x as ReadProfileSchemaType).religion &&
+    !!(x as ReadProfileSchemaType).sex &&
+    !!(x as ReadProfileSchemaType).userId &&
+    !!(x as ReadProfileSchemaType).username &&
+    !!(x as ReadProfileSchemaType).weight &&
+    !!(x as ReadProfileSchemaType).weightUnit &&
+    !!(x as ReadProfileSchemaType).willingToRelocate
   );
+}
+
+export type PrismaProfileType = {
+  location:
+    | {
+        id: string;
+        continent: string;
+        country: string;
+        state: string | null;
+      }
+    | undefined;
+  circles:
+    | {
+        Circle: PrismaCircleType | undefined;
+        isSelected?: boolean;
+      }[]
+    | undefined;
+  interactions?:
+    | {
+        affectedUserId: string;
+      }[]
+    | undefined;
+} & {
+  userId: string;
+  username: string;
+  image: string | null;
+  sex: Gender;
+  birthDate: Date;
+  height: number | null;
+  weight: number | null;
+  locationId: string;
+  willingToRelocate: YesNoOrUnknown;
+  children: Children;
+  ethnicity: Ethnicity;
+  drinking: Drinking;
+  consumables: Consumables;
+  politicalBeliefs: PoliticalBeliefs;
+  levelOfEducation: LevelOfEducation;
+  purity?: Purity | null;
+  income: Income;
+  maritalStatus: MaritalStatus;
+  activity: Activity;
+  religion: Religion;
+  bio: string;
+  weightUnit: WeightUnit;
+  links: Prisma.JsonValue;
+};
+
+export function ParseProfile(
+  profile: PrismaProfileType | undefined | null
+): ReadProfileSchemaType | undefined {
+  if (!profile) return undefined;
+  const circles: ReadCircleSchemaType[] = [];
+  profile?.circles?.forEach((c) => {
+    const circle = ParseCircle(c.Circle, c.isSelected);
+    if (circle) {
+      circles.push(circle);
+    }
+  });
+  return {
+    userId: profile.userId,
+    username: profile.username,
+    sex: profile.sex,
+    bio: profile.bio,
+    height: profile.height,
+    weight: profile.weight,
+    weightUnit: profile.weightUnit,
+    willingToRelocate: profile.willingToRelocate,
+    children: profile.children,
+    drinking: profile.drinking,
+    ethnicity: profile.ethnicity,
+    consumables: profile.consumables,
+    politicalBeliefs: profile.politicalBeliefs,
+    levelOfEducation: profile.levelOfEducation,
+    purity: profile.purity,
+    income: profile.income,
+    maritalStatus: profile.maritalStatus,
+    activity: profile.activity,
+    religion: profile.religion,
+    image: profile.image ?? "",
+    age: dayjs().diff(profile.birthDate, "year"),
+    links: parseArray<LinkSchemaType>(profile.links),
+    circles: circles,
+    birthDate: null,
+    likesYou: !!profile.interactions?.length,
+    location: profile.location,
+  };
+}
+
+export function ParseProfiles(
+  profiles: PrismaProfileType[]
+): ReadProfileSchemaType[] {
+  const result: ReadProfileSchemaType[] = [];
+  profiles.forEach((el) => {
+    const profile = ParseProfile(el);
+    if (profile) result.push(profile);
+  });
+  return result;
 }

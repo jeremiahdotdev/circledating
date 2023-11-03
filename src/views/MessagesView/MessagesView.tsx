@@ -1,7 +1,6 @@
+import { Infographic } from "@/components/Shared/Infographic";
 import { Loading } from "@/components/Shared/Loading";
-import { MessageSchemaType } from "@/schemas/Message";
 import { Messaging } from "../../components/Messages/Messaging";
-import { PageNotFound } from "@/components/Shared/PageNotFound";
 import { api } from "@/utils/api";
 import { memo } from "react";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
@@ -15,7 +14,7 @@ export const MessagesView: React.FC<MessagesViewProps> = memo(() => {
   const router = useRouter();
   const { data: session } = useSession();
   const user = routerQueryAttributeToString(router.query.user);
-  if (!user) return <PageNotFound />;
+  if (!user) return <Infographic />;
 
   const request = api.messages.read.useQuery({
     authorUsername: session?.user?.name ?? "",
@@ -23,7 +22,7 @@ export const MessagesView: React.FC<MessagesViewProps> = memo(() => {
   });
   if (!request.data) return <Loading />;
 
-  const messages: MessageSchemaType[] = request.data;
+  const messages = request.data;
 
   return <Messaging messages={messages} />;
 });

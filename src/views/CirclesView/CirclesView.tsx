@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { CircleSchemaType } from "@/schemas/Circle";
 import { ItemList, ItemType, ParseItem } from "@/components/Shared/ItemList";
-import { Loading } from "@/components/Shared/Loading";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { SearchForm } from "../../components/Circle/SearchForm";
 import { api } from "@/utils/api";
 import { handleError } from "@/utils/handleError";
@@ -10,21 +9,22 @@ import { routes } from "@/globals/routes";
 import { useRouter } from "next/router";
 import React from "react";
 
-export type CirclesViewProps = Record<never, never>;
-
-export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
+export type CirclesViewProps = {
+  featured: ReadCircleSchemaType[];
+  current: ReadCircleSchemaType[];
+};
+export const CirclesView = memo(function CirclesView({
+  featured,
+  current,
+}: CirclesViewProps) {
   const router = useRouter();
   const { mutateAsync } = api.circles.searchMany.useMutation();
-  const [searchCirclesState, setSearchCirclesState] = useState(
-    [] as CircleSchemaType[]
-  );
+  const [searchCirclesState, setSearchCirclesState] = useState<
+    ReadCircleSchemaType[]
+  >([]);
   const handleSearch = useCallback(
     (searchText: string) => {
-      mutateAsync({
-        circleNamePartial: searchText,
-      })
-        .then(setSearchCirclesState)
-        .catch(handleError);
+      mutateAsync(searchText).then(setSearchCirclesState).catch(handleError);
     },
     [mutateAsync]
   );
@@ -39,15 +39,10 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
     },
     [router]
   );
-  const featured = api.circles.readFeatured.useQuery().data;
-  const current = api.circles.readCurrentCircles.useQuery().data;
-
-  if (!featured || !current) return <Loading />;
-
   return (
     <div className="flex w-full justify-center">
       <div className="flex w-full flex-col items-center justify-between gap-16 px-2 py-12 sm:w-3/4">
-        {current.length && (
+        {!!current?.length && (
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Your Circles</h2>
             <div className="max-h-96 w-full">
@@ -58,7 +53,7 @@ export const CirclesView: React.FC<CirclesViewProps> = memo(() => {
             </div>
           </div>
         )}
-        {featured.length && (
+        {!!featured?.length && (
           <div className="flex w-full flex-col gap-4">
             <h2 className="w-full text-start text-xl">Suggested for you</h2>
             <div className="max-h-96 w-full">

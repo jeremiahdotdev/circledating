@@ -8,15 +8,15 @@ import {
   faDoorClosed,
   faDoorOpen,
   faEnvelope,
-  faExclamationCircle,
+  faExclamation,
   faMinus,
   faPaperPlane,
   faPlus,
+  faSave,
   faTrashCan,
   faUpload,
   faX,
 } from "@fortawesome/free-solid-svg-icons";
-import { cn } from "@/lib/utils";
 import {
   faCheckCircle,
   faPenToSquare,
@@ -24,6 +24,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { handleError } from "@/utils/handleError";
 import React, { useCallback, useMemo, useState } from "react";
+import classNames from "classnames";
 
 export type IconButtonOptions = {
   icon: IconDefinition;
@@ -49,6 +50,7 @@ export enum IconButtonVariant {
   CANCEL = "cancel",
   PLUS = "plus",
   MINUS = "minus",
+  SAVE = "save",
 }
 
 export type IconButtonProps = {
@@ -62,6 +64,7 @@ export type IconButtonProps = {
   labelOverride?: string;
   confirmationRequired?: boolean;
   className?: string;
+  hover?: boolean;
 };
 
 export function IconButton({
@@ -69,6 +72,7 @@ export function IconButton({
   type,
   disabled,
   labelOverride,
+  hover,
   confirmationRequired,
   className,
   onClick,
@@ -79,6 +83,8 @@ export function IconButton({
   const option = useMemo(() => {
     const subtle =
       "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none";
+    const subtleInverted =
+      "flex self-end h-5 w-5 p-1 text-gender-accent border-gender-accent bg-transparent border hover:bg-transparent shadow-none";
     switch (variant) {
       case IconButtonVariant.MAIL:
         return {
@@ -97,6 +103,12 @@ export function IconButton({
         return {
           label: "Message",
           icon: faPaperPlane,
+          style: "h-16 bg-purple-600 shadow-outter",
+        } as IconButtonOptions;
+      case IconButtonVariant.SAVE:
+        return {
+          label: "Save",
+          icon: faSave,
           style: "h-16 bg-purple-600 shadow-outter",
         } as IconButtonOptions;
       case IconButtonVariant.LIKE:
@@ -140,8 +152,8 @@ export function IconButton({
       case IconButtonVariant.REPORT:
         return {
           label: "Report",
-          icon: faExclamationCircle,
-          style: subtle,
+          icon: faExclamation,
+          style: subtleInverted,
         } as IconButtonOptions;
       case IconButtonVariant.EDIT:
         return {
@@ -228,11 +240,12 @@ export function IconButton({
       <FormattedTooltip content={labelOverride ?? option.label}>
         <Button
           onClick={handleClick}
-          className={cn(
+          className={classNames(
             "text-white rounded-full",
             option.style,
             className,
-            option.showLabel ? "" : "aspect-square"
+            { "aspect-square": !option.showLabel },
+            { "absolute right-5 bottom-5": hover }
           )}
           type={type ?? "button"}
           disabled={disabled || disabledState}

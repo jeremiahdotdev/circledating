@@ -1,15 +1,15 @@
 import { DialogModal } from "../ui/DialogModal";
 import { IconButton, IconButtonVariant } from "../Shared/IconButton";
 import { InteractionSchemaType } from "@/schemas/Interaction";
-import { ProfileSchemaType } from "@/schemas/Profile";
+import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { ReportProfileForm } from "./ReportProfileForm";
 import React, { useCallback, useState } from "react";
 
 export type ProfileActionsProps = {
-  profile: ProfileSchemaType;
+  profile: ReadProfileSchemaType;
   interact: (
     interaction: InteractionSchemaType,
-    profile: ProfileSchemaType
+    profile: ReadProfileSchemaType
   ) => Promise<void>;
 };
 
@@ -40,7 +40,7 @@ export function ProfileActions({ profile, interact }: ProfileActionsProps) {
 
   return (
     <>
-      <div className="flex max-w-full items-center justify-around py-6 text-sm ring-offset-background sm:p-6">
+      <div className="flex max-w-full items-center justify-around pt-6 text-sm ring-offset-background">
         <IconButton
           variant={
             profile.likesYou ? IconButtonVariant.MAIL : IconButtonVariant.LIKE

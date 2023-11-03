@@ -15,6 +15,11 @@ import { LinksEditorFormField } from "../Shared/LinksEditorFormField";
 import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
 import { LocationSelectionValues } from "@/globals/location";
 import { MaritalStatusesSelectionValues } from "@/schemas/MaritalStatuses";
+import {
+  MutateProfileSchemaType,
+  ReadProfileSchema,
+  ReadProfileSchemaType,
+} from "@/schemas/Profile";
 import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
 import { ProfileActions } from "./ProfileActions";
 import { ProfileAttribute, ProfileAttributeVariant } from "./ProfileAttribute";
@@ -25,11 +30,6 @@ import { ProfileDescription } from "./ProfileDescription";
 import { ProfileHeader } from "../Shared/ProfileHeader";
 import { ProfileLinks } from "../Shared/ProfileLinks";
 import { ProfileLocation } from "./ProfileLocation";
-import {
-  ProfileSchema,
-  ProfileSchemaType,
-  UpdateProfileSchemaType,
-} from "@/schemas/Profile";
 import { ProfileSection } from "./ProfileSection";
 import { PuritySelectionValues } from "@/schemas/Purity";
 import { ReligionSelectionValues } from "@/schemas/Religion";
@@ -40,21 +40,20 @@ import { routes } from "@/globals/routes";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useMemo, useState } from "react";
-import dayjs from "dayjs";
+import React, { useCallback, useState } from "react";
 
 export type ProfileProps = {
-  profile: ProfileSchemaType;
+  profile: ReadProfileSchemaType;
   canEdit?: boolean;
   interact?: (
     interaction: InteractionSchemaType,
-    profile: ProfileSchemaType
+    profile: ReadProfileSchemaType
   ) => Promise<void>;
 };
 
 export const isDirty = (
-  data: ProfileSchemaType,
-  profileState: ProfileSchemaType
+  data: ReadProfileSchemaType,
+  profileState: ReadProfileSchemaType
 ) => {
   return (
     data.bio !== profileState.bio ||
@@ -94,27 +93,25 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
     [updateImage, profileState, setProfileState]
   );
 
-  const form = useForm<ProfileSchemaType>({
-    resolver: zodResolver(ProfileSchema),
+  const form = useForm<ReadProfileSchemaType>({
+    resolver: zodResolver(ReadProfileSchema),
     defaultValues: {
       ...profileState,
     },
   });
   const onInvalidData = useCallback(handleError, []);
   const onValidData = useCallback(
-    (data: ProfileSchemaType) => {
+    (data: ReadProfileSchemaType) => {
       setEditMode(false);
 
       if (isDirty(profileState, data)) {
-        update.mutateAsync(data as UpdateProfileSchemaType).catch(handleError);
+        update.mutateAsync(data as MutateProfileSchemaType).catch(handleError);
         setProfileState(data);
       }
     },
     [setProfileState, update, profileState]
   );
-  const age = useMemo(() => {
-    return dayjs().diff(profile.birthDate, "year");
-  }, [profile.birthDate]);
+
   const handleRoute = useCallback(
     (circleNameItem: ItemType) => {
       const route = routes.circleByCircleNameAsLabel(circleNameItem.value);
@@ -133,16 +130,15 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
       <ProfileHeader
         canEdit={canEdit}
         handleUpdateImage={handleUpdateImage}
-        image={profileState.image ?? ""}
-        header={`${profile.username} (${age})`}
+        image={profileState?.image ?? ""}
+        header={`${profile.username} (${profile.age})`}
       />
       <ProfileLocation
-        country={profile.location?.country}
-        state={profile.location?.state}
+        location={profile.location}
         willingToRelocate={profile.willingToRelocate === "YES"}
         isEditMode={editMode}
         editor={
-          <ComboBoxFormField<ProfileSchemaType, LocationSchemaType>
+          <ComboBoxFormField<ReadProfileSchemaType, LocationSchemaType>
             options={LocationSelectionValues()}
             name="location"
             control={form.control}
@@ -189,7 +185,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={`${profile.religion}`}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="religion"
                 control={form.control}
                 options={ReligionSelectionValues}
@@ -202,7 +198,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={`${profile.maritalStatus}`}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="maritalStatus"
                 control={form.control}
                 options={MaritalStatusesSelectionValues}
@@ -215,7 +211,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={profile.politicalBeliefs}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="politicalBeliefs"
                 control={form.control}
                 options={PoliticalBeliefsSelectionValues}
@@ -228,7 +224,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={profile.levelOfEducation}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="levelOfEducation"
                 control={form.control}
                 options={LevelOfEducationSelectionValues}
@@ -242,7 +238,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={profile.height}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="height"
                 control={form.control}
                 options={HeightStringSelectOptions}
@@ -269,7 +265,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={profile.drinking}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="drinking"
                 control={form.control}
                 options={DrinkingSelectionValues}
@@ -282,7 +278,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={profile.consumables}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="consumables"
                 control={form.control}
                 options={ConsumablesSelectionValues}
@@ -295,7 +291,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={`${profile.activity}`}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="activity"
                 control={form.control}
                 options={ActivitySelectionValues}
@@ -309,7 +305,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={profile.purity}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="purity"
                 control={form.control}
                 options={PuritySelectionValues}
@@ -322,7 +318,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={profile.children}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="children"
                 control={form.control}
                 options={ChildrenSelectionValues}
@@ -335,7 +331,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
             attribute={profile.income}
             isEditMode={editMode}
             editor={
-              <DropdownFormField<ProfileSchemaType>
+              <DropdownFormField<ReadProfileSchemaType>
                 name="income"
                 control={form.control}
                 options={IncomeSelectionValues}
@@ -344,16 +340,16 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
           />
         </div>
       </ProfileSection>
-      <ProfileSection heading="Circles">
-        <div className="grid w-full sm:grid-cols-2">
-          {profile.circles && (
+      {!!profile.circles?.length && (
+        <ProfileSection heading="Circles">
+          <div className="grid w-full sm:grid-cols-2">
             <ItemList
               items={profile.circles.map(ParseItem)}
               clickAction={handleRoute}
             />
-          )}
-        </div>
-      </ProfileSection>
+          </div>
+        </ProfileSection>
+      )}
       {interact && (
         <ProfileSection>
           <ProfileActions profile={profile} interact={interact} />

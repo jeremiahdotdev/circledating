@@ -1,21 +1,12 @@
-import { MessageSchema, ReadMessagesSchema } from "@/schemas/Message";
+import { AccessMessagesSchema, MutateMessageSchema } from "@/schemas/Message";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { messagesScripts } from "../prisma/messagesScripts";
 
 export const messagesRouter = createTRPCRouter({
-  create: publicProcedure.input(MessageSchema).mutation(({ input, ctx }) => {
-    return ctx.prisma.userMessage.create({
-      data: input,
-    });
-  }),
   read: publicProcedure
-    .input(ReadMessagesSchema)
-    .query(async ({ input, ctx }) => {
-      const data = await ctx.prisma.userMessage.findMany({
-        where: {
-          authorUsername: input.authorUsername,
-          recipientUsername: input.recipientUsername,
-        },
-      });
-      return data;
-    }),
+    .input(AccessMessagesSchema)
+    .query(messagesScripts.query.read),
+  create: publicProcedure
+    .input(MutateMessageSchema)
+    .mutation(messagesScripts.mutate.create),
 });

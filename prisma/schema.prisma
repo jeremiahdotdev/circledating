@@ -70,7 +70,6 @@ enum Purity {
   NOT_VIRGIN_WAITING
   VIRGIN_NOT_WAITING
   NOT_VIRGIN_NOT_WAITING
-  PURITY_UNKNOWN
 }
 
 enum Income {
@@ -125,7 +124,7 @@ model Location {
   id          String        @id @default(uuid())
   continent   String
   country     String
-  state       String
+  state       String?
   UserProfile UserProfile[]
 }
 
@@ -135,8 +134,8 @@ model UserProfile {
   image                              String?           
   sex                                Gender
   birthDate                          DateTime
-  height                             Int
-  weight                             Float
+  height                             Int?
+  weight                             Float?
   locationId                         String
   location                           Location         @relation(fields: [locationId], references: [id])
   willingToRelocate                  YesNoOrUnknown
@@ -146,7 +145,7 @@ model UserProfile {
   consumables                        Consumables
   politicalBeliefs                   PoliticalBeliefs
   levelOfEducation                   LevelOfEducation
-  purity                             Purity
+  purity                             Purity?
   income                             Income
   maritalStatus                      MaritalStatus
   activity                           Activity
@@ -169,6 +168,7 @@ model UserCircle {
   Circle      Circle        @relation(fields: [circleId], references: [id])
   userId      String 
   User        UserProfile   @relation(fields: [userId], references: [userId])
+  isSelected  Boolean		@default(true)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime?     @updatedAt
 
@@ -202,7 +202,6 @@ model Circle {
   activityRestriction                           Json?
   religionRestriction                           Json?
   users                                         UserCircle[]
-  selected                                      SelectedCircle[]
   links         					            Json?
   requests										CircleRequest[]     
   reports										UserReport[]     
@@ -218,6 +217,7 @@ model User {
   createdAt           DateTime     			@default(now())
   updatedAt           DateTime?    			@updatedAt
   username			  String       			@unique
+  isAdmin			  Boolean       	    @default(false)
   preferences         UserPreferences?
   authoredMessages    UserMessage[]    		@relation("authoredMessages") 
   recievedMessages    UserMessage[]    		@relation("recievedMessages")
@@ -225,7 +225,6 @@ model User {
   recievedReports     UserReport[]    		@relation("recievedReports")
   authoredRequests    CircleRequest[]       
   conversations       UserConversation[]         
-
   @@index([username])
 }
 
@@ -235,7 +234,6 @@ model UserPreferences {
   minAge              Int
   maxAge              Int
   sex                 Gender?
-  selectedCircles     SelectedCircle[]
   searchContinents    Json?
   searchCountries     Json?
   searchStates        Json?
@@ -256,17 +254,6 @@ model UserPreferences {
   @@index([userId])
 }
 
-model SelectedCircle {
-  id         String            @id @default(uuid())
-  circleId   String
-  Circle     Circle            @relation(fields: [circleId], references: [id])
-  userId     String 
-  User       UserPreferences   @relation(fields: [userId], references: [userId])
-
-  @@index([userId])
-  @@index([circleId])
-}
-
 model UserInteraction {
   id                  String       @id @default(uuid())
   initiatedUserId     String    
@@ -281,16 +268,17 @@ model UserInteraction {
 }
 
 model UserMessage {
-  id                  String       @id @default(uuid())
+  id                  String        @id @default(uuid())
   conversationId      String?       @default(uuid())
   conversation        Conversation? @relation(fields: [conversationId], references: [id])
   authorUsername      String    
-  author              User         @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
+  author              User          @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
   recipientUsername   String  
-  recipient           User         @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
-  content             String       @db.LongText
-  createdAt           DateTime     @default(now())
-  updatedAt           DateTime?    @updatedAt
+  recipient           User          @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
+  content             String        @db.LongText
+  isRead			  Boolean	    @default(false)
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime?     @updatedAt
 
   @@index([conversationId])
   @@index([authorUsername])

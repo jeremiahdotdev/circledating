@@ -12,10 +12,10 @@ export function AboutColumn({ heading, body, className }: AboutColumnProps) {
     <div
       className={classNames(
         className,
-        "flex gap-4 flex-1 flex-col items-center p-10 text-center"
+        "border font-display flex gap-4 flex-1 flex-col items-center p-10 text-center"
       )}
     >
-      <h2 className="font-semibold">{heading}</h2>
+      <h2 className="font-semibold text-shadow-xs">{heading}</h2>
       <p className="mx-3 leading-loose">{body}</p>
     </div>
   );

@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
+import { LocationSchemaType } from "@/schemas/SelectedLocationSchema";
 import {
   faLocationDot,
   faPlaneDeparture,
@@ -8,16 +9,14 @@ import React from "react";
 
 export type ProfileLocationProps = {
   willingToRelocate: boolean;
-  state?: string;
-  country?: string;
+  location?: LocationSchemaType | null;
   isEditMode?: boolean;
   editor?: React.ReactNode;
 };
 
 export function ProfileLocation({
   willingToRelocate,
-  country,
-  state,
+  location,
   isEditMode,
   editor,
 }: ProfileLocationProps) {
@@ -36,8 +35,8 @@ export function ProfileLocation({
             />
           </FormattedTooltip>
           <p className="pl-1 text-sm font-extralight text-slate-950">
-            {state && `${state}, `}
-            {country}
+            {location?.state && `${location?.state}, `}
+            {location?.country ?? location?.continent}
           </p>
         </span>
       )}

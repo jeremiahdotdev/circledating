@@ -1,6 +1,7 @@
 import { Gender } from "@prisma/client";
 import { LoginSchema } from "@/schemas/LoginSchema";
 import { NextAuthOptions } from "next-auth";
+import { UserSchemaType } from "@/schemas/User";
 import { prisma } from "@/server/db";
 import { routes } from "@/globals/routes";
 import { verify } from "argon2";
@@ -10,6 +11,7 @@ declare module "next-auth" {
   export interface Session {
     id: string;
     sex: Gender;
+    isAdmin: boolean;
   }
 }
 export const nextAuthOptions: NextAuthOptions = {
@@ -53,6 +55,7 @@ export const nextAuthOptions: NextAuthOptions = {
           email: user.email,
           name: user.username,
           sex: user?.profile?.sex,
+          isAdmin: user?.isAdmin,
         };
       },
     }),
@@ -62,6 +65,7 @@ export const nextAuthOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.sex = (user as UserSchemaType).profile?.sex;
       }
 
       return { ...token, ...user };
@@ -70,8 +74,8 @@ export const nextAuthOptions: NextAuthOptions = {
       if (token) {
         session.id = token.id as string;
         session.sex = token.sex as Gender;
+        session.isAdmin = token.isAdmin as boolean;
       }
-
       return session;
     },
   },

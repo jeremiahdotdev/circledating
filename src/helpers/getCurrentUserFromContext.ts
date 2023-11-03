@@ -1,4 +1,3 @@
-import { CircleSchemaType } from "@/schemas/Circle";
 import {
   Consumables,
   Drinking,
@@ -9,40 +8,50 @@ import {
   Religion,
 } from "@prisma/client";
 import { DefaultArgs } from "@prisma/client/runtime/library";
-import { LinkSchemaType } from "@/schemas/Link";
-import { ProfileSchemaType } from "@/schemas/Profile";
+import { ParseProfile, ReadProfileSchemaType } from "@/schemas/Profile";
+import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 import { Session } from "next-auth";
-import { UserPreferencesSchemaType } from "@/schemas/UserPreferences";
+import { getOppositeSex } from "@/schemas/Gender";
 
 export const getCurrentUserFromContext = async (ctx: {
   session: Session | null;
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
 }) => {
   const user: {
-    profile?: ProfileSchemaType;
-    preferences?: UserPreferencesSchemaType;
+    profile?: ReadProfileSchemaType;
+    preferences?: ReadUserPreferencesSchemaType;
   } = {};
   if (ctx.session?.user?.name) {
     const currentUser = await ctx.prisma.user.findUnique({
-      where: { username: ctx.session.user.name },
+      where: { id: ctx.session.id },
       select: {
-        profile: true,
-        preferences: {
-          include: { selectedCircles: { select: { Circle: true } } },
+        profile: {
+          include: {
+            circles: {
+              select: {
+                isSelected: true,
+                Circle: true,
+              },
+            },
+          },
         },
+        preferences: true,
       },
     });
-    if (currentUser) {
-      if (currentUser.profile)
-        user.profile = {
-          ...currentUser.profile,
-          links: currentUser.profile.links as LinkSchemaType[],
-          image: currentUser.profile.image ?? "",
-        };
 
-      if (currentUser.preferences)
+    if (currentUser) {
+      if (currentUser.profile) {
+        user.profile = ParseProfile({
+          ...currentUser.profile,
+          location: undefined,
+          interactions: undefined,
+        });
+      }
+
+      if (currentUser.preferences) {
         user.preferences = {
           ...currentUser.preferences,
+          sex: getOppositeSex(currentUser.profile?.sex),
           drinking: currentUser.preferences.drinking as Drinking[],
           consumables: currentUser.preferences.consumables as Consumables[],
           politicalBeliefs: currentUser.preferences
@@ -53,14 +62,12 @@ export const getCurrentUserFromContext = async (ctx: {
             .searchContinents as string[],
           searchCountries: currentUser.preferences.searchCountries as string[],
           searchStates: currentUser.preferences.searchStates as string[],
-          selectedCircles: currentUser.preferences.selectedCircles.map(
-            (c) => c.Circle as CircleSchemaType
-          ),
           ageRange: [
             currentUser.preferences.minAge,
             currentUser.preferences.maxAge,
           ],
         };
+      }
     }
   }
   return user;

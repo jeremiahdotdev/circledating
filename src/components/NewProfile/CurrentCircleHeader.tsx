@@ -1,9 +1,9 @@
-import { CircleSchemaType } from "@/schemas/Circle";
 import { ProfilePicture } from "../Profile/ProfilePicture";
+import { ReadCircleSchemaType } from "@/schemas/Circle";
 import React from "react";
 
 export type CurrentCircleHeaderProps = {
-  circle?: CircleSchemaType;
+  circle?: ReadCircleSchemaType;
 };
 export function CurrentCircleHeader({ circle }: CurrentCircleHeaderProps) {
   return (
@@ -12,7 +12,7 @@ export function CurrentCircleHeader({ circle }: CurrentCircleHeaderProps) {
       <span className="flex h-24 w-24">
         {circle && circle.label && (
           <ProfilePicture
-            // TODO : image
+            src={circle.image}
             fallback={circle.label.substring(0, 1)}
             alt={circle.label}
             className="text-4xl md:m-2"

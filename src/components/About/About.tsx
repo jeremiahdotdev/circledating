@@ -4,7 +4,7 @@ import React from "react";
 
 export function About() {
   return (
-    <div>
+    <div className="font-display shadow-t-outter">
       <div className="grid grid-cols-2 border-b md:grid-cols-4">
         <AboutColumn
           className="bg-cyan-100"

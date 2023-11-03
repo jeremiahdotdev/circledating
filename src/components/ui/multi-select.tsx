@@ -7,19 +7,14 @@ import { ComboboxOption } from "./combobox";
 import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
 import { ProfileAttributeType } from "@/utils/formatProfileAttribute";
-import { SelectedLocationType } from "@/schemas/SelectedLocationSchema";
 import { X } from "lucide-react";
 
-export type MultiSelectOption = ComboboxOption<
-  // SelectedLocationType has Zod restrictions. Its not really "string"
-  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-  ProfileAttributeType | SelectedLocationType
->;
+export type MultiSelectOption = ComboboxOption<ProfileAttributeType>;
 export type MultiSelectProps = {
   options: MultiSelectOption[];
   selected?: string[];
   placeholder?: string;
-  onChange?: (value: ProfileAttributeType[] | SelectedLocationType[]) => void;
+  onChange?: (value: ProfileAttributeType[]) => void;
 };
 
 export function MultiSelect({

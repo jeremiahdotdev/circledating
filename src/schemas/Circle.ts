@@ -1,3 +1,18 @@
+import {
+  Activity,
+  Children,
+  Consumables,
+  Drinking,
+  Ethnicity,
+  Gender,
+  Income,
+  LevelOfEducation,
+  MaritalStatus,
+  PoliticalBeliefs,
+  Prisma,
+  Purity,
+  Religion,
+} from "@prisma/client";
 import { ActivitySchema } from "./Activity";
 import { ChildrenSchema } from "./Children";
 import { ConsumablesSchema } from "./Consumables";
@@ -7,16 +22,21 @@ import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
 import { IncomeSchema } from "./Income";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
+import { LinkSchema, LinkSchemaType } from "./Link";
 import { MaritalStatusesSchema } from "./MaritalStatuses";
 import { PoliticalBeliefsSchema } from "./PoliticalBeliefs";
 import { PuritySchema } from "./Purity";
 import { ReligionSchema } from "./Religion";
+import { ReportSchema } from "./Report";
+import { RequestSchema } from "./Request";
+import { UserCircleSchema } from "./UserCircle";
+import { parseArray } from "@/helpers/parseArray";
 import { z } from "zod";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
-export const Circle = {
+export const CircleSchema = z.object({
   id: z.string(),
   label: z.string().min(3).max(20),
   name: z.string().min(3).max(20),
@@ -24,9 +44,7 @@ export const Circle = {
   description: z.string().max(2000),
   isPrivate: z.boolean(),
   isFeatured: z.boolean(),
-  code: z.string(),
-  createdAt: z.date(),
-  updatedAt: z.date().nullable(),
+  code: z.string().optional(),
   ageMaxRestriction: z.number().optional().nullable(),
   ageMinRestriction: z.number().optional().nullable(),
   maxWeightRestriction: z.number().optional().nullable(),
@@ -48,46 +66,135 @@ export const Circle = {
   requests: z.array(RequestSchema).optional().nullable(),
   users: z.array(UserCircleSchema).optional().nullable(),
   reports: z.array(ReportSchema).optional().nullable(),
-};
-
-export const CircleSchema = z.object(Circle);
-
-export const CreateCircleSchema = z.object({
-  ...Circle,
-  id: Circle.id.optional(),
-  name: Circle.name.optional(),
-  code: Circle.code.optional(),
-  links: z.array(LinkSchema).optional(),
-  updatedAt: Circle.updatedAt.optional(),
-  createdAt: Circle.createdAt.optional(),
+  updatedAt: z.date().optional(),
+  createdAt: z.date().optional(),
 });
-export const UpdateCircleSchema = z.object({
-  name: Circle.name,
-  description: Circle.description,
+
+export const ReadCircleSchema = z.object({
+  ...CircleSchema.shape,
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+  _count: z
+    .object({
+      users: z.number().optional(),
+    })
+    .optional(),
+  // UserCircle
+  isSelected: UserCircleSchema.shape.isSelected.optional(),
+});
+
+export const MutateCircleSchema = z.object({
+  ...CircleSchema.shape,
+  id: CircleSchema.shape.id.optional(),
   links: z.array(LinkSchema).optional(),
 });
+
 export const UpdateImageSchema = z.object({
   id: z.string(),
   image: z.string(),
 });
 
-export const CircleWithAggregatesSchema = z.object({
-  ...Circle,
-  links: z.array(LinkSchema).optional(),
-  _count: z.object({
-    users: z.number().optional(),
-  }),
+export const CircleUserSearchSchema = z.object({
+  circleId: z.string(),
+  usernamePartial: z.string(),
 });
 
-import { LinkSchema } from "./Link";
-import { ReportSchema } from "./Report";
-import { RequestSchema } from "./Request";
-import { UserCircleSchema } from "./UserCircle";
+export const CircleUserSchema = z.object({
+  circleId: z.string(),
+  userId: z.string(),
+});
 
-export type CircleSchemaType = z.infer<typeof CircleSchema>;
+export const SelectedCirclesSchema = z.object({
+  circles: z.array(ReadCircleSchema),
+  selectedCircles: z.array(z.string()),
+});
+
+export type ReadCircleSchemaType = z.infer<typeof ReadCircleSchema>;
+export type MutateCircleSchemaType = z.infer<typeof MutateCircleSchema>;
 export type UpdateImageSchemaType = z.infer<typeof UpdateImageSchema>;
-export type UpdateCircleSchemaType = z.infer<typeof UpdateCircleSchema>;
-export type CreateCircleSchemaType = z.infer<typeof CreateCircleSchema>;
-export type CircleWithAggregatesSchemaType = z.infer<
-  typeof CircleWithAggregatesSchema
->;
+export type CircleUserSearchSchemaType = z.infer<typeof CircleUserSearchSchema>;
+export type CircleUserSchemaType = z.infer<typeof CircleUserSchema>;
+export type SelectedCirclesSchemaType = z.infer<typeof SelectedCirclesSchema>;
+
+export type PrismaCircleType = {
+  id: string;
+  name: string;
+  label: string;
+  image: string | null;
+  description: string;
+  isFeatured: boolean;
+  isPrivate: boolean;
+  code: string;
+  ageMaxRestriction: number | null;
+  ageMinRestriction: number | null;
+  maxWeightRestriction: number | null;
+  sexRestriction: Prisma.JsonValue;
+  countryRestriction: Prisma.JsonValue;
+  childrenRestriction: Prisma.JsonValue;
+  ethnicityRestriction: Prisma.JsonValue;
+  drinkingRestriction: Prisma.JsonValue;
+  consumablesRestriction: Prisma.JsonValue;
+  politicalBeliefsRestriction: Prisma.JsonValue;
+  levelOfEducationRestriction: Prisma.JsonValue;
+  purityRestriction: Prisma.JsonValue;
+  incomeRestriction: Prisma.JsonValue;
+  maritalStatusRestriction: Prisma.JsonValue;
+  activityRestriction: Prisma.JsonValue;
+  religionRestriction: Prisma.JsonValue;
+  links: Prisma.JsonValue;
+  createdAt: Date;
+  updatedAt: Date | null;
+};
+
+export function ParseCircle(
+  circle: PrismaCircleType | undefined | null,
+  isSelected = false
+): ReadCircleSchemaType | undefined {
+  if (!circle) return undefined;
+  return {
+    ...circle,
+    id: circle.id ?? "",
+    image: circle.image ?? "",
+    religionRestriction: parseArray<Religion>(circle.religionRestriction),
+    sexRestriction: parseArray<Gender>(circle.sexRestriction),
+    incomeRestriction: parseArray<Income>(circle.incomeRestriction),
+    purityRestriction: parseArray<Purity>(circle.purityRestriction),
+    activityRestriction: parseArray<Activity>(circle.activityRestriction),
+    childrenRestriction: parseArray<Children>(circle.childrenRestriction),
+    drinkingRestriction: parseArray<Drinking>(circle.drinkingRestriction),
+    countryRestriction: parseArray<string>(circle.countryRestriction),
+    ethnicityRestriction: parseArray<Ethnicity>(circle.ethnicityRestriction),
+    consumablesRestriction: parseArray<Consumables>(
+      circle.consumablesRestriction
+    ),
+    maritalStatusRestriction: parseArray<MaritalStatus>(
+      circle.maritalStatusRestriction
+    ),
+    levelOfEducationRestriction: parseArray<LevelOfEducation>(
+      circle.levelOfEducationRestriction
+    ),
+    politicalBeliefsRestriction: parseArray<PoliticalBeliefs>(
+      circle.politicalBeliefsRestriction
+    ),
+    links: parseArray<LinkSchemaType>(circle.politicalBeliefsRestriction),
+    updatedAt:
+      circle.updatedAt?.toLocaleDateString() ??
+      circle.createdAt?.toLocaleDateString() ??
+      "",
+    createdAt: circle.createdAt?.toLocaleDateString() ?? "",
+    isSelected: isSelected,
+  };
+}
+
+export function ParseCircles(
+  circles: PrismaCircleType[] | undefined | null
+): ReadCircleSchemaType[] {
+  const result: ReadCircleSchemaType[] = [];
+  if (circles) {
+    circles.forEach((circle) => {
+      const parsedValue = ParseCircle(circle);
+      if (parsedValue) result.push(parsedValue);
+    });
+  }
+  return result;
+}

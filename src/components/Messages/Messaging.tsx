@@ -1,10 +1,13 @@
 "use client";
 
 import { Gender } from "@prisma/client";
-import { MessageSchemaType } from "@/schemas/Message";
+import { Infographic } from "@/components/Shared/Infographic";
 import { MessagesPane } from "@/components/Messages/MessagesPane";
+import {
+  MutateMessageSchemaType,
+  ReadMessageSchemaType,
+} from "@/schemas/Message";
 import { NewMessageForm } from "@/components/Messages/NewMessageForm";
-import { PageNotFound } from "@/components/Shared/PageNotFound";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
 import { useRouter } from "next/router";
@@ -12,7 +15,7 @@ import { useSession } from "next-auth/react";
 import React, { useCallback, useState } from "react";
 
 export type MessagingProps = {
-  messages: MessageSchemaType[];
+  messages: ReadMessageSchemaType[];
 };
 export function Messaging({ messages }: MessagingProps) {
   const router = useRouter();
@@ -22,8 +25,18 @@ export function Messaging({ messages }: MessagingProps) {
 
   const [messagesState, setMessagesState] = useState(messages?.reverse());
   const onSend = useCallback(
-    (message: MessageSchemaType) => {
-      if (messagesState) setMessagesState([message, ...messagesState]);
+    (message: MutateMessageSchemaType) => {
+      if (messagesState)
+        setMessagesState([
+          {
+            ...message,
+            conversationId: message.conversationId ?? "",
+            createdAt: message.createdAt?.toLocaleDateString() ?? "",
+            updatedAt: message.createdAt?.toLocaleDateString() ?? "",
+            isRead: true,
+          },
+          ...messagesState,
+        ]);
     },
     [messagesState]
   );
@@ -34,7 +47,7 @@ export function Messaging({ messages }: MessagingProps) {
         {messagesState.length ? (
           <MessagesPane messages={messagesState} />
         ) : (
-          <PageNotFound error={systemMessages.INITIAL_MESSAGE} />
+          <Infographic message={systemMessages.INITIAL_MESSAGE} />
         )}
       </div>
       <NewMessageForm

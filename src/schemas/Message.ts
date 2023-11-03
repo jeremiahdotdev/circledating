@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const MessageSchema = z.object({
+export const MutateMessageSchema = z.object({
   id: z.string().optional(),
   conversationId: z.string().nullable(),
   authorUsername: z.string(),
@@ -10,39 +10,49 @@ export const MessageSchema = z.object({
   updatedAt: z.date().nullable().optional(),
 });
 
-export const ReadMessagesSchema = z.object({
-  authorUsername: z.string(),
-  recipientUsername: z.string(),
-});
-
 export const MessageUserSchema = z.object({
   id: z.string(),
   username: z.string(),
 });
-export const MessageResultSchema = z.object({
+
+export const ReadMessageSchema = z.object({
   id: z.string().optional(),
   conversationId: z.string(),
-  author: MessageUserSchema,
-  recipient: MessageUserSchema,
+  authorUsername: z.string(),
+  recipientUsername: z.string(),
   content: z.string().min(1).max(2000),
-  createdAt: z.date(),
-  updatedAt: z.date().optional(),
+  isRead: z.boolean(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
-export type MessageSchemaType = z.infer<typeof MessageSchema>;
-export type ReadMessagesSchemaType = z.infer<typeof ReadMessagesSchema>;
-export type MessageUserSchemaType = z.infer<typeof MessageUserSchema>;
-export type MessageResultSchemaType = z.infer<typeof MessageResultSchema>;
+export const AccessMessagesSchema = z.object({
+  authorUsername: z.string(),
+  recipientUsername: z.string(),
+});
 
-export const MessageParser = (res: MessageResultSchemaType) =>
-  ({
-    id: res.id,
-    conversationId: res.conversationId,
-    content: res.content,
-    createdAt: res.createdAt,
-    updatedAt: res.updatedAt,
-    authorUserId: res.author.id,
-    recipientUserId: res.recipient.id,
-    authorUsername: res.author.username,
-    recipientUsername: res.recipient.username,
-  }) as MessageSchemaType;
+export type ReadMessageSchemaType = z.infer<typeof ReadMessageSchema>;
+export type AccessMessagesSchemaType = z.infer<typeof AccessMessagesSchema>;
+export type MessageUserSchemaType = z.infer<typeof MessageUserSchema>;
+export type MutateMessageSchemaType = z.infer<typeof MutateMessageSchema>;
+
+export type PrismaMessage = {
+  id: string;
+  conversationId: string | null;
+  authorUsername: string;
+  recipientUsername: string;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date | null;
+};
+
+export function ParseMessage(message: PrismaMessage): ReadMessageSchemaType {
+  return {
+    ...message,
+    conversationId: message.conversationId ?? "",
+    createdAt: message.createdAt.toLocaleString(),
+    updatedAt:
+      message.updatedAt?.toLocaleString() ?? message.createdAt.toLocaleString(),
+    isRead: true,
+  };
+}
