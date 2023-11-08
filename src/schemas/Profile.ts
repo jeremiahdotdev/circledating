@@ -5,6 +5,7 @@ import {
   Drinking,
   Ethnicity,
   Gender,
+  Height,
   Income,
   LevelOfEducation,
   MaritalStatus,
@@ -12,6 +13,7 @@ import {
   Prisma,
   Purity,
   Religion,
+  Weight,
   WeightUnit,
   YesNoOrUnknown,
 } from "@prisma/client";
@@ -21,6 +23,7 @@ import { ConsumablesSchema } from "./Consumables";
 import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
+import { HeightShapeSchema, WeightShapeSchema } from "./BodyShape";
 import { IncomeSchema } from "./Income";
 import { InteractionSchema } from "./Interaction";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
@@ -51,6 +54,8 @@ export const ProfilePartialSchema = z.object({
   sex: GenderSchema,
   height: z.number().optional(), // Height in cm
   weight: z.number().optional(), // Weight in kg
+  weightShape: WeightShapeSchema,
+  heightShape: HeightShapeSchema,
   location: SelectedLocationSchema,
   willingToRelocate: YesAndNoSchema,
   children: ChildrenSchema,
@@ -165,6 +170,8 @@ export type PrismaProfileType = {
   birthDate: Date;
   height: number | null;
   weight: number | null;
+  heightShape: Height;
+  weightShape: Weight;
   locationId: string;
   willingToRelocate: YesNoOrUnknown;
   children: Children;
@@ -199,8 +206,8 @@ export function ParseProfile(
     username: profile.username,
     sex: profile.sex,
     bio: profile.bio,
-    height: profile.height,
-    weight: profile.weight,
+    heightShape: profile.heightShape,
+    weightShape: profile.weightShape,
     weightUnit: profile.weightUnit,
     willingToRelocate: profile.willingToRelocate,
     children: profile.children,

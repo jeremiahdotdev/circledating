@@ -57,7 +57,7 @@ export const DropdownFormField = <Values extends FieldValues>({
   );
 
   return (
-    <FormItem className="flex flex-col items-start">
+    <FormItem className="flex w-full flex-col items-start">
       {label && (
         <FormLabel>
           {label}

@@ -1,19 +1,18 @@
 "use client";
 import { ActivitySelectionValues } from "@/schemas/Activity";
-import { BodyShapeButtonValues } from "@/schemas/BodyShape";
 import { Button } from "@/components/ui/button";
 import { ButtonRowFormField } from "../ui/ButtonRowFormField";
-import { ChildrenSelectionValues } from "@/schemas/Children";
+import { ChildrenButtonValues } from "@/schemas/Children";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { DropdownFormField } from "@/components/ui/DropdownFormField";
-import { EthnicitySelectionValues } from "@/schemas/Ethnicity";
+import { EthnicityButtonValues } from "@/schemas/Ethnicity";
 import { Form, FormLabel } from "@/components/ui/form";
 import { FormSection } from "../ui/FormSection";
 import { GenderSelectionButtonOptions } from "@/schemas/Gender";
-import { HeightStringSelectOptions } from "@/schemas/Height";
+import { HeightShapeSchemaButtonValues } from "@/schemas/BodyShape";
 import { IncomeSelectionValues } from "@/schemas/Income";
 import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
 import { LightSelectionValues, formatTheme } from "@/schemas/Themes";
@@ -32,6 +31,7 @@ import { PuritySelectionValues } from "@/schemas/Purity";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
 import { ReligionSelectionValues } from "@/schemas/Religion";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
+import { WeightShapeSchemaButtonValues } from "@/schemas/BodyShape";
 import { WeightUnit } from "@prisma/client";
 import { WeightUnitButtonOptions } from "@/schemas/Units";
 import { api } from "@/utils/api";
@@ -110,11 +110,18 @@ export const NewProfile = memo(function NewProfile({
         className="w-full sm:w-3/4"
       >
         <FormSection heading="General">
-          <FormLabel>First things first -- Day or night?</FormLabel>
+          <FormLabel className="pb-2 text-xl">Day or night?</FormLabel>
           <ButtonRow
             options={LightSelectionValues}
             onSelect={handleSelectDarkTheme}
             onUnselect={handleUnselect}
+          />
+          <DatepickerFormField
+            control={form.control}
+            name="birthDate"
+            label="What is your birth date?"
+            description="This is only used to calculate your age."
+            required={true}
           />
           <ButtonRowFormField
             name="sex"
@@ -125,13 +132,6 @@ export const NewProfile = memo(function NewProfile({
             options={GenderSelectionButtonOptions}
             onSelect={handleSelectGenderTheme}
             onUnselect={handleUnselect}
-          />
-          <DatepickerFormField
-            control={form.control}
-            name="birthDate"
-            label="What is your birth date?"
-            description="This is only used to calculate your age."
-            required={true}
           />
           <ButtonRowFormField
             name="weightUnit"
@@ -144,21 +144,19 @@ export const NewProfile = memo(function NewProfile({
             name="weight"
             label="What is your weight?"
             control={form.control}
-            options={BodyShapeButtonValues}
+            options={WeightShapeSchemaButtonValues}
           />
-          <DropdownFormField<MutateProfileSchemaType>
-            name="height"
+          <ButtonRowFormField
+            name="heightShape"
             control={form.control}
             label="What is your height?"
-            options={HeightStringSelectOptions}
-            type="number"
+            options={HeightShapeSchemaButtonValues}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="ethnicity"
             control={form.control}
             label="What is your ethnicity?"
-            options={EthnicitySelectionValues}
-            filterOn={circle?.ethnicityRestriction}
+            options={EthnicityButtonValues}
           />
         </FormSection>
         <FormSection heading="Location">
@@ -176,12 +174,11 @@ export const NewProfile = memo(function NewProfile({
           />
         </FormSection>
         <FormSection heading="Family">
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="children"
             control={form.control}
             label="Do you have/want kids?"
-            options={ChildrenSelectionValues}
-            filterOn={circle?.childrenRestriction}
+            options={ChildrenButtonValues}
             required={true}
           />
           <ButtonRowFormField

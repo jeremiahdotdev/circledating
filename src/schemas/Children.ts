@@ -1,5 +1,7 @@
+import { ButtonRowOptionType } from "@/components/ui/button-row";
 import { Children } from "@prisma/client";
 import { ComboboxOption } from "@/components/ui/combobox";
+import { IconButtonVariant } from "./Button";
 import { z } from "zod";
 
 export const ChildrenSchema = z.nativeEnum(Children);
@@ -19,6 +21,25 @@ export const ChildrenSelectionValues: ComboboxOption<Children>[] = [
   },
   {
     label: "Wants kids.",
+    value: Children.HAS_NOT_AND_DOES_WANT,
+  },
+];
+
+export const ChildrenButtonValues: ButtonRowOptionType[] = [
+  {
+    variant: IconButtonVariant.CHILDREN_HAS_AND_WANTS,
+    value: Children.HAS_AND_WANTS,
+  },
+  {
+    variant: IconButtonVariant.CHILDREN_HAS_AND_DOES_NOT_WANT,
+    value: Children.HAS_AND_DOES_NOT_WANT,
+  },
+  {
+    variant: IconButtonVariant.CHILDREN_HAS_NOT_AND_DOES_NOT_WANT,
+    value: Children.HAS_NOT_AND_DOES_NOT_WANT,
+  },
+  {
+    variant: IconButtonVariant.CHILDREN_HAS_NOT_AND_DOES_WANT,
     value: Children.HAS_NOT_AND_DOES_WANT,
   },
 ];

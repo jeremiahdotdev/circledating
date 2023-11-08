@@ -30,7 +30,7 @@ export const DatepickerFormField = <Values extends FieldValues>({
   const { field, fieldState } = useController(props);
 
   return (
-    <FormItem className="mb-2 flex flex-col">
+    <FormItem className="mb-2 flex w-full flex-col">
       <FormLabel>
         {label}
         <RequiredAsterisk required={required} />

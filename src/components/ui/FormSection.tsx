@@ -15,7 +15,7 @@ export const FormSection = memo(
       <>
         <FormSectionHeading>{heading}</FormSectionHeading>
         <FormDescription>{description}</FormDescription>
-        <section className="flex flex-col justify-center gap-4 py-4 sm:mx-8">
+        <section className="flex w-full flex-col items-center justify-center gap-4 py-4 sm:mx-8">
           {children}
         </section>
       </>

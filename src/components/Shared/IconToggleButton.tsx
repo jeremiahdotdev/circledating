@@ -43,8 +43,10 @@ export function IconToggleButton({
   }, [setValue, value]);
 
   return (
-    <>
-      <FormattedTooltip content={labelOverride ?? variant.label}>
+    <div className="flex flex-col items-center gap-2">
+      <FormattedTooltip
+        content={labelOverride ?? variant.label ?? variant.description ?? ""}
+      >
         <Button
           onClick={handleClick}
           className={classNames(
@@ -62,9 +64,12 @@ export function IconToggleButton({
             icon={variant.icon}
           />
 
-          {<h4 className="text-sm"> {labelOverride ?? variant.label} </h4>}
+          {<h4 className="text-xs"> {labelOverride ?? variant.label} </h4>}
         </Button>
       </FormattedTooltip>
-    </>
+      {!!variant.description && (
+        <h5 className="text-center text-xs font-bold">{variant.description}</h5>
+      )}
+    </div>
   );
 }

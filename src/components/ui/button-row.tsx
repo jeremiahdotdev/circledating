@@ -46,7 +46,7 @@ export default function ButtonRow({
     [options, handleChange, valueState]
   );
   return (
-    <div className="flex w-full max-w-screen-sm justify-around">
+    <div className="flex w-full max-w-screen-sm justify-around gap-5">
       {renderedOptions}
     </div>
   );

@@ -10,6 +10,7 @@ import {
   faMinus,
   faMoon,
   faPaperPlane,
+  faPerson,
   faPlane,
   faPlaneSlash,
   faPlus,
@@ -33,7 +34,8 @@ import classNames from "classnames";
 export type IconButtonOption = {
   icon: IconDefinition;
   style: string;
-  label: string;
+  label?: string;
+  description?: string;
   showLabel?: boolean;
   iconStyle?: string;
   activeStyle?: string;
@@ -168,12 +170,12 @@ export const IconButtonVariant = {
     activeStyle: "bg-purple-900 border-purple-900 text-white",
   } as IconButtonOption,
   KG: {
-    label: "KG",
+    label: "Metric",
     icon: faWeightHanging,
     ...toggleHollowStylePurple,
   } as IconButtonOption,
   LBS: {
-    label: "LBS",
+    label: "Imperial",
     icon: faWeightHanging,
     ...toggleHollowStylePurple,
   } as IconButtonOption,
@@ -220,6 +222,86 @@ export const IconButtonVariant = {
   DIVORCED: {
     label: "Divorced",
     icon: faRing,
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  BODY_VERY_TALL: {
+    icon: faPerson,
+    label: "X-Tall",
+    description: "6' 2\"+",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  BODY_TALL: {
+    icon: faPerson,
+    label: "Tall",
+    description: "5' 8\" - 6'2\"",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  BODY_AVERAGE: {
+    icon: faPerson,
+    label: "Avg.",
+    description: "5' 2\" - 5'8\"",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  BODY_SHORT: {
+    icon: faPerson,
+    label: "Short",
+    description: "4' 8\" - 5'2\"",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  BODY_VERY_SHORT: {
+    icon: faPerson,
+    label: "X-Short",
+    description: "< 4' 8\" ",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  CHILDREN_HAS_AND_WANTS: {
+    icon: faPerson,
+    description: "Has kids; Wants more.",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  CHILDREN_HAS_AND_DOES_NOT_WANT: {
+    icon: faPerson,
+    description: "Has kids; Doesn't want more.",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  CHILDREN_HAS_NOT_AND_DOES_NOT_WANT: {
+    icon: faPerson,
+    description: "Doesn't have kids; Doesn't want kids.",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  CHILDREN_HAS_NOT_AND_DOES_WANT: {
+    icon: faPerson,
+    description: "Doesn't have kids; Wants kids.",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  ETHNICITY_WHITE: {
+    icon: faPerson,
+    description: "White",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  ETHNICITY_BLACK: {
+    icon: faPerson,
+    description: "Black or African American",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  ETHNICITY_AMERICAN_INDIAN_OR_ALASKA_NATIVE: {
+    icon: faPerson,
+    description: "American Indian or Alaska Native",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  ETHNICITY_ASIAN: {
+    icon: faPerson,
+    description: "Asian",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  ETHNICITY_PACIFIC_ISLANDER: {
+    icon: faPerson,
+    description: "Native Hawaiian or Other Pacific Islander",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  ETHNICITY_OTHER: {
+    icon: faPerson,
+    description: "Other",
     ...toggleHollowStylePurple,
   } as IconButtonOption,
 };
