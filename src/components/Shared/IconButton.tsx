@@ -88,7 +88,9 @@ export function IconButton({
   );
   return (
     <>
-      <FormattedTooltip content={labelOverride ?? variant.label}>
+      <FormattedTooltip
+        content={labelOverride ?? variant.label ?? variant.description ?? ""}
+      >
         <Button
           onClick={handleClick}
           className={classNames(

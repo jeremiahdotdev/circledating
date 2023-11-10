@@ -9,6 +9,7 @@ import {
 import { RequiredAsterisk } from "./RequiredAsterisk";
 import { useController } from "react-hook-form";
 import React from "react";
+import classNames from "classnames";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 interface ComboBoxFormFieldProps<
@@ -32,7 +33,9 @@ export const ComboBoxFormField = <
 ) => {
   const { field, fieldState } = useController(props);
   return (
-    <FormItem className="mb-2 flex w-full flex-col">
+    <FormItem
+      className={classNames("mb-2 flex w-full flex-col", props.className)}
+    >
       {props.label && (
         <FormLabel>
           {props.label}
@@ -44,7 +47,6 @@ export const ComboBoxFormField = <
           onSelect={field.onChange}
           options={props.options}
           filterOn={props.filterOn}
-          className={props.className}
           selectedValue={field.value}
         />
       </FormControl>

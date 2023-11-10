@@ -50,7 +50,7 @@ export const ButtonRowFormField = <Values extends FieldValues>(
   );
 
   return (
-    <FormItem className="mb-2 flex w-full flex-col items-center justify-center">
+    <FormItem className="mb-2 flex w-full flex-col items-center justify-center gap-4">
       {props.label && (
         <FormLabel className="pb-2 text-xl">
           {props.label}

@@ -1,5 +1,5 @@
 import { ButtonRowOptionType } from "@/components/ui/button-row";
-import { Children } from "@prisma/client";
+import { Children, YesNoOrUnknown } from "@prisma/client";
 import { ComboboxOption } from "@/components/ui/combobox";
 import { IconButtonVariant } from "./Button";
 import { z } from "zod";
@@ -41,5 +41,27 @@ export const ChildrenButtonValues: ButtonRowOptionType[] = [
   {
     variant: IconButtonVariant.CHILDREN_HAS_NOT_AND_DOES_WANT,
     value: Children.HAS_NOT_AND_DOES_WANT,
+  },
+];
+
+export const ChildrenWantsButtonValues: ButtonRowOptionType[] = [
+  {
+    variant: IconButtonVariant.CHILDREN_WANTS,
+    value: YesNoOrUnknown.YES,
+  },
+  {
+    variant: IconButtonVariant.CHILDREN_WANTS_NOT,
+    value: YesNoOrUnknown.NO,
+  },
+];
+
+export const ChildrenHasButtonValues: ButtonRowOptionType[] = [
+  {
+    variant: IconButtonVariant.CHILDREN_HAS,
+    value: YesNoOrUnknown.YES,
+  },
+  {
+    variant: IconButtonVariant.CHILDREN_HAS_NOT,
+    value: YesNoOrUnknown.NO,
   },
 ];

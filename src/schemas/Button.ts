@@ -1,16 +1,22 @@
 import {
   IconDefinition,
+  faAngleLeft,
+  faAngleRight,
   faCheck,
+  faChildren,
   faDoorClosed,
   faDoorOpen,
   faEnvelope,
   faExclamation,
+  faHouseChimneyUser,
   faMale,
   faMars,
   faMinus,
   faMoon,
   faPaperPlane,
   faPerson,
+  faPersonBreastfeeding,
+  faPersonCircleQuestion,
   faPlane,
   faPlaneSlash,
   faPlus,
@@ -20,6 +26,8 @@ import {
   faSun,
   faTrashCan,
   faUpload,
+  faUserAlt,
+  faUserTie,
   faVenus,
   faWeightHanging,
   faX,
@@ -46,6 +54,8 @@ const subtle =
 const subtleInverted =
   "flex self-end h-5 w-5 p-1 text-gender-accent border-gender-accent bg-transparent border hover:bg-transparent shadow-none";
 const toggleHollow = "h-20 w-20 bg-background border-4 p-4 shadow-outter";
+const subtleLarge =
+  "flex h-12 w-12 p-1 text-gender-accent bg-transparent hover:bg-transparent";
 
 const toggleHollowStylePurple = {
   style: classNames(toggleHollow, "text-purple-600 border-purple-600"),
@@ -109,6 +119,16 @@ export const IconButtonVariant = {
     label: "Report",
     icon: faExclamation,
     style: subtleInverted,
+  } as IconButtonOption,
+  NEXT: {
+    label: "Next",
+    icon: faAngleRight,
+    style: subtleLarge,
+  } as IconButtonOption,
+  PREVIOUS: {
+    label: "Previous",
+    icon: faAngleLeft,
+    style: subtleLarge,
   } as IconButtonOption,
   EDIT: {
     label: "Edit",
@@ -209,6 +229,26 @@ export const IconButtonVariant = {
     icon: faPlaneSlash,
     ...toggleHollowStylePurple,
   } as IconButtonOption,
+  CHILDREN_HAS: {
+    label: "Yes",
+    icon: faPersonBreastfeeding,
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  CHILDREN_HAS_NOT: {
+    label: "No",
+    icon: faUserAlt,
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  CHILDREN_WANTS: {
+    label: "Yes",
+    icon: faChildren,
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  CHILDREN_WANTS_NOT: {
+    label: "No",
+    icon: faPerson,
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
   NEVER: {
     label: "Never",
     icon: faRing,
@@ -302,6 +342,21 @@ export const IconButtonVariant = {
   ETHNICITY_OTHER: {
     icon: faPerson,
     description: "Other",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  INCOME_DUAL: {
+    icon: faUserTie,
+    label: "Dual-income",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  INCOME_EITHER: {
+    icon: faPersonCircleQuestion,
+    label: "Either",
+    ...toggleHollowStylePurple,
+  } as IconButtonOption,
+  INCOME_SINGLE: {
+    icon: faHouseChimneyUser,
+    label: "Single-income",
     ...toggleHollowStylePurple,
   } as IconButtonOption,
 };

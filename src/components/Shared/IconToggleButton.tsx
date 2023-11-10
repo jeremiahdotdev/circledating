@@ -60,10 +60,12 @@ export function IconToggleButton({
           type={type ?? "button"}
         >
           <FontAwesomeIcon
-            className={classNames("h-full h-full", variant.iconStyle ?? "")}
+            className={classNames(
+              "h-full h-full px-2",
+              variant.iconStyle ?? ""
+            )}
             icon={variant.icon}
           />
-
           {<h4 className="text-xs"> {labelOverride ?? variant.label} </h4>}
         </Button>
       </FormattedTooltip>

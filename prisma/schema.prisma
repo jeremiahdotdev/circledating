@@ -151,8 +151,8 @@ model UserProfile {
   birthDate                          DateTime
   height                             Int?
   weight                             Float?
-  bodyShapeHeight					 Height
-  bodyShapeWeight					 Weight
+  heightShape     					 Height
+  weightShape	       				 Weight
   locationId                         String
   location                           Location         @relation(fields: [locationId], references: [id])
   willingToRelocate                  YesNoOrUnknown

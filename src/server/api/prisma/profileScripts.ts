@@ -1,3 +1,4 @@
+import { Children } from "@prisma/client";
 import {
   MutateProfileSchemaType,
   ParseProfile,
@@ -265,9 +266,18 @@ export const profileScripts = {
       input,
       ctx,
     }: PrismaParameter<MutateProfileSchemaType>) => {
+      const children =
+        input.hasChildren && input.wantsChildren
+          ? Children.HAS_AND_WANTS
+          : !input.hasChildren && input.wantsChildren
+          ? Children.HAS_NOT_AND_DOES_WANT
+          : input.hasChildren && !input.wantsChildren
+          ? Children.HAS_AND_DOES_NOT_WANT
+          : Children.HAS_NOT_AND_DOES_NOT_WANT;
       const result = await ctx.prisma.userProfile.create({
         data: {
           ...input,
+          children: children,
           locationId: input.location.id,
           location: undefined,
           userId: ctx.session?.id,
