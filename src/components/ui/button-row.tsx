@@ -5,6 +5,7 @@ import React, { useCallback, useMemo, useState } from "react";
 export type ButtonRowOptionType = {
   variant: IconButtonOption;
   value: string;
+  disabled?: boolean;
 };
 
 export interface ButtonRowProps {
@@ -41,12 +42,13 @@ export default function ButtonRow({
           variant={o.variant}
           setValue={handleChange}
           activeOverride={valueState !== o.value}
+          disabled={o.disabled}
         />
       )),
     [options, handleChange, valueState]
   );
   return (
-    <div className="flex w-full max-w-screen-sm justify-around gap-5">
+    <div className="flex w-full max-w-screen-sm flex-wrap justify-around gap-2">
       {renderedOptions}
     </div>
   );

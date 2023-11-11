@@ -28,12 +28,21 @@ export interface ButtonRowFormFieldProps<Values extends FieldValues>
   label?: string;
   description?: string;
   required?: boolean;
+  filterOn?: string[];
 }
 
 export const ButtonRowFormField = <Values extends FieldValues>(
   props: ButtonRowFormFieldProps<Values>
 ) => {
   const { fieldState, field } = useController(props);
+  if (props.filterOn && props.filterOn.length) {
+    props.options = props.options.filter(
+      (o) => props.filterOn?.includes(o.value)
+    );
+  }
+  props.options.forEach((o) => {
+    if (props.filterOn?.includes(o.value)) o.disabled = true;
+  });
   const customOnSelect = useCallback(
     (value: string | undefined) => {
       field.onChange(value);

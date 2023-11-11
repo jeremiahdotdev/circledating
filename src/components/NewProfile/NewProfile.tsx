@@ -1,5 +1,5 @@
 "use client";
-import { ActivitySelectionValues } from "@/schemas/Activity";
+import { ActivityButtonnValues } from "@/schemas/Activity";
 import { Button } from "@/components/ui/button";
 import { ButtonRowFormField } from "../ui/ButtonRowFormField";
 import {
@@ -7,16 +7,15 @@ import {
   ChildrenWantsButtonValues,
 } from "@/schemas/Children";
 import { ComboBoxFormField } from "@/components/ui/ComboboxFormField";
-import { ConsumablesSelectionValues } from "@/schemas/Consumables";
+import { ConsumablesButtonValues } from "@/schemas/Consumables";
 import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
-import { DrinkingSelectionValues } from "@/schemas/Drinking";
-import { DropdownFormField } from "@/components/ui/DropdownFormField";
+import { DrinkingButtonValues } from "@/schemas/Drinking";
 import { EthnicityButtonValues } from "@/schemas/Ethnicity";
 import { Form, FormLabel } from "@/components/ui/form";
 import { GenderSelectionButtonOptions } from "@/schemas/Gender";
 import { HeightShapeSchemaButtonValues } from "@/schemas/BodyShape";
 import { IncomeButtonValues } from "@/schemas/Income";
-import { LevelOfEducationSelectionValues } from "@/schemas/LevelOfEducation";
+import { LevelOfEducationButtonValues } from "@/schemas/LevelOfEducation";
 import { LightSelectionValues, formatTheme } from "@/schemas/Themes";
 import {
   LocationSchemaType,
@@ -29,10 +28,10 @@ import {
   MutateProfileSchemaType,
 } from "@/schemas/Profile";
 import { PaneQueue } from "../ui/PaneQueue";
-import { PoliticalBeliefsSelectionValues } from "@/schemas/PoliticalBeliefs";
-import { PuritySelectionValues } from "@/schemas/Purity";
+import { PoliticalBeliefsButtonValues } from "@/schemas/PoliticalBeliefs";
+import { PurityButtonValues } from "@/schemas/Purity";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
-import { ReligionSelectionValues } from "@/schemas/Religion";
+import { ReligionButtonValues } from "@/schemas/Religion";
 import { RequiredAsterisk } from "../ui/RequiredAsterisk";
 import { TextAreaFormField } from "@/components/ui/TextAreaFormField";
 import { WeightShapeSchemaButtonValues } from "@/schemas/BodyShape";
@@ -169,6 +168,7 @@ export const NewProfile = memo(function NewProfile({
             control={form.control}
             label="What is your ethnicity?"
             options={EthnicityButtonValues}
+            filterOn={circle?.ethnicityRestriction}
           />
           <>
             <FormLabel className="pb-2 text-xl">
@@ -194,6 +194,7 @@ export const NewProfile = memo(function NewProfile({
             label="Do you have kids?"
             options={ChildrenHasButtonValues}
             required={true}
+            filterOn={circle?.purityRestriction}
           />
           <ButtonRowFormField
             name="wantsChildren"
@@ -208,6 +209,7 @@ export const NewProfile = memo(function NewProfile({
             label="Have you ever been married?"
             options={MaritalStatusesButtonOptions}
             required={true}
+            filterOn={circle?.maritalStatusRestriction}
           />
           <ButtonRowFormField
             name="income"
@@ -215,74 +217,70 @@ export const NewProfile = memo(function NewProfile({
             label="What type of houshold are you looking for?"
             options={IncomeButtonValues}
             required={true}
+            filterOn={circle?.incomeRestriction}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="consumables"
             control={form.control}
             label="Do you consume any of the following?"
-            options={ConsumablesSelectionValues}
-            filterOn={circle?.consumablesRestriction}
+            options={ConsumablesButtonValues}
             required={true}
+            filterOn={circle?.consumablesRestriction}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="drinking"
             control={form.control}
             label="How often do you drink?"
-            options={DrinkingSelectionValues}
-            filterOn={circle?.drinkingRestriction}
+            options={DrinkingButtonValues}
             required={true}
+            filterOn={circle?.drinkingRestriction}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="activity"
             control={form.control}
             label="How often do you excercise?"
-            options={ActivitySelectionValues}
-            filterOn={circle?.activityRestriction}
+            options={ActivityButtonnValues}
             required={true}
+            filterOn={circle?.purityRestriction}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="purity"
             control={form.control}
             label="What is your stance on purity?"
-            options={PuritySelectionValues}
-            filterOn={circle?.purityRestriction}
+            options={PurityButtonValues}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             control={form.control}
             name="religion"
             label="What is your religion?"
-            options={ReligionSelectionValues}
-            filterOn={circle?.religionRestriction}
+            options={ReligionButtonValues}
             required={true}
+            filterOn={circle?.religionRestriction}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="politicalBeliefs"
             control={form.control}
             label="What is your political stance?"
-            options={PoliticalBeliefsSelectionValues}
-            filterOn={circle?.politicalBeliefsRestriction}
+            options={PoliticalBeliefsButtonValues}
             required={true}
+            filterOn={circle?.politicalBeliefsRestriction}
           />
-          <DropdownFormField<MutateProfileSchemaType>
+          <ButtonRowFormField
             name="levelOfEducation"
             control={form.control}
             label="What is the highest level of education to have obtained?"
-            options={LevelOfEducationSelectionValues}
+            options={LevelOfEducationButtonValues}
+            required={true}
             filterOn={circle?.levelOfEducationRestriction}
-            required={true}
-          />
-          <TextAreaFormField
-            control={form.control}
-            name="bio"
-            label="Bio"
-            placeholder="Describe yourself! Passions, faith, career, hobbies, et cetera."
-            required={true}
           />
           <>
-            <FormLabel className="pb-2 text-xl">
-              When you&apos;re done, click submit to generate your profile.
-              <RequiredAsterisk />
-            </FormLabel>
+            <FormLabel className="pb-2 text-xl">Describe yourself!</FormLabel>
+            <TextAreaFormField
+              control={form.control}
+              name="bio"
+              placeholder="Passions, faith, career, hobbies, et cetera."
+              className="flex flex-col items-center justify-center sm:w-3/4"
+            />
             <Button className="mt-2 w-20 px-12" type="submit">
               Submit
             </Button>

@@ -1,4 +1,6 @@
+import { ButtonRowOptionType } from "@/components/ui/button-row";
 import { ComboboxOption } from "@/components/ui/combobox";
+import { IconButtonVariant } from "./Button";
 import { Purity } from "@prisma/client";
 import { z } from "zod";
 
@@ -19,6 +21,25 @@ export const PuritySelectionValues: ComboboxOption<Purity>[] = [
   },
   {
     label: "Non-virgin; Not waiting until marriage.",
+    value: Purity.NOT_VIRGIN_NOT_WAITING,
+  },
+];
+
+export const PurityButtonValues: ButtonRowOptionType[] = [
+  {
+    variant: IconButtonVariant.PURITY_VIRGIN_WAITING,
+    value: Purity.VIRGIN_WAITING,
+  },
+  {
+    variant: IconButtonVariant.PURITY_NOT_VIRGIN_WAITING,
+    value: Purity.NOT_VIRGIN_WAITING,
+  },
+  {
+    variant: IconButtonVariant.PURITY_VIRGIN_NOT_WAITING,
+    value: Purity.VIRGIN_NOT_WAITING,
+  },
+  {
+    variant: IconButtonVariant.PURITY_NOT_VIRGIN_NOT_WAITING,
     value: Purity.NOT_VIRGIN_NOT_WAITING,
   },
 ];

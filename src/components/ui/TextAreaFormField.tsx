@@ -7,9 +7,9 @@ import {
 } from "./form";
 import { RequiredAsterisk } from "./RequiredAsterisk";
 import { Textarea } from "./textarea";
-import { cn } from "@/lib/utils";
 import { useController } from "react-hook-form";
 import React from "react";
+import classNames from "classnames";
 import type { FieldValues, UseControllerProps } from "react-hook-form";
 
 interface TextAreaFormFieldProps<Values extends FieldValues>
@@ -27,13 +27,20 @@ export const TextAreaFormField = <Values extends FieldValues>(
 ) => {
   const { field, fieldState } = useController(props);
   return (
-    <FormItem className="flex w-full flex-col justify-center">
-      <FormLabel>
-        {props.label} <RequiredAsterisk required={props.required} />
-      </FormLabel>
+    <FormItem
+      className={classNames(
+        props.className,
+        "flex w-full flex-col justify-center"
+      )}
+    >
+      {!!props.label && (
+        <FormLabel>
+          {props.label} <RequiredAsterisk required={props.required} />
+        </FormLabel>
+      )}
       <FormControl>
         <Textarea
-          className={cn("flex flex-col", props.className)}
+          className="flex flex-col"
           placeholder={props.placeholder ?? props.label}
           {...field}
           value={field.value ?? ""}

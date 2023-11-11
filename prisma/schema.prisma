@@ -99,6 +99,7 @@ enum Religion {
   CHRISTIANITY
   HINDUISM
   JUDAISM
+  ISLAM
   MORMONISM
   OTHER
 }

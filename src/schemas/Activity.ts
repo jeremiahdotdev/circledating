@@ -1,5 +1,7 @@
 import { Activity } from "@prisma/client";
+import { ButtonRowOptionType } from "@/components/ui/button-row";
 import { ComboboxOption } from "@/components/ui/combobox";
+import { IconButtonVariant } from "./Button";
 import { z } from "zod";
 
 export const ActivitySchema = z.nativeEnum(Activity);
@@ -24,5 +26,28 @@ export const ActivitySelectionValues: ComboboxOption<Activity>[] = [
   {
     label: "Never; I rarely excercise.",
     value: Activity.NEVER,
+  },
+];
+
+export const ActivityButtonnValues: ButtonRowOptionType[] = [
+  {
+    variant: IconButtonVariant.ACTIVITY_NEVER,
+    value: Activity.NEVER,
+  },
+  {
+    variant: IconButtonVariant.ACTIVITY_INFREQUENT,
+    value: Activity.INFREQUENT,
+  },
+  {
+    variant: IconButtonVariant.ACTIVITY_MILD,
+    value: Activity.MILD,
+  },
+  {
+    variant: IconButtonVariant.ACTIVITY_FREQUENT,
+    value: Activity.FREQUENT,
+  },
+  {
+    variant: IconButtonVariant.ACTIVITY_HEAVY,
+    value: Activity.HEAVY,
   },
 ];
