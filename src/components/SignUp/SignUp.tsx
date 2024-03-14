@@ -38,7 +38,7 @@ export function SignUp({ circle }: SignUpProps) {
   );
 
   return (
-    <div className="max-h-fit max-w-screen-sm bg-white p-4 shadow-outter">
+    <div className="max-h-fit max-w-screen-sm bg-background p-4 shadow-outter">
       <Form
         form={form}
         className="flex w-full flex-col items-center justify-center gap-2"

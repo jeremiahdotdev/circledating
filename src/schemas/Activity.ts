@@ -29,7 +29,7 @@ export const ActivitySelectionValues: ComboboxOption<Activity>[] = [
   },
 ];
 
-export const ActivityButtonnValues: ButtonRowOptionType[] = [
+export const ActivityButtonValues: ButtonRowOptionType[] = [
   {
     variant: IconButtonVariant.ACTIVITY_NEVER,
     value: Activity.NEVER,

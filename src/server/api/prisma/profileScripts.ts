@@ -276,16 +276,30 @@ export const profileScripts = {
           : Children.HAS_NOT_AND_DOES_NOT_WANT;
       const result = await ctx.prisma.userProfile.create({
         data: {
-          ...input,
+          username: input.username,
           children: children,
-          locationId: input.location.id,
           location: undefined,
           userId: ctx.session?.id,
-          username: input.username ?? "",
           image: "",
           links: {},
           interactions: {},
           affections: {},
+          activity: input.activity,
+          drinking: input.drinking,
+          sex: input.sex,
+          birthDate: input.birthDate,
+          consumables: input.consumables,
+          maritalStatus: input.maritalStatus,
+          religion: input.religion,
+          politicalBeliefs: input.politicalBeliefs,
+          levelOfEducation: input.levelOfEducation,
+          income: input.income,
+          willingToRelocate: input.willingToRelocate,
+          ethnicity: input.ethnicity,
+          heightShape: input.heightShape,
+          weightShape: input.weightShape,
+          bio: input.bio,
+          locationId: input.location.id,
         },
       });
       return result;

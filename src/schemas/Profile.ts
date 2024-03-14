@@ -70,7 +70,7 @@ export const ProfilePartialSchema = z.object({
   activity: ActivitySchema,
   religion: ReligionSchema,
   bio: z.string(),
-  weightUnit: z.enum(["KG", "LBS"]),
+  weightUnit: z.enum(["KG", "LBS"]).optional().nullable(),
   links: z.array(LinkSchema).optional().nullable(),
   circles: z.array(ReadCircleSchema).optional(),
   interactions: z.array(InteractionSchema).optional().nullable(),
@@ -189,7 +189,7 @@ export type PrismaProfileType = {
   activity: Activity;
   religion: Religion;
   bio: string;
-  weightUnit: WeightUnit;
+  weightUnit?: WeightUnit | null;
   links: Prisma.JsonValue;
 };
 

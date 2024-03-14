@@ -33,7 +33,8 @@
     "./tailwind.config.js",
     "./postcss.config.js",
     "./next.config.js",
-    "public/animation.jsx"
+    "public/animation.jsx",
+    "prisma/seed.js"
   ],
   "exclude": ["node_modules"]
 }

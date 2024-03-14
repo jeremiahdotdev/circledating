@@ -1,5 +1,6 @@
 "use client";
 import { ButtonRowOptionType } from "@/components/ui/ButtonRowFormField";
+import { Gender } from "@prisma/client";
 import { IconButtonVariant } from "./Button";
 
 export enum Themes {
@@ -7,6 +8,11 @@ export enum Themes {
   DARK = "dark",
   BOY = "boy",
   GIRL = "girl",
+}
+
+export function getThemeFromGender(gender: string | undefined) {
+  if (gender === Gender.MALE) return Themes.BOY;
+  else if (gender === Gender.FEMALE) return Themes.GIRL;
 }
 
 export const LightSelectionValues: ButtonRowOptionType[] = [
@@ -32,7 +38,7 @@ export const formatTheme = (
       ? "dark"
       : theme?.includes("light")
       ? "light"
-      : undefined);
+      : "light");
   const genderThemeToUse =
     gender ??
     (theme?.includes("boy")

@@ -15,7 +15,6 @@ import {
   faDumpsterFire,
   faEnvelope,
   faExclamation,
-  faGlassWaterDroplet,
   faGraduationCap,
   faHandHoldingDroplet,
   faHouseChimneyUser,
@@ -32,7 +31,6 @@ import {
   faPersonRunning,
   faPersonWalking,
   faPersonWalkingWithCane,
-  faPlaceOfWorship,
   faPlane,
   faPlaneSlash,
   faPlus,
@@ -43,7 +41,6 @@ import {
   faSave,
   faScaleBalanced,
   faSmoking,
-  faSpaghettiMonsterFlying,
   faStarAndCrescent,
   faStarOfDavid,
   faSun,
@@ -73,19 +70,47 @@ export type IconButtonOption = {
   showLabel?: boolean;
   iconStyle?: string;
   activeStyle?: string;
+  width?: number;
+  height?: number;
 };
 
 const subtle =
   "flex self-end h-6 w-6 p-1 text-gender-accent bg-transparent hover:bg-transparent shadow-none";
 const subtleInverted =
   "flex self-end h-5 w-5 p-1 text-gender-accent border-gender-accent bg-transparent border hover:bg-transparent shadow-none";
-const toggleHollow = "h-20 w-20 bg-background border-4 p-4 shadow-outter";
+const toggleHollow = "bg-background border-4 p-4 shadow-outter";
 const subtleLarge =
   "flex h-12 w-12 p-1 text-gender-accent bg-transparent hover:bg-transparent";
 
 const toggleHollowStylePurple = {
   style: classNames(toggleHollow, "text-purple-600 border-purple-600"),
   activeStyle: "bg-purple-600 border-purple-600 text-white",
+  width: 20,
+  height: 20,
+};
+const toggleHollowStyleBoy = {
+  style: classNames(toggleHollow, "text-boy-accent border-boy-accent"),
+  activeStyle: "bg-boy-accent text-white",
+  width: 20,
+  height: 20,
+};
+const toggleHollowStyleGirl = {
+  style: classNames(toggleHollow, "text-girl-accent border-girl-accent"),
+  activeStyle: "bg-girl-accent text-white",
+  width: 20,
+  height: 20,
+};
+const toggleHollowStyleLight = {
+  style: classNames(toggleHollow, "text-yellow-400 border-yellow-400"),
+  activeStyle: "bg-yellow-400 border-yellow-400 text-white",
+  width: 20,
+  height: 20,
+};
+const toggleHollowStyleDark = {
+  style: classNames(toggleHollow, "text-purple-700 border-purple-700"),
+  activeStyle: "bg-purple-900 border-purple-900 text-white",
+  width: 20,
+  height: 20,
 };
 export const IconButtonVariant = {
   MAIL: {
@@ -194,26 +219,22 @@ export const IconButtonVariant = {
   MALE: {
     label: "Male",
     icon: faMars,
-    style: classNames(toggleHollow, "text-boy-accent border-boy-accent"),
-    activeStyle: "bg-boy-accent text-white",
+    ...toggleHollowStyleBoy,
   } as IconButtonOption,
   FEMALE: {
     label: "Female",
     icon: faVenus,
-    style: classNames(toggleHollow, "text-girl-accent border-girl-accent"),
-    activeStyle: "bg-girl-accent text-white",
+    ...toggleHollowStyleGirl,
   } as IconButtonOption,
   LIGHT: {
     label: "Light",
     icon: faSun,
-    style: classNames(toggleHollow, "text-yellow-400 border-yellow-400"),
-    activeStyle: "bg-yellow-400 border-yellow-400 text-white",
+    ...toggleHollowStyleLight,
   } as IconButtonOption,
   DARK: {
     label: "Dark",
     icon: faMoon,
-    style: classNames(toggleHollow, "text-purple-700 border-purple-700"),
-    activeStyle: "bg-purple-900 border-purple-900 text-white",
+    ...toggleHollowStyleDark,
   } as IconButtonOption,
   KG: {
     label: "Metric",
@@ -507,12 +528,12 @@ export const IconButtonVariant = {
     ...toggleHollowStylePurple,
   } as IconButtonOption,
   RELIGION_JUDAISM: {
-    label: "Judaism",
+    label: "Jewish",
     icon: faStarOfDavid,
     ...toggleHollowStylePurple,
   } as IconButtonOption,
   RELIGION_ISLAM: {
-    label: "Islam",
+    label: "Muslim",
     icon: faStarAndCrescent,
     ...toggleHollowStylePurple,
   } as IconButtonOption,

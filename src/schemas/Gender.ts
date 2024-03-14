@@ -7,11 +7,11 @@ export const GenderSchema = z.nativeEnum(Gender);
 
 export const GenderSelectionButtonOptions: ButtonRowOptionType[] = [
   {
-    value: "boy",
+    value: Gender.MALE,
     variant: IconButtonVariant.MALE,
   },
   {
-    value: "girl",
+    value: Gender.FEMALE,
     variant: IconButtonVariant.FEMALE,
   },
 ];

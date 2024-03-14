@@ -69,6 +69,7 @@ export const ButtonRowFormField = <Values extends FieldValues>(
       <FormControl>
         <ButtonRow
           {...props}
+          id={field.name ?? props.id}
           onUnselect={customOnUnselect}
           onSelect={customOnSelect}
         />

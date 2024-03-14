@@ -9,6 +9,7 @@ export type ButtonRowOptionType = {
 };
 
 export interface ButtonRowProps {
+  id?: string;
   options: ButtonRowOptionType[];
   onSelect?: (value: string | undefined) => void;
   onUnselect?: (value: string | undefined) => void;
@@ -16,11 +17,15 @@ export interface ButtonRowProps {
 }
 
 export default function ButtonRow({
+  id,
   options,
   onSelect,
   onUnselect,
 }: ButtonRowProps) {
-  const [valueState, setValueState] = useState<string | undefined>("");
+  const [valueState, setValueState] = useState<string | undefined>(() =>
+    id ? undefined : ""
+  );
+
   const handleChange = useCallback(
     (value: string | undefined) => {
       if (valueState === value) {
@@ -33,19 +38,22 @@ export default function ButtonRow({
     },
     [onUnselect, onSelect, valueState]
   );
+
   const renderedOptions = useMemo(
     () =>
-      options.map((o) => (
-        <IconToggleButton
-          key={o.value}
-          value={o.value}
-          variant={o.variant}
-          setValue={handleChange}
-          activeOverride={valueState !== o.value}
-          disabled={o.disabled}
-        />
-      )),
-    [options, handleChange, valueState]
+      options.map((o) => {
+        return (
+          <IconToggleButton
+            key={id + "-" + o.value}
+            value={o.value}
+            variant={o.variant}
+            setValue={handleChange}
+            activeOverride={valueState !== o.value}
+            disabled={o.disabled}
+          />
+        );
+      }),
+    [options, id, handleChange, valueState]
   );
   return (
     <div className="flex w-full max-w-screen-sm flex-wrap justify-around gap-2">

@@ -169,7 +169,7 @@ model UserProfile {
   activity                           Activity
   religion                           Religion
   bio                                String          		@db.LongText
-  weightUnit                         WeightUnit
+  weightUnit                         WeightUnit?
   user                               User                   @relation(fields: [username], references: [username])
   interactions  	  			     UserInteraction[]    	@relation("userInteractions") 
   affections    	  			     UserInteraction[]    	@relation("userAffections") 

@@ -16,7 +16,7 @@ export function AboutSection({ heading, body, className }: AboutSectionProps) {
       )}
     >
       <div className="absolute -inset-2 -z-50 rounded-lg bg-cyan-100 opacity-75 blur" />
-      <h2 className="flex flex-col pb-2 font-semibold text-shadow-xs">
+      <h2 className="flex flex-col pb-2 font-semibold  text-shadow-xs">
         {heading}
       </h2>
       <p>{body}</p>

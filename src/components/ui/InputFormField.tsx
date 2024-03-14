@@ -42,10 +42,12 @@ export const InputFormField = <Values extends FieldValues>(
 
   return (
     <FormItem className="flex w-full flex-col">
-      <FormLabel>
-        {props.label}
-        <RequiredAsterisk required={props.required} />
-      </FormLabel>
+      {props.label && (
+        <FormLabel>
+          {props.label}
+          <RequiredAsterisk required={props.required} />
+        </FormLabel>
+      )}
       <FormControl>
         <Input
           placeholder={props.placeholder ?? props.label}

@@ -42,6 +42,10 @@ export function IconToggleButton({
     if (setValue) setValue(value);
   }, [setValue, value]);
 
+  const { width, height } = variant;
+  const cssWidth = width ? `w-${width}` : "";
+  const cssHeight = height ? `h-${height}` : "";
+
   return (
     <div className="flex flex-col items-center gap-2">
       <FormattedTooltip
@@ -51,7 +55,7 @@ export function IconToggleButton({
           onClick={handleClick}
           className={classNames(
             className,
-            "text-white rounded-full flex flex-col",
+            `${cssWidth} ${cssHeight} aspect-square text-white rounded-full flex flex-col`,
             !isActive
               ? variant.style
               : classNames(variant.style, variant.activeStyle),
@@ -60,17 +64,18 @@ export function IconToggleButton({
           type={type ?? "button"}
         >
           <FontAwesomeIcon
-            className={classNames(
-              "h-full h-full px-2",
-              variant.iconStyle ?? ""
-            )}
+            className={classNames("h-full h-full px-2")}
             icon={variant.icon}
           />
           {<h4 className="text-xs"> {labelOverride ?? variant.label} </h4>}
         </Button>
       </FormattedTooltip>
       {!!variant.description && (
-        <h5 className="text-center text-xs font-bold">{variant.description}</h5>
+        <h5
+          className={`${cssWidth} ${cssHeight} max-w-full text-center text-xs font-bold`}
+        >
+          {variant.description}
+        </h5>
       )}
     </div>
   );

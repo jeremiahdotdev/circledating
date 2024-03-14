@@ -11,7 +11,7 @@
     "eslint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx ."
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.421.0",

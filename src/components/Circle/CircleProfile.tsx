@@ -285,7 +285,6 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
                 deleteAction={handleKick}
               />
             </div>
-            <FormButton label="Load..." onClick={handleLoadReports} />
           </ProfileSection>
         </>
       )}
