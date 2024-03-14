@@ -6,7 +6,7 @@ export type PrivacyPolicyViewProps = Record<never, never>;
 
 export const PrivacyPolicyView: React.FC<PrivacyPolicyViewProps> = memo(() => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-40">
+    <main className="flex min-h-screen flex-col items-center justify-between p-20">
       {privacyPolicy}
     </main>
   );
