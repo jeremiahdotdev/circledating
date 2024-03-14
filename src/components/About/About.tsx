@@ -14,7 +14,7 @@ export function About() {
         <AboutColumn
           className="bg-sky-100"
           heading={"Traditionally textured."}
-          body={`Circle Dating is for singles who want to build a traditional, one-man-one-woman marriage.`}
+          body={`Circle Dating is for singles who want to build traditional, one-man-one-woman marriages.`}
         />
         <AboutColumn
           className="bg-purple-100"
