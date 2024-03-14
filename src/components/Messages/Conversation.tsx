@@ -1,6 +1,7 @@
 "use client";
 
-import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
+import { IconButton } from "@/components/Shared/IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { ListItemPicture } from "../ui/ListItemPicture";
 import { ReadConversationSchemaType } from "@/schemas/Conversation";
 import { RouteOptionLink } from "@/utils/RouteOptionLink";

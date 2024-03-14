@@ -12,7 +12,6 @@ import { DatepickerFormField } from "@/components/ui/DatePickerFormField";
 import { DrinkingButtonValues } from "@/schemas/Drinking";
 import { EthnicityButtonValues } from "@/schemas/Ethnicity";
 import { Form, FormLabel } from "@/components/ui/form";
-import { FormButton } from "../ui/FormButton";
 import { GenderSelectionButtonOptions } from "@/schemas/Gender";
 import { HeightShapeSchemaButtonValues } from "@/schemas/BodyShape";
 import { IncomeButtonValues } from "@/schemas/Income";

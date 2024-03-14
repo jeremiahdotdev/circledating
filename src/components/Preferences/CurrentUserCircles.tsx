@@ -1,6 +1,7 @@
 import { CheckboxList } from "../ui/CheckboxList";
 import { Form } from "../ui/form";
-import { IconButton, IconButtonVariant } from "../Shared/IconButton";
+import { IconButton } from "../Shared/IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { Infographic } from "../Shared/Infographic";
 import { ItemType, ParseItem } from "../Shared/ItemList";
 import { ListItem } from "../Shared/ListItem";

@@ -249,8 +249,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
           <ProfileAttribute
             option={ProfileAttributeOptions.weight}
             variant={ProfileAttributeVariant.PROFILE}
-            attribute={profile.weight}
-            weightUnit={profile.weightUnit}
+            attribute={profile.weightShape}
             isEditMode={editMode}
             editor={
               <InputFormField

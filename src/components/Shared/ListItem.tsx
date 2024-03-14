@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconButton, IconButtonVariant } from "./IconButton";
+import { IconButton } from "./IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { ItemType } from "./ItemList";
 import { ListItemPicture } from "../ui/ListItemPicture";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";

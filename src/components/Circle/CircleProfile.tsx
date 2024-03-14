@@ -1,5 +1,4 @@
 import { Form } from "../ui/form";
-import { FormButton } from "../ui/FormButton";
 import { IconButton } from "@/components/Shared/IconButton";
 import { IconButtonVariant } from "@/schemas/Button";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
@@ -186,6 +185,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
     [router]
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleLoadReports = useCallback(() => {
     report
       .mutateAsync(circle.id)

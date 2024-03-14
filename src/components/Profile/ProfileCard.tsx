@@ -105,7 +105,6 @@ export function ProfileCard({ profile, interact }: ProfileCardProps) {
                 option={ProfileAttributeOptions.weight}
                 variant={ProfileAttributeVariant.PROFILE_CARD}
                 attribute={profile.weight}
-                weightUnit={profile.weightUnit}
               />
             </div>
             <Separator
