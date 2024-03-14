@@ -132,6 +132,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
         handleUpdateImage={handleUpdateImage}
         image={profileState?.image ?? ""}
         header={`${profile.username} (${profile.age})`}
+        url={routes.shareProfile(profile.username)}
       />
       <ProfileLocation
         location={profile.location}
@@ -248,8 +249,7 @@ export function Profile({ profile, canEdit, interact }: ProfileProps) {
           <ProfileAttribute
             option={ProfileAttributeOptions.weight}
             variant={ProfileAttributeVariant.PROFILE}
-            attribute={profile.weight}
-            weightUnit={profile.weightUnit}
+            attribute={profile.weightShape}
             isEditMode={editMode}
             editor={
               <InputFormField

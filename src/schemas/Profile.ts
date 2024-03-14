@@ -5,6 +5,7 @@ import {
   Drinking,
   Ethnicity,
   Gender,
+  Height,
   Income,
   LevelOfEducation,
   MaritalStatus,
@@ -12,6 +13,7 @@ import {
   Prisma,
   Purity,
   Religion,
+  Weight,
   WeightUnit,
   YesNoOrUnknown,
 } from "@prisma/client";
@@ -21,6 +23,7 @@ import { ConsumablesSchema } from "./Consumables";
 import { DrinkingSchema } from "./Drinking";
 import { EthnicitySchema } from "./Ethnicity";
 import { GenderSchema } from "./Gender";
+import { HeightShapeSchema, WeightShapeSchema } from "./BodyShape";
 import { IncomeSchema } from "./Income";
 import { InteractionSchema } from "./Interaction";
 import { LevelOfEducationSchema } from "./LevelOfEducation";
@@ -51,6 +54,8 @@ export const ProfilePartialSchema = z.object({
   sex: GenderSchema,
   height: z.number().optional(), // Height in cm
   weight: z.number().optional(), // Weight in kg
+  weightShape: WeightShapeSchema,
+  heightShape: HeightShapeSchema,
   location: SelectedLocationSchema,
   willingToRelocate: YesAndNoSchema,
   children: ChildrenSchema,
@@ -65,7 +70,7 @@ export const ProfilePartialSchema = z.object({
   activity: ActivitySchema,
   religion: ReligionSchema,
   bio: z.string(),
-  weightUnit: z.enum(["KG", "LBS"]),
+  weightUnit: z.enum(["KG", "LBS"]).optional().nullable(),
   links: z.array(LinkSchema).optional().nullable(),
   circles: z.array(ReadCircleSchema).optional(),
   interactions: z.array(InteractionSchema).optional().nullable(),
@@ -89,6 +94,9 @@ export const MutateProfileSchema = z.object({
   weight: ProfilePartialSchema.shape.weight.optional(),
   height: ProfilePartialSchema.shape.weight.optional(),
   purity: ProfilePartialSchema.shape.purity.optional(),
+  hasChildren: YesAndNoSchema.optional(),
+  wantsChildren: YesAndNoSchema.optional(),
+  children: ChildrenSchema.optional(),
   userId: z.string().optional(),
   location: LocationSchema,
   birthDate: z.date(),
@@ -144,11 +152,13 @@ export type PrismaProfileType = {
         state: string | null;
       }
     | undefined;
-  circles:
+  user:
     | {
-        Circle: PrismaCircleType | undefined;
-        isSelected?: boolean;
-      }[]
+        circles: {
+          circle: PrismaCircleType | undefined;
+          isSelected?: boolean;
+        }[];
+      }
     | undefined;
   interactions?:
     | {
@@ -163,6 +173,8 @@ export type PrismaProfileType = {
   birthDate: Date;
   height: number | null;
   weight: number | null;
+  heightShape: Height;
+  weightShape: Weight;
   locationId: string;
   willingToRelocate: YesNoOrUnknown;
   children: Children;
@@ -177,7 +189,7 @@ export type PrismaProfileType = {
   activity: Activity;
   religion: Religion;
   bio: string;
-  weightUnit: WeightUnit;
+  weightUnit?: WeightUnit | null;
   links: Prisma.JsonValue;
 };
 
@@ -186,8 +198,8 @@ export function ParseProfile(
 ): ReadProfileSchemaType | undefined {
   if (!profile) return undefined;
   const circles: ReadCircleSchemaType[] = [];
-  profile?.circles?.forEach((c) => {
-    const circle = ParseCircle(c.Circle, c.isSelected);
+  profile?.user?.circles?.forEach((c) => {
+    const circle = ParseCircle(c.circle, c.isSelected);
     if (circle) {
       circles.push(circle);
     }
@@ -197,8 +209,8 @@ export function ParseProfile(
     username: profile.username,
     sex: profile.sex,
     bio: profile.bio,
-    height: profile.height,
-    weight: profile.weight,
+    heightShape: profile.heightShape,
+    weightShape: profile.weightShape,
     weightUnit: profile.weightUnit,
     willingToRelocate: profile.willingToRelocate,
     children: profile.children,

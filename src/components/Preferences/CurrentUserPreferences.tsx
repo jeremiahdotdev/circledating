@@ -2,7 +2,8 @@ import { ComboboxOption } from "../ui/combobox";
 import { ConsumablesSelectionValues } from "@/schemas/Consumables";
 import { DrinkingSelectionValues } from "@/schemas/Drinking";
 import { Form } from "../ui/form";
-import { IconButton, IconButtonVariant } from "../Shared/IconButton";
+import { IconButton } from "../Shared/IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { IncomeSelectionValues } from "@/schemas/Income";
 import { MultiSelectFormField } from "../ui/MultiSelectFormField";
 import {

@@ -12,7 +12,7 @@ export function Logo({ className }: LogoProps) {
       <LogoIcon />
       <span
         className={classNames(
-          "whitespace-nowrap px-2 text-2xl font-semibold dark:text-white text-shadow-xs",
+          "whitespace-nowrap px-2 text-2xl font-semibold text-shadow-xs text-foreground",
           className
         )}
       >

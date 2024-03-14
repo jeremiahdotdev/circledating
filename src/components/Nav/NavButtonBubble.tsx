@@ -8,7 +8,7 @@ export type NavButtonBubbleProps = {
 export function NavButtonBubble({ bubble }: NavButtonBubbleProps) {
   return (
     <div className="absolute -right-2 -top-2 m-auto aspect-square w-4 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-400 text-xs text-white">
-      {bubble}
+      {bubble > 9 ? "9+" : bubble}
     </div>
   );
 }

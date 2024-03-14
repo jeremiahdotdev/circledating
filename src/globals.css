@@ -34,19 +34,25 @@
     --ring: 215 20.2% 65.1%;
 
     --radius: 0.5rem;
+
+    --boy-accent: #22d3ee;
+    --girl-accent: #e879f9;
+    --gender-accent: rgb(137, 0, 137);
   }
 
-  [data-theme="dark"] {
-    --background: 222.2 84% 4.9%;
+  [data-theme="dark"],
+  [data-theme="dark-boy"],
+  [data-theme="dark-girl"] {
+    --background: 222.2 40% 13%;
     --foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 222.2 40% 7%;
     --popover-foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 222.2 45% 15%;
     --card-foreground: 210 40% 98%;
 
     --border: 217.2 32.6% 17.5%;
@@ -67,12 +73,16 @@
     --ring: 217.2 32.6% 17.5%;
   }
 
-  [data-theme="boy"] {
+  [data-theme="light-boy"],
+  [data-theme="dark-boy"] {
     --gender-accent: #22d3ee;
+    --gender-background: #3be5ff;
   }
 
-  [data-theme="girl"] {
+  [data-theme="light-girl"],
+  [data-theme="dark-girl"] {
     --gender-accent: #e879f9;
+    --gender-background: #ef89ff;
   }
 }
 

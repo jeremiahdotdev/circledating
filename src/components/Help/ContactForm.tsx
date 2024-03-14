@@ -26,7 +26,7 @@ export function ContactForm() {
   );
 
   return (
-    <div className="max-h-fit w-full max-w-screen-md bg-white p-6 shadow-outter">
+    <div className="max-h-fit w-full max-w-screen-md bg-card p-6 shadow-outter">
       <h1 className="flex w-full justify-center text-xl">Contact Us</h1>
       <Form
         form={form}

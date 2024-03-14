@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormattedTooltip } from "@/components/ui/FormattedTooltip";
 import { ProfileAttributeOptionType } from "./ProfileAttributeOptions";
-import { WeightUnit } from "@prisma/client";
 import { formatProfileAttribute } from "@/utils/formatProfileAttribute";
 import { heightValueMap } from "@/schemas/Height";
 import { isUrl } from "@/schemas/Link";
@@ -25,7 +24,6 @@ export type AttributeType = string | number | Date | null;
 export type ProfileAttributeProps = {
   option: ProfileAttributeOptionType;
   attribute?: AttributeType;
-  weightUnit?: WeightUnit;
   isEditMode?: boolean;
   editor?: React.ReactNode;
   variant?: ProfileAttributeVariant;
@@ -34,7 +32,6 @@ export type ProfileAttributeProps = {
 export function ProfileAttribute({
   option,
   attribute,
-  weightUnit,
   isEditMode,
   editor,
   variant = ProfileAttributeVariant.DEFAULT,
@@ -44,10 +41,6 @@ export function ProfileAttribute({
 
     if (typeof attribute === "number" && option.isHeight) {
       return heightValueMap[attribute];
-    }
-
-    if (typeof attribute === "number" && weightUnit) {
-      return `${attribute} ${weightUnit?.toLocaleLowerCase()}`;
     }
 
     if (typeof attribute === "number") {
@@ -66,7 +59,7 @@ export function ProfileAttribute({
       );
     }
     return formatProfileAttribute(attribute);
-  }, [attribute, option, weightUnit]);
+  }, [attribute, option]);
 
   const renderVariant = useMemo(() => {
     if (isEditMode)

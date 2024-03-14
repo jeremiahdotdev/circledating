@@ -1,6 +1,6 @@
 import { Form } from "../ui/form";
-import { FormButton } from "../ui/FormButton";
-import { IconButton, IconButtonVariant } from "@/components/Shared/IconButton";
+import { IconButton } from "@/components/Shared/IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { ItemList, ItemType, ParseItem } from "../Shared/ItemList";
 import { LinksEditorFormField } from "../Shared/LinksEditorFormField";
 import {
@@ -28,6 +28,7 @@ import { routes } from "@/globals/routes";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
+import CircleQR from "../Profile/CircleQR";
 import React, { useCallback, useState } from "react";
 
 export type CircleProfileProps = {
@@ -184,6 +185,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
     [router]
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleLoadReports = useCallback(() => {
     report
       .mutateAsync(circle.id)
@@ -203,6 +205,7 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
         handleUpdateImage={handleUpdateImage}
         image={circleState.image ?? ""}
         header={circle.label}
+        qr={<CircleQR circle={circle} />}
       />
       <IconButton
         variant={
@@ -282,7 +285,6 @@ export function CircleProfile({ circle, canEdit }: CircleProfileProps) {
                 deleteAction={handleKick}
               />
             </div>
-            <FormButton label="Load..." onClick={handleLoadReports} />
           </ProfileSection>
         </>
       )}

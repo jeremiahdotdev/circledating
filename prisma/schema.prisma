@@ -99,6 +99,7 @@ enum Religion {
   CHRISTIANITY
   HINDUISM
   JUDAISM
+  ISLAM
   MORMONISM
   OTHER
 }
@@ -120,6 +121,21 @@ enum UserType {
   PLEB
 }
 
+enum Weight {
+  HEAVY
+  EXTRA
+  FIT
+  THIN
+}
+
+enum Height {
+  VERY_TALL
+  TALL
+  AVERAGE
+  SHORT
+  VERY_SHORT
+}
+
 model Location {
   id          String        @id @default(uuid())
   continent   String
@@ -136,6 +152,8 @@ model UserProfile {
   birthDate                          DateTime
   height                             Int?
   weight                             Float?
+  heightShape     					 Height
+  weightShape	       				 Weight
   locationId                         String
   location                           Location         @relation(fields: [locationId], references: [id])
   willingToRelocate                  YesNoOrUnknown
@@ -150,10 +168,9 @@ model UserProfile {
   maritalStatus                      MaritalStatus
   activity                           Activity
   religion                           Religion
-  bio                                String          @db.LongText
-  weightUnit                         WeightUnit
-  User                               User[] @relation("userProfile")
-  circles             				 UserCircle[]
+  bio                                String          		@db.LongText
+  weightUnit                         WeightUnit?
+  user                               User                   @relation(fields: [username], references: [username])
   interactions  	  			     UserInteraction[]    	@relation("userInteractions") 
   affections    	  			     UserInteraction[]    	@relation("userAffections") 
   links         					 Json?       
@@ -165,9 +182,9 @@ model UserCircle {
   id          String        @id @default(uuid())
   circleTitle UserType      @default(PLEB)
   circleId    String
-  Circle      Circle        @relation(fields: [circleId], references: [id])
+  circle      Circle        @relation(fields: [circleId], references: [id])
   userId      String 
-  User        UserProfile   @relation(fields: [userId], references: [userId])
+  user        User   		@relation(fields: [userId], references: [id])
   isSelected  Boolean		@default(true)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime?     @updatedAt
@@ -213,7 +230,7 @@ model User {
   id                  String       			@id @default(uuid())
   email               String       			@unique
   password            String
-  profile             UserProfile?			@relation("userProfile", fields: [username], references: [username],  map: "user_profile_fk")
+  profile             UserProfile?
   createdAt           DateTime     			@default(now())
   updatedAt           DateTime?    			@updatedAt
   username			  String       			@unique
@@ -225,6 +242,7 @@ model User {
   recievedReports     UserReport[]    		@relation("recievedReports")
   authoredRequests    CircleRequest[]       
   conversations       UserConversation[]         
+  circles             UserCircle[]
   @@index([username])
 }
 
@@ -257,9 +275,9 @@ model UserPreferences {
 model UserInteraction {
   id                  String       @id @default(uuid())
   initiatedUserId     String    
-  initiatedUser       UserProfile         @relation("userInteractions", fields: [initiatedUserId], references: [userId],  map: "user_initiated_fk")
+  initiatedUser       UserProfile  @relation("userInteractions", fields: [initiatedUserId], references: [userId],  map: "user_initiated_fk")
   affectedUserId      String  
-  affectedUser        UserProfile         @relation("userAffections", fields: [affectedUserId], references: [userId],  map: "user_affected_fk")
+  affectedUser        UserProfile  @relation("userAffections", fields: [affectedUserId], references: [userId],  map: "user_affected_fk")
   isLiked 			  Boolean
   isBlocked			  Boolean
 

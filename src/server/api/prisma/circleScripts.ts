@@ -120,7 +120,7 @@ export const circleScripts = {
         include: {
           users: {
             where: {
-              userId: ctx.session?.id,
+              userId: ctx.session?.id ?? "",
             },
             select: {
               userId: true,
@@ -185,12 +185,12 @@ export const circleScripts = {
           userId: ctx.session?.id,
         },
         select: {
-          Circle: true,
+          circle: true,
         },
       });
 
       const result: ReadCircleSchemaType[] = ParseCircles(
-        circles.map((c) => c.Circle)
+        circles.map((c) => c.circle)
       );
 
       return result;
@@ -220,7 +220,7 @@ export const circleScripts = {
       input,
       ctx,
     }: PrismaParameter<CircleUserSearchSchemaType>) => {
-      const result = await ctx.prisma.userProfile.findMany({
+      const result = await ctx.prisma.user.findMany({
         take: 100,
         where: {
           username: {
@@ -232,17 +232,22 @@ export const circleScripts = {
             },
           },
         },
+        select: {
+          profile: true,
+        },
       });
 
       const profiles: ReadProfileSchemaType[] = [];
       result.map((r) => {
-        const profile = ParseProfile({
-          ...r,
-          circles: undefined,
-          location: undefined,
-          interactions: undefined,
-        });
-        if (profile) profiles.push(profile);
+        if (r.profile) {
+          const profile = ParseProfile({
+            ...r.profile,
+            user: undefined,
+            location: undefined,
+            interactions: undefined,
+          });
+          if (profile) profiles.push(profile);
+        }
       });
       return profiles;
     },

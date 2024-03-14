@@ -51,6 +51,7 @@ export const MultiSelectFormField = <Values extends FieldValues>({
           {...field}
           selected={selected}
           onChange={onChange}
+          className="text-gender-accent"
         />
       </FormControl>
       {description && <FormDescription>{description}</FormDescription>}

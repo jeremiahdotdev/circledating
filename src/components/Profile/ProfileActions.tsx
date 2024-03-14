@@ -1,5 +1,6 @@
 import { DialogModal } from "../ui/DialogModal";
-import { IconButton, IconButtonVariant } from "../Shared/IconButton";
+import { IconButton } from "../Shared/IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { InteractionSchemaType } from "@/schemas/Interaction";
 import { ReadProfileSchemaType } from "@/schemas/Profile";
 import { ReportProfileForm } from "./ReportProfileForm";

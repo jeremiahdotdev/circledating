@@ -25,14 +25,11 @@ export const getCurrentUserFromContext = async (ctx: {
     const currentUser = await ctx.prisma.user.findUnique({
       where: { id: ctx.session.id },
       select: {
-        profile: {
-          include: {
-            circles: {
-              select: {
-                isSelected: true,
-                Circle: true,
-              },
-            },
+        profile: true,
+        circles: {
+          select: {
+            isSelected: true,
+            circle: true,
           },
         },
         preferences: true,
@@ -45,6 +42,9 @@ export const getCurrentUserFromContext = async (ctx: {
           ...currentUser.profile,
           location: undefined,
           interactions: undefined,
+          user: {
+            circles: currentUser.circles,
+          },
         });
       }
 

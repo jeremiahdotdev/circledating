@@ -1,4 +1,5 @@
-import { IconButton, IconButtonVariant } from "./IconButton";
+import { IconButton } from "./IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { LinkInput } from "./LinkInput";
 import { LinkSchemaType } from "@/schemas/Link";
 import React, { useCallback, useMemo, useState } from "react";

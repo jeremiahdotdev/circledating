@@ -37,7 +37,7 @@ export function NavSheet({
   return (
     <Sheet open={open} onOpenChange={setSheetOpen}>
       <SheetTrigger asChild>
-        <li className="flex w-full cursor-pointer flex-col items-center rounded py-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-cyan-300 md:dark:hover:bg-transparent md:dark:hover:text-cyan-100">
+        <li className="flex w-full cursor-pointer flex-col items-center rounded py-2 hover:text-gender-accent">
           {option.label}
         </li>
       </SheetTrigger>

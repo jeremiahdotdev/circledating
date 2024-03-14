@@ -55,4 +55,8 @@ export const routes = {
   termsAndConditions: () => ({ href: "/terms-and-conditions" }),
   privacyPolicy: () => ({ href: "/privacy-policy" }),
   help: () => ({ href: "/help" }),
+  shareProfile: (username: string) =>
+    `https://dateinyourcircle.com/users/${username}`,
+  shareCircle: (code: string | undefined) =>
+    code ? `https://dateinyourcircle.com/sign-up?code=${code}` : undefined,
 };

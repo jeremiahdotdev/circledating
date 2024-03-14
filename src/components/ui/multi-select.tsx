@@ -8,6 +8,7 @@ import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
 import { ProfileAttributeType } from "@/utils/formatProfileAttribute";
 import { X } from "lucide-react";
+import classNames from "classnames";
 
 export type MultiSelectOption = ComboboxOption<ProfileAttributeType>;
 export type MultiSelectProps = {
@@ -15,6 +16,7 @@ export type MultiSelectProps = {
   selected?: string[];
   placeholder?: string;
   onChange?: (value: ProfileAttributeType[]) => void;
+  className?: string;
 };
 
 export function MultiSelect({
@@ -22,6 +24,7 @@ export function MultiSelect({
   selected,
   placeholder,
   onChange,
+  className,
 }: MultiSelectProps) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
@@ -128,7 +131,7 @@ export function MultiSelect({
   return (
     <Command
       onKeyDown={handleKeyDown}
-      className="overflow-visible bg-transparent"
+      className={classNames(className, "overflow-visible bg-transparent")}
     >
       <div className="group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
         <div className="flex flex-wrap gap-1">

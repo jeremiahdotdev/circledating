@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IconButton, IconButtonVariant } from "./IconButton";
+import { IconButton } from "./IconButton";
+import { IconButtonVariant } from "@/schemas/Button";
 import { ItemType } from "./ItemList";
 import { ListItemPicture } from "../ui/ListItemPicture";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -52,7 +53,7 @@ export function ListItem({
             />
           </div>
         )}
-        <div className="flex w-full justify-center font-extralight text-slate-950 text-shadow-sm">
+        <div className="flex w-full justify-center font-extralight text-shadow-sm">
           {item.label}
         </div>
         <div className="flex min-h-[40px] cursor-pointer items-center justify-center gap-2">

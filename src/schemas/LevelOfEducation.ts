@@ -1,4 +1,6 @@
+import { ButtonRowOptionType } from "@/components/ui/button-row";
 import { ComboboxOption } from "@/components/ui/combobox";
+import { IconButtonVariant } from "./Button";
 import { LevelOfEducation } from "@prisma/client";
 import { z } from "zod";
 
@@ -31,3 +33,30 @@ export const LevelOfEducationSelectionValues: ComboboxOption<LevelOfEducation>[]
       value: LevelOfEducation.NO_DEGREE,
     },
   ];
+
+export const LevelOfEducationButtonValues: ButtonRowOptionType[] = [
+  {
+    variant: IconButtonVariant.EDUCATION_DOCTORATE,
+    value: LevelOfEducation.DOCTORATE,
+  },
+  {
+    variant: IconButtonVariant.EDUCATION_MASTERS,
+    value: LevelOfEducation.MASTERS,
+  },
+  {
+    variant: IconButtonVariant.EDUCATION_BACHELORS,
+    value: LevelOfEducation.BACHELORS,
+  },
+  {
+    variant: IconButtonVariant.EDUCATION_ASSOCIATES,
+    value: LevelOfEducation.ASSOCIATES,
+  },
+  {
+    variant: IconButtonVariant.EDUCATION_HIGH_SCHOOL,
+    value: LevelOfEducation.HIGH_SCHOOL,
+  },
+  {
+    variant: IconButtonVariant.EDUCATION_NO_DEGREE,
+    value: LevelOfEducation.NO_DEGREE,
+  },
+];

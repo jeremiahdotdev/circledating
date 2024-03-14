@@ -23,15 +23,10 @@ export const preferencesScripts = {
         },
         select: {
           preferences: true,
-          profile: {
+          circles: {
             select: {
-              userId: true,
-              circles: {
-                select: {
-                  isSelected: true,
-                  Circle: true,
-                },
-              },
+              isSelected: true,
+              circle: true,
             },
           },
         },
@@ -39,8 +34,8 @@ export const preferencesScripts = {
 
       return {
         preferences: ParsePreferences(result?.preferences),
-        circles: result?.profile?.circles.map((c) =>
-          ParseCircle(c.Circle, c.isSelected)
+        circles: result?.circles.map((c) =>
+          ParseCircle(c.circle, c.isSelected)
         ),
       };
     },

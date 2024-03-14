@@ -5,7 +5,6 @@
 const plugin = require("tailwindcss/plugin");
 
 module.exports = {
-  darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -26,6 +25,9 @@ module.exports = {
       },
       colors: {
         "gender-accent": "var(--gender-accent)",
+        "gender-background": "var(--gender-background)",
+        "boy-accent": "var(--boy-accent)",
+        "girl-accent": "var(--girl-accent)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -6,7 +6,6 @@ import { routes } from "@/globals/routes";
 export const requireNoAuth =
   (func: GetServerSideProps) => async (ctx: GetServerSidePropsContext) => {
     const session = await getServerSession(ctx.req, ctx.res, nextAuthOptions);
-
     if (session) {
       return {
         redirect: {
