@@ -55,7 +55,7 @@ const nextConfig = {
   },
   compiler: {
     // Enables the styled-components SWC transform
-    styledComponents: true,
+    // styledComponents: true,
   },
   experimental: {
     optimizePackageImports: ["lucide-react", "next-auth"],

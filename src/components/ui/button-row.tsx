@@ -14,6 +14,7 @@ export interface ButtonRowProps {
   onSelect?: (value: string | undefined) => void;
   onUnselect?: (value: string | undefined) => void;
   className?: string;
+  selectedValue?: string;
 }
 
 export default function ButtonRow({
@@ -21,6 +22,7 @@ export default function ButtonRow({
   options,
   onSelect,
   onUnselect,
+  selectedValue,
 }: ButtonRowProps) {
   const [valueState, setValueState] = useState<string | undefined>(() =>
     id ? undefined : ""
@@ -50,10 +52,11 @@ export default function ButtonRow({
             setValue={handleChange}
             activeOverride={valueState !== o.value}
             disabled={o.disabled}
+            isActive={o.value === selectedValue}
           />
         );
       }),
-    [options, id, handleChange, valueState]
+    [options, id, handleChange, valueState, selectedValue]
   );
   return (
     <div className="flex w-full max-w-screen-sm flex-wrap justify-around gap-2">

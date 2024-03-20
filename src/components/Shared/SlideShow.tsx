@@ -19,7 +19,7 @@ export function SlideShow({ images, children }: SlideShowProps) {
         "relative h-navless w-full items-end justify-end bg-cover"
       )}
     >
-      <div className="absolute -z-50 h-screen w-full">
+      <div className="absolute -z-50 h-navless w-full">
         <Image
           alt=""
           src={images[next]}

@@ -6,21 +6,40 @@ import { z } from "zod";
 export const WeightShapeSchema = z.nativeEnum(Weight);
 export const HeightShapeSchema = z.nativeEnum(Height);
 
-export const WeightShapeSchemaButtonValues: ButtonRowOptionType[] = [
+export const WeightShapeSchemaButtonValuesMen: ButtonRowOptionType[] = [
   {
-    variant: IconButtonVariant.BODY_THIN,
+    variant: IconButtonVariant.BODY_MALE_THIN,
     value: Weight.THIN,
   },
   {
-    variant: IconButtonVariant.BODY_FIT,
+    variant: IconButtonVariant.BODY_MALE_FIT,
     value: Weight.FIT,
   },
   {
-    variant: IconButtonVariant.BODY_EXTRA,
+    variant: IconButtonVariant.BODY_MALE_EXTRA,
     value: Weight.EXTRA,
   },
   {
-    variant: IconButtonVariant.BODY_HEAVY,
+    variant: IconButtonVariant.BODY_MALE_HEAVY,
+    value: Weight.HEAVY,
+  },
+];
+
+export const WeightShapeSchemaButtonValuesWomen: ButtonRowOptionType[] = [
+  {
+    variant: IconButtonVariant.BODY_FEMALE_THIN,
+    value: Weight.THIN,
+  },
+  {
+    variant: IconButtonVariant.BODY_FEMALE_FIT,
+    value: Weight.FIT,
+  },
+  {
+    variant: IconButtonVariant.BODY_FEMALE_EXTRA,
+    value: Weight.EXTRA,
+  },
+  {
+    variant: IconButtonVariant.BODY_FEMALE_HEAVY,
     value: Weight.HEAVY,
   },
 ];

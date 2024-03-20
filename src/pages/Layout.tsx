@@ -36,7 +36,7 @@ export default function Layout({
         circles={nav?.circles}
         notifications={nav?.notifications}
       />
-      <main className={classNames("sm:pt-[67px]", inter.className)}>
+      <main className={classNames(`sm:pt-[67px]`, inter.className)}>
         {children}
       </main>
       <Footer />
