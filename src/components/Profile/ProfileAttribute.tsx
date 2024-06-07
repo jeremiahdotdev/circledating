@@ -98,9 +98,7 @@ export function ProfileAttribute({
                 </div>
                 <b className="w-fit text-shadow-sm ">&nbsp;•</b>
               </div>
-              <div className="pl-1 font-extralight text-slate-950 text-shadow-sm">
-                {label}
-              </div>
+              <div className="pl-1 font-extralight text-shadow-sm">{label}</div>
             </span>
           )
         );

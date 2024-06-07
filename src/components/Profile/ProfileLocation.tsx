@@ -30,11 +30,11 @@ export function ProfileLocation({
             content={willingToRelocate ? "Willing to relocate" : "Location"}
           >
             <FontAwesomeIcon
-              className="h-6 w-6 pl-2 text-slate-800"
+              className="h-6 w-6 pl-2 text-gender-accent"
               icon={willingToRelocate ? faPlaneDeparture : faLocationDot}
             />
           </FormattedTooltip>
-          <p className="pl-1 text-sm font-extralight text-slate-950">
+          <p className="pl-1 text-sm font-extralight">
             {location?.state && `${location?.state}, `}
             {location?.country ?? location?.continent}
           </p>
