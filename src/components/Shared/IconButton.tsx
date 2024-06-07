@@ -102,7 +102,9 @@ export function IconButton({
           type={type ?? "button"}
           disabled={disabled || disabledState}
         >
-          <FontAwesomeIcon className="h-full w-full" icon={variant.icon} />
+          {variant.icon && (
+            <FontAwesomeIcon className="h-full w-full" icon={variant.icon} />
+          )}
 
           {variant.showLabel && (
             <h4 className="pl-2 text-lg"> {labelOverride ?? variant.label} </h4>
