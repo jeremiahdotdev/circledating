@@ -1,11 +1,10 @@
 generator client {
   provider = "prisma-client-js"
 }
-
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url = env("DATABASE_PRISMA_URL") // uses connection pooling
+  directUrl = env("DATABASE_URL_NON_POOLING") // uses a direct connection
 }
 
 enum Gender {
@@ -168,7 +167,7 @@ model UserProfile {
   maritalStatus                      MaritalStatus
   activity                           Activity
   religion                           Religion
-  bio                                String          		@db.LongText
+  bio                                String          		@db.Text
   weightUnit                         WeightUnit?
   user                               User                   @relation(fields: [username], references: [username])
   interactions  	  			     UserInteraction[]    	@relation("userInteractions") 
@@ -198,7 +197,7 @@ model Circle {
   name                                          String                              @unique
   label                                         String                              @unique
   image                                         String?           
-  description                                   String                              @db.LongText            
+  description                                   String                              @db.Text            
   isFeatured									Boolean                             @default(false)
   isPrivate 									Boolean                             @default(false)
   code         									String        						@unique @default(uuid())
@@ -293,7 +292,7 @@ model UserMessage {
   author              User          @relation("authoredMessages", fields: [authorUsername], references: [username],  map: "user_author_fk")
   recipientUsername   String  
   recipient           User          @relation("recievedMessages", fields: [recipientUsername], references: [username],  map: "user_recipient_fk")
-  content             String        @db.LongText
+  content             String        @db.Text
   isRead			  Boolean	    @default(false)
   createdAt           DateTime      @default(now())
   updatedAt           DateTime?     @updatedAt
@@ -311,7 +310,7 @@ model UserReport {
   reportedUser        User         @relation("recievedReports", fields: [reportedUsername], references: [username],  map: "user_report_recipient_fk")
   circleId            String?
   circle              Circle?      @relation(fields: [circleId], references: [id])
-  message             String       @db.LongText
+  message             String       @db.Text
   createdAt           DateTime     @default(now())
   updatedAt           DateTime?    @updatedAt
 

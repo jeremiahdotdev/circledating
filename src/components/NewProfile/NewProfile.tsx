@@ -66,7 +66,7 @@ export const NewProfile = memo(function NewProfile({
   const { data: session } = useSession();
   const router = useRouter();
 
-  const [isDisabledState, setIsDisabledState] = useState<boolean>(true);
+  const [isDisabledState, setIsDisabledState] = useState<boolean>(false);
   const form = useForm<MutateProfileSchemaType>({
     resolver: zodResolver(MutateProfileSchema),
 
