@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# !! UNRELEASED !!
+Development is currently ongoing. 
 
-## Getting Started
+# Circle Dating 
 
-First, run the development server:
+**Circle Dating** is a closed-source, industry-scale dating app that fosters authentic connections through shared interests. Built on **Next.js** using the **pages router** and styled with **Tailwind CSS**, Circle Dating brings people together based on mutual hobbies, values, and themes. This repository serves as a documentation mirror, as the core project remains private.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Project Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Circle Dating** allows users to:
+- Join or create “circles” based on specific interests.
+- Engage with like-minded individuals in their local communities.
+- Build meaningful relationships through shared values, hobbies, and themes.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The app focuses on authentic connections rather than superficial swiping, creating a space where genuine relationships can flourish.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-v.1.1
+## Key Technologies
+- **Next.js**: Using the pages router for structured, scalable navigation.
+- **Tailwind CSS**: Ensuring responsive, flexible design with utility-first styling.
+- **TypeScript**: Providing type safety and a better developer experience.
+- **NextAuth**: Secure and customizable authentication for Next.js apps.
+- **Prisma ORM**: Managing the database with type-safe, easy-to-use queries.
+- **Vercel Blob Storage**: For storing and managing media assets.
+- 
+## Repository Information
+This is a **documentation mirror** repository for **Circle Dating**, a closed-source project. For more details or inquiries, please contact the team directly.
