@@ -93,13 +93,20 @@ export const MutateProfileSchema = z.object({
   ...ProfilePartialSchema.shape,
   weight: ProfilePartialSchema.shape.weight.optional(),
   height: ProfilePartialSchema.shape.weight.optional(),
-  purity: ProfilePartialSchema.shape.purity.optional(),
+  purity: ProfilePartialSchema.shape.purity
+    .optional()
+    .nullable()
+    .transform((val) => (val === null ? undefined : val)),
   hasChildren: YesAndNoSchema.optional(),
   wantsChildren: YesAndNoSchema.optional(),
   children: ChildrenSchema.optional(),
   userId: z.string().optional(),
   location: LocationSchema,
-  birthDate: z.date(),
+  birthDate: z
+    .preprocess((val) => (val === null ? undefined : val), z.date())
+    .optional()
+    .nullable()
+    .transform((val) => (val === null ? undefined : val)),
 });
 
 export const UpdateImageSchema = z.object({

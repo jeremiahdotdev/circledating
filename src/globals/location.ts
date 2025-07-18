@@ -11,24 +11,25 @@ export const flattenedLocations = () => {
 
 export const locations = () => {
   const result: LocationSchemaType[] = [];
-  let count = 0;
+  let index = 0;
   countries.forEach(({ continent, country, states }) => {
-    count++;
-    result.push({
-      id: `${count}`,
-      continent: continent ?? "",
-      country: country ?? "",
-      state: "",
-    });
-    states.forEach((state) => {
-      count++;
+    if (states.length) {
+      states.forEach((state) =>
+        result.push({
+          id: (++index).toString(),
+          continent: continent ?? "",
+          country: country ?? "",
+          state: state,
+        })
+      );
+    } else {
       result.push({
-        id: `${count}`,
+        id: (++index).toString(),
         continent: continent ?? "",
         country: country ?? "",
-        state: state,
+        state: "",
       });
-    });
+    }
   });
   return result;
 };

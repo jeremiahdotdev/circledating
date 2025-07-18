@@ -223,7 +223,7 @@ export const profileScripts = {
           },
         },
       });
-
+      console.log("Read profile result:", input, result);
       return ParseProfile(result);
     },
     readCurrent: async ({ ctx }: PrismaContext) => {
@@ -308,6 +308,7 @@ export const profileScripts = {
       input,
       ctx,
     }: PrismaParameter<MutateProfileSchemaType>) => {
+      console.log("Updating profile with input:", input);
       const result = await ctx.prisma.userProfile.update({
         where: {
           userId: input.userId,
