@@ -4,10 +4,58 @@ import { SignupSchemaType } from "@/schemas/LoginSchema";
 import { TRPCError } from "@trpc/server";
 import { handleError } from "@/utils/handleError";
 import { hash } from "argon2";
+import { prisma } from "@/server/db";
 import dayjs from "dayjs";
 
 export const userScripts = {
   query: {
+    require: async ({ ctx }: PrismaContext) => {
+      try {
+        const email = ctx.session?.user?.email;
+        if (!email) return null;
+
+        const user = await prisma.user.findUniqueOrThrow({
+          where: {
+            email: email,
+          },
+          select: {
+            username: true,
+            preferences: true,
+            circles: true,
+            isAdmin: true,
+            createdAt: true,
+            profile: true,
+            recievedMessages: {
+              select: { conversationId: true },
+              where: {
+                isRead: false,
+              },
+            },
+          },
+        });
+
+        const userSlice = {
+          isAuthed: true,
+          isActive: !!user?.profile,
+          isAdmin: !!user?.isAdmin,
+          isMale: user?.profile?.sex == Gender.MALE,
+          userId: user?.profile?.userId ?? "",
+          username: user.username ?? "",
+          notifications: new Set(user.recievedMessages).size,
+          isNew: dayjs(user.createdAt) > dayjs().subtract(1, "day"),
+          circles: user.circles,
+          preferences: {
+            ...user.preferences,
+            createdAt: null,
+            updatedAt: null,
+          },
+        };
+
+        return { user: userSlice };
+      } catch (error: unknown) {
+        handleError(error);
+      }
+    },
     stats: async ({ ctx }: PrismaContext) => {
       let isActive = false;
       let isAdmin = false;

@@ -223,8 +223,7 @@ export const profileScripts = {
           },
         },
       });
-      console.log("Read profile result:", input, result);
-      return ParseProfile(result);
+      return { profile: ParseProfile(result) };
     },
     readCurrent: async ({ ctx }: PrismaContext) => {
       const result = await ctx.prisma.userProfile.findUnique({
@@ -270,10 +269,10 @@ export const profileScripts = {
         input.hasChildren && input.wantsChildren
           ? Children.HAS_AND_WANTS
           : !input.hasChildren && input.wantsChildren
-          ? Children.HAS_NOT_AND_DOES_WANT
-          : input.hasChildren && !input.wantsChildren
-          ? Children.HAS_AND_DOES_NOT_WANT
-          : Children.HAS_NOT_AND_DOES_NOT_WANT;
+            ? Children.HAS_NOT_AND_DOES_WANT
+            : input.hasChildren && !input.wantsChildren
+              ? Children.HAS_AND_DOES_NOT_WANT
+              : Children.HAS_NOT_AND_DOES_NOT_WANT;
       const result = await ctx.prisma.userProfile.create({
         data: {
           username: input.username,
@@ -308,7 +307,6 @@ export const profileScripts = {
       input,
       ctx,
     }: PrismaParameter<MutateProfileSchemaType>) => {
-      console.log("Updating profile with input:", input);
       const result = await ctx.prisma.userProfile.update({
         where: {
           userId: input.userId,

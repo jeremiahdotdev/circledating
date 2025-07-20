@@ -2,10 +2,10 @@ import { ConversationsView } from "@/views/ConversationView/ConversationsView";
 import { Gender } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { Infographic } from "@/components/Shared/Infographic";
+import { PrismaContext } from "@/server/api/types";
 import { ReadConversationSchemaType } from "@/schemas/Conversation";
 import { UserSlice, setUser } from "@/store/userSlice";
-import { appRouter } from "@/server/api/root";
-import { getPrismaContext } from "@/helpers/getPrismaContext";
+import { conversationScripts } from "@/server/api/prisma/conversationScripts";
 import { requireUser } from "@/helpers/requireUser";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
@@ -20,44 +20,24 @@ export type MatchesServerProps = {
 };
 
 export const getServerSideProps = requireUser(
-  async (_ctx: GetServerSidePropsContext) => {
-    const { ctx } = await getPrismaContext(_ctx);
-    const caller = appRouter.createCaller(ctx);
-    const actionIsUnblock = !!routerQueryAttributeToString(_ctx.query.blocked);
+  (prisma: PrismaContext, ctx: GetServerSidePropsContext) => {
+    const actionIsUnblock = !!routerQueryAttributeToString(ctx.query.blocked);
 
-    const getConversations = actionIsUnblock
-      ? caller.conversations.readDeleted
-      : caller.conversations.read;
-
-    const [
-      { userId, isActive, isMale, username, notifications },
-      { preferences, circles },
-      conversations,
-    ] = await Promise.all([
-      caller.users.stats(),
-      caller.preferences.read(),
-      getConversations(),
-    ]);
-
-    // I should move this logic into the required user function, or move the required user call out to this function
-    return {
-      props: {
-        user: {
-          isAuthed: !!ctx.session,
-          isActive: isActive,
-          notifications: notifications,
-          username: username,
-          preferences: preferences,
-          circles: circles,
-          userSex: isMale ? Gender.MALE : Gender.FEMALE,
-          userId: userId,
-        },
-        conversations: conversations,
+    const getActionisUnblock = async () =>
+      Promise.resolve({
         actionIsUnblock: actionIsUnblock,
-      } as MatchesServerProps,
-    };
+      });
+
+    // Require conversations?
+    return [
+      getActionisUnblock(),
+      actionIsUnblock
+        ? conversationScripts.query.readDeleted(prisma)
+        : conversationScripts.query.read(prisma),
+    ];
   }
 );
+
 export default function Page({
   user,
   conversations,

@@ -10,6 +10,7 @@ import React, { useMemo } from "react";
 
 export function Nav() {
   const user = useAppSelector((state) => state.user);
+
   const renderButtonList = useMemo(() => {
     if (user.isActive) {
       return <NavButtonList />;
