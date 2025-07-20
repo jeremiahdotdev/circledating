@@ -139,7 +139,7 @@ export const IconButtonVariant = {
   SAVE: {
     label: "Save",
     icon: faSave,
-    style: "h-16 bg-purple-600 shadow-outter",
+    style: "h-12 p-3 bg-purple-600 shadow-outter",
   } as IconButtonOption,
   LIKE: {
     label: "Like!",

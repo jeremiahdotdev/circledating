@@ -1,5 +1,6 @@
 import "@/globals.css";
 import { AppProps } from "next/app";
+import { ReduxProvider } from "@/store/ReduxProvider";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
@@ -12,11 +13,13 @@ interface AppPageProps {
 
 function _App({ Component, pageProps }: AppProps<AppPageProps>) {
   return (
-    <SessionProvider session={pageProps.session}>
-      <ThemeProvider defaultTheme="light">
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </SessionProvider>
+    <ReduxProvider>
+      <SessionProvider session={pageProps.session}>
+        <ThemeProvider defaultTheme="light">
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </SessionProvider>
+    </ReduxProvider>
   );
 }
 

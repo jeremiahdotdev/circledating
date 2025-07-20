@@ -1,13 +1,18 @@
 import { GetServerSidePropsContext } from "next";
 import { Infographic } from "@/components/Shared/Infographic";
+import { UserSlice, setUser } from "@/store/userSlice";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { systemMessages } from "@/globals/systemMessages";
-import Layout, { LayoutProps } from "../Layout";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps & { isNew: boolean };
+export type DashboardServerProps = {
+  user: UserSlice;
+  isNew: boolean;
+};
 
 export const getServerSideProps = requireUser(
   async (_ctx: GetServerSidePropsContext) => {
@@ -20,7 +25,7 @@ export const getServerSideProps = requireUser(
 
     return {
       props: {
-        nav: {
+        user: {
           isAuthed: !!ctx.session,
           isActive: isActive,
           notifications: notifications,
@@ -29,14 +34,16 @@ export const getServerSideProps = requireUser(
           circles: circles,
         },
         isNew: isNew,
-      } as ServerProps,
+      } as DashboardServerProps,
     };
   }
 );
 
-export default function Page({ nav, isNew }: ServerProps) {
+export default function Page({ user, isNew }: DashboardServerProps) {
+  const dispatch = useAppDispatch();
+  dispatch(setUser(user));
   return (
-    <Layout nav={nav}>
+    <Layout>
       <Infographic
         message={
           isNew

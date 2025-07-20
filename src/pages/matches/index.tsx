@@ -3,16 +3,18 @@ import { Gender } from "@prisma/client";
 import { GetServerSidePropsContext } from "next";
 import { Infographic } from "@/components/Shared/Infographic";
 import { ReadConversationSchemaType } from "@/schemas/Conversation";
+import { UserSlice, setUser } from "@/store/userSlice";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
-import Layout, { LayoutProps } from "../Layout";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps & {
-  user: { userSex: Gender; userId: string };
+export type MatchesServerProps = {
+  user: UserSlice & { userSex: Gender; userId: string };
   conversations: ReadConversationSchemaType[];
   actionIsUnblock: boolean;
 };
@@ -37,34 +39,34 @@ export const getServerSideProps = requireUser(
       getConversations(),
     ]);
 
+    // I should move this logic into the required user function, or move the required user call out to this function
     return {
       props: {
-        nav: {
+        user: {
           isAuthed: !!ctx.session,
           isActive: isActive,
           notifications: notifications,
           username: username,
           preferences: preferences,
           circles: circles,
-        },
-        user: {
           userSex: isMale ? Gender.MALE : Gender.FEMALE,
           userId: userId,
         },
         conversations: conversations,
         actionIsUnblock: actionIsUnblock,
-      } as ServerProps,
+      } as MatchesServerProps,
     };
   }
 );
 export default function Page({
-  nav,
   user,
   conversations,
   actionIsUnblock,
-}: ServerProps) {
+}: MatchesServerProps) {
+  const dispatch = useAppDispatch();
+  dispatch(setUser(user));
   return (
-    <Layout nav={nav}>
+    <Layout>
       {conversations?.length && user ? (
         <ConversationsView
           conversations={conversations}

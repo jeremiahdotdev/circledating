@@ -1,13 +1,16 @@
 import { GetServerSidePropsContext } from "next";
 import { LoginView } from "@/views/LoginView/LoginView";
+import { UserSlice, setUser } from "@/store/userSlice";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireNoAuth } from "@/helpers/requireNoAuth";
-import Layout, { LayoutProps } from "../Layout";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps;
-
+export type LoginServerProps = {
+  user: UserSlice;
+};
 export const getServerSideProps = requireNoAuth(
   async (_ctx: GetServerSidePropsContext) => {
     const { ctx } = await getPrismaContext(_ctx);
@@ -17,7 +20,7 @@ export const getServerSideProps = requireNoAuth(
 
     return {
       props: {
-        nav: {
+        user: {
           isAuthed: !!ctx.session,
           isActive: isActive,
           notifications: notifications,
@@ -25,14 +28,16 @@ export const getServerSideProps = requireNoAuth(
           preferences: preferences,
           circles: circles,
         },
-      } as ServerProps,
+      } as LoginServerProps,
     };
   }
 );
 
-export default function Page({ nav }: ServerProps) {
+export default function Page({ user }: LoginServerProps) {
+  const dispatch = useAppDispatch();
+  dispatch(setUser(user));
   return (
-    <Layout nav={nav}>
+    <Layout>
       <LoginView />
     </Layout>
   );

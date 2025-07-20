@@ -1,12 +1,15 @@
 import { GetServerSidePropsContext } from "next";
 import { PrivacyPolicyView } from "@/views/PrivacyPolicyView/PrivacyPolicyView";
+import { UserSlice, setUser } from "@/store/userSlice";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
-import Layout, { LayoutProps } from "../Layout";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps;
-
+export type PrivacyPolicyServerProps = {
+  user: UserSlice;
+};
 export const getServerSideProps = async (_ctx: GetServerSidePropsContext) => {
   const { ctx } = await getPrismaContext(_ctx);
   const caller = appRouter.createCaller(ctx);
@@ -15,7 +18,7 @@ export const getServerSideProps = async (_ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      nav: {
+      user: {
         isAuthed: !!ctx.session,
         isActive: isActive,
         username: username,
@@ -23,13 +26,15 @@ export const getServerSideProps = async (_ctx: GetServerSidePropsContext) => {
         circles: circles,
         notifications: notifications,
       },
-    } as ServerProps,
+    } as PrivacyPolicyServerProps,
   };
 };
 
-export default function Page({ nav }: ServerProps) {
+export default function Page({ user }: PrivacyPolicyServerProps) {
+  const dispatch = useAppDispatch();
+  dispatch(setUser(user));
   return (
-    <Layout nav={nav}>
+    <Layout>
       <PrivacyPolicyView />
     </Layout>
   );

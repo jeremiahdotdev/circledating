@@ -1,13 +1,16 @@
 import { GetServerSidePropsContext } from "next";
 import { ProfilesView } from "@/views/ProfilesView/ProfilesView";
 import { ReadProfileSchemaType } from "@/schemas/Profile";
+import { UserSlice, setUser } from "@/store/userSlice";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
-import Layout, { LayoutProps } from "../Layout";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps & {
+export type SearchServerProps = {
+  user: UserSlice;
   profiles: ReadProfileSchemaType[];
 };
 
@@ -21,7 +24,7 @@ export const getServerSideProps = requireUser(
 
     return {
       props: {
-        nav: {
+        user: {
           isAuthed: !!ctx.session,
           isActive: isActive,
           notifications: notifications,
@@ -29,14 +32,16 @@ export const getServerSideProps = requireUser(
           preferences: preferences,
           circles: circles,
         },
-      } as ServerProps,
+      } as SearchServerProps,
     };
   }
 );
 
-export default function Page({ nav }: ServerProps) {
+export default function Page({ user }: SearchServerProps) {
+  const dispatch = useAppDispatch();
+  dispatch(setUser(user));
   return (
-    <Layout nav={nav}>
+    <Layout>
       <ProfilesView />
     </Layout>
   );

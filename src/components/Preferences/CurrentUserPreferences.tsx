@@ -19,9 +19,10 @@ import { SliderFormField } from "../ui/SliderFormField";
 import { api } from "@/utils/api";
 import { countries } from "@/globals/location";
 import { handleError } from "@/utils/handleError";
+import { hydrateDefined } from "@/helpers/hydrateDefined";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 export type CurrentUserPreferencesProps = {
   preferences?: ReadUserPreferencesSchemaType;

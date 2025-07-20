@@ -1,4 +1,4 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import { getServerSession } from "next-auth";
 import { handleError } from "@/utils/handleError";
 import { nextAuthOptions } from "@/server/auth/auth";
@@ -6,7 +6,7 @@ import { prisma } from "@/server/db";
 import { routes } from "@/globals/routes";
 
 export const requireUser =
-  (func: GetServerSideProps) => async (ctx: GetServerSidePropsContext) => {
+  (func) => async (ctx) => {
     const session = await getServerSession(ctx.req, ctx.res, nextAuthOptions);
 
     if (!session || !session.user || !session.user.email) {
@@ -29,7 +29,7 @@ export const requireUser =
           profile: true,
         },
       });
-    } catch (error: unknown) {
+    } catch (error) {
       handleError(error);
     }
 

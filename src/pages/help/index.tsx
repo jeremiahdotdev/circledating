@@ -1,12 +1,15 @@
 import { GetServerSidePropsContext } from "next";
 import { HelpView } from "@/views/HelpView/HelpView";
+import { UserSlice, setUser } from "@/store/userSlice";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
-import Layout, { LayoutProps } from "../Layout";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps;
-
+export type HelpServerProps = {
+  user: UserSlice;
+};
 export const getServerSideProps = async (_ctx: GetServerSidePropsContext) => {
   const { ctx } = await getPrismaContext(_ctx);
   const caller = appRouter.createCaller(ctx);
@@ -17,20 +20,22 @@ export const getServerSideProps = async (_ctx: GetServerSidePropsContext) => {
 
   return {
     props: {
-      nav: {
+      user: {
         isAuthed: !!ctx.session,
         isActive: isActive,
         username: username,
         preferences: preferences,
         circles: circles,
       },
-    } as ServerProps,
+    } as HelpServerProps,
   };
 };
 
-export default function Page({ nav }: ServerProps) {
+export default function Page({ user }: HelpServerProps) {
+  const dispatch = useAppDispatch();
+  dispatch(setUser(user));
   return (
-    <Layout nav={nav}>
+    <Layout>
       <HelpView />
     </Layout>
   );

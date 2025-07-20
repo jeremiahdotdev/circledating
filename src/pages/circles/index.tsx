@@ -1,13 +1,16 @@
 import { CirclesView } from "@/views/CirclesView/CirclesView";
 import { GetServerSidePropsContext } from "next";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
+import { UserSlice, setUser } from "@/store/userSlice";
 import { appRouter } from "@/server/api/root";
 import { getPrismaContext } from "@/helpers/getPrismaContext";
 import { requireUser } from "@/helpers/requireUser";
-import Layout, { LayoutProps } from "../Layout";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-export type CirclesServerProps = LayoutProps & {
+export type CirclesServerProps = {
+  user: UserSlice;
   featured: ReadCircleSchemaType[];
   current: ReadCircleSchemaType[];
 };
@@ -29,7 +32,7 @@ export const getServerSideProps = requireUser(
     ]);
     return {
       props: {
-        nav: {
+        user: {
           isAuthed: !!ctx.session,
           isActive: isActive,
           notifications: notifications,
@@ -44,9 +47,11 @@ export const getServerSideProps = requireUser(
   }
 );
 
-export default function Page({ nav, featured, current }: CirclesServerProps) {
+export default function Page({ user, featured, current }: CirclesServerProps) {
+  const dispatch = useAppDispatch();
+  dispatch(setUser(user));
   return (
-    <Layout nav={nav}>
+    <Layout>
       <CirclesView featured={featured} current={current} />
     </Layout>
   );
