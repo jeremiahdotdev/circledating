@@ -6,7 +6,7 @@ import { PrismaContext } from "@/server/api/types";
 import { ReadConversationSchemaType } from "@/schemas/Conversation";
 import { UserSlice, setUser } from "@/store/userSlice";
 import { conversationScripts } from "@/server/api/prisma/conversationScripts";
-import { requireUser } from "@/helpers/requireUser";
+import { insistOn } from "@/helpers/insistOn";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import { systemMessages } from "@/globals/systemMessages";
 import { useAppDispatch } from "@/store/hooks";
@@ -14,12 +14,13 @@ import Layout from "../Layout";
 import React from "react";
 
 export type MatchesServerProps = {
-  user: UserSlice & { userSex: Gender; userId: string };
+  user: UserSlice;
   conversations: ReadConversationSchemaType[];
   actionIsUnblock: boolean;
 };
 
-export const getServerSideProps = requireUser(
+export const getServerSideProps = insistOn(
+  { user: true },
   (prisma: PrismaContext, ctx: GetServerSidePropsContext) => {
     const actionIsUnblock = !!routerQueryAttributeToString(ctx.query.blocked);
 
@@ -43,15 +44,14 @@ export default function Page({
   conversations,
   actionIsUnblock,
 }: MatchesServerProps) {
-  const dispatch = useAppDispatch();
-  dispatch(setUser(user));
+  useAppDispatch()(setUser(user));
   return (
     <Layout>
       {conversations?.length && user ? (
         <ConversationsView
           conversations={conversations}
-          userId={user.userId}
-          userSex={user.userSex}
+          userId={user.userId ?? ""}
+          userSex={user.userSex ?? Gender.FEMALE}
           actionIsUnblock={actionIsUnblock}
         />
       ) : (

@@ -7,6 +7,8 @@ export interface UserSlice {
   preferences?: ReadUserPreferencesSchemaType;
   isAuthed: boolean;
   isActive: boolean;
+  isAdmin: boolean;
+  isNew: boolean;
   notifications: number;
   username?: string;
   circles?: ReadCircleSchemaType[];
@@ -18,6 +20,8 @@ const initialState: UserSlice = {
   preferences: undefined,
   isAuthed: false,
   isActive: false,
+  isAdmin: false,
+  isNew: false,
   notifications: 0,
   username: undefined,
   userSex: undefined,

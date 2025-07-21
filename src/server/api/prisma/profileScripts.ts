@@ -286,7 +286,7 @@ export const profileScripts = {
           activity: input.activity,
           drinking: input.drinking,
           sex: input.sex,
-          birthDate: input.birthDate,
+          birthDate: input.birthDate ?? new Date(0),
           consumables: input.consumables,
           maritalStatus: input.maritalStatus,
           religion: input.religion,

@@ -2,17 +2,21 @@ import { GetServerSidePropsContext } from "next";
 import { PrismaContext, PrismaParameter } from "@/server/api/types";
 import { ProfileView } from "@/views/ProfileView/ProfileView";
 import { ReadProfileSchemaType } from "@/schemas/Profile";
+import { UserSlice, setUser } from "@/store/userSlice";
+import { insistOn } from "@/helpers/insistOn";
 import { profileScripts } from "@/server/api/prisma/profileScripts";
-import { requireUser } from "@/helpers/requireUser";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
-import Layout, { LayoutProps } from "../Layout";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps & {
+type ServerProps = {
+  user: UserSlice;
   profile: ReadProfileSchemaType;
 };
 
-export const getServerSideProps = requireUser(
+export const getServerSideProps = insistOn(
+  { user: true },
   (prisma: PrismaContext, ctx: GetServerSidePropsContext) => {
     const param = {
       ctx: prisma.ctx,
@@ -22,7 +26,9 @@ export const getServerSideProps = requireUser(
   }
 );
 
-export default function Page({ profile }: ServerProps) {
+export default function Page({ user, profile }: ServerProps) {
+  useAppDispatch()(setUser(user));
+
   return (
     <Layout>
       <ProfileView profile={profile} />

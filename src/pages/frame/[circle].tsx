@@ -1,8 +1,9 @@
 import { GetServerSidePropsContext } from "next";
 import { Loading } from "@/components/Shared/Loading";
+import { PrismaContext, PrismaParameter } from "@/server/api/types";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
-import { appRouter } from "@/server/api/root";
-import { getPrismaContext } from "@/helpers/getPrismaContext";
+import { circleScripts } from "@/server/api/prisma/circleScripts";
+import { insistOn } from "@/helpers/insistOn";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
 import CircleQR from "@/components/Profile/CircleQR";
 import React from "react";
@@ -13,21 +14,22 @@ type ServerProps = {
   styled: boolean;
 };
 
-export const getServerSideProps = async (_ctx: GetServerSidePropsContext) => {
-  const { ctx } = await getPrismaContext(_ctx);
-  const caller = appRouter.createCaller(ctx);
-  const styled = _ctx?.query?.card === "";
-  const circle = await caller.circles.readByName(
-    routerQueryAttributeToString(_ctx.query.circle)
-  );
+export const getServerSideProps = insistOn(
+  { user: true },
+  (prisma: PrismaContext, ctx: GetServerSidePropsContext) => {
+    const getStyled = async () =>
+      Promise.resolve({
+        styled: ctx?.query?.card === "",
+      });
 
-  return {
-    props: {
-      circle: circle,
-      styled: styled,
-    } as ServerProps,
-  };
-};
+    const param = {
+      ctx: prisma.ctx,
+      input: routerQueryAttributeToString(ctx.query.circle),
+    } as PrismaParameter<string>;
+
+    return [circleScripts.query.readByName(param), getStyled()];
+  }
+);
 
 export default function Page({ circle, styled }: ServerProps) {
   if (!circle) return <Loading />;

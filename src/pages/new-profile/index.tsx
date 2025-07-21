@@ -1,29 +1,21 @@
-import { GetServerSidePropsContext } from "next";
 import { NewProfileView } from "@/views/NewProfileView/NewProfileView";
-import { getPrismaContext } from "@/helpers/getPrismaContext";
-import { requireNoUser } from "@/helpers/requireNoUser";
-import Layout, { LayoutProps } from "../Layout";
+import { UserSlice, setUser } from "@/store/userSlice";
+import { insistOn } from "@/helpers/insistOn";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps;
+export const getServerSideProps = insistOn({ auth: true, noUser: true });
 
-export const getServerSideProps = requireNoUser(
-  async (_ctx: GetServerSidePropsContext) => {
-    const { ctx } = await getPrismaContext(_ctx);
+export type ServerProps = {
+  user: UserSlice;
+};
 
-    return {
-      props: {
-        nav: {
-          isAuthed: !!ctx.session,
-        },
-      } as ServerProps,
-    };
-  }
-);
+export default function Page({ user }: ServerProps) {
+  useAppDispatch()(setUser(user));
 
-export default function Page({ nav }: ServerProps) {
   return (
-    <Layout nav={nav}>
+    <Layout>
       <NewProfileView />
     </Layout>
   );

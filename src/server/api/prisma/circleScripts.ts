@@ -147,7 +147,7 @@ export const circleScripts = {
         },
       });
 
-      return ParseCircle(result);
+      return { circle: ParseCircle(result) };
     },
     readByCode: async ({ input, ctx }: PrismaParameter<string>) => {
       const result = await ctx.prisma.circle.findUnique({

@@ -1,54 +1,37 @@
 import { CircleView } from "@/views/CircleView/CircleView";
 import { GetServerSidePropsContext } from "next";
+import { PrismaContext, PrismaParameter } from "@/server/api/types";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
-import { appRouter } from "@/server/api/root";
-import { getPrismaContext } from "@/helpers/getPrismaContext";
-import { requireUser } from "@/helpers/requireUser";
+import { UserSlice, setUser } from "@/store/userSlice";
+import { circleScripts } from "@/server/api/prisma/circleScripts";
+import { insistOn } from "@/helpers/insistOn";
 import { routerQueryAttributeToString } from "@/utils/routerQueryAttributeToString";
-import Layout, { LayoutProps } from "../Layout";
+import { useAppDispatch } from "@/store/hooks";
+import Layout from "../Layout";
 import React from "react";
 
-type ServerProps = LayoutProps & {
+type ServerProps = {
+  user: UserSlice;
   circle: ReadCircleSchemaType;
 };
 
-export const getServerSideProps = requireUser(
-  async (_ctx: GetServerSidePropsContext) => {
-    const { ctx } = await getPrismaContext(_ctx);
-    const caller = appRouter.createCaller(ctx);
-
-    const [
-      { isActive, username, notifications },
-      { preferences, circles },
-      circle,
-    ] = await Promise.all([
-      caller.users.stats(),
-      caller.preferences.read(),
-      caller.circles.readByName(
-        routerQueryAttributeToString(_ctx.query.circle)
-      ),
-    ]);
-
-    return {
-      props: {
-        nav: {
-          isAuthed: !!ctx.session,
-          isActive: isActive,
-          notifications: notifications,
-          username: username,
-          preferences: preferences,
-          circles: circles,
-        },
-        circle: circle,
-      } as ServerProps,
-    };
+export const getServerSideProps = insistOn(
+  { user: true },
+  (prisma: PrismaContext, ctx: GetServerSidePropsContext) => {
+    const param = {
+      ctx: prisma.ctx,
+      input: routerQueryAttributeToString(ctx.query.circle),
+    } as PrismaParameter<string>;
+    return [circleScripts.query.readByName(param)];
   }
 );
 
-export default function Page({ circle, nav }: ServerProps) {
+export default function Page({ circle, user }: ServerProps) {
+  useAppDispatch()(setUser(user));
+
   return (
-    <Layout nav={nav}>
-      <CircleView isAdmin={!!nav?.isAdmin} circle={circle} />
+    <Layout>
+      <CircleView isAdmin={!!user?.isAdmin} circle={circle} />
     </Layout>
   );
 }
