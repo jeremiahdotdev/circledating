@@ -19,10 +19,11 @@ import { SliderFormField } from "../ui/SliderFormField";
 import { api } from "@/utils/api";
 import { countries } from "@/globals/location";
 import { handleError } from "@/utils/handleError";
-import { hydrateDefined } from "@/helpers/hydrateDefined";
+import { setPreferences } from "@/store/userSlice";
+import { useAppDispatch } from "@/store/hooks";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 
 export type CurrentUserPreferencesProps = {
   preferences?: ReadUserPreferencesSchemaType;
@@ -32,6 +33,7 @@ export function CurrentUserPreferences({
   preferences,
   setClosed,
 }: CurrentUserPreferencesProps) {
+  const dispatch = useAppDispatch();
   const { mutateAsync } = api.preferences.save.useMutation();
 
   const form = useForm<MutateUserPreferencesSchemaType>({
@@ -89,8 +91,9 @@ export function CurrentUserPreferences({
   const onValidData = useCallback(
     (data: MutateUserPreferencesSchemaType) => {
       mutateAsync(data).catch(handleError);
+      dispatch(setPreferences(data));
     },
-    [mutateAsync]
+    [dispatch, mutateAsync]
   );
 
   return (

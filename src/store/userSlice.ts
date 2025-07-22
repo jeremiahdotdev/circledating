@@ -1,10 +1,13 @@
 import { Gender } from "@prisma/client";
+import {
+  MutateUserPreferencesSchemaType,
+  ReadUserPreferencesSchemaType,
+} from "@/schemas/UserPreferences";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ReadCircleSchemaType } from "@/schemas/Circle";
-import { ReadUserPreferencesSchemaType } from "@/schemas/UserPreferences";
 
 export interface UserSlice {
-  preferences?: ReadUserPreferencesSchemaType;
+  preferences: ReadUserPreferencesSchemaType;
   isAuthed: boolean;
   isActive: boolean;
   isAdmin: boolean;
@@ -17,7 +20,19 @@ export interface UserSlice {
 }
 
 const initialState: UserSlice = {
-  preferences: undefined,
+  preferences: {
+    ageRange: [18, 99],
+    searchCountries: [],
+    searchContinents: [],
+    searchStates: [],
+    consumables: [],
+    drinking: [],
+    religion: [],
+    politicalBeliefs: [],
+    income: [],
+    userId: "<RESOLVED_ON_SERVER>",
+    sex: Gender.FEMALE,
+  },
   isAuthed: false,
   isActive: false,
   isAdmin: false,
@@ -34,15 +49,38 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action: PayloadAction<UserSlice | undefined>) {
-      state.preferences = action.payload?.preferences;
+      state.preferences = action.payload?.preferences ?? state.preferences;
       state.isAuthed = !!action.payload?.isAuthed;
       state.isActive = !!action.payload?.isActive;
       state.notifications = action.payload?.notifications ?? 0;
       state.username = action.payload?.username;
       state.circles = action.payload?.circles ?? [];
     },
+    setPreferences(
+      state,
+      action: PayloadAction<MutateUserPreferencesSchemaType | undefined>
+    ) {
+      state.preferences.ageRange =
+        action.payload?.ageRange ?? state.preferences.ageRange;
+      state.preferences.searchCountries =
+        action.payload?.searchCountries ?? state.preferences.searchCountries;
+      state.preferences.searchContinents =
+        action.payload?.searchContinents ?? state.preferences.searchContinents;
+      state.preferences.searchStates =
+        action.payload?.searchStates ?? state.preferences.searchStates;
+      state.preferences.consumables =
+        action.payload?.consumables ?? state.preferences.consumables;
+      state.preferences.drinking =
+        action.payload?.drinking ?? state.preferences.drinking;
+      state.preferences.religion =
+        action.payload?.religion ?? state.preferences.religion;
+      state.preferences.politicalBeliefs =
+        action.payload?.politicalBeliefs ?? state.preferences.politicalBeliefs;
+      state.preferences.income =
+        action.payload?.income ?? state.preferences.income;
+    },
     resetUser(state) {
-      state.preferences = undefined;
+      state.preferences = initialState.preferences;
       state.isAuthed = false;
       state.isActive = false;
       state.notifications = 0;
@@ -52,5 +90,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setUser, resetUser } = userSlice.actions;
+export const { setUser, resetUser, setPreferences } = userSlice.actions;
 export default userSlice.reducer;

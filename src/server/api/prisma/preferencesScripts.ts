@@ -31,7 +31,6 @@ export const preferencesScripts = {
           },
         },
       });
-
       return {
         preferences: ParsePreferences(result?.preferences),
         circles: result?.circles.map((c) =>

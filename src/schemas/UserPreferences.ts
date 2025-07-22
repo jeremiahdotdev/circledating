@@ -74,6 +74,7 @@ export function ParsePreferences(
   if (!preferences) return null;
   return {
     userId: preferences.userId,
+    ageRange: [preferences.minAge, preferences.maxAge],
     searchCountries: parseArray<string>(preferences.searchCountries),
     searchContinents: parseArray<string>(preferences.searchContinents),
     searchStates: parseArray<string>(preferences.searchStates),

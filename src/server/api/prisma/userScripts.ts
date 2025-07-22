@@ -1,4 +1,5 @@
 import { Gender } from "@prisma/client";
+import { ParsePreferences } from "@/schemas/UserPreferences";
 import { PrismaContext, PrismaParameter } from "../types";
 import { SignupSchemaType } from "@/schemas/LoginSchema";
 import { TRPCError } from "@trpc/server";
@@ -44,11 +45,7 @@ export const userScripts = {
           notifications: new Set(user.recievedMessages).size,
           isNew: dayjs(user.createdAt) > dayjs().subtract(1, "day"),
           circles: user.circles,
-          preferences: {
-            ...user.preferences,
-            createdAt: null,
-            updatedAt: null,
-          },
+          preferences: ParsePreferences(user?.preferences),
         };
 
         return { user: userSlice };
