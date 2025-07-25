@@ -155,7 +155,7 @@ export const circleScripts = {
           code: input,
         },
       });
-      return ParseCircle(result);
+      return { circle: ParseCircle(result) };
     },
     readFeatured: async ({ ctx }: PrismaContext) => {
       let returnValue;
@@ -177,7 +177,7 @@ export const circleScripts = {
 
         returnValue = ParseCircles(circles);
       }
-      return returnValue;
+      return { featured: returnValue };
     },
     readCurrent: async ({ ctx }: PrismaContext) => {
       const circles = await ctx.prisma.userCircle.findMany({
@@ -193,7 +193,7 @@ export const circleScripts = {
         circles.map((c) => c.circle)
       );
 
-      return result;
+      return { current: result };
     },
     searchMany: async ({ input, ctx }: PrismaParameter<string>) => {
       const circles: ReadCircleSchemaType[] = [];

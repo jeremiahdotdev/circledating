@@ -36,6 +36,7 @@ export const NewCircle = memo(function NewProfile() {
   const form = useForm<MutateCircleSchemaType>({
     resolver: zodResolver(MutateCircleSchema),
     defaultValues: {
+      name: "<RESOLVED_ON_SERVER>",
       isFeatured: false,
       isPrivate: false,
     },
@@ -122,10 +123,12 @@ export const NewCircle = memo(function NewProfile() {
             name="links"
             label="Social Media / Website Link?"
             placeholder="Link"
+            required={false}
           />
           <RadioButtonFormField
             control={form.control}
             name="isPrivate"
+            label="Type"
             type="boolean"
             options={[
               { value: "", label: "Public" },

@@ -24,7 +24,9 @@ export const CirclesView = memo(function CirclesView({
   >([]);
   const handleSearch = useCallback(
     (searchText: string) => {
-      mutateAsync(searchText).then(setSearchCirclesState).catch(handleError);
+      mutateAsync(searchText.toLowerCase())
+        .then(setSearchCirclesState)
+        .catch(handleError);
     },
     [mutateAsync]
   );

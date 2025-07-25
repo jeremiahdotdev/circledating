@@ -23,7 +23,9 @@ export function ProfileLocation({
   return (
     <span className="flex w-full flex-row items-center justify-center">
       {isEditMode ? (
-        <div className="w-full max-w-screen-sm">{editor}</div>
+        <div className="flex w-full max-w-screen-sm items-center justify-center">
+          {editor}
+        </div>
       ) : (
         <span className="flex w-full flex-row items-center justify-center gap-1">
           <FormattedTooltip

@@ -14,7 +14,7 @@ export const FormButton = memo(
   ({ className, label, disabled, onClick }: FormButtonProps) => {
     return (
       <Button
-        className={classNames("flex bg-purple-600", className)}
+        className={classNames("flex text-foreground bg-purple-600", className)}
         disabled={disabled}
         onClick={onClick}
       >

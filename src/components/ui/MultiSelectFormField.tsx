@@ -42,7 +42,7 @@ export const MultiSelectFormField = <Values extends FieldValues>({
   );
 
   return (
-    <FormItem className="mb-2 flex flex-col">
+    <FormItem className="mb-2 flex w-full flex-col">
       <FormLabel>{label}</FormLabel>
       <FormControl>
         <MultiSelect

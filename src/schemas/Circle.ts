@@ -86,7 +86,7 @@ export const ReadCircleSchema = z.object({
 export const MutateCircleSchema = z.object({
   ...CircleSchema.shape,
   id: CircleSchema.shape.id.optional(),
-  links: z.array(LinkSchema).optional(),
+  links: z.string().optional(),
 });
 
 export const UpdateImageSchema = z.object({

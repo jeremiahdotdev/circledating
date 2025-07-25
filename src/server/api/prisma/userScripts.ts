@@ -1,4 +1,5 @@
 import { Gender } from "@prisma/client";
+import { ParseCircle } from "@/schemas/Circle";
 import { ParsePreferences } from "@/schemas/UserPreferences";
 import { PrismaContext, PrismaParameter } from "../types";
 import { SignupSchemaType } from "@/schemas/LoginSchema";
@@ -22,7 +23,11 @@ export const userScripts = {
           select: {
             username: true,
             preferences: true,
-            circles: true,
+            circles: {
+              select: {
+                circle: true,
+              },
+            },
             isAdmin: true,
             createdAt: true,
             profile: true,
@@ -44,7 +49,7 @@ export const userScripts = {
           username: user.username ?? "",
           notifications: new Set(user.recievedMessages).size,
           isNew: dayjs(user.createdAt) > dayjs().subtract(1, "day"),
-          circles: user.circles,
+          circles: user.circles.map(({ circle }) => ParseCircle(circle)),
           preferences: ParsePreferences(user?.preferences),
         };
 
