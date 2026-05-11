@@ -3,7 +3,7 @@ Development is currently ongoing.
 
 # Circle Dating 
 
-**Circle Dating** is a closed-source, industry-scale dating app that fosters authentic connections through shared interests. Built on **Next.js** using the **pages router** and styled with **Tailwind CSS**, Circle Dating brings people together based on mutual hobbies, values, and themes. This repository serves as a documentation mirror, as the core project remains private.
+**Circle Dating** is an industry-scale dating app that fosters authentic connections through shared interests. Built on **Next.js** using the **pages router** and styled with **Tailwind CSS**, Circle Dating brings people together based on mutual hobbies, values, and themes. This repository serves as a documentation mirror, as the core project remains private.
 
 ## Project Overview
 
@@ -22,5 +22,3 @@ The app focuses on authentic connections rather than superficial swiping, creati
 - **Prisma ORM**: Managing the database with type-safe, easy-to-use queries.
 - **Vercel Blob Storage**: For storing and managing media assets.
 - 
-## Repository Information
-This is a **documentation mirror** repository for **Circle Dating**, a closed-source project. For more details or inquiries, please contact the team directly.
